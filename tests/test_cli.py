@@ -45,6 +45,9 @@ class CLITests(unittest.TestCase):
             code = main([])
         self.assertEqual(code, 0)
         self.assertIn("No libyears measurement could be calculated", output.getvalue())
+        self.assertIn("Measured: 0 / 1 dependencies", output.getvalue())
+        self.assertNotIn("DEPENDENCY", output.getvalue())
+        self.assertNotIn("Total:", output.getvalue())
 
     def test_scan_failure_returns_systemic_error(self):
         errors = io.StringIO()

@@ -67,13 +67,18 @@ class OutputTests(unittest.TestCase):
         self.assertLess(output.index("older"), output.index("newer"))
         self.assertIn("Measured: 2 / 3 dependencies", output)
         self.assertIn("Coverage: 66.7%", output)
-        self.assertIn("non_exact_version", output)
+        self.assertIn("exact version not available", output)
+        self.assertNotIn("non_exact_version", output)
 
     def test_human_output_distinguishes_no_supported_dependencies(self):
         report = ScanReport(MetricSummary(0, 0, None, 0.0, None, None, None), (), ())
         output = format_human(report, ".")
         self.assertIn("No supported dependency manifests or dependencies were found.", output)
         self.assertIn("Currently supported ecosystems: pypi", output)
+        self.assertIn("No libyears measurement was calculated.", output)
+        self.assertNotIn("DEPENDENCY", output)
+        self.assertNotIn("Coverage:", output)
+        self.assertNotIn("Total:", output)
         self.assertNotIn("failure", output.lower())
 
     def test_human_output_explains_zero_measurement_from_non_exact_versions(self):
@@ -81,13 +86,19 @@ class OutputTests(unittest.TestCase):
         self.assertIn("No libyears measurement could be calculated", output)
         self.assertIn("All discovered dependencies lack exact versions.", output)
         self.assertIn("reproducible measurement", output)
-        self.assertIn("exact version not available (non_exact_version)", output)
+        self.assertIn("exact version not available", output)
+        self.assertNotIn("non_exact_version", output)
+        self.assertIn("Measured: 0 / 1 dependencies", output)
+        self.assertIn("Coverage: 0.0%", output)
+        self.assertNotIn("DEPENDENCY", output)
+        self.assertNotIn("Total:", output)
 
     def test_human_output_distinguishes_partial_measurement(self):
         output = format_human(report_with_data(), ".")
         self.assertIn("Partial measurement: 2 / 3 dependencies measured (66.7%).", output)
         self.assertIn("Total:", output)
-        self.assertIn("non_exact_version", output)
+        self.assertIn("exact version not available", output)
+        self.assertNotIn("non_exact_version", output)
 
     def test_human_output_distinguishes_complete_measurement(self):
         report = report_with_data()
@@ -105,7 +116,10 @@ class OutputTests(unittest.TestCase):
         data = report_to_dict(report, ".")
         self.assertIsNone(data["summary"]["coverage"])
         self.assertIsNone(data["summary"]["mean_libyears"])
-        self.assertEqual(format_human(report, ".").count("null"), 4)
+        human = format_human(report, ".")
+        self.assertNotIn("null", human)
+        self.assertNotIn("Coverage:", human)
+        self.assertNotIn("Total:", human)
 
 
 if __name__ == "__main__":

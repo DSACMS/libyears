@@ -79,8 +79,10 @@ def format_human(report: ScanReport, path: str) -> str:
             [
                 "No supported dependency manifests or dependencies were found.",
                 "Currently supported ecosystems: pypi (Python packages from PyPI).",
+                "No libyears measurement was calculated.",
             ]
         )
+        return "\n".join(lines) + "\n"
     elif summary.dependencies_measured == 0:
         lines.append(
             "No libyears measurement could be calculated "
@@ -97,6 +99,20 @@ def format_human(report: ScanReport, path: str) -> str:
             )
         else:
             lines.append("All discovered dependencies were unmeasurable; see reasons below.")
+        lines.extend(
+            [
+                "",
+                f"Measured: {summary.dependencies_measured} / {summary.dependencies_discovered} dependencies",
+                f"Coverage: {_coverage(summary.coverage)}",
+            ]
+        )
+        if report.unmeasurable:
+            lines.extend(["", "Unmeasurable:"])
+            lines.extend(
+                f"  {item.declared}    {_reason_text(item.reason)}"
+                for item in report.unmeasurable
+            )
+        return "\n".join(lines) + "\n"
     elif summary.dependencies_measured < summary.dependencies_discovered:
         lines.append(
             "Partial measurement: "
@@ -130,7 +146,7 @@ def format_human(report: ScanReport, path: str) -> str:
     if report.unmeasurable:
         lines.extend(["", "Unmeasurable:"])
         lines.extend(
-            f"  {item.declared}    {_reason_text(item.reason)} ({item.reason})"
+            f"  {item.declared}    {_reason_text(item.reason)}"
             for item in report.unmeasurable
         )
     return "\n".join(lines) + "\n"
