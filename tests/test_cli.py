@@ -29,12 +29,55 @@ class CLITests(unittest.TestCase):
         self.assertEqual(code, 0)
         scan.assert_called_once_with("/tmp/repository")
 
+    def test_resolved_snapshot_is_parsed_and_passed_to_scan(self):
+        output = io.StringIO()
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot_path = Path(directory) / "resolved.txt"
+            snapshot_path.write_text("requests==2.31.0\n", encoding="utf-8")
+            with patch("libyears.cli.scan_repository", return_value=empty_report()) as scan, redirect_stdout(output):
+                code = main([".", "--resolved", str(snapshot_path)])
+        self.assertEqual(code, 0)
+        scan.assert_called_once()
+        self.assertEqual(scan.call_args.args, (".",))
+        snapshot = scan.call_args.kwargs["snapshot"]
+        self.assertEqual(snapshot.entries[0].version, "2.31.0")
+        self.assertEqual(snapshot.source_path, str(snapshot_path))
+
+    def test_missing_resolved_snapshot_is_filesystem_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            missing = str(Path(directory) / "missing.txt")
+            errors = io.StringIO()
+            with patch("libyears.cli.scan_repository") as scan, redirect_stderr(errors):
+                code = main([".", "--resolved", missing])
+        self.assertEqual(code, 1)
+        scan.assert_not_called()
+
+    def test_resolved_snapshot_scan_failure_is_systemic_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot_path = Path(directory) / "resolved.txt"
+            snapshot_path.write_text("requests==2.31.0\n", encoding="utf-8")
+            with redirect_stderr(io.StringIO()):
+                code = main(
+                    [".", "--resolved", str(snapshot_path)],
+                    scan=lambda path, snapshot: (_ for _ in ()).throw(RuntimeError("boom")),
+                )
+        self.assertEqual(code, 2)
+
+    def test_resolved_snapshot_measurement_gap_is_success(self):
+        report = ScanReport(MetricSummary(1, 0, 0.0, 0.0, None, None, None), (), ())
+        with tempfile.TemporaryDirectory() as directory:
+            snapshot_path = Path(directory) / "resolved.txt"
+            snapshot_path.write_text("other==1.0\n", encoding="utf-8")
+            with patch("libyears.cli.scan_repository", return_value=report):
+                code = main([".", "--resolved", str(snapshot_path)])
+        self.assertEqual(code, 0)
+
     def test_json_output_is_parseable(self):
         output = io.StringIO()
         with patch("libyears.cli.scan_repository", return_value=empty_report()), redirect_stdout(output):
             code = main(["--json"])
         self.assertEqual(code, 0)
-        self.assertEqual(json.loads(output.getvalue())["schema_version"], 1)
+        self.assertEqual(json.loads(output.getvalue())["schema_version"], 2)
 
     def test_human_output_preserves_zero_coverage_success(self):
         output = io.StringIO()

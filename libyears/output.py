@@ -8,6 +8,7 @@ import json
 from typing import Any
 
 from .scan import ScanReport
+from .snapshot import SNAPSHOT_FORMAT
 
 
 _REASON_TEXT = {
@@ -20,6 +21,10 @@ _REASON_TEXT = {
     "no_stable_release": "no stable release available",
     "registry_error": "registry or transport error",
     "invalid_registry_response": "invalid registry response",
+    "snapshot_version_missing": "exact version missing from supplied snapshot",
+    "snapshot_version_conflict": "conflicting versions in supplied snapshot",
+    "snapshot_version_incompatible": "snapshot version does not satisfy declaration",
+    "declared_snapshot_conflict": "snapshot version conflicts with exact repository pin",
 }
 
 
@@ -31,6 +36,15 @@ def _timestamp(value: datetime) -> str:
 def report_to_dict(report: ScanReport, path: str) -> dict[str, Any]:
     """Convert a scan report to the stable JSON data shape."""
     summary = report.summary
+    version_evidence = {
+        "declaration_source": "requirements.txt",
+        "snapshot_source": None,
+    }
+    if report.snapshot_source is not None:
+        version_evidence["snapshot_source"] = {
+            "format": SNAPSHOT_FORMAT,
+            "path": report.snapshot_source,
+        }
     dependencies = []
     for measurement in report.measurements:
         dependency = measurement.dependency
@@ -44,13 +58,15 @@ def report_to_dict(report: ScanReport, path: str) -> dict[str, Any]:
                 "latest_stable_release_time": _timestamp(dependency.latest_stable_release_time),
                 "libyears": measurement.libyears,
                 "timestamp_anomaly": measurement.timestamp_anomaly,
+                "version_source": dependency.version_source,
             }
         )
     return {
-        "schema_version": 1,
+        "schema_version": 2,
         "metric": "libyears",
         "dependency_scope": "direct",
         "ecosystems": ["pypi"],
+        "version_evidence": version_evidence,
         "summary": asdict(summary),
         "dependencies": dependencies,
         "unmeasurable": [
@@ -73,7 +89,10 @@ def format_json(report: ScanReport, path: str) -> str:
 def format_human(report: ScanReport, path: str) -> str:
     """Format a scan report for terminal readers."""
     summary = report.summary
-    lines = [f"Libyears: {path}", ""]
+    evidence = "Version evidence: requirements.txt"
+    if report.snapshot_source is not None:
+        evidence += f"; resolved snapshot: {report.snapshot_source}"
+    lines = [f"Libyears: {path}", evidence, ""]
     if summary.dependencies_discovered == 0:
         lines.extend(
             [
@@ -125,13 +144,23 @@ def format_human(report: ScanReport, path: str) -> str:
             f"{summary.dependencies_measured} / {summary.dependencies_discovered} dependencies measured."
         )
 
-    lines.extend(["", "DEPENDENCY       USED       LATEST       LIBYEARS"])
+    mixed_sources = {
+        measurement.dependency.version_source for measurement in report.measurements
+    }
+    source_column = len(mixed_sources) > 1
+    header = "DEPENDENCY       USED       LATEST       LIBYEARS"
+    if source_column:
+        header += "  SOURCE"
+    lines.extend(["", header])
     for measurement in sorted(report.measurements, key=lambda item: item.libyears, reverse=True):
         dependency = measurement.dependency
-        lines.append(
+        line = (
             f"{dependency.name:<16} {dependency.used_version:<10} "
             f"{dependency.latest_stable_version:<12} {measurement.libyears:.2f}"
         )
+        if source_column:
+            line += f"  {_source_text(dependency.version_source)}"
+        lines.append(line)
     lines.extend(
         [
             "",
@@ -162,6 +191,13 @@ def _number(value: float | None) -> str:
 
 def _reason_text(reason: str) -> str:
     return _REASON_TEXT.get(reason, "measurement unavailable")
+
+
+def _source_text(source: str) -> str:
+    return {
+        "requirements_exact": "requirements.txt",
+        "resolved_snapshot": "snapshot",
+    }.get(source, source)
 
 
 __all__ = ["format_human", "format_json", "report_to_dict"]

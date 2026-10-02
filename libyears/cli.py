@@ -8,6 +8,7 @@ from collections.abc import Sequence
 
 from .output import format_human, format_json
 from .scan import scan_repository
+from .snapshot import parse_snapshot
 
 
 class _ArgumentParser(argparse.ArgumentParser):
@@ -20,6 +21,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="libyears", description="Calculate dependency freshness.")
     parser.add_argument("path", nargs="?", default=".", help="repository path (default: .)")
     parser.add_argument("--json", action="store_true", dest="json_output", help="emit JSON")
+    parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
     return parser
 
 
@@ -30,7 +32,11 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         return int(error.code)
     scan_function = scan or scan_repository
     try:
-        report = scan_function(args.path)
+        if args.resolved is None:
+            report = scan_function(args.path)
+        else:
+            snapshot = parse_snapshot(args.resolved)
+            report = scan_function(args.path, snapshot=snapshot)
     except OSError as error:
         print(f"libyears: {error}", file=sys.stderr)
         return 1

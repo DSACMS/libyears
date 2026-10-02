@@ -5,6 +5,7 @@ from pathlib import Path
 
 from libyears.pypi import PyPIResult, RegistryFailure
 from libyears.scan import scan_repository
+from libyears.snapshot import parse_snapshot_text
 
 
 UTC = timezone.utc
@@ -91,6 +92,72 @@ class ScanTests(unittest.TestCase):
         })
         report = self.scan("My_Package==1.0\n", adapter)
         self.assertEqual(report.measurements[0].dependency.name, "My_Package")
+
+    def test_snapshot_supplies_version_for_non_exact_direct_dependency(self):
+        adapter = FakeAdapter({
+            "requests": PyPIResult("requests", "2.31.0", timestamp(1), "2.32.0", timestamp(2))
+        })
+        snapshot = parse_snapshot_text("requests==2.31.0\ntransitive==1.0\n")
+        report = self.scan_with_snapshot("requests>=2.0\n", adapter, snapshot)
+        self.assertEqual(adapter.calls, [("requests", "2.31.0")])
+        self.assertEqual(report.summary.dependencies_discovered, 1)
+        self.assertEqual(report.summary.dependencies_measured, 1)
+        self.assertEqual(report.measurements[0].dependency.version_source, "resolved_snapshot")
+
+    def test_snapshot_only_packages_are_ignored(self):
+        adapter = FakeAdapter({})
+        snapshot = parse_snapshot_text("transitive==1.0\n")
+        report = self.scan_with_snapshot("requests\n", adapter, snapshot)
+        self.assertEqual(adapter.calls, [])
+        self.assertEqual(report.summary.dependencies_discovered, 1)
+        self.assertEqual(report.unmeasurable[0].reason, "snapshot_version_missing")
+
+    def test_exact_pin_uses_repository_source_when_snapshot_matches(self):
+        adapter = FakeAdapter({
+            "requests": PyPIResult("requests", "2.31.0", timestamp(1), "2.32.0", timestamp(2))
+        })
+        snapshot = parse_snapshot_text("requests==2.31.0\n")
+        report = self.scan_with_snapshot("requests==2.31.0\n", adapter, snapshot)
+        self.assertEqual(report.measurements[0].dependency.version_source, "requirements_exact")
+
+    def test_exact_pin_conflicts_with_snapshot(self):
+        adapter = FakeAdapter({})
+        snapshot = parse_snapshot_text("requests==2.30.0\n")
+        report = self.scan_with_snapshot("requests==2.31.0\n", adapter, snapshot)
+        self.assertEqual(adapter.calls, [])
+        self.assertEqual(report.unmeasurable[0].reason, "declared_snapshot_conflict")
+
+    def test_non_exact_snapshot_missing_conflicting_and_incompatible(self):
+        adapter = FakeAdapter({
+            "compatible": PyPIResult("compatible", "2.1", timestamp(1), "2.2", timestamp(2))
+        })
+        snapshot = parse_snapshot_text(
+            "compatible==2.1\n"
+            "conflicting==1.0\n"
+            "conflicting==2.0\n"
+            "incompatible==1.0\n"
+        )
+        report = self.scan_with_snapshot(
+            "compatible>=2.0\nmissing\nconflicting\nincompatible>=2.0\n",
+            adapter,
+            snapshot,
+        )
+        self.assertEqual(report.summary.dependencies_discovered, 4)
+        self.assertEqual(report.summary.dependencies_measured, 1)
+        self.assertEqual(
+            {item.reason for item in report.unmeasurable},
+            {
+                "snapshot_version_missing",
+                "snapshot_version_conflict",
+                "snapshot_version_incompatible",
+            },
+        )
+
+    def scan_with_snapshot(self, content, adapter, snapshot):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "requirements.txt").write_text(content, encoding="utf-8")
+            return scan_repository(root, adapter=adapter, snapshot=snapshot)
 
 
 if __name__ == "__main__":

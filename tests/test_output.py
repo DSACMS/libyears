@@ -35,12 +35,42 @@ class OutputTests(unittest.TestCase):
         report = report_with_data()
         rendered = format_json(report, ".")
         data = json.loads(rendered)
-        self.assertEqual(data["schema_version"], 1)
+        self.assertEqual(data["schema_version"], 2)
         self.assertNotIn("repository", data)
+        self.assertEqual(
+            data["version_evidence"],
+            {"declaration_source": "requirements.txt", "snapshot_source": None},
+        )
         self.assertEqual(data["summary"]["coverage"], 2 / 3)
         self.assertEqual(data["dependencies"][0]["used_release_time"], "2023-01-01T00:00:00Z")
         self.assertIsInstance(data["dependencies"][0]["libyears"], float)
+        self.assertEqual(data["dependencies"][0]["version_source"], "requirements_exact")
         self.assertEqual(data["unmeasurable"][0]["reason"], "non_exact_version")
+
+    def test_json_with_snapshot_reports_v2_evidence_and_source(self):
+        report = ScanReport(
+            MetricSummary(1, 1, 1.0, 1.0, 1.0, 1.0, 1.0),
+            (
+                DependencyMeasurement(
+                    Dependency(
+                        "pypi", "requests", "2.31.0",
+                        datetime(2023, 1, 1, tzinfo=timezone.utc),
+                        "2.32.0", datetime(2024, 1, 1, tzinfo=timezone.utc),
+                        "resolved_snapshot",
+                    ),
+                    1.0,
+                ),
+            ),
+            (),
+            "resolved.txt",
+        )
+        data = json.loads(format_json(report, "."))
+        self.assertEqual(data["schema_version"], 2)
+        self.assertEqual(
+            data["version_evidence"]["snapshot_source"],
+            {"format": "pip_freeze_exact", "path": "resolved.txt"},
+        )
+        self.assertEqual(data["dependencies"][0]["version_source"], "resolved_snapshot")
 
     def test_json_preserves_fractional_seconds_without_adding_them(self):
         report = report_with_data()
@@ -69,6 +99,53 @@ class OutputTests(unittest.TestCase):
         self.assertIn("Coverage: 66.7%", output)
         self.assertIn("exact version not available", output)
         self.assertNotIn("non_exact_version", output)
+        self.assertNotIn("SOURCE", output)
+
+    def test_human_output_reports_evidence_and_mixed_sources(self):
+        report = report_with_data()
+        mixed_measurements = (
+            report.measurements[0],
+            DependencyMeasurement(
+                Dependency(
+                    "pypi", "newer", "2.0", datetime(2023, 1, 1, tzinfo=timezone.utc),
+                    "2.1", datetime(2023, 1, 2, tzinfo=timezone.utc),
+                    "resolved_snapshot",
+                ),
+                0.002,
+            ),
+        )
+        mixed = ScanReport(report.summary, mixed_measurements, report.unmeasurable, "resolved.txt")
+        output = format_human(mixed, ".")
+        self.assertIn("Version evidence: requirements.txt; resolved snapshot: resolved.txt", output)
+        self.assertIn("SOURCE", output)
+        self.assertIn("requirements.txt", output)
+        self.assertIn("snapshot", output)
+
+    def test_human_output_uses_friendly_snapshot_failure_reasons(self):
+        output = format_human(
+            ScanReport(
+                MetricSummary(4, 0, 0.0, 0.0, None, None, None),
+                (),
+                tuple(
+                    UnmeasurableRequirement("pkg", "pkg", reason)
+                    for reason in (
+                        "snapshot_version_missing",
+                        "snapshot_version_conflict",
+                        "snapshot_version_incompatible",
+                        "declared_snapshot_conflict",
+                    )
+                ),
+                "resolved.txt",
+            ),
+            ".",
+        )
+        for text in (
+            "exact version missing from supplied snapshot",
+            "conflicting versions in supplied snapshot",
+            "snapshot version does not satisfy declaration",
+            "snapshot version conflicts with exact repository pin",
+        ):
+            self.assertIn(text, output)
 
     def test_human_output_distinguishes_no_supported_dependencies(self):
         report = ScanReport(MetricSummary(0, 0, None, 0.0, None, None, None), (), ())

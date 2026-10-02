@@ -24,6 +24,7 @@ class Dependency:
     used_release_time: datetime
     latest_stable_version: str
     latest_stable_release_time: datetime
+    version_source: str = "requirements_exact"
 
     def __post_init__(self) -> None:
         if not self.ecosystem or not self.name or not self.used_version:
