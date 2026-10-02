@@ -1,16 +1,52 @@
-# Libyears MVP Specification
+# Libyears Specification v1.1
 
 ## 1. Goal
 
-Implement a dependency-free Python CLI that calculates the CHAOSS Libyears metric for a local source repository.
+Implement a dependency-free CLI that calculates the CHAOSS Libyears metric for a local source repository.
 
-The MVP supports Python dependencies published on PyPI.
+The initial implementation supports Python dependencies published on PyPI.
 
 It must work equally well for public repositories, private repositories, source archives, and ordinary local directories.
 
 The repository host is irrelevant.
 
-## 2. Non-goals
+The tool performs static analysis of dependency metadata present in the repository. It does not construct, install, or resolve a new runtime environment.
+
+## 2. Core Principle: Measure Repository Evidence
+
+Libyears measures dependency versions that can be established from repository evidence.
+
+The tool MUST distinguish between:
+
+- a dependency being declared
+- a dependency version being exactly established
+- a dependency being successfully measured
+
+For example:
+
+`requests`
+
+declares a dependency but does not establish which version is used.
+
+Likewise:
+
+`requests>=2.28`
+
+declares an acceptable version range but does not establish which version is used.
+
+Neither is sufficient for a reproducible libyears measurement.
+
+An exact dependency version may come from:
+
+- an exact pin
+- a supported lockfile
+- another supported repository artifact that records the resolved version
+
+Support for these sources is ecosystem-specific.
+
+The absence of an exact version is valid measurement information and MUST NOT be treated as a tool failure.
+
+## 3. Non-goals
 
 The MVP does not:
 
@@ -22,11 +58,26 @@ The MVP does not:
 - assess whether an old dependency is unsafe
 - automatically update dependencies
 - resolve arbitrary version constraints
+- install project dependencies
+- execute package managers to discover current versions
+- construct virtual environments
+- inspect the currently active Python environment
+- infer versions from the developer's machine
 - inspect transitive dependencies
 - support private package registries
 - support ecosystems other than PyPI
 
-## 3. Definition
+The tool MUST NOT turn an unresolved dependency declaration into an exact version by resolving it against the package registry at scan time.
+
+For example, given:
+
+`requests>=2.28`
+
+the tool MUST NOT resolve that constraint today and treat the resulting version as the version used by the repository.
+
+Doing so would answer "what would install today?" rather than "what dependency version is evidenced by this repository?"
+
+## 4. Definition
 
 For one measurable dependency:
 
@@ -38,15 +89,33 @@ Repository cumulative libyears is the sum of dependency libyears.
 
 All calculations use UTC timestamps.
 
-## 4. Dependency Scope
+"Used version" means the exact dependency version established from supported repository evidence.
+
+It does not mean:
+
+- the newest version satisfying a declared constraint
+- the version currently installed on the machine running libyears
+- the version a package manager would resolve today
+
+## 5. Dependency Scope
 
 The MVP measures direct Python dependencies only.
 
 Dependency discovery and exact-version resolution are separate concepts.
 
-A dependency is measurable only when an exact package version can be established.
+A dependency may therefore be:
 
-## 5. Dependency Source Precedence
+1. discovered and measurable
+2. discovered but unmeasurable
+3. not discovered because its dependency source is unsupported
+
+A discovered dependency is measurable only when:
+
+- an exact package version can be established
+- the relevant registry metadata can be retrieved
+- release timestamps required by the metric are available
+
+## 6. Dependency Source Precedence
 
 Initial MVP support:
 
@@ -58,23 +127,31 @@ Examples that are measurable:
 
 `flask==3.0.2`
 
-Examples that are not measurable:
+Examples that are discovered but not measurable:
+
+`requests`
 
 `requests>=2.28`
 
 `flask~=3.0`
 
-`django`
+Examples that are unsupported:
 
 `requests @ git+https://...`
 
-Local filesystem dependencies are not measurable.
+`git://...`
 
-If multiple supported dependency files declare the same normalized package name at conflicting exact versions, mark the dependency unmeasurable rather than selecting one.
+`ssh://...`
+
+local filesystem dependencies
+
+If multiple supported dependency sources eventually establish the same normalized package name, the most authoritative resolved-version source SHOULD take precedence according to ecosystem-specific rules.
+
+If equally authoritative supported sources declare conflicting exact versions, mark the dependency unmeasurable rather than selecting one.
 
 Lockfile support is intentionally deferred to later milestones.
 
-## 6. Package Name Normalization
+## 7. Package Name Normalization
 
 Normalize PyPI project names according to PyPI name normalization semantics for comparison:
 
@@ -83,7 +160,7 @@ Normalize PyPI project names according to PyPI name normalization semantics for 
 
 Preserve the original spelling for display where practical.
 
-## 7. PyPI Data Source
+## 8. PyPI Data Source
 
 Retrieve package metadata directly from PyPI's public JSON API over HTTPS using Python standard-library networking.
 
@@ -91,18 +168,19 @@ No PyPI client library may be used.
 
 HTTP behavior must:
 
-- use a finite timeout
+- use a positive, finite timeout
 - identify the application with an appropriate User-Agent
 - handle HTTP failures without terminating the entire repository scan
+- distinguish invalid registry responses from transport/registry failures
 - handle invalid JSON
 - handle missing package versions
 - handle releases without usable upload timestamps
 
 Network behavior must be mockable in tests.
 
-## 8. Used Version Release Date
+## 9. Used Version Release Date
 
-For the exact version used by the project:
+For the exact version established by repository evidence:
 
 1. Locate the matching release in PyPI metadata.
 2. Examine release files with valid upload timestamps.
@@ -110,7 +188,7 @@ For the exact version used by the project:
 
 If no valid release timestamp exists, mark the dependency unmeasurable.
 
-## 9. Latest Stable Version
+## 10. Latest Stable Version
 
 "Latest stable" means the newest non-prerelease release suitable for general use.
 
@@ -125,7 +203,7 @@ The selected latest stable release is the eligible stable release with the newes
 
 This deliberately avoids requiring a third-party semantic-version parser.
 
-## 10. Yanked Releases
+## 11. Yanked Releases
 
 A release is considered unavailable as the latest stable candidate when all usable distribution files for that release are yanked.
 
@@ -133,7 +211,7 @@ A project's currently used version may still be measured if it is yanked.
 
 The output may flag that condition.
 
-## 11. Clock / Metadata Anomalies
+## 12. Clock / Metadata Anomalies
 
 If the selected latest-stable timestamp predates the used-version timestamp:
 
@@ -141,9 +219,9 @@ If the selected latest-stable timestamp predates the used-version timestamp:
 - attach an anomaly indicator
 - do not produce a negative metric
 
-## 12. Measurement Coverage
+## 13. Measurement Coverage
 
-Repository output must distinguish discovery from successful measurement.
+Repository output MUST distinguish dependency discovery from successful measurement.
 
 Example:
 
@@ -157,7 +235,80 @@ Coverage:
 
 If zero dependencies are discovered, coverage is `null`, not 0%.
 
-## 13. Aggregate Statistics
+Coverage is part of the interpretation of the metric.
+
+A repository with:
+
+- 100 dependencies
+- 95 measured
+- 5 unmeasurable
+
+has a substantially different measurement quality from one with:
+
+- 100 dependencies
+- 10 measured
+- 90 unmeasurable
+
+Consumers SHOULD consider coverage alongside aggregate libyears values.
+
+A 0% coverage result is valid and MUST NOT be represented as a scan failure when dependencies were successfully discovered but could not be measured.
+
+## 14. Zero-Measurement Cases
+
+The tool MUST distinguish between at least these cases.
+
+### 14.1 No supported dependencies discovered
+
+Example:
+
+A JavaScript repository scanned by a PyPI-only implementation.
+
+Human output SHOULD explain:
+
+`No supported dependency manifests or dependencies were found.`
+
+It SHOULD identify currently supported ecosystems.
+
+This is not an error.
+
+### 14.2 Dependencies discovered but no exact versions available
+
+Example:
+
+`requirements.txt` contains:
+
+`requests`
+`pandas`
+`urllib3>=2.6.3`
+
+Human output SHOULD explain that dependencies were found but their exact versions cannot be established.
+
+Recommended message:
+
+`All discovered dependencies lack exact versions.`
+
+`Libyears requires exact dependency versions to produce a reproducible measurement.`
+
+If appropriate:
+
+`No supported lockfile or exact-pinned dependency source was found.`
+
+This is not an error.
+
+### 14.3 Exact versions exist but registry metadata cannot be measured
+
+Examples:
+
+- package not found
+- version not found
+- missing release timestamp
+- registry request failure
+
+Human output SHOULD identify the specific reasons.
+
+A partial or zero measurement caused by individual package failures does not automatically make the repository scan itself fail.
+
+## 15. Aggregate Statistics
 
 Calculate aggregates only from successfully measured dependencies:
 
@@ -166,11 +317,18 @@ Calculate aggregates only from successfully measured dependencies:
 - median
 - maximum
 
-If zero dependencies are measurable, numerical aggregates are `null` except cumulative libyears, which may be `0`.
+If zero dependencies are measurable:
+
+- cumulative libyears is `0.0`
+- mean is `null`
+- median is `null`
+- maximum is `null`
 
 Individual dependencies should be sorted from highest libyears to lowest in human-readable output.
 
-## 14. Unmeasurable Reasons
+Aggregate values MUST NOT silently include unmeasurable dependencies.
+
+## 16. Unmeasurable Reasons
 
 Use stable machine-readable reason identifiers.
 
@@ -188,7 +346,21 @@ Initial reasons:
 
 A human-readable explanation may accompany the identifier.
 
-## 15. JSON Output
+Reason identifiers are part of the machine-readable contract.
+
+Human-readable output SHOULD translate identifiers into understandable explanations rather than requiring users to know their internal meaning.
+
+For example:
+
+`non_exact_version`
+
+may be displayed as:
+
+`exact version not available`
+
+## 17. JSON Output
+
+JSON is intended for automation and SHOULD remain factual rather than advisory.
 
 Top-level shape:
 
@@ -239,9 +411,15 @@ An unmeasurable dependency:
 
 Do not make JSON consumers parse human-oriented strings.
 
-## 16. Human Output
+Human-oriented diagnostics SHOULD NOT be added to the JSON schema merely to improve CLI presentation.
 
-Example:
+The existing schema remains version 1 unless a machine-readable contract change is intentionally introduced.
+
+## 18. Human Output
+
+Human output is intended to explain both the metric and its measurement quality.
+
+When measurable dependencies exist:
 
 ```text
 Libyears: .
@@ -257,20 +435,97 @@ Median:   2.06
 Maximum:  2.24
 
 Unmeasurable:
-  flask >=2.0    non_exact_version
+  flask >=2.0    exact version not available
 ```
 
-Exact formatting is not part of the stable API.
+When dependencies are discovered but none are measurable:
 
-## 17. Exit Codes
+```text
+Libyears: .
 
-- `0`: scan completed, even if some dependencies were unmeasurable
-- `1`: CLI usage or filesystem error
-- `2`: scan could not produce meaningful results because of a systemic failure
+Dependencies discovered: 7
+Dependencies measured:   0
+Coverage:                0%
 
-An individual registry lookup failure does not cause a nonzero exit code if the rest of the scan succeeds.
+No libyears measurement could be calculated.
 
-## 18. Testing Philosophy
+All discovered dependencies lack exact versions.
+Libyears requires exact dependency versions to produce a reproducible
+measurement.
+
+Unmeasurable:
+  requests              exact version not available
+  pygal                 exact version not available
+  pandas                exact version not available
+  pytest                exact version not available
+  pylint                exact version not available
+  urllib3 >=2.6.3       exact version not available
+```
+
+When no supported dependencies are discovered:
+
+```text
+Libyears: .
+
+No supported dependencies were discovered.
+
+Supported ecosystems:
+  PyPI
+
+No libyears measurement was calculated.
+```
+
+Exact whitespace, table formatting, and line wrapping are not part of the stable API.
+
+## 19. Human Diagnostic Principles
+
+Human output SHOULD answer these questions without requiring the user to inspect JSON:
+
+1. Did the scan find dependencies?
+2. How many could actually be measured?
+3. Why could the others not be measured?
+4. How trustworthy/complete is the aggregate metric?
+5. What repository evidence would make the measurement more complete?
+
+Diagnostics SHOULD be concise.
+
+The CLI SHOULD NOT:
+
+- dump internal exceptions during ordinary measurement failures
+- imply that an unmeasurable dependency is erroneous
+- imply that an old dependency is vulnerable
+- recommend upgrading solely because a dependency has high libyears
+- resolve dependencies merely to improve coverage
+
+Where useful, the CLI MAY provide neutral next-step guidance such as:
+
+`Exact versions may be available in a supported lockfile or exact-pinned dependency file.`
+
+Guidance MUST NOT imply that users should pin dependencies solely to satisfy the metric.
+
+## 20. Exit Codes
+
+- `0`: scan completed, including:
+  - successful measurement
+  - partial measurement
+  - zero measurable dependencies
+  - no supported dependencies discovered
+- `1`: CLI usage or filesystem/path error
+- `2`: systemic scan failure
+
+Individual registry lookup failures do not cause a nonzero exit code if the repository scan itself completes.
+
+Measurement coverage is data, not process success.
+
+Therefore:
+
+`coverage == 0`
+
+does not imply:
+
+`exit != 0`
+
+## 21. Testing Philosophy
 
 Tests must be deterministic and offline.
 
@@ -289,18 +544,67 @@ Fixture PyPI responses should cover at minimum:
 - timestamp anomaly
 - conflicting requirement pins
 - normalized package names
+- unconstrained dependencies
+- ranged dependencies
+- unsupported VCS dependencies
+- unsupported local dependencies
 
 Metric arithmetic should be tested independently of HTTP and requirements parsing.
 
-## 19. Future Milestones
+CLI tests SHOULD additionally cover:
+
+- no dependencies discovered
+- dependencies discovered but zero measurable
+- partial measurement
+- full measurement
+- human-readable explanations for unmeasurable reasons
+- zero coverage still returning exit code 0
+- JSON remaining unchanged by human-output diagnostics
+
+## 22. Reproducibility Policy
+
+A libyears result SHOULD be reproducible from:
+
+1. repository dependency evidence
+2. package-registry release metadata
+
+The tool MUST NOT improve apparent measurement coverage by silently introducing a third source of state such as:
+
+- the caller's installed environment
+- a newly created virtual environment
+- a freshly resolved dependency graph
+- globally installed packages
+
+When repository evidence is insufficient, report that insufficiency.
+
+Prefer missing data over invented precision.
+
+## 23. Security Boundary
+
+Static repository analysis is preferred over executing project tooling.
+
+The tool SHOULD NOT need to:
+
+- execute repository code
+- install repository packages
+- execute package build scripts
+- import the analyzed project
+- create a virtual environment
+
+Registry access should consist of metadata retrieval only.
+
+This boundary is intentional and should be preserved as ecosystem support expands.
+
+## 24. Future Milestones
 
 Not part of MVP:
 
-- filesystem cache
+- filesystem metadata cache
 - `pyproject.toml`
 - `uv.lock`
 - Poetry lockfiles
-- pip-tools
+- pip-tools / compiled requirements
+- constraints files
 - environment markers
 - requirements file inclusion
 - npm
@@ -312,3 +616,39 @@ Not part of MVP:
 - private registry adapters
 
 Each should be implemented as an independently testable extension without changing the core metric model.
+
+When a second ecosystem is implemented, revisit the existing PyPI-specific orchestration boundary and introduce only the minimum abstraction justified by two concrete ecosystem implementations.
+
+## 25. Future Input-Source Principle
+
+Future dependency-source support should distinguish between:
+
+### Declaration sources
+
+Describe desired or acceptable dependencies.
+
+Examples:
+
+- unconstrained `requirements.txt`
+- version ranges in `pyproject.toml`
+
+These are useful for dependency discovery but may not establish measurable versions.
+
+### Resolution sources
+
+Record exact versions selected for a repository/environment.
+
+Examples may include:
+
+- lockfiles
+- compiled/frozen requirements
+
+These are preferred when establishing the "used version" for libyears.
+
+Adding support for a new file format MUST explicitly define whether that source provides:
+
+- dependency discovery
+- exact version evidence
+- or both
+
+The tool MUST NOT assume that every dependency manifest is a resolution artifact.

@@ -36,6 +36,16 @@ class CLITests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertEqual(json.loads(output.getvalue())["schema_version"], 1)
 
+    def test_human_output_preserves_zero_coverage_success(self):
+        output = io.StringIO()
+        report = ScanReport(
+            MetricSummary(1, 0, 0.0, 0.0, None, None, None), (), ()
+        )
+        with patch("libyears.cli.scan_repository", return_value=report), redirect_stdout(output):
+            code = main([])
+        self.assertEqual(code, 0)
+        self.assertIn("No libyears measurement could be calculated", output.getvalue())
+
     def test_scan_failure_returns_systemic_error(self):
         errors = io.StringIO()
         with redirect_stderr(errors):

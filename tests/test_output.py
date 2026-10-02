@@ -3,6 +3,7 @@ import unittest
 from datetime import datetime, timezone
 
 from libyears.model import Dependency, DependencyMeasurement, MetricSummary
+from libyears.requirements import UnmeasurableRequirement
 from libyears.output import format_human, format_json, report_to_dict
 from libyears.scan import ScanReport
 
@@ -15,6 +16,17 @@ def report_with_data():
         MetricSummary(3, 2, 2 / 3, 1.002, 0.501, 0.501, 1.0),
         (DependencyMeasurement(first, 1.0), DependencyMeasurement(second, 0.002)),
         (type("Unmeasurable", (), {"ecosystem": "pypi", "name": "missing", "declared": "missing>=1", "reason": "non_exact_version"})(),),
+    )
+
+
+def report_with_unmeasurable(*reasons):
+    return ScanReport(
+        MetricSummary(len(reasons), 0, 0.0, 0.0, None, None, None),
+        (),
+        tuple(
+            UnmeasurableRequirement("package", f"package=={index}", reason)
+            for index, reason in enumerate(reasons, start=1)
+        ),
     )
 
 
@@ -56,6 +68,37 @@ class OutputTests(unittest.TestCase):
         self.assertIn("Measured: 2 / 3 dependencies", output)
         self.assertIn("Coverage: 66.7%", output)
         self.assertIn("non_exact_version", output)
+
+    def test_human_output_distinguishes_no_supported_dependencies(self):
+        report = ScanReport(MetricSummary(0, 0, None, 0.0, None, None, None), (), ())
+        output = format_human(report, ".")
+        self.assertIn("No supported dependency manifests or dependencies were found.", output)
+        self.assertIn("Currently supported ecosystems: pypi", output)
+        self.assertNotIn("failure", output.lower())
+
+    def test_human_output_explains_zero_measurement_from_non_exact_versions(self):
+        output = format_human(report_with_unmeasurable("non_exact_version"), ".")
+        self.assertIn("No libyears measurement could be calculated", output)
+        self.assertIn("All discovered dependencies lack exact versions.", output)
+        self.assertIn("reproducible measurement", output)
+        self.assertIn("exact version not available (non_exact_version)", output)
+
+    def test_human_output_distinguishes_partial_measurement(self):
+        output = format_human(report_with_data(), ".")
+        self.assertIn("Partial measurement: 2 / 3 dependencies measured (66.7%).", output)
+        self.assertIn("Total:", output)
+        self.assertIn("non_exact_version", output)
+
+    def test_human_output_distinguishes_complete_measurement(self):
+        report = report_with_data()
+        complete = ScanReport(
+            MetricSummary(2, 2, 1.0, 1.002, 0.501, 0.501, 1.0),
+            report.measurements,
+            (),
+        )
+        output = format_human(complete, ".")
+        self.assertIn("Measurement complete: 2 / 2 dependencies measured.", output)
+        self.assertNotIn("Partial measurement", output)
 
     def test_zero_report_uses_null_values_where_required(self):
         report = ScanReport(MetricSummary(0, 0, None, 0.0, None, None, None), (), ())
