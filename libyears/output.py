@@ -12,7 +12,7 @@ from .scan import ScanReport
 
 def _timestamp(value: datetime) -> str:
     utc = value.astimezone(timezone.utc)
-    return utc.isoformat(timespec="seconds").replace("+00:00", "Z")
+    return utc.isoformat().replace("+00:00", "Z")
 
 
 def report_to_dict(report: ScanReport, path: str) -> dict[str, Any]:
@@ -36,7 +36,6 @@ def report_to_dict(report: ScanReport, path: str) -> dict[str, Any]:
     return {
         "schema_version": 1,
         "metric": "libyears",
-        "repository": path,
         "dependency_scope": "direct",
         "ecosystems": ["pypi"],
         "summary": asdict(summary),

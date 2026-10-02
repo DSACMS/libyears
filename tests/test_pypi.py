@@ -90,7 +90,21 @@ class PyPITests(unittest.TestCase):
         response.read = lambda: b"not json"
         with patch("libyears.pypi.request.urlopen", return_value=response):
             result = adapter.lookup("example", "1.0")
-        self.assertEqual(result.reason, REGISTRY_ERROR)
+        self.assertEqual(result.reason, INVALID_REGISTRY_RESPONSE)
+
+    def test_invalid_utf8_is_invalid_registry_response(self):
+        adapter = PyPIAdapter()
+        response = Response({})
+        response.read = lambda: b"\xff"
+        with patch("libyears.pypi.request.urlopen", return_value=response):
+            result = adapter.lookup("example", "1.0")
+        self.assertEqual(result.reason, INVALID_REGISTRY_RESPONSE)
+
+    def test_timeout_must_be_finite_and_positive(self):
+        for timeout in (0, -1, float("nan"), float("inf"), float("-inf")):
+            with self.subTest(timeout=timeout):
+                with self.assertRaises(ValueError):
+                    PyPIAdapter(timeout=timeout)
 
     def test_malformed_response(self):
         result = self.lookup({"releases": []})

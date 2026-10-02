@@ -13,6 +13,7 @@ CONFLICTING_VERSIONS = "conflicting_versions"
 
 _EXACT = re.compile(r"^(?P<name>[A-Za-z0-9][A-Za-z0-9._-]*)\s*==\s*(?P<version>\S+)$")
 _NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+_WINDOWS_PATH = re.compile(r"^(?:[A-Za-z]:[\\/]|\\\\)")
 
 
 def normalize_name(name: str) -> str:
@@ -63,9 +64,28 @@ def _without_inline_comment(line: str) -> str:
 def _is_unsupported(value: str) -> bool:
     lowered = value.lower()
     return (
-        lowered.startswith(("git+", "hg+", "svn+", "bzr+", "http://", "https://", "file://"))
+        lowered.startswith(
+            (
+                "git+",
+                "hg+",
+                "svn+",
+                "bzr+",
+                "git://",
+                "hg://",
+                "svn://",
+                "bzr://",
+                "ssh://",
+                "git@",
+                "http://",
+                "https://",
+                "file://",
+            )
+        )
         or " @ " in value
-        or lowered.startswith(("-e ", "--editable ", "./", "../", "/", "~/"))
+        or lowered.startswith(
+            ("-e ", "--editable ", "./", "../", ".\\", "..\\", "/", "~/", "~\\")
+        )
+        or _WINDOWS_PATH.match(value) is not None
     )
 
 

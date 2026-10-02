@@ -24,10 +24,31 @@ class OutputTests(unittest.TestCase):
         rendered = format_json(report, ".")
         data = json.loads(rendered)
         self.assertEqual(data["schema_version"], 1)
+        self.assertNotIn("repository", data)
         self.assertEqual(data["summary"]["coverage"], 2 / 3)
         self.assertEqual(data["dependencies"][0]["used_release_time"], "2023-01-01T00:00:00Z")
         self.assertIsInstance(data["dependencies"][0]["libyears"], float)
         self.assertEqual(data["unmeasurable"][0]["reason"], "non_exact_version")
+
+    def test_json_preserves_fractional_seconds_without_adding_them(self):
+        report = report_with_data()
+        dependency = report.measurements[0].dependency
+        dependency_with_fraction = Dependency(
+            dependency.ecosystem,
+            dependency.name,
+            dependency.used_version,
+            dependency.used_release_time.replace(microsecond=123400),
+            dependency.latest_stable_version,
+            dependency.latest_stable_release_time,
+        )
+        report = ScanReport(
+            report.summary,
+            (DependencyMeasurement(dependency_with_fraction, 1.0),),
+            report.unmeasurable,
+        )
+        data = report_to_dict(report, ".")
+        self.assertEqual(data["dependencies"][0]["used_release_time"], "2023-01-01T00:00:00.123400Z")
+        self.assertEqual(data["dependencies"][0]["latest_stable_release_time"], "2024-01-01T00:00:00Z")
 
     def test_human_output_sorts_by_libyears_and_includes_summary(self):
         output = format_human(report_with_data(), ".")

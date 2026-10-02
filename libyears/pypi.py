@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
+import math
 import re
 from typing import Any
 from urllib import request
@@ -75,7 +76,7 @@ class PyPIAdapter:
     """Fetch package metadata from PyPI's JSON API."""
 
     def __init__(self, *, timeout: float = 10.0, user_agent: str = "libyears/0.1") -> None:
-        if timeout <= 0:
+        if not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("timeout must be finite and positive")
         self.timeout = timeout
         self.user_agent = user_agent
@@ -86,11 +87,16 @@ class PyPIAdapter:
         http_request = request.Request(url, headers={"User-Agent": self.user_agent})
         try:
             with request.urlopen(http_request, timeout=self.timeout) as response:
-                payload = json.loads(response.read().decode("utf-8"))
+                response_body = response.read()
         except Exception as error:
             if getattr(error, "code", None) == 404:
                 return RegistryFailure(name, used_version, PACKAGE_NOT_FOUND)
             return RegistryFailure(name, used_version, REGISTRY_ERROR)
+
+        try:
+            payload = json.loads(response_body.decode("utf-8"))
+        except (AttributeError, TypeError, UnicodeError, json.JSONDecodeError):
+            return RegistryFailure(name, used_version, INVALID_REGISTRY_RESPONSE)
 
         if not isinstance(payload, dict) or not isinstance(payload.get("releases"), dict):
             return RegistryFailure(name, used_version, INVALID_REGISTRY_RESPONSE)

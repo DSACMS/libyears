@@ -43,6 +43,11 @@ class CLITests(unittest.TestCase):
         self.assertEqual(code, 2)
         self.assertIn("systemic", errors.getvalue())
 
+    def test_domain_value_error_returns_systemic_error(self):
+        with redirect_stderr(io.StringIO()):
+            code = main([], scan=lambda path: (_ for _ in ()).throw(ValueError("invalid domain data")))
+        self.assertEqual(code, 2)
+
     def test_filesystem_failure_returns_one(self):
         with redirect_stderr(io.StringIO()):
             code = main([], scan=lambda path: (_ for _ in ()).throw(FileNotFoundError("missing")))

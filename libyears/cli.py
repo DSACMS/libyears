@@ -31,7 +31,7 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
     scan_function = scan or scan_repository
     try:
         report = scan_function(args.path)
-    except (OSError, ValueError) as error:
+    except OSError as error:
         print(f"libyears: {error}", file=sys.stderr)
         return 1
     except Exception as error:

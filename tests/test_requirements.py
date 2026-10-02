@@ -41,6 +41,18 @@ class RequirementsTests(unittest.TestCase):
         )
         self.assertEqual([item.reason for item in result.unmeasurable], [UNSUPPORTED_REQUIREMENT] * 3)
 
+    def test_vcs_ssh_and_windows_paths_are_unsupported(self):
+        result = self.discover(
+            "git://example.test/repo.git\n"
+            "ssh://example.test/repo.git\n"
+            "C:\\work\\package\n"
+            "\\\\server\\share\\package\n"
+        )
+        self.assertEqual(
+            [item.reason for item in result.unmeasurable],
+            [UNSUPPORTED_REQUIREMENT] * 4,
+        )
+
     def test_conflicting_exact_versions_are_unmeasurable(self):
         result = self.discover("Foo-Bar==1.0\nfoo_bar==2.0\n")
         self.assertEqual(result.exact, ())
