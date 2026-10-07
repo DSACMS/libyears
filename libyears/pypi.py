@@ -6,9 +6,15 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 import math
+import os
 import re
+import ssl
+import stat
+import sys
+import sysconfig
+from pathlib import Path
 from typing import Any
-from urllib import request
+from urllib import error as urlerror, request
 
 
 PACKAGE_NOT_FOUND = "package_not_found"
@@ -18,7 +24,7 @@ NO_STABLE_RELEASE = "no_stable_release"
 REGISTRY_ERROR = "registry_error"
 INVALID_REGISTRY_RESPONSE = "invalid_registry_response"
 
-_PRERELEASE = re.compile(r"(?:alpha|beta|preview|dev|rc|a\d|b\d)", re.IGNORECASE)
+_PRERELEASE = re.compile(r"(?:alpha|beta|preview|dev|rc|c\d|a\d|b\d)", re.IGNORECASE)
 
 
 @dataclass(frozen=True, slots=True)
@@ -39,6 +45,7 @@ class RegistryFailure:
     name: str
     used_version: str
     reason: str
+    diagnostic: str | None = None
 
 
 def _timestamp(value: Any) -> datetime | None:
@@ -68,6 +75,11 @@ def _release_files(release: Any) -> list[tuple[datetime, bool]]:
     return files
 
 
+def _canonical_release_time(files: list[tuple[datetime, bool]]) -> datetime | None:
+    """Use the first valid upload timestamp as the release's canonical time."""
+    return min((timestamp for timestamp, _ in files), default=None)
+
+
 def _is_prerelease(version: str) -> bool:
     return _PRERELEASE.search(version) is not None
 
@@ -75,31 +87,36 @@ def _is_prerelease(version: str) -> bool:
 class PyPIAdapter:
     """Fetch package metadata from PyPI's JSON API."""
 
-    def __init__(self, *, timeout: float = 10.0, user_agent: str = "libyears/0.1") -> None:
+    def __init__(self, *, timeout: float = 10.0, user_agent: str = "libyears/0.1", ca_bundle: str | None = None) -> None:
         if not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("timeout must be finite and positive")
         self.timeout = timeout
         self.user_agent = user_agent
+        self.ssl_context, self.tls_trust = select_tls_context(ca_bundle)
 
     def lookup(self, name: str, used_version: str) -> PyPIResult | RegistryFailure:
         """Resolve release timestamps for a normalized package and exact version."""
         url = f"https://pypi.org/pypi/{name}/json"
         http_request = request.Request(url, headers={"User-Agent": self.user_agent})
         try:
-            with request.urlopen(http_request, timeout=self.timeout) as response:
+            kwargs = {"timeout": self.timeout}
+            if self.ssl_context is not None:
+                kwargs["context"] = self.ssl_context
+            with request.urlopen(http_request, **kwargs) as response:
                 response_body = response.read()
         except Exception as error:
-            if getattr(error, "code", None) == 404:
-                return RegistryFailure(name, used_version, PACKAGE_NOT_FOUND)
-            return RegistryFailure(name, used_version, REGISTRY_ERROR)
+            code = getattr(error, "code", None)
+            if code == 404:
+                return RegistryFailure(name, used_version, PACKAGE_NOT_FOUND, "HTTP 404")
+            return RegistryFailure(name, used_version, REGISTRY_ERROR, _diagnostic(error))
 
         try:
             payload = json.loads(response_body.decode("utf-8"))
         except (AttributeError, TypeError, UnicodeError, json.JSONDecodeError):
-            return RegistryFailure(name, used_version, INVALID_REGISTRY_RESPONSE)
+            return RegistryFailure(name, used_version, INVALID_REGISTRY_RESPONSE, "malformed registry response (invalid JSON)")
 
         if not isinstance(payload, dict) or not isinstance(payload.get("releases"), dict):
-            return RegistryFailure(name, used_version, INVALID_REGISTRY_RESPONSE)
+            return RegistryFailure(name, used_version, INVALID_REGISTRY_RESPONSE, "malformed registry response (unexpected structure)")
         releases = payload["releases"]
         if used_version not in releases:
             return RegistryFailure(name, used_version, VERSION_NOT_FOUND)
@@ -107,7 +124,7 @@ class PyPIAdapter:
         used_files = _release_files(releases[used_version])
         if not used_files:
             return RegistryFailure(name, used_version, RELEASE_DATE_MISSING)
-        used_release_time = min(timestamp for timestamp, _ in used_files)
+        used_release_time = _canonical_release_time(used_files)
 
         candidates: list[tuple[datetime, str]] = []
         for version, release in releases.items():
@@ -116,7 +133,9 @@ class PyPIAdapter:
             files = _release_files(release)
             if not files or all(yanked for _, yanked in files):
                 continue
-            candidates.append((max(timestamp for timestamp, _ in files), version))
+            release_time = _canonical_release_time(files)
+            if release_time is not None:
+                candidates.append((release_time, version))
         if not candidates:
             return RegistryFailure(name, used_version, NO_STABLE_RELEASE)
 
@@ -124,6 +143,91 @@ class PyPIAdapter:
         return PyPIResult(name, used_version, used_release_time, latest_version, latest_timestamp)
 
     resolve = lookup
+
+
+def _diagnostic(error: Exception) -> str:
+    if isinstance(error, ssl.SSLCertVerificationError):
+        return "TLS certificate verification failure"
+    if isinstance(error, urlerror.HTTPError):
+        return f"HTTP error (status {error.code})"
+    if isinstance(error, TimeoutError):
+        return "network timeout"
+    if isinstance(error, urlerror.URLError):
+        cause = error.reason
+        if isinstance(cause, ssl.SSLCertVerificationError):
+            return "TLS certificate verification failure"
+        if isinstance(cause, TimeoutError):
+            return "network timeout"
+        if isinstance(cause, OSError) and getattr(cause, "errno", None) in {-2, -3, 8}:
+            return "DNS lookup failure"
+        return "network connection failure"
+    return "network connection failure"
+
+
+def _pip_ca_candidates() -> tuple[Path, ...]:
+    """Return a small ordered set of pip-vendored CA paths for this interpreter."""
+    version = f"python{sys.version_info.major}.{sys.version_info.minor}"
+    candidates: list[Path] = []
+    purelib = sysconfig.get_path("purelib")
+    if purelib:
+        candidates.append(Path(purelib) / "pip" / "_vendor" / "certifi" / "cacert.pem")
+    for prefix in dict.fromkeys((sys.prefix, sys.base_prefix)):
+        candidates.append(
+            Path(prefix) / "lib" / version / "site-packages" / "pip" / "_vendor" / "certifi" / "cacert.pem"
+        )
+    return tuple(dict.fromkeys(candidates))
+
+
+def _regular_readable_file(path: Path) -> bool:
+    try:
+        return stat.S_ISREG(path.stat().st_mode) and os.access(path, os.R_OK)
+    except OSError:
+        return False
+
+
+def select_tls_context(ca_bundle: str | None = None) -> tuple[ssl.SSLContext, str]:
+    """Select verified TLS trust using explicit, Python, then pip-bundled trust."""
+    if ca_bundle:
+        return ssl.create_default_context(cafile=ca_bundle), f"explicit CA bundle: {ca_bundle}"
+
+    env_file = os.environ.get("SSL_CERT_FILE")
+    env_dir = os.environ.get("SSL_CERT_DIR")
+    try:
+        context = ssl.create_default_context()
+    except (OSError, ssl.SSLError):
+        # An explicit OpenSSL override is authoritative; do not silently replace it.
+        if env_file or env_dir:
+            raise
+        context = None
+
+    if context is not None:
+        paths = ssl.get_default_verify_paths()
+        cafile = paths.cafile
+        capath = paths.capath
+        usable_path = bool(cafile and _regular_readable_file(Path(cafile)))
+        directory_paths = [path for value in (env_dir, capath) if value for path in value.split(os.pathsep)]
+        usable_path = usable_path or any(
+            Path(path).is_dir() and os.access(path, os.R_OK) for path in directory_paths
+        )
+        if context.get_ca_certs() or usable_path:
+            if env_file:
+                return context, "SSL_CERT_FILE"
+            if env_dir:
+                return context, "SSL_CERT_DIR"
+            return context, "Python default trust store"
+
+    for candidate in _pip_ca_candidates():
+        if not _regular_readable_file(candidate):
+            continue
+        try:
+            context = ssl.create_default_context(cafile=str(candidate))
+        except (OSError, ssl.SSLError):
+            continue
+        if context.get_ca_certs():
+            return context, "pip-bundled CA fallback"
+
+    # Fail closed: an empty verified context retains normal certificate checks.
+    return ssl.create_default_context(), "Python default trust store"
 
 
 def lookup_package(
@@ -142,6 +246,7 @@ __all__ = [
     "RELEASE_DATE_MISSING",
     "REGISTRY_ERROR",
     "RegistryFailure",
+    "select_tls_context",
     "VERSION_NOT_FOUND",
     "lookup_package",
 ]

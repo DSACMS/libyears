@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import ssl
 import sys
 from collections.abc import Sequence
 
@@ -22,6 +23,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("path", nargs="?", default=".", help="repository path (default: .)")
     parser.add_argument("--json", action="store_true", dest="json_output", help="emit JSON")
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
+    parser.add_argument("--ca-bundle", metavar="FILE", help="verified CA bundle for PyPI HTTPS")
+    parser.add_argument("--verbose", action="store_true", help="show concise registry failure diagnostics")
     return parser
 
 
@@ -32,11 +35,17 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         return int(error.code)
     scan_function = scan or scan_repository
     try:
+        if args.ca_bundle:
+            # Validate the supplied file even when this repository has no registry lookups.
+            ssl.create_default_context(cafile=args.ca_bundle)
         if args.resolved is None:
-            report = scan_function(args.path)
+            report = scan_function(args.path, **({"ca_bundle": args.ca_bundle} if args.ca_bundle else {}))
         else:
             snapshot = parse_snapshot(args.resolved)
-            report = scan_function(args.path, snapshot=snapshot)
+            kwargs = {"snapshot": snapshot}
+            if args.ca_bundle:
+                kwargs["ca_bundle"] = args.ca_bundle
+            report = scan_function(args.path, **kwargs)
     except OSError as error:
         print(f"libyears: {error}", file=sys.stderr)
         return 1
@@ -44,7 +53,7 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         print(f"libyears: systemic scan failure: {error}", file=sys.stderr)
         return 2
 
-    rendered = format_json(report, args.path) if args.json_output else format_human(report, args.path)
+    rendered = format_json(report, args.path) if args.json_output else format_human(report, args.path, verbose=args.verbose)
     print(rendered, end="")
     return 0
 

@@ -1,159 +1,171 @@
 # Libyears
 
-Libyears is a local Python CLI that measures the freshness of direct PyPI dependencies using package release dates.
+Libyears is a local Python CLI that measures the age of direct Python
+dependencies using release timestamps from PyPI. It requires Python 3.12+ and
+uses only the standard library at runtime.
 
-## About the Project
+## What libyears measures
 
-The tool reads dependency evidence from `requirements.txt` in a local directory
-(or that file directly) and retrieves release metadata from PyPI. It uses Python
-3.12+ and the standard library, with no third-party runtime dependencies,
-database, server, containers, or GitHub API dependency.
-
-For each measurable dependency:
+For each measurable dependency, libyears compares the release timestamp of its
+exact used version with the timestamp of the latest stable release:
 
 ```text
-libyears = (latest_stable_release_date - used_version_release_date) / 365.25 days
+libyears = max(latest stable release time - used release time, 0) / 365.25 days
 ```
 
-Exact versions come from requirement pins or an explicitly supplied resolved
-snapshot. Unknown versions or release dates remain unmeasurable. Latest stable
-selection excludes prereleases and unavailable/yanked candidates; timestamp
-ordering anomalies are clamped to zero and flagged. Reports include coverage,
-cumulative, mean, median, and maximum libyears. Unmeasurable dependencies are
-excluded from numerical aggregates and retained in coverage statistics.
+The report includes total, mean, median, and maximum libyears, plus measurement
+coverage. High libyears describes age; by itself, it does not mean a dependency
+is vulnerable or unsafe.
 
-This measures dependency freshness, not vulnerability or safety. It does not
-install dependencies, execute the analyzed project, or resolve an environment.
-Only PyPI is supported. See [SPEC.md](SPEC.md) for the metric design; its deferred
-snapshot milestone predates the implemented `--resolved` option described below.
+## Important concept: version evidence
 
-### Project Vision
+A dependency declaration says what a project requests, but it may not establish
+the exact version used. For example, neither of these identifies an exact
+version:
 
-TODO(TIER2): Obtain the project owner's approved vision. The engineering guidance
-prioritizes simplicity, transparency, and long-term maintainability.
-
-### Project Mission
-
-TODO(TIER2): Obtain the approved project mission; the implemented technical
-purpose is to measure dependency freshness from repository evidence.
-
-### Agency Mission
-
-TODO(TIER2): Confirm agency sponsorship and include the applicable mission from
-an authoritative agency source.
-
-### Team Mission
-
-TODO(TIER2): Identify the responsible team and its approved charter or functional statement.
-
-## Core Team
-
-The [project members table](COMMUNITY.md#project-members) awaits confirmed owners
-and contacts. Codeowners are pending identification; see
-[CODEOWNERS](.github/CODEOWNERS).
-
-## Documentation Index
-
-- [SPEC.md](SPEC.md): metric specification and design constraints.
-- [AGENTS.md](AGENTS.md): engineering rules and test commands.
-- [CONTRIBUTING.md](CONTRIBUTING.md): development and contribution guidance.
-- [COMMUNITY.md](COMMUNITY.md): ownership and community guidance.
-- [SECURITY.md](SECURITY.md): disclosure guidance and pending security decisions.
-- [Tier 2 checklist](checklist.md): outbound review record and remaining work.
-
-## Repository Structure
-
-`libyears/` contains the CLI, input parsing, registry adapter, metric, and output
-modules. `tests/` contains offline unittest tests. `.github/` contains repository
-hygiene and secret-scanning configuration.
-
-## Local Development
-
-1. Install Python 3.12 or later and obtain an authorized checkout or source archive.
-2. Open a terminal in the repository root. No dependency installation or build is needed.
-3. Run the CLI or tests:
-
-```sh
-python --version
-python -m libyears --help
-python -m libyears /path/to/project
-python -m libyears /path/to/project --json
-python -m unittest discover -s tests -v
+```text
+requests
+urllib3>=2.6.3
 ```
 
-`python -m libyears .` scans this repository. It currently has no
-`requirements.txt`, so no supported dependencies are discovered.
-Scanning exact dependencies requires HTTPS access to the public PyPI JSON API.
+Libyears does not silently resolve those declarations against today's registry:
+that would measure what might install now, not what the repository evidence
+records. An exact repository pin or a resolved snapshot can provide version
+evidence.
 
-An existing resolved snapshot can supply exact `NAME==VERSION` entries:
+## Basic usage
 
-```sh
-python -m libyears /path/to/project --resolved /path/to/resolved.txt
+Scan a directory (or a `requirements.txt` file directly):
+
+```bash
+python3 -m libyears PATH
+python3 -m libyears PATH --json
 ```
 
-The snapshot does not add transitive dependencies to scope. Entries are matched
-to declared direct dependencies and checked against supported constraints;
-conflicts or unsupported evidence remain unmeasurable. Libyears does not create
-the snapshot or infer versions from your installed environment.
+## Exact-pinned requirements
 
-Exit codes: `0` means the scan completed (including partial or zero measurement),
-`1` means a usage or filesystem error, and `2` means a systemic scan failure.
+Exact pins in `requirements.txt` can be measured directly:
 
-## Coding Style and Linters
+```text
+requests==2.34.2
+pandas==2.3.3
+```
 
-Follow [AGENTS.md](AGENTS.md): standard library only, focused modules, no unrelated
-refactoring, and offline `unittest`/`unittest.mock` tests for behavioral changes.
-Preserve metric semantics and the machine-readable JSON interface. No application
-formatter or code linter is configured. Repository hygiene uses
-`repolinter lint .`; see [checklist.md](checklist.md) for the pinned configuration
-and validation limitations.
+## Resolved snapshot workflow
 
-## Development and Software Delivery Lifecycle
+Create a snapshot and use it while scanning the repository:
 
-Development uses the local CLI and offline tests described above.
-TODO(TIER2): Confirm contribution eligibility, review requirements, branching,
-release responsibilities, and delivery cadence. No release approval is implied.
+```bash
+python3 -m pip freeze > resolved.txt
+python3 -m libyears PATH --resolved resolved.txt
+```
 
-## Contributing
+The repository declarations still define direct dependency scope; the snapshot
+supplies exact version evidence for those declared dependencies. Snapshot-only
+transitive dependencies are ignored. Libyears does not invoke pip or install
+dependencies itself. A freshly generated snapshot describes that environment
+now, not historical repository state.
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for development instructions and pending
-contribution-policy decisions.
+## TLS and enterprise environments
 
-## Community
+PyPI requests use HTTPS with certificate verification enabled. Libyears follows
+Python/OpenSSL defaults, including `SSL_CERT_FILE` and `SSL_CERT_DIR`. If the
+active interpreter has no usable default CA source, it can fall back to an
+existing pip-bundled CA file. An explicit bundle takes precedence:
 
-See [COMMUNITY.md](COMMUNITY.md) for project contacts and participation guidance.
-TODO(TIER2): Confirm support and feedback channels before inviting contributors.
+```bash
+python3 -m libyears PATH \
+  --resolved resolved.txt \
+  --ca-bundle /path/to/approved-ca-bundle.pem
+```
 
-### Community Guidelines
+Python's standard environment override is also supported:
 
-The [Code of Conduct](CODE_OF_CONDUCT.md) contains the Tier 2 template conduct
-guidance pending approval of its reporting and enforcement arrangements.
+```bash
+SSL_CERT_FILE=/path/to/approved-ca-bundle.pem \
+python3 -m libyears PATH --resolved resolved.txt
+```
 
-## Policies
+An explicit `--ca-bundle` is authoritative and validated before scanning. If no
+trusted CA source is available, requests fail with verification enabled.
 
-### Open Source Policy
+> Never use an unverified TLS context merely to make registry requests succeed.
 
-The scaffolder references the [CMS Open Source Policy](https://github.com/CMSGov/cms-open-source-policy).
-TODO(TIER2): Confirm applicable policies, including accessibility/Section 508,
-interoperability and anti-deficiency requirements, and record the responsible
-reviewers and evidence. No compliance or accessibility assessment is asserted.
+## Verbose diagnostics
 
-### Security and Responsible Disclosure Policy
+```bash
+python3 -m libyears PATH --verbose
+```
 
-See [SECURITY.md](SECURITY.md) for the CMS template reporting resources and
-unresolved project-specific scope and response arrangements.
+Verbose output can identify certificate verification failures, HTTP failures,
+timeouts, DNS/network errors, malformed registry responses, and the selected TLS
+trust source. Stable JSON reason identifiers remain unchanged.
 
-### Software Bill of Materials (SBOM)
+## JSON output
 
-No SBOM is present in the repository. The application uses only the Python
-standard library; GitHub Actions tooling is separate from application dependencies.
-TODO(TIER2): Determine SBOM requirements and generate/review an appropriate
-inventory, including automation dependencies as applicable. A dependency graph
-URL alone is not evidence of a generated SBOM.
+JSON schema version 2 includes version evidence and the source for measured
+versions. A compact example:
 
-## Public domain
+```json
+{
+  "schema_version": 2,
+  "metric": "libyears",
+  "dependency_scope": "direct",
+  "ecosystems": ["pypi"],
+  "version_evidence": {
+    "declaration_source": "requirements.txt",
+    "snapshot_source": null
+  },
+  "summary": {
+    "dependencies_discovered": 1,
+    "dependencies_measured": 1,
+    "coverage": 1.0,
+    "total_libyears": 0.999315537303217,
+    "mean_libyears": 0.999315537303217,
+    "median_libyears": 0.999315537303217,
+    "max_libyears": 0.999315537303217
+  },
+  "dependencies": [
+    {
+      "ecosystem": "pypi",
+      "name": "requests",
+      "used_version": "2.34.2",
+      "used_release_time": "2024-06-01T00:00:00Z",
+      "latest_stable_version": "2.35.0",
+      "latest_stable_release_time": "2025-06-01T00:00:00Z",
+      "libyears": 0.999315537303217,
+      "timestamp_anomaly": false,
+      "version_source": "requirements_exact"
+    }
+  ]
+}
+```
 
-TODO(TIER2): Have the authorized owner/legal reviewer select and approve a
-license and contribution terms. The scaffolder proposes CC0, but this repository
-contains no evidence that CC0 has been authorized. [LICENSE](LICENSE) is a
-review placeholder, not a license grant or public-domain dedication.
+## Measurement coverage
+
+Coverage is the number measured divided by the number discovered. `7 discovered
+/ 0 measured` means no dependency age could be calculated; `7 discovered / 7
+measured` means the aggregate covers every discovered dependency. Their numeric
+totals cannot be interpreted as equivalent, even if both are low.
+
+## Current limitations
+
+- Python packages from PyPI only.
+- Dependency declarations are read from `requirements.txt`.
+- Direct dependencies only.
+- The resolved snapshot format is a narrow list of exact `NAME==VERSION`
+  entries; repository declarations determine which entries are in scope.
+- Libyears does not install or resolve dependencies.
+- Transitive dependencies are not measured by default.
+- No other package ecosystems are supported yet.
+
+## Development
+
+Run the offline test suite with:
+
+```bash
+python3 -m unittest discover -s tests -v
+```
+
+See [SPEC.md](SPEC.md) for the full behavioral specification and [AGENTS.md](AGENTS.md)
+for repository engineering rules.

@@ -86,7 +86,7 @@ def format_json(report: ScanReport, path: str) -> str:
     return json.dumps(report_to_dict(report, path), indent=2) + "\n"
 
 
-def format_human(report: ScanReport, path: str) -> str:
+def format_human(report: ScanReport, path: str, *, verbose: bool = False) -> str:
     """Format a scan report for terminal readers."""
     summary = report.summary
     evidence = "Version evidence: requirements.txt"
@@ -101,6 +101,8 @@ def format_human(report: ScanReport, path: str) -> str:
                 "No libyears measurement was calculated.",
             ]
         )
+        if verbose:
+            lines.extend(_diagnostic_lines(report))
         return "\n".join(lines) + "\n"
     elif summary.dependencies_measured == 0:
         lines.append(
@@ -131,6 +133,8 @@ def format_human(report: ScanReport, path: str) -> str:
                 f"  {item.declared}    {_reason_text(item.reason)}"
                 for item in report.unmeasurable
             )
+        if verbose:
+            lines.extend(_diagnostic_lines(report))
         return "\n".join(lines) + "\n"
     elif summary.dependencies_measured < summary.dependencies_discovered:
         lines.append(
@@ -178,7 +182,21 @@ def format_human(report: ScanReport, path: str) -> str:
             f"  {item.declared}    {_reason_text(item.reason)}"
             for item in report.unmeasurable
         )
+    if verbose:
+        lines.extend(_diagnostic_lines(report))
     return "\n".join(lines) + "\n"
+
+
+def _diagnostic_lines(report: ScanReport) -> list[str]:
+    if not report.diagnostics and not report.tls_trust:
+        return []
+    lines = [""]
+    if report.tls_trust:
+        lines.append(f"TLS trust: {report.tls_trust}")
+    if report.diagnostics:
+        lines.append("Registry diagnostics:")
+        lines.extend(f"  {name}: {message}" for name, message in report.diagnostics)
+    return lines
 
 
 def _coverage(value: float | None) -> str:

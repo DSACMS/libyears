@@ -32,6 +32,8 @@ class ScanReport:
     measurements: tuple[DependencyMeasurement, ...]
     unmeasurable: tuple[UnmeasurableRequirement, ...]
     snapshot_source: str | None = None
+    diagnostics: tuple[tuple[str, str], ...] = ()
+    tls_trust: str | None = None
 
     @property
     def dependencies(self) -> tuple[DependencyMeasurement, ...]:
@@ -62,6 +64,7 @@ def scan_repository(
     adapter: PyPIAdapter | None = None,
     lookup: Callable[[str, str], PyPIResult | RegistryFailure] | None = None,
     snapshot: Snapshot | None = None,
+    ca_bundle: str | None = None,
 ) -> ScanReport:
     """Scan the supported requirements input at *path*.
 
@@ -69,9 +72,11 @@ def scan_repository(
     tests. When omitted, the supplied or default PyPI adapter is used.
     """
     requirements = _discover(path)
-    registry_lookup = lookup or (adapter or PyPIAdapter()).lookup
+    active_adapter = adapter or (None if lookup is not None else PyPIAdapter(ca_bundle=ca_bundle))
+    registry_lookup = lookup or active_adapter.lookup
     measurements: list[DependencyMeasurement] = []
     unmeasurable: list[UnmeasurableRequirement] = []
+    diagnostics: list[tuple[str, str]] = []
 
     snapshot_entries = {} if snapshot is None else {
         entry.normalized_name: entry for entry in snapshot.entries
@@ -99,6 +104,8 @@ def scan_repository(
                 continue
         result = registry_lookup(requirement.normalized_name, requirement.version)
         if isinstance(result, RegistryFailure):
+            if result.diagnostic:
+                diagnostics.append((requirement.name, result.diagnostic))
             unmeasurable.append(
                 UnmeasurableRequirement(
                     name=requirement.name,
@@ -164,6 +171,8 @@ def scan_repository(
         )
         result = registry_lookup(requirement.normalized_name, requirement.version)
         if isinstance(result, RegistryFailure):
+            if result.diagnostic:
+                diagnostics.append((requirement.name, result.diagnostic))
             unmeasurable.append(
                 UnmeasurableRequirement(
                     name=requirement.name,
@@ -187,6 +196,8 @@ def scan_repository(
         tuple(report.measurements),
         tuple(unmeasurable),
         snapshot_source,
+        tuple(diagnostics),
+        getattr(active_adapter, "tls_trust", None),
     )
 
 

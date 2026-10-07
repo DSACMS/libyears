@@ -178,13 +178,39 @@ HTTP behavior must:
 
 Network behavior must be mockable in tests.
 
+### TLS trust policy
+
+Registry requests MUST use HTTPS with certificate and hostname verification
+enabled. Without an explicit CA bundle, the application uses Python's normal
+`ssl.create_default_context()` behavior, including the standard
+`SSL_CERT_FILE` and `SSL_CERT_DIR` environment variables and OpenSSL defaults.
+If that default context has no usable CA source, libyears MAY use an existing,
+readable pip-vendored certifi CA file associated with the active Python
+installation. This fallback is local only and does not import pip or certifi.
+
+An explicit `--ca-bundle FILE` takes precedence over all other sources and is
+validated before scanning. The source precedence is therefore: explicit bundle;
+Python/OpenSSL defaults and environment overrides; then the pip-bundled fallback
+when Python has no usable default CA source. If none is usable, TLS verification
+fails closed. Libyears MUST NOT disable verification, download trust material,
+or alter the system trust store.
+
+With `--verbose`, human output may identify the selected TLS trust source and
+show concise registry diagnostic categories. These details MUST NOT change
+stable machine-readable reason identifiers or the JSON schema.
+
 ## 9. Used Version Release Date
+
+For any PyPI release, its canonical release timestamp is the earliest valid
+upload timestamp among its distribution files. This same timestamp MUST be used
+when the release is evaluated as the repository's used version or as a latest
+stable candidate.
 
 For the exact version established by repository evidence:
 
 1. Locate the matching release in PyPI metadata.
 2. Examine release files with valid upload timestamps.
-3. Use the earliest valid upload timestamp for that release.
+3. Use that canonical release timestamp.
 
 If no valid release timestamp exists, mark the dependency unmeasurable.
 
@@ -199,7 +225,8 @@ For the MVP:
 - exclude releases PyPI identifies as yanked
 - determine newest stable by release timestamp, not lexical version ordering
 
-The selected latest stable release is the eligible stable release with the newest valid release timestamp.
+The selected latest stable release is the eligible stable release with the
+newest canonical release timestamp.
 
 This deliberately avoids requiring a third-party semantic-version parser.
 
@@ -366,10 +393,14 @@ Top-level shape:
 
 ```json
 {
-  "schema_version": 1,
+  "schema_version": 2,
   "metric": "libyears",
   "dependency_scope": "direct",
   "ecosystems": ["pypi"],
+  "version_evidence": {
+    "declaration_source": "requirements.txt",
+    "snapshot_source": null
+  },
   "summary": {
     "dependencies_discovered": 0,
     "dependencies_measured": 0,
@@ -394,7 +425,9 @@ A measurable dependency:
   "used_release_time": "2023-05-22T15:12:42Z",
   "latest_stable_version": "2.32.5",
   "latest_stable_release_time": "2025-08-18T20:46:02Z",
-  "libyears": 2.24
+  "libyears": 2.2429335564174715,
+  "timestamp_anomaly": false,
+  "version_source": "requirements_exact"
 }
 ```
 
@@ -413,7 +446,9 @@ Do not make JSON consumers parse human-oriented strings.
 
 Human-oriented diagnostics SHOULD NOT be added to the JSON schema merely to improve CLI presentation.
 
-The existing schema remains version 1 unless a machine-readable contract change is intentionally introduced.
+Schema version 2 is the current machine-readable contract. Measured dependencies
+include `version_source`; resolved-snapshot reports identify that source under
+`version_evidence.snapshot_source`. Verbose diagnostics do not add fields to JSON.
 
 ## 18. Human Output
 

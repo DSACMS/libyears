@@ -100,6 +100,18 @@ zipp==4.1.0
         self.assertEqual(code, 0)
         scan.assert_called_once_with(".")
 
+    def test_ca_bundle_is_threaded_to_scan(self):
+        with patch("libyears.cli.ssl.create_default_context"), patch("libyears.cli.scan_repository", return_value=empty_report()) as scan:
+            self.assertEqual(main([".", "--ca-bundle", "/tmp/ca.pem"]), 0)
+        scan.assert_called_once_with(".", ca_bundle="/tmp/ca.pem")
+
+    def test_missing_ca_bundle_is_filesystem_error(self):
+        errors = io.StringIO()
+        with patch("libyears.cli.scan_repository") as scan, redirect_stderr(errors):
+            code = main([".", "--ca-bundle", "/definitely/missing/libyears-ca.pem"])
+        self.assertEqual(code, 1)
+        scan.assert_not_called()
+
     def test_explicit_path(self):
         with patch("libyears.cli.scan_repository", return_value=empty_report()) as scan:
             code = main(["/tmp/repository"])
@@ -155,6 +167,31 @@ zipp==4.1.0
             code = main(["--json"])
         self.assertEqual(code, 0)
         self.assertEqual(json.loads(output.getvalue())["schema_version"], 2)
+
+    def test_verbose_registry_diagnostics_do_not_change_json(self):
+        from libyears.requirements import UnmeasurableRequirement
+        report = ScanReport(
+            MetricSummary(1, 0, 0.0, 0.0, None, None, None), (),
+            (UnmeasurableRequirement("requests", "requests==1.0", "registry_error"),),
+            diagnostics=(("requests", "TLS certificate verification failure"),),
+            tls_trust="pip-bundled CA fallback",
+        )
+        human = io.StringIO()
+        with patch("libyears.cli.scan_repository", return_value=report), redirect_stdout(human):
+            main(["--verbose"])
+        self.assertIn("TLS certificate verification failure", human.getvalue())
+        self.assertIn("TLS trust: pip-bundled CA fallback", human.getvalue())
+        plain = io.StringIO()
+        with patch("libyears.cli.scan_repository", return_value=report), redirect_stdout(plain):
+            main([])
+        self.assertNotIn("TLS certificate", plain.getvalue())
+        machine = io.StringIO()
+        with patch("libyears.cli.scan_repository", return_value=report), redirect_stdout(machine):
+            main(["--verbose", "--json"])
+        payload = json.loads(machine.getvalue())
+        self.assertEqual(payload["unmeasurable"][0]["reason"], "registry_error")
+        self.assertNotIn("diagnostic", machine.getvalue())
+        self.assertNotIn("tls_trust", machine.getvalue())
 
     def test_human_output_preserves_zero_coverage_success(self):
         output = io.StringIO()

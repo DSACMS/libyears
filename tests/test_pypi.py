@@ -1,8 +1,13 @@
 import json
+import ssl
+import tempfile
 import unittest
 from datetime import datetime, timezone
-from unittest.mock import patch
+from pathlib import Path
+from unittest.mock import Mock, patch
 
+from libyears.metric import build_report, measure_dependency
+from libyears.model import Dependency
 from libyears.pypi import (
     INVALID_REGISTRY_RESPONSE,
     NO_STABLE_RELEASE,
@@ -55,10 +60,60 @@ class PyPITests(unittest.TestCase):
         self.assertEqual(result.latest_stable_version, "1.1")
         self.assertEqual(result.used_release_time, datetime(2023, 1, 1, tzinfo=timezone.utc))
 
+    def test_multiple_files_share_canonical_release_time_and_same_version_is_zero(self):
+        payload = {"releases": {
+            "1.0": [file("2023-01-01T00:00:00Z")],
+            "2.0": [
+                file("2024-02-01T00:00:00Z"),
+                file("2024-02-03T00:00:00Z"),
+            ],
+        }}
+        result = self.lookup(payload, "2.0")
+
+        self.assertEqual(result.latest_stable_version, "2.0")
+        self.assertEqual(result.used_release_time, datetime(2024, 2, 1, tzinfo=timezone.utc))
+        self.assertEqual(result.latest_stable_release_time, result.used_release_time)
+
+        same_release = Dependency(
+            "pypi", "example-package", result.used_version,
+            result.used_release_time, result.latest_stable_version,
+            result.latest_stable_release_time,
+        )
+        one_year_old = Dependency(
+            "pypi", "older-package", "1.0",
+            datetime(2023, 2, 1, tzinfo=timezone.utc), "2.0",
+            datetime(2024, 2, 1, tzinfo=timezone.utc),
+        )
+        older_measurement = measure_dependency(one_year_old)
+        report = build_report([measure_dependency(same_release), older_measurement])
+        self.assertEqual(report.measurements[0].libyears, 0.0)
+        self.assertEqual(report.summary.total_libyears, older_measurement.libyears)
+        self.assertEqual(report.summary.mean_libyears, older_measurement.libyears / 2)
+        self.assertEqual(report.summary.median_libyears, older_measurement.libyears / 2)
+
+    def test_latest_stable_selection_uses_canonical_time_for_multi_file_releases(self):
+        result = self.lookup({"releases": {
+            "1.0": [file("2023-01-01T00:00:00Z")],
+            "2.0": [file("2024-02-01T00:00:00Z"), file("2024-02-04T00:00:00Z")],
+            "3.0rc1": [file("2025-01-01T00:00:00Z")],
+        }}, "1.0")
+        self.assertEqual(result.latest_stable_version, "2.0")
+        self.assertEqual(
+            result.latest_stable_release_time,
+            datetime(2024, 2, 1, tzinfo=timezone.utc),
+        )
+
     def test_newer_prerelease_is_excluded(self):
         result = self.lookup({"releases": {
             "1.0": [file("2023-01-01T00:00:00Z")],
             "2.0rc1": [file("2025-01-01T00:00:00Z")],
+        }})
+        self.assertEqual(result.latest_stable_version, "1.0")
+
+    def test_c_release_candidate_is_excluded_from_latest_stable(self):
+        result = self.lookup({"releases": {
+            "1.0": [file("2023-01-01T00:00:00Z")],
+            "1.0c1": [file("2025-01-01T00:00:00Z")],
         }})
         self.assertEqual(result.latest_stable_version, "1.0")
 
@@ -116,6 +171,96 @@ class PyPITests(unittest.TestCase):
         with patch("libyears.pypi.request.urlopen", side_effect=error):
             result = adapter.lookup("example", "1.0")
         self.assertEqual(result.reason, REGISTRY_ERROR)
+        self.assertEqual(result.diagnostic, "network connection failure")
+
+    def test_default_request_uses_normal_urlopen_tls_defaults(self):
+        adapter = PyPIAdapter()
+        with patch("libyears.pypi.request.urlopen", return_value=Response({"releases": {"1.0": [file("2023-01-01T00:00:00Z")]}})) as urlopen:
+            adapter.lookup("example", "1.0")
+        context = urlopen.call_args.kwargs["context"]
+        self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
+        self.assertTrue(context.check_hostname)
+
+    def test_custom_ca_bundle_uses_verified_default_context(self):
+        context = object()
+        with patch("libyears.pypi.ssl.create_default_context", return_value=context) as create_context:
+            adapter = PyPIAdapter(ca_bundle="/tmp/org-ca.pem")
+        self.assertEqual(adapter.tls_trust, "explicit CA bundle: /tmp/org-ca.pem")
+        create_context.assert_called_once_with(cafile="/tmp/org-ca.pem")
+        with patch("libyears.pypi.request.urlopen", return_value=Response({"releases": {"1.0": [file("2023-01-01T00:00:00Z")]}})) as urlopen:
+            adapter.lookup("example", "1.0")
+        self.assertIs(urlopen.call_args.kwargs["context"], context)
+        with patch("libyears.pypi.ssl.create_default_context", return_value=context), \
+             patch("libyears.pypi._pip_ca_candidates", side_effect=AssertionError("fallback used")), \
+             patch("libyears.pypi.ssl.get_default_verify_paths", side_effect=AssertionError("default checked")):
+            PyPIAdapter(ca_bundle="/tmp/authoritative.pem")
+
+    def test_tls_error_diagnostic_is_concise(self):
+        adapter = PyPIAdapter()
+        error = ssl.SSLCertVerificationError("sensitive underlying details")
+        with patch("libyears.pypi.request.urlopen", side_effect=error):
+            result = adapter.lookup("example", "1.0")
+        self.assertEqual(result.reason, REGISTRY_ERROR)
+        self.assertEqual(result.diagnostic, "TLS certificate verification failure")
+        self.assertNotIn("sensitive", result.diagnostic)
+
+    def test_python_default_trust_is_kept_when_available(self):
+        from libyears.pypi import select_tls_context
+        context = Mock()
+        context.get_ca_certs.return_value = [{}]
+        with patch("libyears.pypi.ssl.create_default_context", return_value=context) as create, \
+             patch("libyears.pypi._pip_ca_candidates", side_effect=AssertionError("fallback used")):
+            selected, source = select_tls_context()
+        self.assertIs(selected, context)
+        self.assertEqual(source, "Python default trust store")
+        create.assert_called_once_with()
+
+    def test_ssl_cert_file_is_reported_and_used_through_python_defaults(self):
+        from libyears.pypi import select_tls_context
+        context = Mock()
+        context.get_ca_certs.return_value = [{}]
+        with patch.dict("os.environ", {"SSL_CERT_FILE": "/approved/ca.pem"}), \
+             patch("libyears.pypi.ssl.create_default_context", return_value=context) as create:
+            selected, source = select_tls_context()
+        self.assertIs(selected, context)
+        self.assertEqual(source, "SSL_CERT_FILE")
+        create.assert_called_once_with()
+
+    def test_pip_fallback_only_when_default_has_no_trust_and_uses_verified_cafile(self):
+        from libyears.pypi import select_tls_context
+        empty = Mock()
+        empty.get_ca_certs.return_value = []
+        populated = Mock()
+        populated.get_ca_certs.return_value = [{}]
+        populated.verify_mode = ssl.CERT_REQUIRED
+        populated.check_hostname = True
+        with tempfile.TemporaryDirectory() as directory:
+            ca_path = Path(directory) / "cacert.pem"
+            ca_path.write_text("test fixture", encoding="ascii")
+            with patch("libyears.pypi.ssl.create_default_context", side_effect=[empty, populated]) as create, \
+                 patch("libyears.pypi.ssl.get_default_verify_paths", return_value=ssl.DefaultVerifyPaths(None, None, "", "", "", "")), \
+                 patch("libyears.pypi._pip_ca_candidates", return_value=(ca_path,)):
+                selected, source = select_tls_context()
+        self.assertIs(selected, populated)
+        self.assertEqual(source, "pip-bundled CA fallback")
+        self.assertEqual(create.call_args_list[-1].kwargs, {"cafile": str(ca_path)})
+        self.assertEqual(selected.verify_mode, ssl.CERT_REQUIRED)
+        self.assertTrue(selected.check_hostname)
+
+    def test_missing_pip_fallback_keeps_secure_default_context(self):
+        from libyears.pypi import select_tls_context
+        empty = Mock()
+        empty.get_ca_certs.return_value = []
+        empty.verify_mode = ssl.CERT_REQUIRED
+        empty.check_hostname = True
+        with patch("libyears.pypi.ssl.create_default_context", return_value=empty), \
+             patch("libyears.pypi.ssl.get_default_verify_paths", return_value=ssl.DefaultVerifyPaths(None, None, "", "", "", "")), \
+             patch("libyears.pypi._pip_ca_candidates", return_value=()):
+            selected, source = select_tls_context()
+        self.assertIs(selected, empty)
+        self.assertEqual(source, "Python default trust store")
+        self.assertEqual(selected.verify_mode, ssl.CERT_REQUIRED)
+        self.assertTrue(selected.check_hostname)
 
     def test_http_404_is_package_not_found(self):
         adapter = PyPIAdapter()
