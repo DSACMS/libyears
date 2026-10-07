@@ -1,5 +1,10 @@
 # Feature 002 Implementation Tasks
 
+**Status:** Ready for implementation
+**Specification:** Approved
+**Technical plan:** Approved
+**Task count:** 17
+
 Tasks follow the approved technical plan while keeping concrete npm evidence
 and registry behavior ahead of shared integration contracts. Each completed
 task must leave existing Python behavior working and JSON valid under the

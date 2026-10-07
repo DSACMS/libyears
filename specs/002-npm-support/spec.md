@@ -1,6 +1,6 @@
 # Feature 002: npm Ecosystem Support
 
-**Status:** Draft  
+**Status:** Approved for implementation
 **Target:** post-v0.1  
 **Feature:** npm direct-dependency libyears measurement
 

@@ -1,5 +1,7 @@
 # Feature 002 Technical Plan
 
+**Status:** Approved
+
 ## Existing Architecture
 
 Current flow:
