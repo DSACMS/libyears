@@ -1,0 +1,78 @@
+{
+  "name": "Libyears",
+  "description": "A local Python CLI measuring freshness of direct PyPI dependencies using release dates.",
+  "longDescription": "Libyears reads direct Python dependency evidence from requirements.txt, optionally supplements it with exact versions from a supplied resolved snapshot, and uses public PyPI release metadata to report dependency freshness and measurement coverage.",
+  "status": "TODO(TIER2): status",
+  "permissions": {
+    "licenses": [
+      {
+        "name": "TODO(TIER2): license",
+        "URL": "TODO(TIER2): license_url"
+      }
+    ],
+    "usageType": [
+      "TODO(TIER2): usage_type"
+    ],
+    "exemptionText": "TODO(TIER2): Determine usage classification and any applicable exemption; remove if not applicable"
+  },
+  "organization": "TODO(TIER2): Confirm sponsoring organization",
+  "repositoryURL": "TODO(TIER2): Confirm authorized public repository URL",
+  "repositoryHost": "github.cms.gov",
+  "repositoryVisibility": "TODO(TIER2): repository_visibility",
+  "vcs": "git",
+  "laborHours": null,
+  "reuseFrequency": {
+    "forks": "TODO(TIER2): forks",
+    "clones": "TODO(TIER2): clones"
+  },
+  "platforms": [
+    "TODO(TIER2): Confirm platforms"
+  ],
+  "categories": [
+    "TODO(TIER2): Confirm categories"
+  ],
+  "softwareType": "standalone/other",
+  "languages": [
+    "Python"
+  ],
+  "maintenance": "TODO(TIER2): maintenance",
+  "contractNumber": [
+    "TODO(TIER2): Confirm contractNumber"
+  ],
+  "SBOM": "TODO(TIER2): sbom",
+  "date": {
+    "created": "2026-10-01T20:43:52Z",
+    "lastModified": "2026-10-07T17:09:39Z",
+    "metadataLastUpdated": "2026-10-07T17:09:39Z"
+  },
+  "tags": [
+    "python",
+    "pypi",
+    "libyears",
+    "dependency-freshness"
+  ],
+  "contact": {
+    "email": "TODO(TIER2): contact_email",
+    "name": "TODO(TIER2): contact_name"
+  },
+  "feedbackMechanism": "TODO(TIER2): Confirm issue tracker or other feedback channel",
+  "AIUseCaseID": "TODO(TIER2): ai_use_case_id",
+  "localisation": false,
+  "repositoryType": "tools",
+  "userInput": true,
+  "fismaLevel": "TODO(TIER2): fisma_level",
+  "group": "TODO(TIER2): group",
+  "projects": [
+    "TODO(TIER2): Confirm projects"
+  ],
+  "systems": [
+    "TODO(TIER2): Confirm systems"
+  ],
+  "subsetInHealthcare": [
+    "TODO(TIER2): Confirm subsetInHealthcare"
+  ],
+  "userType": [
+    "TODO(TIER2): Confirm userType"
+  ],
+  "maturityModelTier": 2
+}

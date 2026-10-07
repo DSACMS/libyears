@@ -1,0 +1,3 @@
+# TODO(TIER2): Confirm authorized GitHub user/team handles and ownership paths.
+# Add active ownership entries only after those identities are verified.
+# Based on the Tier 2 CODEOWNERS.md template; GitHub requires the name CODEOWNERS.
