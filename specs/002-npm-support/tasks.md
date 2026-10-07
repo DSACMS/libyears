@@ -26,10 +26,10 @@ production dependency scope.
 - `tests/test_npm.py`
 
 **Acceptance criteria:**
-- [ ] Root `dependencies` are discovered; names in `optionalDependencies` are excluded, including same-name overrides.
-- [ ] `devDependencies`, `peerDependencies`, `peerDependenciesMeta`, optional-only entries, workspace children, and other out-of-scope scopes add no discoveries.
-- [ ] Scoped package names and original manifest declarations are preserved.
-- [ ] An unparseable or invalid root manifest yields `invalid_manifest` with no synthetic dependency rows.
+- [x] Root `dependencies` are discovered; names in `optionalDependencies` are excluded, including same-name overrides.
+- [x] `devDependencies`, `peerDependencies`, `peerDependenciesMeta`, optional-only entries, workspace children, and other out-of-scope scopes add no discoveries.
+- [x] Scoped package names and original manifest declarations are preserved.
+- [x] An unparseable or invalid root manifest yields `invalid_manifest` with no synthetic dependency rows.
 
 **Verification:** `python -m unittest tests.test_npm -v`
 
