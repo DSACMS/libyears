@@ -65,10 +65,10 @@ installation paths only.
 - `tests/test_npm.py`
 
 **Acceptance criteria:**
-- [ ] v2 direct and scoped package paths resolve exact versions.
-- [ ] Lockfile-only and nested/transitive entries do not affect discovered counts or direct evidence.
-- [ ] Missing direct paths use `lock_version_missing`.
-- [ ] An exact manifest literal unequal to lock evidence uses `declaration_lock_conflict`.
+- [x] v2 direct and scoped package paths resolve exact versions.
+- [x] Lockfile-only and nested/transitive entries do not affect discovered counts or direct evidence.
+- [x] Missing direct paths use `lock_version_missing`.
+- [x] An exact manifest literal unequal to lock evidence uses `declaration_lock_conflict`.
 
 **Verification:** `python -m unittest tests.test_npm -v`
 

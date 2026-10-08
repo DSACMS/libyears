@@ -11,9 +11,16 @@ from typing import Any
 
 INVALID_MANIFEST = "invalid_manifest"
 UNSUPPORTED_DEPENDENCY_SOURCE = "unsupported_dependency_source"
+LOCK_VERSION_MISSING = "lock_version_missing"
+DECLARATION_LOCK_CONFLICT = "declaration_lock_conflict"
 
 _GITHUB_SHORTHAND = re.compile(
     r"^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*(?:\.git)?(?:#[^\s]+)?$"
+)
+_EXACT_VERSION = re.compile(
+    r"^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
+    r"(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?"
+    r"(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$"
 )
 
 
@@ -24,6 +31,7 @@ class NpmDeclaration:
     name: str
     declared: str
     reason: str | None = None
+    used_version: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -67,6 +75,59 @@ def _unsupported_source(declared: str) -> bool:
     )
 
 
+def _is_exact_version(declared: str) -> bool:
+    """Recognize a concrete version literal without evaluating ranges."""
+    return _EXACT_VERSION.fullmatch(declared) is not None
+
+
+def resolve_v2_lockfile(
+    discovery: ManifestDiscovery, packages: Any
+) -> ManifestDiscovery:
+    """Add v2 exact versions using only root ``node_modules`` package paths.
+
+    ``packages`` is the v2 lockfile's path-keyed package map. Lockfile format
+    and structural validation are handled by the source boundary task.
+    """
+    if discovery.reason is not None:
+        return discovery
+
+    resolved: list[NpmDeclaration] = []
+    for declaration in discovery.dependencies:
+        if declaration.reason is not None:
+            resolved.append(declaration)
+            continue
+
+        package_path = f"node_modules/{declaration.name}"
+        package = packages.get(package_path) if isinstance(packages, dict) else None
+        version = package.get("version") if isinstance(package, dict) else None
+        if not isinstance(version, str) or not version:
+            resolved.append(
+                NpmDeclaration(
+                    declaration.name,
+                    declaration.declared,
+                    LOCK_VERSION_MISSING,
+                )
+            )
+        elif _is_exact_version(declaration.declared) and declaration.declared != version:
+            resolved.append(
+                NpmDeclaration(
+                    declaration.name,
+                    declaration.declared,
+                    DECLARATION_LOCK_CONFLICT,
+                )
+            )
+        else:
+            resolved.append(
+                NpmDeclaration(
+                    declaration.name,
+                    declaration.declared,
+                    used_version=version,
+                )
+            )
+
+    return ManifestDiscovery(tuple(resolved))
+
+
 def discover_manifest(root: str | Path) -> ManifestDiscovery:
     """Discover production dependencies from *root*/``package.json``.
 
@@ -106,8 +167,11 @@ def discover_manifest(root: str | Path) -> ManifestDiscovery:
 
 __all__ = [
     "INVALID_MANIFEST",
-    "UNSUPPORTED_DEPENDENCY_SOURCE",
+    "DECLARATION_LOCK_CONFLICT",
+    "LOCK_VERSION_MISSING",
     "ManifestDiscovery",
     "NpmDeclaration",
+    "UNSUPPORTED_DEPENDENCY_SOURCE",
     "discover_manifest",
+    "resolve_v2_lockfile",
 ]
