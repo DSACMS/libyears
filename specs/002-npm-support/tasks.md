@@ -45,9 +45,9 @@ them, while retaining them as in-scope unmeasurable declarations.
 - `tests/test_npm.py`
 
 **Acceptance criteria:**
-- [ ] Git/GitHub references, `file:`, `link:`, `workspace:`, remote tarballs, and npm aliases use `unsupported_dependency_source`.
-- [ ] Each remains discovered and preserves its original declaration.
-- [ ] Ordinary non-exact declarations can later use exact lock evidence without npm range validation.
+- [x] Git/GitHub references, `file:`, `link:`, `workspace:`, remote tarballs, and npm aliases use `unsupported_dependency_source`.
+- [x] Each remains discovered and preserves its original declaration.
+- [x] Ordinary non-exact declarations can later use exact lock evidence without npm range validation.
 
 **Verification:** `python -m unittest tests.test_npm -v`
 

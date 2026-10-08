@@ -5,10 +5,16 @@ from __future__ import annotations
 from dataclasses import dataclass
 import json
 from pathlib import Path
+import re
 from typing import Any
 
 
 INVALID_MANIFEST = "invalid_manifest"
+UNSUPPORTED_DEPENDENCY_SOURCE = "unsupported_dependency_source"
+
+_GITHUB_SHORTHAND = re.compile(
+    r"^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*(?:\.git)?(?:#[^\s]+)?$"
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -17,6 +23,7 @@ class NpmDeclaration:
 
     name: str
     declared: str
+    reason: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -34,6 +41,30 @@ def _dependency_map(value: Any) -> dict[str, str] | None:
     if any(not isinstance(name, str) or not isinstance(declared, str) for name, declared in value.items()):
         return None
     return value
+
+
+def _unsupported_source(declared: str) -> bool:
+    """Return whether a declaration clearly names a non-registry source."""
+    value = declared.strip()
+    lowered = value.lower()
+    return (
+        lowered.startswith(
+            (
+                "git+",
+                "git://",
+                "ssh://",
+                "git@",
+                "github:",
+                "file:",
+                "link:",
+                "workspace:",
+                "npm:",
+                "http://",
+                "https://",
+            )
+        )
+        or _GITHUB_SHORTHAND.fullmatch(value) is not None
+    )
 
 
 def discover_manifest(root: str | Path) -> ManifestDiscovery:
@@ -62,7 +93,11 @@ def discover_manifest(root: str | Path) -> ManifestDiscovery:
         return ManifestDiscovery((), INVALID_MANIFEST)
 
     declarations = tuple(
-        NpmDeclaration(name, declared)
+        NpmDeclaration(
+            name,
+            declared,
+            UNSUPPORTED_DEPENDENCY_SOURCE if _unsupported_source(declared) else None,
+        )
         for name, declared in dependencies.items()
         if name not in optional_dependencies
     )
@@ -71,6 +106,7 @@ def discover_manifest(root: str | Path) -> ManifestDiscovery:
 
 __all__ = [
     "INVALID_MANIFEST",
+    "UNSUPPORTED_DEPENDENCY_SOURCE",
     "ManifestDiscovery",
     "NpmDeclaration",
     "discover_manifest",
