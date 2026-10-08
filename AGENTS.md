@@ -167,6 +167,26 @@ Do not make opportunistic cleanup changes.
 - Never combine unrelated tasks merely to reduce commit count.
 - Do not mark a task complete unless its acceptance criteria and required verification pass.
 
+## Filesystem Boundaries
+
+Treat the repository workspace as the default filesystem boundary.
+
+- Do not search, enumerate, inspect, or read files outside the current
+  repository unless the user explicitly authorizes a specific external path
+  or directory for the current task.
+- The existence of readable sibling repositories or home-directory files does
+  not imply permission to inspect them.
+- When external input is required, ask the user to identify or authorize the
+  path rather than searching the filesystem broadly.
+- An explicitly authorized external repository may be read only for the
+  stated task.
+- Do not modify an external repository unless the user separately and
+  explicitly authorizes modification.
+- Do not inspect unrelated files in the user's home directory, credentials,
+  configuration directories, keychains, SSH directories, browser data, or
+  other sensitive locations.
+- Prefer the narrowest filesystem access sufficient to complete the task.
+
 ## Testing and Context Efficiency
 
 Optimize for correctness with low-context execution.
