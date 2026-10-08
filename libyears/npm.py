@@ -34,6 +34,12 @@ _EXACT_VERSION = re.compile(
     r"(?:-[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?"
     r"(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$"
 )
+_SEMVER_VERSION = re.compile(
+    r"^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)"
+    r"(?:-((?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*)"
+    r"(?:\.(?:0|[1-9][0-9]*|[0-9A-Za-z-]*[A-Za-z-][0-9A-Za-z-]*))*))?"
+    r"(?:\+[0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*)?$"
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -85,6 +91,12 @@ def _npm_timestamp(value: Any) -> datetime | None:
     if parsed.tzinfo is None or parsed.utcoffset() is None:
         return None
     return parsed.astimezone(timezone.utc)
+
+
+def _is_stable_version(version: str) -> bool:
+    """Accept canonical stable SemVer strings and reject prereleases."""
+    match = _SEMVER_VERSION.fullmatch(version)
+    return match is not None and match.group(1) is None
 
 
 class NpmAdapter:
@@ -162,6 +174,7 @@ class NpmAdapter:
             (timestamp, version)
             for version in versions
             if isinstance(version, str)
+            and _is_stable_version(version)
             and isinstance(versions[version], dict)
             and (timestamp := _npm_timestamp(release_times.get(version))) is not None
         ]

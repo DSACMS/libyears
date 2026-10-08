@@ -168,11 +168,11 @@ concrete versions and verify metric behavior for npm releases.
 - `tests/test_metric.py` (only if a focused metric assertion belongs there)
 
 **Acceptance criteria:**
-- [ ] Canonical three-component stable versions, optionally with valid build metadata, are eligible.
-- [ ] Valid prereleases are excluded even when published after stable releases.
-- [ ] Malformed, prefixed, unsupported, and unclassifiable versions are excluded; no eligible stable version yields `no_stable_release`.
-- [ ] Exact used-version lookup can measure a prerelease used version.
-- [ ] When used version equals latest stable, the result is exactly `0.0` libyears.
+- [x] Canonical three-component stable versions, optionally with valid build metadata, are eligible.
+- [x] Valid prereleases are excluded even when published after stable releases.
+- [x] Malformed, prefixed, unsupported, and unclassifiable versions are excluded; no eligible stable version yields `no_stable_release`.
+- [x] Exact used-version lookup can measure a prerelease used version.
+- [x] When used version equals latest stable, the result is exactly `0.0` libyears.
 
 **Verification:** `python -m unittest tests.test_npm_registry tests.test_metric -v`
 

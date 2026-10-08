@@ -11,7 +11,10 @@ from libyears.npm import (
     VERSION_NOT_FOUND,
     NpmAdapter,
     NpmRegistryFailure,
+    NO_STABLE_RELEASE,
 )
+from libyears.metric import measure_dependency
+from libyears.model import Dependency
 
 
 class Response:
@@ -125,6 +128,66 @@ class NpmRegistryTests(unittest.TestCase):
         metadata["versions"]["2.0.0"]["deprecated"] = "use a newer release"
         result, _, _ = self.lookup(metadata)
         self.assertEqual(result.latest_stable_version, "2.0.0")
+
+    def test_canonical_stable_and_build_versions_beat_newer_prereleases(self):
+        result, _, _ = self.lookup(
+            payload(
+                ["1.2.3", "2.0.0+build.7", "3.0.0-rc.1"],
+                {
+                    "1.2.3": "2022-01-01T00:00:00Z",
+                    "2.0.0+build.7": "2024-01-01T00:00:00Z",
+                    "3.0.0-rc.1": "2026-01-01T00:00:00Z",
+                },
+            ),
+            used_version="1.2.3",
+        )
+        self.assertEqual(result.latest_stable_version, "2.0.0+build.7")
+
+    def test_prerelease_used_version_remains_measurable(self):
+        result, _, _ = self.lookup(
+            payload(
+                ["1.0.0", "2.0.0-rc.1"],
+                {
+                    "1.0.0": "2024-01-01T00:00:00Z",
+                    "2.0.0-rc.1": "2025-01-01T00:00:00Z",
+                },
+            ),
+            used_version="2.0.0-rc.1",
+        )
+        self.assertEqual(result.used_version, "2.0.0-rc.1")
+        self.assertEqual(result.latest_stable_version, "1.0.0")
+
+    def test_malformed_prefixed_and_unclassifiable_versions_are_excluded(self):
+        rejected = [
+            "v4.0.0",
+            "01.2.3",
+            "1.2",
+            "1.2.3-01",
+            "1.2.3+",
+            "not-a-version",
+        ]
+        metadata = payload(
+            rejected,
+            {version: f"202{index + 5}-01-01T00:00:00Z" for index, version in enumerate(rejected)},
+        )
+        metadata["versions"]["1.2.3-01"]["time"] = "bad prerelease"
+        result, _, _ = self.lookup(metadata, used_version="v4.0.0")
+        self.assertEqual(result.reason, NO_STABLE_RELEASE)
+
+    def test_same_used_and_latest_stable_version_measures_exactly_zero(self):
+        result, _, _ = self.lookup(
+            payload(["1.2.3"], {"1.2.3": "2024-01-01T00:00:00Z"}),
+            used_version="1.2.3",
+        )
+        dependency = Dependency(
+            "npm",
+            result.name,
+            result.used_version,
+            result.used_release_time,
+            result.latest_stable_version,
+            result.latest_stable_release_time,
+        )
+        self.assertEqual(measure_dependency(dependency).libyears, 0.0)
 
     def test_package_version_and_timestamp_misses_use_existing_reasons(self):
         missing_version, _, _ = self.lookup(
