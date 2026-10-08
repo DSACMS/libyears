@@ -407,10 +407,10 @@ repository and record observed results and discrepancies.
 - Release validation record or issue/release notes designated by the project
 
 **Acceptance criteria:**
-- [ ] At least one real local npm repository with `package.json` and supported lock evidence is scanned without npm/Node execution, installation, or repository-code execution.
-- [ ] Record the repository and environment, discovered/measured counts, coverage, measured results, and unmeasurable reasons; review discrepancies.
-- [ ] Discrepancies are reported against the approved spec and plan; dogfooding does not silently change product semantics.
-- [ ] This is release validation, not a deterministic automated acceptance test.
+- [x] At least one real local npm repository with `package.json` and supported lock evidence is scanned without npm/Node execution, installation, or repository-code execution.
+- [x] Record the repository and environment, discovered/measured counts, coverage, measured results, and unmeasurable reasons; review discrepancies.
+- [x] Discrepancies are reported against the approved spec and plan; dogfooding does not silently change product semantics.
+- [x] This is release validation, not a deterministic automated acceptance test.
 
 **Verification:** Manually run `python -m libyears PATH --json` and `python -m libyears PATH` against the selected local repository; retain the environment and findings in the release validation record.
 
