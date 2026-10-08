@@ -310,12 +310,12 @@ with package-level and ecosystem-level failure isolation.
 - `tests/test_mixed_scan.py`
 
 **Acceptance criteria:**
-- [ ] Python-only, npm-only, and mixed scans discover and measure independently.
-- [ ] A registry failure in one ecosystem does not discard successful measurements from another.
-- [ ] `invalid_manifest` is a source error with no synthetic dependencies; `invalid_lockfile` remains dependency-level and retains known discoveries.
-- [ ] Existing PyPI exact requirement and resolved-snapshot behavior remains unchanged.
-- [ ] This task exercises mixed reports internally; it does not switch the CLI's public output path to mixed reports before the atomic schema-v3 migration.
-- [ ] Existing CLI behavior and JSON serialization remain valid under the currently documented schema.
+- [x] Python-only, npm-only, and mixed scans discover and measure independently.
+- [x] A registry failure in one ecosystem does not discard successful measurements from another.
+- [x] `invalid_manifest` is a source error with no synthetic dependencies; `invalid_lockfile` remains dependency-level and retains known discoveries.
+- [x] Existing PyPI exact requirement and resolved-snapshot behavior remains unchanged.
+- [x] This task exercises mixed reports internally; it does not switch the CLI's public output path to mixed reports before the atomic schema-v3 migration.
+- [x] Existing CLI behavior and JSON serialization remain valid under the currently documented schema.
 
 **Verification:** `python -m unittest tests.test_mixed_scan tests.test_scan tests.test_cli`
 
