@@ -63,6 +63,48 @@ JSON output:
 - Preserve existing ecosystem behavior when adding another ecosystem unless an approved specification explicitly changes it.
 - Fail closed when evidence is missing, malformed, ambiguous, unsupported, or unsafe to interpret.
 
+## Human Readability
+
+Optimize implementation for human comprehension and long-term maintenance.
+
+Assume the next maintainer may be an early-career Python developer who did
+not participate in the original implementation.
+
+Prefer:
+
+- straightforward, idiomatic Python over clever or compressed code;
+- explicit control flow over dense expressions;
+- descriptive names over abbreviations;
+- small functions with one clear responsibility;
+- standard-library patterns familiar to ordinary Python developers;
+- data structures that make domain concepts visible;
+- comments that explain non-obvious reasons or constraints rather than
+  restating the code;
+- tests that demonstrate behavior clearly enough to serve as examples.
+
+Avoid:
+
+- unnecessary abstraction;
+- metaprogramming when ordinary Python is sufficient;
+- clever one-liners;
+- deeply nested control flow;
+- premature generic frameworks;
+- indirection that does not remove meaningful duplication or isolate a real
+  boundary;
+- abstractions introduced only because a future feature might need them.
+
+When two implementations are similarly correct, prefer the one that requires
+less context to understand.
+
+A small amount of duplication is preferable to a premature abstraction when
+the duplicated concepts may evolve independently.
+
+Do not reduce correctness, security, or explicit error handling merely to make
+code shorter.
+
+During review, treat unnecessary cognitive complexity as a maintainability
+defect, not merely a style preference.
+
 ## Spec-Driven Development
 
 Substantial features should follow the repository's spec-driven development workflow.
@@ -273,6 +315,12 @@ Feature 002 authorizes npm ecosystem support according to:
 - `specs/002-npm-support/spec.md`
 - `specs/002-npm-support/plan.md`
 - `specs/002-npm-support/tasks.md`
+
+npm scope is limited to root `package.json` `dependencies`, excluding names
+also present in `optionalDependencies`; `package-lock.json` versions 2 and 3
+provide exact version evidence. Do not expand npm scope to development,
+peer, workspace, or transitive dependencies without a separately approved
+specification.
 
 Do not infer authorization for Maven, Go, Cargo, RubyGems, NuGet, additional npm dependency scopes, or other registries from the existence of npm support.
 
