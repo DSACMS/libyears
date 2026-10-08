@@ -10,6 +10,8 @@ from typing import Any
 
 
 INVALID_MANIFEST = "invalid_manifest"
+INVALID_LOCKFILE = "invalid_lockfile"
+UNSUPPORTED_LOCKFILE_VERSION = "unsupported_lockfile_version"
 UNSUPPORTED_DEPENDENCY_SOURCE = "unsupported_dependency_source"
 LOCK_VERSION_MISSING = "lock_version_missing"
 DECLARATION_LOCK_CONFLICT = "declaration_lock_conflict"
@@ -135,6 +137,87 @@ def resolve_v3_lockfile(
     return resolve_v2_lockfile(discovery, packages)
 
 
+def _with_reason(
+    discovery: ManifestDiscovery, reason: str
+) -> ManifestDiscovery:
+    """Assign a lockfile reason without replacing earlier source reasons."""
+    return ManifestDiscovery(
+        tuple(
+            declaration
+            if declaration.reason is not None
+            else NpmDeclaration(declaration.name, declaration.declared, reason)
+            for declaration in discovery.dependencies
+        ),
+        discovery.reason,
+    )
+
+
+def _valid_lock_entry(package: Any) -> bool:
+    if not isinstance(package, dict) or "link" in package:
+        return False
+    version = package.get("version")
+    return (
+        isinstance(version, str)
+        and bool(version)
+        and _EXACT_VERSION.fullmatch(version) is not None
+    )
+
+
+def resolve_lockfile(
+    root: str | Path, discovery: ManifestDiscovery
+) -> ManifestDiscovery:
+    """Resolve direct evidence from a supported root package-lock file."""
+    if discovery.reason is not None or not discovery.dependencies:
+        return discovery
+
+    lockfile_path = Path(root) / "package-lock.json"
+    if not lockfile_path.exists():
+        return resolve_v2_lockfile(discovery, {})
+
+    try:
+        lockfile = json.loads(lockfile_path.read_text(encoding="utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return _with_reason(discovery, INVALID_LOCKFILE)
+
+    if not isinstance(lockfile, dict):
+        return _with_reason(discovery, INVALID_LOCKFILE)
+
+    version = lockfile.get("lockfileVersion")
+    if type(version) is not int or version not in (2, 3):
+        return _with_reason(discovery, UNSUPPORTED_LOCKFILE_VERSION)
+
+    packages = lockfile.get("packages")
+    if not isinstance(packages, dict):
+        return _with_reason(discovery, INVALID_LOCKFILE)
+
+    invalid_names = set()
+    for declaration in discovery.dependencies:
+        package_path = f"node_modules/{declaration.name}"
+        if (
+            declaration.reason is None
+            and package_path in packages
+            and not _valid_lock_entry(packages[package_path])
+        ):
+            invalid_names.add(declaration.name)
+
+    resolver = resolve_v2_lockfile if version == 2 else resolve_v3_lockfile
+    resolved = resolver(discovery, packages)
+    if not invalid_names:
+        return resolved
+
+    dependencies = tuple(
+        NpmDeclaration(
+            declaration.name,
+            declaration.declared,
+            INVALID_LOCKFILE,
+        )
+        if declaration.name in invalid_names
+        else declaration
+        for declaration in resolved.dependencies
+    )
+    return ManifestDiscovery(dependencies)
+
+
 def discover_manifest(root: str | Path) -> ManifestDiscovery:
     """Discover production dependencies from *root*/``package.json``.
 
@@ -174,12 +257,15 @@ def discover_manifest(root: str | Path) -> ManifestDiscovery:
 
 __all__ = [
     "INVALID_MANIFEST",
+    "INVALID_LOCKFILE",
     "DECLARATION_LOCK_CONFLICT",
     "LOCK_VERSION_MISSING",
     "ManifestDiscovery",
     "NpmDeclaration",
     "UNSUPPORTED_DEPENDENCY_SOURCE",
+    "UNSUPPORTED_LOCKFILE_VERSION",
     "discover_manifest",
+    "resolve_lockfile",
     "resolve_v2_lockfile",
     "resolve_v3_lockfile",
 ]

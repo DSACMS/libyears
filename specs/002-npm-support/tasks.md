@@ -101,10 +101,10 @@ v2/v3 data while retaining known manifest discoveries.
 - `tests/test_npm.py`
 
 **Acceptance criteria:**
-- [ ] Lockfile v1 and unknown versions use `unsupported_lockfile_version` and provide no registry candidates.
-- [ ] Missing lockfile/direct paths use `lock_version_missing`.
-- [ ] Malformed required supported v2/v3 structure/data marks each affected known direct dependency `invalid_lockfile` and retains discovered counts.
-- [ ] No npm command is invoked to parse, convert, or upgrade lockfiles.
+- [x] Lockfile v1 and unknown versions use `unsupported_lockfile_version` and provide no registry candidates.
+- [x] Missing lockfile/direct paths use `lock_version_missing`.
+- [x] Malformed required supported v2/v3 structure/data marks each affected known direct dependency `invalid_lockfile` and retains discovered counts.
+- [x] No npm command is invoked to parse, convert, or upgrade lockfiles.
 
 **Verification:** `python -m unittest tests.test_npm -v`
 

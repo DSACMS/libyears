@@ -8,7 +8,10 @@ from libyears.npm import (
     INVALID_MANIFEST,
     LOCK_VERSION_MISSING,
     UNSUPPORTED_DEPENDENCY_SOURCE,
+    INVALID_LOCKFILE,
+    UNSUPPORTED_LOCKFILE_VERSION,
     discover_manifest,
+    resolve_lockfile,
     resolve_v2_lockfile,
     resolve_v3_lockfile,
 )
@@ -20,6 +23,19 @@ class NpmManifestTests(unittest.TestCase):
             root = Path(directory)
             (root / "package.json").write_text(contents, encoding="utf-8")
             return discover_manifest(root)
+
+    def discover_with_lock(self, lock_content: str | None):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "package.json").write_text(
+                json.dumps({"dependencies": {"alpha": "^1.0.0", "beta": "^2.0.0"}}),
+                encoding="utf-8",
+            )
+            if lock_content is not None:
+                (root / "package-lock.json").write_text(
+                    lock_content, encoding="utf-8"
+                )
+            return resolve_lockfile(root, discover_manifest(root))
 
     def test_discovers_production_dependencies_and_excludes_optional_override(self):
         result = self.discover(json.dumps({
@@ -241,6 +257,74 @@ class NpmManifestTests(unittest.TestCase):
                 ("pinned", DECLARATION_LOCK_CONFLICT, None),
             ],
         )
+
+    def test_missing_lockfile_and_direct_paths_use_lock_version_missing(self):
+        without_lock = self.discover_with_lock(None)
+        with_missing_paths = self.discover_with_lock(json.dumps({
+            "lockfileVersion": 2,
+            "packages": {"": {"name": "fixture"}},
+        }))
+
+        for result in (without_lock, with_missing_paths):
+            with self.subTest(result=result):
+                self.assertEqual(len(result.dependencies), 2)
+                self.assertEqual(
+                    [item.reason for item in result.dependencies],
+                    [LOCK_VERSION_MISSING, LOCK_VERSION_MISSING],
+                )
+                self.assertTrue(all(item.used_version is None for item in result.dependencies))
+
+    def test_v1_unknown_and_missing_lockfile_versions_are_unsupported(self):
+        for lockfile in (
+            {"lockfileVersion": 1, "packages": {}},
+            {"lockfileVersion": 4, "packages": {}},
+            {"packages": {}},
+        ):
+            with self.subTest(lockfile=lockfile):
+                result = self.discover_with_lock(json.dumps(lockfile))
+                self.assertEqual(len(result.dependencies), 2)
+                self.assertEqual(
+                    [item.reason for item in result.dependencies],
+                    [UNSUPPORTED_LOCKFILE_VERSION, UNSUPPORTED_LOCKFILE_VERSION],
+                )
+                self.assertTrue(all(item.used_version is None for item in result.dependencies))
+
+    def test_malformed_supported_lockfiles_mark_affected_dependencies(self):
+        for version in (2, 3):
+            with self.subTest(lockfile_version=version):
+                malformed_structure = self.discover_with_lock(
+                    json.dumps({"lockfileVersion": version, "packages": None})
+                )
+                self.assertEqual(
+                    [item.reason for item in malformed_structure.dependencies],
+                    [INVALID_LOCKFILE, INVALID_LOCKFILE],
+                )
+
+        malformed_entry = self.discover_with_lock(json.dumps({
+            "lockfileVersion": 3,
+            "packages": {
+                "": {"name": "fixture"},
+                "node_modules/alpha": {"version": None},
+                "node_modules/beta": {"version": "2.3.0"},
+                "node_modules/unused": None,
+            },
+        }))
+        self.assertEqual(
+            [(item.reason, item.used_version) for item in malformed_entry.dependencies],
+            [(INVALID_LOCKFILE, None), (None, "2.3.0")],
+        )
+
+    def test_malformed_lockfile_json_is_invalid_without_candidates(self):
+        for lock_content in ('{"lockfileVersion": 2', '[]'):
+            with self.subTest(lock_content=lock_content):
+                result = self.discover_with_lock(lock_content)
+                self.assertEqual(
+                    [item.reason for item in result.dependencies],
+                    [INVALID_LOCKFILE, INVALID_LOCKFILE],
+                )
+                self.assertTrue(
+                    all(item.used_version is None for item in result.dependencies)
+                )
 
 
 if __name__ == "__main__":
