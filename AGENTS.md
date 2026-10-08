@@ -8,21 +8,26 @@ The tool measures dependency freshness using release dates:
 
 `libyears = (latest_stable_release_date - used_version_release_date) / 365.25 days`
 
-The project intentionally favors simplicity, transparency, and long-term maintainability over broad ecosystem support.
+The project intentionally favors simplicity, transparency, reproducibility, and long-term maintainability over broad ecosystem support.
 
 ## Runtime
 
-- Python 3.12+
+- Python 3.11+
 - Python standard library only
 - No third-party runtime dependencies
 - No database
 - No server
 - No containers
 - No GitHub API dependency
+- Do not invoke package managers or dependency resolvers unless an approved specification explicitly changes this boundary.
 
 ## Commands
 
-Run all tests:
+Run the full deterministic test suite:
+
+`python -m unittest discover -s tests`
+
+Use verbose test output only when diagnosing failures or when test names are materially useful:
 
 `python -m unittest discover -s tests -v`
 
@@ -40,36 +45,174 @@ JSON output:
 
 ## Engineering Rules
 
-- Do not add third-party dependencies.
+- Do not add third-party runtime dependencies.
 - Do not change metric semantics without explicit instruction.
 - Do not guess missing dependency versions or release dates.
 - Prefer returning "unmeasurable" with a reason over fabricating data.
 - Network access must be isolated behind registry adapter interfaces.
 - Unit tests must not require network access.
 - Use `unittest` and `unittest.mock`.
-- Add tests for behavioral changes.
+- Add tests with behavioral changes rather than deferring tests to the end.
 - Keep modules small and focused.
 - Do not refactor unrelated code.
-- Do not add additional package ecosystems unless explicitly requested.
+- Do not add package ecosystems unless explicitly authorized by an approved specification or direct instruction.
+- Do not implement generic package-manager, plugin, resolver, or semantic-version frameworks speculatively.
 - Do not parse semantic versions generically when authoritative registry metadata can answer the question.
 - Keep human-readable output separate from JSON serialization.
-- JSON output is considered a stable machine-readable interface once released.
+- JSON output is a versioned, stable machine-readable interface once released.
+- Preserve existing ecosystem behavior when adding another ecosystem unless an approved specification explicitly changes it.
+- Fail closed when evidence is missing, malformed, ambiguous, unsupported, or unsafe to interpret.
+
+## Spec-Driven Development
+
+Substantial features should follow the repository's spec-driven development workflow.
+
+Feature artifacts live under:
+
+`specs/NNN-feature-name/`
+
+The normal progression is:
+
+1. `spec.md` — user-visible behavior, scope, requirements, and acceptance criteria.
+2. Clarification/review — resolve product ambiguity before technical planning.
+3. `plan.md` — technical architecture for the approved specification.
+4. Architecture review — resolve design issues before task decomposition.
+5. `tasks.md` — dependency-ordered, bounded implementation tasks.
+6. Task-graph review — verify ordering, scope, traceability, and safe task boundaries.
+7. Implementation — execute approved tasks.
+8. Verification and dogfooding.
+9. Read-only convergence review against spec, plan, implementation, tests, and documentation.
+
+When approved feature `spec.md`, `plan.md`, and `tasks.md` exist:
+
+- Treat them as the source of truth for implementation.
+- Do not rediscover or redesign approved requirements during implementation.
+- Execute only dependency-ready approved tasks.
+- Do not modify an approved spec or plan to justify an implementation choice.
+- Stop and report a gap rather than inventing a missing product or architecture decision.
+- Do not silently expand feature scope.
+- Keep acceptance-criteria traceability intact when tasks change.
+
+If implementation reveals a genuine product requirement that the approved specification does not address, return to the specification phase rather than deciding it in code.
 
 ## Git / Scope Discipline
 
 For implementation tasks:
 
 1. Inspect only files relevant to the task.
-2. Make the smallest change that satisfies the requested behavior.
+2. Make the smallest change that satisfies the approved behavior.
 3. Run the narrowest relevant tests first.
-4. Run the full test suite only when appropriate.
-5. Summarize:
+4. Run broader regression tests at meaningful integration or phase boundaries.
+5. Inspect the diff and run `git diff --check` before committing.
+6. Keep each completed SDD task independently reviewable.
+7. Summarize only:
+   - task or phase status
    - files changed
    - behavior implemented
-   - tests run
-   - unresolved issues
+   - tests/results
+   - local commit, when applicable
+   - unresolved blockers or deviations
 
 Do not make opportunistic cleanup changes.
+
+### Git safety
+
+- One completed SDD task should normally correspond to one local commit.
+- Local task commits are allowed when explicitly requested by the execution prompt.
+- Do not push unless explicitly instructed.
+- Do not tag releases unless explicitly instructed.
+- Do not rebase, reset, squash, amend published history, change remotes, force-push, or otherwise rewrite history unless explicitly instructed.
+- Never combine unrelated tasks merely to reduce commit count.
+- Do not mark a task complete unless its acceptance criteria and required verification pass.
+
+## Testing and Context Efficiency
+
+Optimize for correctness with low-context execution.
+
+### Focused testing
+
+During implementation:
+
+- Prefer the narrowest relevant test target.
+- Prefer compact successful output.
+- Do not use `-v` by default.
+- Use verbose output when diagnosing a failure, when individual test names are needed, or when a task explicitly requires it.
+- Do not repeatedly run the complete suite after trivial changes unless required by the task.
+- Run the complete deterministic suite at meaningful integration and phase boundaries.
+- If shared behavior is changed, run the relevant regression tests even if the current feature tests pass.
+
+Successful full-suite command:
+
+`python -m unittest discover -s tests`
+
+### Offline determinism
+
+- Deterministic automated tests must not require network access.
+- Registry responses should be represented with local fixtures or mocks.
+- Live registry smoke tests, when specified, must be separate from deterministic unit correctness.
+- A transient network failure in an optional live smoke test must not be misrepresented as a deterministic unit-test failure.
+
+### Context discipline
+
+- Read the smallest relevant source and test ranges needed for the current task.
+- Do not repeatedly reread large unrelated files.
+- Reuse conclusions already established by approved specs, plans, tasks, and the current thread.
+- Do not generate broad repository summaries unless requested.
+- Avoid dumping large successful test logs into the conversation when a compact result is sufficient.
+- When a command succeeds, report the result concisely rather than reproducing routine output.
+
+## Communication and Autonomy
+
+Do not narrate routine work.
+
+Routine work includes:
+
+- file inspection
+- straightforward edits
+- normal test execution
+- Git status/diff checks
+- local commits already authorized by the execution prompt
+
+During autonomous execution, interrupt only when necessary for:
+
+- an unresolved product decision
+- an architecture decision absent from the approved plan
+- contradictory requirements
+- a security or policy question
+- a public contract/schema change not already approved
+- an out-of-scope requirement
+- a blocker that cannot safely be resolved within the current task
+
+Do not ask for confirmation merely to continue behavior already approved by the spec, plan, tasks, and execution prompt.
+
+Completion reports should be concise and contain only the information requested by the execution prompt.
+
+## Phase-Level Autonomous Execution
+
+When explicitly instructed to execute an approved SDD phase autonomously:
+
+- Execute only tasks in that phase.
+- Respect task dependencies.
+- Complete tasks sequentially unless parallel execution is explicitly authorized.
+- Run each task's focused verification.
+- Mark a task complete only after its acceptance criteria pass.
+- Create one local commit per completed task when authorized.
+- Continue to the next dependency-ready task in the same phase.
+- Run the full deterministic suite at the phase boundary.
+- Run `git diff --check`.
+- Confirm the working tree is clean after the final authorized commit.
+- Stop before beginning the next phase.
+- Do not push.
+
+Stop autonomous execution rather than inventing a decision if:
+
+- the approved spec and plan disagree
+- required behavior is unspecified
+- a new architecture decision is necessary
+- existing released behavior would need to change unexpectedly
+- a security boundary would need to change
+- an acceptance criterion is contradictory or impossible
+- completing the task would require explicitly out-of-scope work
 
 ## Metric Policy
 
@@ -81,13 +224,15 @@ Default scope:
 - No grace period.
 - One libyear equals 365.25 days.
 - Negative libyear values are clamped to zero only when timestamp ordering anomalies occur and must be flagged.
-- Dependencies that cannot be measured are excluded from numerical aggregates but included in coverage statistics.
+- A dependency whose used version is the latest stable version must produce exactly `0.0` libyears.
+- Dependencies that cannot be measured are excluded from numerical aggregates but included in coverage statistics when their dependency scope was successfully discovered.
+- When dependency discovery itself fails and the denominator is unknowable, do not fabricate coverage.
 
-Output aggregates:
+Output aggregates may include repository-wide and ecosystem-specific values as defined by the active schema/specification:
 
 - dependency count discovered
 - dependency count measured
-- coverage percentage
+- coverage
 - cumulative libyears
 - mean libyears
 - median libyears
@@ -102,16 +247,29 @@ Individual measurable dependencies should include:
 - latest stable version
 - latest stable release timestamp
 - libyears
+- version evidence/source where defined by the active schema
 
 Unmeasurable dependencies should include:
 
 - ecosystem
 - package name
 - declared version/specifier where available
-- reason
+- stable machine-readable reason
 
-## Initial Ecosystem Scope
+Source-level failures should remain distinct from dependency-level unmeasurable results when the active specification defines that distinction.
 
-The first implementation supports Python packages from PyPI only.
+## Ecosystem Scope
 
-Do not implement npm, Maven, Go, Cargo, RubyGems, NuGet, or other registries until explicitly requested.
+The initial released implementation supports Python packages from PyPI.
+
+Additional ecosystems may be added only through explicit instruction or an approved feature specification.
+
+Feature 002 authorizes npm ecosystem support according to:
+
+- `specs/002-npm-support/spec.md`
+- `specs/002-npm-support/plan.md`
+- `specs/002-npm-support/tasks.md`
+
+Do not infer authorization for Maven, Go, Cargo, RubyGems, NuGet, additional npm dependency scopes, or other registries from the existence of npm support.
+
+For ecosystem behavior, the approved feature specification takes precedence over generic assumptions in this file.

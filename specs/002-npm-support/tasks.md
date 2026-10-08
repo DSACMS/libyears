@@ -12,6 +12,82 @@ currently documented schema. The intentional v3 contract change is atomic
 with its tests and public documentation. Automated correctness tests are
 offline; release-only network validation is labeled separately.
 
+## Execution Efficiency
+
+For incomplete tasks:
+
+- Use compact `unittest` output by default.
+- Do not use `-v` unless diagnosing a failure or individual test names are materially useful.
+- Preserve the exact focused test modules specified by each task.
+- Run the complete deterministic suite at phase/integration boundaries rather than redundantly after every task unless the task explicitly requires it.
+- If a compact test command fails, rerun the narrow failing target with `-v` for diagnosis.
+- Follow `AGENTS.md` for communication, Git, context, and phase-level autonomy conventions.
+
+Do not rewrite completed task verification history merely to match current conventions.
+
+Then make only these verification-command changes:
+
+### T010 — Add minimum shared source and registry contracts
+
+Change:
+
+`python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry -v`
+
+to:
+
+`python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry`
+
+### T011 — Orchestrate explicit PyPI and npm scans
+
+Change:
+
+`python -m unittest tests.test_mixed_scan tests.test_scan tests.test_cli -v`
+
+to:
+
+`python -m unittest tests.test_mixed_scan tests.test_scan tests.test_cli`
+
+### T012 — Calculate repository and per-ecosystem summaries
+
+Change:
+
+`python -m unittest tests.test_mixed_scan tests.test_metric -v`
+
+to:
+
+`python -m unittest tests.test_mixed_scan tests.test_metric`
+
+### T013 — Expose mixed output and migrate schema/documentation atomically
+
+Change:
+
+`python -m unittest tests.test_output tests.test_mixed_scan tests.test_cli -v`; then review README/SPEC/AGENTS schema statements against emitted v3 and mixed human examples.
+
+to:
+
+`python -m unittest tests.test_output tests.test_mixed_scan tests.test_cli`; then review README/SPEC/AGENTS schema statements against emitted v3 and mixed human examples.
+
+### T014 — Add deterministic end-to-end mixed fixtures
+
+Change:
+
+`python -m unittest discover -s tests -v`
+
+to:
+
+`python -m unittest discover -s tests`
+
+Do not change T015, T016, or T017 verification instructions.
+
+Do not change:
+- completed task text or verification history
+- task IDs
+- dependencies
+- acceptance criteria
+- traceability mappings
+- phase boundaries
+- regression invariants
+
 ## Phase 1 — Concrete npm source and lock evidence
 
 ### T001 [P] — Parse root npm production dependencies
