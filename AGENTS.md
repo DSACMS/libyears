@@ -260,7 +260,11 @@ Source-level failures should remain distinct from dependency-level unmeasurable 
 
 ## Ecosystem Scope
 
-The initial released implementation supports Python packages from PyPI.
+The current implementation supports direct Python packages from PyPI and
+direct npm production dependencies under Feature 002. Public JSON output uses
+schema version 3, with ecosystem-keyed evidence and repository plus
+per-ecosystem summaries. Keep source-discovery failures in `source_errors` and
+dependency-level failures in `unmeasurable`.
 
 Additional ecosystems may be added only through explicit instruction or an approved feature specification.
 

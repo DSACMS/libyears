@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import json
 from typing import Any
 
-from .scan import ScanReport
+from .scan import MixedScanReport, ScanReport
 from .snapshot import SNAPSHOT_FORMAT
 
 
@@ -25,6 +25,12 @@ _REASON_TEXT = {
     "snapshot_version_conflict": "conflicting versions in supplied snapshot",
     "snapshot_version_incompatible": "snapshot version does not satisfy declaration",
     "declared_snapshot_conflict": "snapshot version conflicts with exact repository pin",
+    "lock_version_missing": "exact version unavailable in package-lock.json",
+    "declaration_lock_conflict": "lock version conflicts with exact manifest declaration",
+    "unsupported_dependency_source": "unsupported dependency source",
+    "unsupported_lockfile_version": "unsupported package-lock version",
+    "invalid_lockfile": "invalid package-lock.json",
+    "invalid_manifest": "invalid package.json",
 }
 
 
@@ -33,20 +39,38 @@ def _timestamp(value: datetime) -> str:
     return utc.isoformat().replace("+00:00", "Z")
 
 
-def report_to_dict(report: ScanReport, path: str) -> dict[str, Any]:
-    """Convert a scan report to the stable JSON data shape."""
-    summary = report.summary
-    version_evidence = {
-        "declaration_source": "requirements.txt",
-        "snapshot_source": None,
-    }
-    if report.snapshot_source is not None:
-        version_evidence["snapshot_source"] = {
-            "format": SNAPSHOT_FORMAT,
-            "path": report.snapshot_source,
+def _summary_dict(summary: Any) -> dict[str, Any]:
+    return asdict(summary)
+
+
+def _report_parts(report: ScanReport | MixedScanReport) -> tuple[Any, dict[str, Any], list[str], list[Any], list[Any], list[Any], dict[str, Any]]:
+    if isinstance(report, MixedScanReport):
+        sources = [source for source in report.source_results if source.source_present]
+        evidence = {
+            source.ecosystem: {
+                "declaration_source": source.evidence.declaration_source,
+                "snapshot_source": source.evidence.snapshot_source,
+            }
+            for source in sources
         }
+        ecosystems = sorted(set(evidence) | {error.ecosystem for error in report.source_errors})
+        summaries = {key: _summary_dict(value) for key, value in report.by_ecosystem.items()}
+        return report.summary, evidence, ecosystems, list(report.measurements), list(report.unmeasurable), list(report.source_errors), summaries
+
+    evidence = {"pypi": {
+        "declaration_source": "requirements.txt",
+        "snapshot_source": ({"format": SNAPSHOT_FORMAT, "path": report.snapshot_source}
+                            if report.snapshot_source is not None else None),
+    }}
+    ecosystems = ["pypi"] if report.summary.dependencies_discovered != 0 else []
+    return report.summary, evidence, ecosystems, list(report.measurements), list(report.unmeasurable), [], {"pypi": _summary_dict(report.summary)}
+
+
+def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str, Any]:
+    """Convert a scan report to the stable schema-v3 JSON data shape."""
+    summary, version_evidence, ecosystems, measurements, unmeasurable, source_errors, by_ecosystem = _report_parts(report)
     dependencies = []
-    for measurement in report.measurements:
+    for measurement in measurements:
         dependency = measurement.dependency
         dependencies.append(
             {
@@ -62,12 +86,12 @@ def report_to_dict(report: ScanReport, path: str) -> dict[str, Any]:
             }
         )
     return {
-        "schema_version": 2,
+        "schema_version": 3,
         "metric": "libyears",
         "dependency_scope": "direct",
-        "ecosystems": ["pypi"],
+        "ecosystems": ecosystems,
         "version_evidence": version_evidence,
-        "summary": asdict(summary),
+        "summary": {**asdict(summary), "by_ecosystem": by_ecosystem},
         "dependencies": dependencies,
         "unmeasurable": [
             {
@@ -76,8 +100,9 @@ def report_to_dict(report: ScanReport, path: str) -> dict[str, Any]:
                 "declared": item.declared,
                 "reason": item.reason,
             }
-            for item in report.unmeasurable
+            for item in unmeasurable
         ],
+        "source_errors": [asdict(item) for item in source_errors],
     }
 
 
@@ -86,8 +111,10 @@ def format_json(report: ScanReport, path: str) -> str:
     return json.dumps(report_to_dict(report, path), indent=2) + "\n"
 
 
-def format_human(report: ScanReport, path: str, *, verbose: bool = False) -> str:
+def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bool = False) -> str:
     """Format a scan report for terminal readers."""
+    if isinstance(report, MixedScanReport):
+        return _format_mixed_human(report, path, verbose=verbose)
     summary = report.summary
     evidence = "Version evidence: requirements.txt"
     if report.snapshot_source is not None:
@@ -184,6 +211,82 @@ def format_human(report: ScanReport, path: str, *, verbose: bool = False) -> str
         )
     if verbose:
         lines.extend(_diagnostic_lines(report))
+    return "\n".join(lines) + "\n"
+
+
+def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) -> str:
+    ecosystems = sorted(source.ecosystem for source in report.source_results if source.source_present)
+    labels = ", ".join(ecosystems) if ecosystems else "none"
+    summary = report.summary
+    if len(ecosystems) == 1 and not report.source_errors:
+        ecosystem = ecosystems[0]
+        lines = [f"Libyears: {path}", f"Ecosystem: {ecosystem}", ""]
+        if report.measurements:
+            lines.extend(["DEPENDENCY       USED       LATEST       LIBYEARS"])
+            for measurement in sorted(report.measurements, key=lambda item: item.libyears, reverse=True):
+                dependency = measurement.dependency
+                lines.append(
+                    f"{dependency.name:<16} {dependency.used_version:<10} "
+                    f"{dependency.latest_stable_version:<12} {measurement.libyears:.2f}"
+                )
+        lines.extend([
+            "", f"Measured: {summary.dependencies_measured} / {summary.dependencies_discovered} dependencies",
+            f"Coverage: {_coverage(summary.coverage)}",
+            f"Total:    {_number(summary.total_libyears)} libyears",
+            f"Mean:     {_number(summary.mean_libyears)}",
+            f"Median:   {_number(summary.median_libyears)}",
+            f"Maximum:  {_number(summary.max_libyears)}",
+        ])
+        if report.unmeasurable:
+            lines.extend(["", "Unmeasurable:"])
+            lines.extend(
+                f"  {item.declared}    {_reason_text(item.reason)}"
+                for item in report.unmeasurable
+            )
+        if verbose and report.diagnostics:
+            lines.extend(["", "Registry diagnostics:", *(f"  {name}: {message}" for name, message in report.diagnostics)])
+        return "\n".join(lines) + "\n"
+
+    lines = [f"Libyears: {path}", f"Ecosystems: {labels}", ""]
+    lines.append(
+        f"Repository: {_coverage(summary.coverage)} coverage; "
+        f"{summary.dependencies_measured} / {summary.dependencies_discovered} measured; "
+        f"total {_number(summary.total_libyears)}, mean {_number(summary.mean_libyears)}, "
+        f"median {_number(summary.median_libyears)}, max {_number(summary.max_libyears)} libyears"
+    )
+    for ecosystem in sorted(report.by_ecosystem):
+        item = report.by_ecosystem[ecosystem]
+        lines.append(
+            f"{ecosystem}: {_coverage(item.coverage)} coverage; "
+            f"{item.dependencies_measured} / {item.dependencies_discovered} measured; "
+            f"total {_number(item.total_libyears)}, mean {_number(item.mean_libyears)}, "
+            f"median {_number(item.median_libyears)}, max {_number(item.max_libyears)} libyears"
+        )
+    if report.measurements:
+        lines.extend(["", "DEPENDENCY       ECOSYSTEM  USED       LATEST       LIBYEARS  SOURCE"])
+        for measurement in sorted(report.measurements, key=lambda item: item.libyears, reverse=True):
+            dependency = measurement.dependency
+            lines.append(
+                f"{dependency.name:<16} {dependency.ecosystem:<10} "
+                f"{dependency.used_version:<10} {dependency.latest_stable_version:<12} "
+                f"{measurement.libyears:.2f}  {_source_text(dependency.version_source)}"
+            )
+    if report.unmeasurable:
+        lines.extend(["", "Unmeasurable:"])
+        lines.extend(
+            f"  {item.ecosystem}: {item.name} ({item.declared})    {_reason_text(item.reason)}"
+            for item in report.unmeasurable
+        )
+    if report.source_errors:
+        lines.extend(["", "Source errors:"])
+        for error in report.source_errors:
+            explanation = "npm manifest discovery failed; no npm dependencies were invented" if error.reason == "invalid_manifest" else _reason_text(error.reason)
+            lines.append(f"  {error.ecosystem} {error.source}: {explanation}")
+    if verbose:
+        if report.tls_trust:
+            lines.extend(["", f"TLS trust: {report.tls_trust}"])
+        if report.diagnostics:
+            lines.extend(["Registry diagnostics:", *(f"  {name}: {message}" for name, message in report.diagnostics)])
     return "\n".join(lines) + "\n"
 
 

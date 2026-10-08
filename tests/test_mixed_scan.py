@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from libyears.model import RegistryFailure, RegistryResult
+from libyears.output import format_human, format_json
 from libyears.scan import scan_mixed_repository
 from libyears.snapshot import parse_snapshot_text
 
@@ -159,6 +160,13 @@ class MixedScanTests(unittest.TestCase):
             [("npm", "package.json", "invalid_manifest")],
         )
         self.assertIsNone(report.source_results[1].dependencies_discovered)
+        data = json.loads(format_json(report, str(self.root)))
+        self.assertEqual(data["schema_version"], 3)
+        self.assertEqual(data["source_errors"][0]["reason"], "invalid_manifest")
+        self.assertEqual([item["ecosystem"] for item in data["dependencies"]], ["pypi"])
+        human = format_human(report, str(self.root))
+        self.assertIn("npm manifest discovery failed", human)
+        self.assertIn("alpha", human)
 
     def test_invalid_lockfile_remains_dependency_level_and_pypi_survives(self):
         self.write_python()

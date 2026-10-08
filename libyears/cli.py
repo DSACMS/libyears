@@ -8,7 +8,7 @@ import sys
 from collections.abc import Sequence
 
 from .output import format_human, format_json
-from .scan import scan_repository
+from .scan import scan_mixed_repository
 from .snapshot import parse_snapshot
 
 
@@ -33,7 +33,7 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         args = build_parser().parse_args(argv)
     except SystemExit as error:
         return int(error.code)
-    scan_function = scan or scan_repository
+    scan_function = scan or scan_mixed_repository
     try:
         if args.ca_bundle:
             # Validate the supplied file even when this repository has no registry lookups.

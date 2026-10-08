@@ -360,14 +360,14 @@ boundary, including implementation, schema tests, and public documentation.
 - `AGENTS.md` (only ecosystem/public-contract statements affected by v3)
 
 **Acceptance criteria:**
-- [ ] Implementation emits schema v3 with ecosystem-keyed evidence, repository and `by_ecosystem` summaries, and top-level `source_errors`.
-- [ ] Mixed human output identifies ecosystems, shows repository/per-ecosystem coverage and aggregates, retains compact single-ecosystem output, and explains `invalid_manifest` while preserving successful PyPI results.
-- [ ] Measurable and unmeasurable rows carry ecosystem; measured rows carry `version_source`, including npm `package_lock`; source errors remain distinct from dependency failures.
-- [ ] PyPI-only, npm-only, mixed, and source-failure JSON tests assert the specified v3 structures; JSON parses successfully.
-- [ ] README, SPEC, and applicable AGENTS public-contract instructions describe npm scope and schema v3 at the same task boundary.
-- [ ] PyPI-only and mixed JSON do not contain human-only diagnostics; Python dependency-level values and evidence names remain unchanged.
-- [ ] No committed state from this task emits schema v3 while public documentation still describes schema v2.
-- [ ] The CLI begins exposing mixed npm/PyPI results at this same boundary, so no preceding task emits mixed user-facing results through the PyPI-only v2 representation.
+- [x] Implementation emits schema v3 with ecosystem-keyed evidence, repository and `by_ecosystem` summaries, and top-level `source_errors`.
+- [x] Mixed human output identifies ecosystems, shows repository/per-ecosystem coverage and aggregates, retains compact single-ecosystem output, and explains `invalid_manifest` while preserving successful PyPI results.
+- [x] Measurable and unmeasurable rows carry ecosystem; measured rows carry `version_source`, including npm `package_lock`; source errors remain distinct from dependency failures.
+- [x] PyPI-only, npm-only, mixed, and source-failure JSON tests assert the specified v3 structures; JSON parses successfully.
+- [x] README, SPEC, and applicable AGENTS public-contract instructions describe npm scope and schema v3 at the same task boundary.
+- [x] PyPI-only and mixed JSON do not contain human-only diagnostics; Python dependency-level values and evidence names remain unchanged.
+- [x] No committed state from this task emits schema v3 while public documentation still describes schema v2.
+- [x] The CLI begins exposing mixed npm/PyPI results at this same boundary, so no preceding task emits mixed user-facing results through the PyPI-only v2 representation.
 
 **Verification:** `python -m unittest tests.test_output tests.test_mixed_scan tests.test_cli`; then review README/SPEC/AGENTS schema statements against emitted v3 and mixed human examples.
 

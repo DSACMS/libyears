@@ -2,10 +2,11 @@ import json
 import unittest
 from datetime import datetime, timezone
 
-from libyears.model import Dependency, DependencyMeasurement, MetricSummary
+from libyears.model import (Dependency, DependencyMeasurement, MetricSummary,
+                            SourceEvidence, SourceError, SourceResult)
 from libyears.requirements import UnmeasurableRequirement
 from libyears.output import format_human, format_json, report_to_dict
-from libyears.scan import ScanReport
+from libyears.scan import MixedScanReport, ScanReport
 
 
 def report_with_data():
@@ -35,17 +36,19 @@ class OutputTests(unittest.TestCase):
         report = report_with_data()
         rendered = format_json(report, ".")
         data = json.loads(rendered)
-        self.assertEqual(data["schema_version"], 2)
+        self.assertEqual(data["schema_version"], 3)
         self.assertNotIn("repository", data)
         self.assertEqual(
             data["version_evidence"],
-            {"declaration_source": "requirements.txt", "snapshot_source": None},
+            {"pypi": {"declaration_source": "requirements.txt", "snapshot_source": None}},
         )
         self.assertEqual(data["summary"]["coverage"], 2 / 3)
         self.assertEqual(data["dependencies"][0]["used_release_time"], "2023-01-01T00:00:00Z")
         self.assertIsInstance(data["dependencies"][0]["libyears"], float)
         self.assertEqual(data["dependencies"][0]["version_source"], "requirements_exact")
         self.assertEqual(data["unmeasurable"][0]["reason"], "non_exact_version")
+        self.assertEqual(data["summary"]["by_ecosystem"]["pypi"]["coverage"], 2 / 3)
+        self.assertEqual(data["source_errors"], [])
 
     def test_json_with_snapshot_reports_v2_evidence_and_source(self):
         report = ScanReport(
@@ -65,12 +68,36 @@ class OutputTests(unittest.TestCase):
             "resolved.txt",
         )
         data = json.loads(format_json(report, "."))
-        self.assertEqual(data["schema_version"], 2)
+        self.assertEqual(data["schema_version"], 3)
         self.assertEqual(
-            data["version_evidence"]["snapshot_source"],
+            data["version_evidence"]["pypi"]["snapshot_source"],
             {"format": "pip_freeze_exact", "path": "resolved.txt"},
         )
         self.assertEqual(data["dependencies"][0]["version_source"], "resolved_snapshot")
+
+    def test_schema_v3_supports_npm_and_mixed_source_evidence(self):
+        summary = MetricSummary(1, 0, 0.0, 0.0, None, None, None)
+        npm = SourceResult("npm", (), (), (), SourceEvidence("package.json", "package-lock.json"))
+        pypi = SourceResult("pypi", (), (), (), SourceEvidence("requirements.txt", None))
+        for sources, expected in (((npm,), ["npm"]), ((pypi,), ["pypi"]), ((npm, pypi), ["npm", "pypi"])):
+            report = MixedScanReport((), (), (), sources, summary,
+                                     {source.ecosystem: summary for source in sources})
+            data = json.loads(format_json(report, "."))
+            self.assertEqual(data["schema_version"], 3)
+            self.assertEqual(data["ecosystems"], expected)
+            self.assertEqual(set(data["version_evidence"]), set(expected))
+            self.assertEqual(set(data["summary"]["by_ecosystem"]), set(expected))
+
+    def test_schema_v3_keeps_source_failure_distinct_from_dependency_rows(self):
+        summary = MetricSummary(None, 0, None, 0.0, None, None, None)
+        source = SourceResult(
+            "npm", (), (), (SourceError("npm", "package.json", "invalid_manifest"),),
+            SourceEvidence("package.json", "package-lock.json"),
+        )
+        report = MixedScanReport((), (), source.source_errors, (source,), summary, {"npm": summary})
+        data = json.loads(format_json(report, "."))
+        self.assertEqual(data["source_errors"], [{"ecosystem": "npm", "source": "package.json", "reason": "invalid_manifest"}])
+        self.assertEqual(data["unmeasurable"], [])
 
     def test_json_preserves_fractional_seconds_without_adding_them(self):
         report = report_with_data()

@@ -1,8 +1,8 @@
 # Libyears
 
-Libyears is a local Python CLI that measures the age of direct Python
-dependencies using release timestamps from PyPI. It requires Python 3.12+ and
-uses only the standard library at runtime.
+Libyears is a local Python CLI that measures the age of direct Python and npm
+dependencies using release timestamps from PyPI and the public npm registry.
+It uses only the Python standard library at runtime.
 
 ## What libyears measures
 
@@ -103,18 +103,22 @@ trust source. Stable JSON reason identifiers remain unchanged.
 
 ## JSON output
 
-JSON schema version 2 includes version evidence and the source for measured
-versions. A compact example:
+JSON schema version 3 reports ecosystem-keyed version evidence, repository and
+per-ecosystem summaries, and source discovery errors separately from
+dependency-level failures. The schema v2 to v3 change is intentional. A
+compact Python-only example:
 
 ```json
 {
-  "schema_version": 2,
+  "schema_version": 3,
   "metric": "libyears",
   "dependency_scope": "direct",
   "ecosystems": ["pypi"],
   "version_evidence": {
-    "declaration_source": "requirements.txt",
-    "snapshot_source": null
+    "pypi": {
+      "declaration_source": "requirements.txt",
+      "snapshot_source": null
+    }
   },
   "summary": {
     "dependencies_discovered": 1,
@@ -123,7 +127,18 @@ versions. A compact example:
     "total_libyears": 0.999315537303217,
     "mean_libyears": 0.999315537303217,
     "median_libyears": 0.999315537303217,
-    "max_libyears": 0.999315537303217
+    "max_libyears": 0.999315537303217,
+    "by_ecosystem": {
+      "pypi": {
+        "dependencies_discovered": 1,
+        "dependencies_measured": 1,
+        "coverage": 1.0,
+        "total_libyears": 0.999315537303217,
+        "mean_libyears": 0.999315537303217,
+        "median_libyears": 0.999315537303217,
+        "max_libyears": 0.999315537303217
+      }
+    }
   },
   "dependencies": [
     {
@@ -137,7 +152,9 @@ versions. A compact example:
       "timestamp_anomaly": false,
       "version_source": "requirements_exact"
     }
-  ]
+  ],
+  "unmeasurable": [],
+  "source_errors": []
 }
 ```
 
@@ -148,16 +165,24 @@ Coverage is the number measured divided by the number discovered. `7 discovered
 measured` means the aggregate covers every discovered dependency. Their numeric
 totals cannot be interpreted as equivalent, even if both are low.
 
+## npm support
+
+For npm repositories, `package.json` root `dependencies` define direct
+production scope, excluding names also declared in `optionalDependencies`.
+`package-lock.json` lockfile versions 2 and 3 provide exact used versions.
+Development, peer, optional-only, workspace, and transitive dependencies are
+outside this feature. npm ranges are never resolved during a scan.
+
 ## Current limitations
 
-- Python packages from PyPI only.
-- Dependency declarations are read from `requirements.txt`.
+- Python declarations are read from `requirements.txt`; npm declarations are
+  read from the root `package.json`.
 - Direct dependencies only.
 - The resolved snapshot format is a narrow list of exact `NAME==VERSION`
   entries; repository declarations determine which entries are in scope.
 - Libyears does not install or resolve dependencies.
 - Transitive dependencies are not measured by default.
-- No other package ecosystems are supported yet.
+- No other package ecosystems are supported.
 
 ## Development
 

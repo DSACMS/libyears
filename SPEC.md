@@ -388,67 +388,30 @@ may be displayed as:
 ## 17. JSON Output
 
 JSON is intended for automation and SHOULD remain factual rather than advisory.
+The current stable machine-readable contract is schema version 3. The v2 to v3
+change is intentional.
 
-Top-level shape:
+The top-level object includes `schema_version`, `metric`, `dependency_scope`,
+`ecosystems`, ecosystem-keyed `version_evidence`, `summary`, `dependencies`,
+`unmeasurable`, and `source_errors`. `summary` contains repository-wide
+statistics and `by_ecosystem` with the same statistic fields. Discovery failure
+is represented by null counts and coverage, never by zero. `source_errors`
+contains source-level failures; dependency-level failures remain in
+`unmeasurable`.
 
-```json
-{
-  "schema_version": 2,
-  "metric": "libyears",
-  "dependency_scope": "direct",
-  "ecosystems": ["pypi"],
-  "version_evidence": {
-    "declaration_source": "requirements.txt",
-    "snapshot_source": null
-  },
-  "summary": {
-    "dependencies_discovered": 0,
-    "dependencies_measured": 0,
-    "coverage": null,
-    "total_libyears": 0.0,
-    "mean_libyears": null,
-    "median_libyears": null,
-    "max_libyears": null
-  },
-  "dependencies": [],
-  "unmeasurable": []
-}
-```
+Each measurable or unmeasurable dependency carries its `ecosystem`. Measurable
+dependencies carry `version_source`; Python values remain `requirements_exact`
+and `resolved_snapshot`. npm uses `package_lock`. Python evidence is nested
+under `version_evidence.pypi`; npm evidence is nested under
+`version_evidence.npm` and identifies `package.json` and `package-lock.json`.
 
-A measurable dependency:
+A malformed npm manifest produces a source error with ecosystem `npm`, source
+`package.json`, and reason `invalid_manifest`, without synthetic npm rows.
+Successful measurements from another ecosystem remain in the report.
 
-```json
-{
-  "ecosystem": "pypi",
-  "name": "requests",
-  "used_version": "2.31.0",
-  "used_release_time": "2023-05-22T15:12:42Z",
-  "latest_stable_version": "2.32.5",
-  "latest_stable_release_time": "2025-08-18T20:46:02Z",
-  "libyears": 2.2429335564174715,
-  "timestamp_anomaly": false,
-  "version_source": "requirements_exact"
-}
-```
-
-An unmeasurable dependency:
-
-```json
-{
-  "ecosystem": "pypi",
-  "name": "requests",
-  "declared": ">=2.28",
-  "reason": "non_exact_version"
-}
-```
-
-Do not make JSON consumers parse human-oriented strings.
-
-Human-oriented diagnostics SHOULD NOT be added to the JSON schema merely to improve CLI presentation.
-
-Schema version 2 is the current machine-readable contract. Measured dependencies
-include `version_source`; resolved-snapshot reports identify that source under
-`version_evidence.snapshot_source`. Verbose diagnostics do not add fields to JSON.
+Do not make JSON consumers parse human-oriented strings. Human-oriented
+diagnostics SHOULD NOT be added to the JSON schema merely to improve CLI
+presentation. Verbose registry diagnostics do not add fields to JSON.
 
 ## 18. Human Output
 
