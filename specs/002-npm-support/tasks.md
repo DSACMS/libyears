@@ -145,11 +145,11 @@ identify stable candidates by npm publication metadata.
 - `tests/test_npm_registry.py`
 
 **Acceptance criteria:**
-- [ ] Only the public npm registry is queried; exact used-version existence comes from `versions` and release time from its `time` entry.
-- [ ] Package/version/timestamp misses use existing reason identifiers; malformed required response data uses `invalid_registry_response`; transport failure uses `registry_error`.
-- [ ] Publication timestamps, not lexical version order, select the newest eligible release; deprecated available versions remain eligible.
-- [ ] Scoped package lookup encodes the registry URL path while preserving displayed package identity.
-- [ ] For equal greatest timestamps, `dist-tags.latest` wins only if tied; otherwise deterministic lexical fallback chooses the reported version.
+- [x] Only the public npm registry is queried; exact used-version existence comes from `versions` and release time from its `time` entry.
+- [x] Package/version/timestamp misses use existing reason identifiers; malformed required response data uses `invalid_registry_response`; transport failure uses `registry_error`.
+- [x] Publication timestamps, not lexical version order, select the newest eligible release; deprecated available versions remain eligible.
+- [x] Scoped package lookup encodes the registry URL path while preserving displayed package identity.
+- [x] For equal greatest timestamps, `dist-tags.latest` wins only if tied; otherwise deterministic lexical fallback chooses the reported version.
 
 **Verification:** `python -m unittest tests.test_npm_registry -v`
 

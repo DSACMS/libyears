@@ -3,10 +3,14 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timezone
 import json
 from pathlib import Path
 import re
 from typing import Any
+from urllib.parse import quote
+
+from .registry import TransportFailure, VerifiedJSONTransport
 
 
 INVALID_MANIFEST = "invalid_manifest"
@@ -15,6 +19,12 @@ UNSUPPORTED_LOCKFILE_VERSION = "unsupported_lockfile_version"
 UNSUPPORTED_DEPENDENCY_SOURCE = "unsupported_dependency_source"
 LOCK_VERSION_MISSING = "lock_version_missing"
 DECLARATION_LOCK_CONFLICT = "declaration_lock_conflict"
+PACKAGE_NOT_FOUND = "package_not_found"
+VERSION_NOT_FOUND = "version_not_found"
+RELEASE_DATE_MISSING = "release_date_missing"
+NO_STABLE_RELEASE = "no_stable_release"
+REGISTRY_ERROR = "registry_error"
+INVALID_REGISTRY_RESPONSE = "invalid_registry_response"
 
 _GITHUB_SHORTHAND = re.compile(
     r"^[A-Za-z0-9][A-Za-z0-9_.-]*/[A-Za-z0-9][A-Za-z0-9_.-]*(?:\.git)?(?:#[^\s]+)?$"
@@ -42,6 +52,133 @@ class ManifestDiscovery:
 
     dependencies: tuple[NpmDeclaration, ...]
     reason: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class NpmRegistryResult:
+    """Release timestamps for one exact npm package version."""
+
+    name: str
+    used_version: str
+    used_release_time: datetime
+    latest_stable_version: str
+    latest_stable_release_time: datetime
+
+
+@dataclass(frozen=True, slots=True)
+class NpmRegistryFailure:
+    """A stable npm registry failure and optional safe diagnostic."""
+
+    name: str
+    used_version: str
+    reason: str
+    diagnostic: str | None = None
+
+
+def _npm_timestamp(value: Any) -> datetime | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    try:
+        parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    if parsed.tzinfo is None or parsed.utcoffset() is None:
+        return None
+    return parsed.astimezone(timezone.utc)
+
+
+class NpmAdapter:
+    """Fetch public npm package metadata and select by publication time."""
+
+    def __init__(
+        self,
+        *,
+        timeout: float = 10.0,
+        user_agent: str = "libyears/0.1",
+        ca_bundle: str | None = None,
+    ) -> None:
+        self.transport = VerifiedJSONTransport(
+            timeout=timeout, user_agent=user_agent, ca_bundle=ca_bundle
+        )
+        self.timeout = self.transport.timeout
+        self.user_agent = self.transport.user_agent
+        self.ssl_context = self.transport.ssl_context
+        self.tls_trust = self.transport.tls_trust
+
+    def lookup(
+        self, name: str, used_version: str
+    ) -> NpmRegistryResult | NpmRegistryFailure:
+        """Look up an exact used version and timestamp-ordered latest release."""
+        url_name = quote(name, safe="@")
+        response_body = self.transport.get(f"https://registry.npmjs.org/{url_name}")
+        if isinstance(response_body, TransportFailure):
+            if response_body.status == 404:
+                return NpmRegistryFailure(
+                    name, used_version, PACKAGE_NOT_FOUND, "HTTP 404"
+                )
+            return NpmRegistryFailure(
+                name, used_version, REGISTRY_ERROR, response_body.diagnostic
+            )
+
+        try:
+            payload = json.loads(response_body.decode("utf-8"))
+        except (AttributeError, TypeError, UnicodeError, json.JSONDecodeError):
+            return NpmRegistryFailure(
+                name,
+                used_version,
+                INVALID_REGISTRY_RESPONSE,
+                "malformed registry response (invalid JSON)",
+            )
+
+        if (
+            not isinstance(payload, dict)
+            or not isinstance(payload.get("versions"), dict)
+            or not isinstance(payload.get("time"), dict)
+            or not isinstance(payload.get("dist-tags", {}), dict)
+        ):
+            return NpmRegistryFailure(
+                name,
+                used_version,
+                INVALID_REGISTRY_RESPONSE,
+                "malformed registry response (unexpected structure)",
+            )
+
+        versions = payload["versions"]
+        release_times = payload["time"]
+        if used_version not in versions:
+            return NpmRegistryFailure(name, used_version, VERSION_NOT_FOUND)
+        if not isinstance(versions[used_version], dict):
+            return NpmRegistryFailure(
+                name,
+                used_version,
+                INVALID_REGISTRY_RESPONSE,
+                "malformed registry response (invalid version entry)",
+            )
+        used_release_time = _npm_timestamp(release_times.get(used_version))
+        if used_release_time is None:
+            return NpmRegistryFailure(name, used_version, RELEASE_DATE_MISSING)
+
+        candidates = [
+            (timestamp, version)
+            for version in versions
+            if isinstance(version, str)
+            and isinstance(versions[version], dict)
+            and (timestamp := _npm_timestamp(release_times.get(version))) is not None
+        ]
+        if not candidates:
+            return NpmRegistryFailure(name, used_version, NO_STABLE_RELEASE)
+
+        latest_timestamp = max(timestamp for timestamp, _ in candidates)
+        tied_versions = sorted(
+            version for timestamp, version in candidates if timestamp == latest_timestamp
+        )
+        latest_tag = payload.get("dist-tags", {}).get("latest")
+        latest_version = latest_tag if latest_tag in tied_versions else tied_versions[0]
+        return NpmRegistryResult(
+            name, used_version, used_release_time, latest_version, latest_timestamp
+        )
+
+    resolve = lookup
 
 
 def _dependency_map(value: Any) -> dict[str, str] | None:
@@ -258,12 +395,21 @@ def discover_manifest(root: str | Path) -> ManifestDiscovery:
 __all__ = [
     "INVALID_MANIFEST",
     "INVALID_LOCKFILE",
+    "INVALID_REGISTRY_RESPONSE",
     "DECLARATION_LOCK_CONFLICT",
     "LOCK_VERSION_MISSING",
+    "NO_STABLE_RELEASE",
     "ManifestDiscovery",
+    "NpmAdapter",
     "NpmDeclaration",
+    "NpmRegistryFailure",
+    "NpmRegistryResult",
+    "PACKAGE_NOT_FOUND",
+    "REGISTRY_ERROR",
+    "RELEASE_DATE_MISSING",
     "UNSUPPORTED_DEPENDENCY_SOURCE",
     "UNSUPPORTED_LOCKFILE_VERSION",
+    "VERSION_NOT_FOUND",
     "discover_manifest",
     "resolve_lockfile",
     "resolve_v2_lockfile",
