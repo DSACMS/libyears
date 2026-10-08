@@ -1,4 +1,6 @@
 import json
+import math
+import ssl
 import unittest
 from datetime import datetime, timezone
 from unittest.mock import patch
@@ -65,6 +67,7 @@ class NpmRegistryTests(unittest.TestCase):
         )
         self.assertEqual(request.full_url, "https://registry.npmjs.org/example")
         self.assertEqual(kwargs["timeout"], 4.25)
+        self.assertTrue(math.isfinite(kwargs["timeout"]) and kwargs["timeout"] > 0)
         self.assertEqual(request.headers["User-agent"], "registry-test")
         self.assertEqual(result.latest_stable_version, "2.0.0")
         self.assertEqual(
@@ -75,6 +78,25 @@ class NpmRegistryTests(unittest.TestCase):
             result.latest_stable_release_time,
             datetime(2024, 1, 1, tzinfo=timezone.utc),
         )
+
+    def test_explicit_ca_bundle_uses_selected_verified_context(self):
+        context = ssl.create_default_context()
+        with patch(
+            "libyears.registry.ssl.create_default_context", return_value=context
+        ) as create_context:
+            adapter = NpmAdapter(ca_bundle="/approved/ca.pem")
+        create_context.assert_called_once_with(cafile="/approved/ca.pem")
+        with patch(
+            "libyears.registry.request.urlopen",
+            return_value=Response(
+                payload(["1.0.0"], {"1.0.0": "2024-01-01T00:00:00Z"})
+            ),
+        ) as urlopen:
+            adapter.lookup("example", "1.0.0")
+        kwargs = urlopen.call_args.kwargs
+        self.assertEqual(kwargs["context"], context)
+        self.assertEqual(kwargs["context"].verify_mode, ssl.CERT_REQUIRED)
+        self.assertTrue(kwargs["context"].check_hostname)
 
     def test_scoped_package_encodes_slash_and_preserves_identity(self):
         result, request, _ = self.lookup(

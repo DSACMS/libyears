@@ -1,4 +1,5 @@
 import json
+import math
 import ssl
 import tempfile
 import unittest
@@ -46,6 +47,8 @@ class PyPITests(unittest.TestCase):
         urlopen.assert_called_once()
         args, kwargs = urlopen.call_args
         self.assertEqual(kwargs["timeout"], 3.5)
+        self.assertTrue(math.isfinite(kwargs["timeout"]) and kwargs["timeout"] > 0)
+        self.assertTrue(args[0].full_url.startswith("https://"))
         self.assertEqual(args[0].headers["User-agent"], "test-agent")
         return result
 

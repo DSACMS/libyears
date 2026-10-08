@@ -191,9 +191,9 @@ same verified transport guarantees already preserved for PyPI.
 - `libyears/cli.py` (only if needed to pass the existing CA/timeout options)
 
 **Acceptance criteria:**
-- [ ] Both adapters use HTTPS, a common finite timeout, User-Agent, and selected verified context.
-- [ ] Shared transport failure categories remain stable, and TLS diagnostics remain human-only.
-- [ ] Certificate and hostname verification stay enabled.
+- [x] Both adapters use HTTPS, a common finite timeout, User-Agent, and selected verified context.
+- [x] Shared transport failure categories remain stable, and TLS diagnostics remain human-only.
+- [x] Certificate and hostname verification stay enabled.
 
 **Verification:** `python -m unittest tests.test_pypi tests.test_npm_registry tests.test_cli -v`
 
