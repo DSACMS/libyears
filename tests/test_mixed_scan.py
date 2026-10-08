@@ -164,9 +164,17 @@ class MixedScanTests(unittest.TestCase):
         self.assertEqual(data["schema_version"], 3)
         self.assertEqual(data["source_errors"][0]["reason"], "invalid_manifest")
         self.assertEqual([item["ecosystem"] for item in data["dependencies"]], ["pypi"])
+        self.assertIsNone(data["summary"]["dependencies_discovered"])
+        self.assertIsNone(data["summary"]["coverage"])
+        self.assertIsNone(data["summary"]["by_ecosystem"]["npm"]["coverage"])
+        self.assertAlmostEqual(data["summary"]["total_libyears"], 365 / 365.25)
+        self.assertAlmostEqual(data["summary"]["by_ecosystem"]["pypi"]["total_libyears"], 365 / 365.25)
         human = format_human(report, str(self.root))
         self.assertIn("npm manifest discovery failed", human)
         self.assertIn("alpha", human)
+        self.assertIn("Repository: null coverage", human)
+        self.assertIn("npm: null coverage", human)
+        self.assertIn("pypi: 100.0% coverage", human)
 
     def test_invalid_lockfile_remains_dependency_level_and_pypi_survives(self):
         self.write_python()
@@ -237,6 +245,19 @@ class MixedScanTests(unittest.TestCase):
             (npm.total_libyears, npm.mean_libyears, npm.median_libyears, npm.max_libyears),
             (6.0, 3.0, 3.0, 4.0),
         )
+        payload = json.loads(format_json(report, str(self.root)))
+        self.assertEqual(payload["schema_version"], 3)
+        self.assertEqual(payload["summary"]["dependencies_discovered"], 5)
+        self.assertEqual(payload["summary"]["dependencies_measured"], 3)
+        self.assertAlmostEqual(payload["summary"]["coverage"], 0.6)
+        self.assertEqual(payload["summary"]["total_libyears"], 7.0)
+        self.assertEqual(payload["summary"]["by_ecosystem"]["npm"]["dependencies_discovered"], 3)
+        self.assertEqual(payload["version_evidence"]["npm"]["snapshot_source"], "package-lock.json")
+        human = format_human(report, str(self.root))
+        self.assertIn("Ecosystems: npm, pypi", human)
+        self.assertIn("Repository: 60.0% coverage", human)
+        self.assertIn("npm: 66.7% coverage", human)
+        self.assertIn("pypi: 50.0% coverage", human)
 
     def test_failed_discovery_nulls_ecosystem_and_repository_denominators(self):
         self.write_python()

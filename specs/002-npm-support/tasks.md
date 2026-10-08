@@ -385,12 +385,12 @@ failure end to end using local evidence and mocked registry metadata.
 - `tests/fixtures/` (only if fixture files improve clarity)
 
 **Acceptance criteria:**
-- [ ] An offline mixed fixture crosses requirements/manifest discovery, Python snapshot and npm lock evidence, mocked registries, metric calculation, repository/per-ecosystem summaries, JSON v3, and human output.
-- [ ] A separate explicit malformed-manifest mixed case has valid Python requirements/evidence and mocked valid PyPI metadata; npm discovery returns `invalid_manifest` with no synthetic npm rows.
-- [ ] In that malformed-manifest case, the valid PyPI measurement survives, `source_errors` contains the npm `package.json` failure, npm coverage is null, repository coverage is null, and valid PyPI aggregate values remain reported.
-- [ ] Both JSON v3 and human output assert that malformed-manifest state.
-- [ ] Tests require no network, npm/Node execution, package installation, or repository-code execution.
-- [ ] The complete deterministic unittest suite passes before release validation; existing PyPI behavior, snapshot semantics, TLS/CA behavior, valid JSON, and no-install/no-resolution invariants remain intact.
+- [x] An offline mixed fixture crosses requirements/manifest discovery, Python snapshot and npm lock evidence, mocked registries, metric calculation, repository/per-ecosystem summaries, JSON v3, and human output.
+- [x] A separate explicit malformed-manifest mixed case has valid Python requirements/evidence and mocked valid PyPI metadata; npm discovery returns `invalid_manifest` with no synthetic npm rows.
+- [x] In that malformed-manifest case, the valid PyPI measurement survives, `source_errors` contains the npm `package.json` failure, npm coverage is null, repository coverage is null, and valid PyPI aggregate values remain reported.
+- [x] Both JSON v3 and human output assert that malformed-manifest state.
+- [x] Tests require no network, npm/Node execution, package installation, or repository-code execution.
+- [x] The complete deterministic unittest suite passes before release validation; existing PyPI behavior, snapshot semantics, TLS/CA behavior, valid JSON, and no-install/no-resolution invariants remain intact.
 
 **Verification:** `python -m unittest discover -s tests`
 
