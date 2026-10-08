@@ -10,6 +10,7 @@ from libyears.npm import (
     UNSUPPORTED_DEPENDENCY_SOURCE,
     discover_manifest,
     resolve_v2_lockfile,
+    resolve_v3_lockfile,
 )
 
 
@@ -189,6 +190,55 @@ class NpmManifestTests(unittest.TestCase):
                 ("pinned", DECLARATION_LOCK_CONFLICT, None),
                 ("ranged", None, "9.0.0"),
                 ("tagged", None, "3.0.0"),
+            ],
+        )
+
+    def test_v3_resolves_only_declared_root_and_scoped_package_paths(self):
+        manifest = self.discover(json.dumps({
+            "dependencies": {
+                "express": "^1.0.0",
+                "@types/node": "1.2.3",
+            }
+        }))
+        resolved = resolve_v3_lockfile(
+            manifest,
+            {
+                "": {"name": "fixture"},
+                "node_modules/express": {"version": "2.0.0"},
+                "node_modules/container/node_modules/express": {"version": "9.0.0"},
+                "node_modules/@types/node": {"version": "1.2.3"},
+                "node_modules/lockfile-only": {"version": "7.0.0"},
+            },
+        )
+
+        self.assertEqual(
+            [
+                (item.name, item.declared, item.used_version, item.reason)
+                for item in resolved.dependencies
+            ],
+            [
+                ("express", "^1.0.0", "2.0.0", None),
+                ("@types/node", "1.2.3", "1.2.3", None),
+            ],
+        )
+
+    def test_v3_missing_path_and_exact_declaration_conflict(self):
+        manifest = self.discover(json.dumps({
+            "dependencies": {
+                "missing": "^1.0.0",
+                "pinned": "1.2.3",
+            }
+        }))
+        resolved = resolve_v3_lockfile(
+            manifest,
+            {"node_modules/pinned": {"version": "1.2.4"}},
+        )
+
+        self.assertEqual(
+            [(item.name, item.reason, item.used_version) for item in resolved.dependencies],
+            [
+                ("missing", LOCK_VERSION_MISSING, None),
+                ("pinned", DECLARATION_LOCK_CONFLICT, None),
             ],
         )
 

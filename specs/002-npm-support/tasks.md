@@ -83,9 +83,9 @@ installation paths only.
 - `tests/test_npm.py`
 
 **Acceptance criteria:**
-- [ ] v3 direct and scoped paths resolve exact versions.
-- [ ] Lockfile-only and nested/transitive entries remain ignored.
-- [ ] Missing paths and exact declaration conflicts use the specified reasons.
+- [x] v3 direct and scoped paths resolve exact versions.
+- [x] Lockfile-only and nested/transitive entries remain ignored.
+- [x] Missing paths and exact declaration conflicts use the specified reasons.
 
 **Verification:** `python -m unittest tests.test_npm -v`
 

@@ -128,6 +128,13 @@ def resolve_v2_lockfile(
     return ManifestDiscovery(tuple(resolved))
 
 
+def resolve_v3_lockfile(
+    discovery: ManifestDiscovery, packages: Any
+) -> ManifestDiscovery:
+    """Add v3 exact versions from its path-keyed package map."""
+    return resolve_v2_lockfile(discovery, packages)
+
+
 def discover_manifest(root: str | Path) -> ManifestDiscovery:
     """Discover production dependencies from *root*/``package.json``.
 
@@ -174,4 +181,5 @@ __all__ = [
     "UNSUPPORTED_DEPENDENCY_SOURCE",
     "discover_manifest",
     "resolve_v2_lockfile",
+    "resolve_v3_lockfile",
 ]
