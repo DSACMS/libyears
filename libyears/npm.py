@@ -10,6 +10,7 @@ import re
 from typing import Any
 from urllib.parse import quote
 
+from .model import RegistryFailure, RegistryResult
 from .registry import TransportFailure, VerifiedJSONTransport
 
 
@@ -60,25 +61,8 @@ class ManifestDiscovery:
     reason: str | None = None
 
 
-@dataclass(frozen=True, slots=True)
-class NpmRegistryResult:
-    """Release timestamps for one exact npm package version."""
-
-    name: str
-    used_version: str
-    used_release_time: datetime
-    latest_stable_version: str
-    latest_stable_release_time: datetime
-
-
-@dataclass(frozen=True, slots=True)
-class NpmRegistryFailure:
-    """A stable npm registry failure and optional safe diagnostic."""
-
-    name: str
-    used_version: str
-    reason: str
-    diagnostic: str | None = None
+NpmRegistryResult = RegistryResult
+NpmRegistryFailure = RegistryFailure
 
 
 def _npm_timestamp(value: Any) -> datetime | None:

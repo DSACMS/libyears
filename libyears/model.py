@@ -36,6 +36,84 @@ class Dependency:
 
 
 @dataclass(frozen=True, slots=True)
+class RegistryResult:
+    """Common release timestamps returned by a registry adapter."""
+
+    name: str
+    used_version: str
+    used_release_time: datetime
+    latest_stable_version: str
+    latest_stable_release_time: datetime
+
+
+@dataclass(frozen=True, slots=True)
+class RegistryFailure:
+    """Common machine-readable registry failure with a safe diagnostic."""
+
+    name: str
+    used_version: str
+    reason: str
+    diagnostic: str | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class DependencyCandidate:
+    """A source candidate with exact evidence ready for registry lookup."""
+
+    ecosystem: str
+    name: str
+    registry_name: str
+    declared: str
+    used_version: str
+    version_source: str
+
+
+@dataclass(frozen=True, slots=True)
+class UnmeasurableDependency:
+    """A discovered dependency that cannot proceed to registry lookup."""
+
+    ecosystem: str
+    name: str
+    declared: str
+    reason: str
+
+
+@dataclass(frozen=True, slots=True)
+class SourceError:
+    """A source-level discovery failure with no fabricated dependency row."""
+
+    ecosystem: str
+    source: str
+    reason: str
+
+
+@dataclass(frozen=True, slots=True)
+class SourceEvidence:
+    """Human-readable declaration and exact-version evidence source names."""
+
+    declaration_source: str
+    snapshot_source: str | None
+
+
+@dataclass(frozen=True, slots=True)
+class SourceResult:
+    """Common output of one concrete ecosystem dependency source."""
+
+    ecosystem: str
+    candidates: tuple[DependencyCandidate, ...]
+    unmeasurable: tuple[UnmeasurableDependency, ...]
+    source_errors: tuple[SourceError, ...]
+    evidence: SourceEvidence
+
+    @property
+    def dependencies_discovered(self) -> int | None:
+        """Return the known denominator, or unknown after source failure."""
+        if self.source_errors:
+            return None
+        return len(self.candidates) + len(self.unmeasurable)
+
+
+@dataclass(frozen=True, slots=True)
 class DependencyMeasurement:
     """A dependency and its calculated Libyears value."""
     dependency: Dependency

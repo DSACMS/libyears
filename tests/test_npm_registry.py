@@ -16,7 +16,7 @@ from libyears.npm import (
     NO_STABLE_RELEASE,
 )
 from libyears.metric import measure_dependency
-from libyears.model import Dependency
+from libyears.model import Dependency, RegistryFailure, RegistryResult
 
 
 class Response:
@@ -70,6 +70,7 @@ class NpmRegistryTests(unittest.TestCase):
         self.assertTrue(math.isfinite(kwargs["timeout"]) and kwargs["timeout"] > 0)
         self.assertEqual(request.headers["User-agent"], "registry-test")
         self.assertEqual(result.latest_stable_version, "2.0.0")
+        self.assertIs(type(result), RegistryResult)
         self.assertEqual(
             result.used_release_time,
             datetime(2022, 1, 1, tzinfo=timezone.utc),
@@ -237,6 +238,7 @@ class NpmRegistryTests(unittest.TestCase):
         with patch("libyears.registry.request.urlopen", side_effect=error):
             result = adapter.lookup("example", "1.0.0")
         self.assertIsInstance(result, NpmRegistryFailure)
+        self.assertIsInstance(result, RegistryFailure)
         self.assertEqual(result.reason, REGISTRY_ERROR)
         self.assertEqual(result.diagnostic, "network connection failure")
         self.assertNotIn("sensitive", result.diagnostic)

@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import Mock, patch
 
 from libyears.metric import build_report, measure_dependency
-from libyears.model import Dependency
+from libyears.model import Dependency, RegistryResult
 from libyears.pypi import (
     INVALID_REGISTRY_RESPONSE,
     NO_STABLE_RELEASE,
@@ -60,6 +60,8 @@ class PyPITests(unittest.TestCase):
                 "1.2": [file("2023-12-01T00:00:00Z")],
             }}
         )
+        self.assertIsInstance(result, RegistryResult)
+        self.assertIs(type(result), RegistryResult)
         self.assertEqual(result.latest_stable_version, "1.1")
         self.assertEqual(result.used_release_time, datetime(2023, 1, 1, tzinfo=timezone.utc))
 
@@ -131,6 +133,43 @@ class PyPITests(unittest.TestCase):
         result = self.lookup({"releases": {"2.0": [file("2023-01-01T00:00:00Z")]}}, "1.0")
         self.assertIsInstance(result, RegistryFailure)
         self.assertEqual(result.reason, VERSION_NOT_FOUND)
+
+    def test_source_result_contract_carries_common_evidence_and_failures(self):
+        from libyears.model import (
+            DependencyCandidate,
+            SourceError,
+            SourceEvidence,
+            SourceResult,
+            UnmeasurableDependency,
+        )
+
+        python_result = SourceResult(
+            "pypi",
+            (
+                DependencyCandidate(
+                    "pypi", "Requests", "requests", "Requests==2.0", "2.0", "requirements_exact"
+                ),
+            ),
+            (
+                UnmeasurableDependency(
+                    "pypi", "other", "other>=1", "non_exact_version"
+                ),
+            ),
+            (),
+            SourceEvidence("requirements.txt", None),
+        )
+        failed_npm_result = SourceResult(
+            "npm",
+            (),
+            (),
+            (SourceError("npm", "package.json", "invalid_manifest"),),
+            SourceEvidence("package.json", "package-lock.json"),
+        )
+        self.assertEqual(python_result.dependencies_discovered, 2)
+        self.assertEqual(python_result.candidates[0].registry_name, "requests")
+        self.assertEqual(python_result.evidence.snapshot_source, None)
+        self.assertIsNone(failed_npm_result.dependencies_discovered)
+        self.assertEqual(failed_npm_result.source_errors[0].reason, "invalid_manifest")
 
     def test_missing_upload_timestamps(self):
         result = self.lookup({"releases": {"1.0": [{"yanked": False}]}})

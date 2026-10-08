@@ -31,7 +31,7 @@ Then make only these verification-command changes:
 
 Change:
 
-`python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry -v`
+`python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry`
 
 to:
 
@@ -290,12 +290,12 @@ connect these two known ecosystems.
 - focused tests in `tests/test_pypi.py` and `tests/test_npm_registry.py`
 
 **Acceptance criteria:**
-- [ ] The concrete PyPI and npm adapters satisfy one narrow common lookup result/failure contract.
-- [ ] The concrete Python and npm sources can express candidates, dependency-level unmeasurables, source errors, and source evidence.
-- [ ] No dynamic registration, plugin framework, package graph abstraction, or generic resolver is introduced.
-- [ ] Existing Python dependency/result semantics remain unchanged and PyPI tests pass.
+- [x] The concrete PyPI and npm adapters satisfy one narrow common lookup result/failure contract.
+- [x] The concrete Python and npm sources can express candidates, dependency-level unmeasurables, source errors, and source evidence.
+- [x] No dynamic registration, plugin framework, package graph abstraction, or generic resolver is introduced.
+- [x] Existing Python dependency/result semantics remain unchanged and PyPI tests pass.
 
-**Verification:** `python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry -v`
+**Verification:** `python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry`
 
 ### T011 — Orchestrate explicit PyPI and npm scans
 
@@ -317,7 +317,7 @@ with package-level and ecosystem-level failure isolation.
 - [ ] This task exercises mixed reports internally; it does not switch the CLI's public output path to mixed reports before the atomic schema-v3 migration.
 - [ ] Existing CLI behavior and JSON serialization remain valid under the currently documented schema.
 
-**Verification:** `python -m unittest tests.test_mixed_scan tests.test_scan tests.test_cli -v`
+**Verification:** `python -m unittest tests.test_mixed_scan tests.test_scan tests.test_cli`
 
 ### T012 — Calculate repository and per-ecosystem summaries
 
@@ -338,7 +338,7 @@ and per-ecosystem statistics, including unknown discovery denominators.
 - [ ] Failed discovery makes that ecosystem's summary fields and repository discovered count/coverage null while retaining successful measured counts and aggregate values.
 - [ ] Empty and zero-measurement ecosystem cases follow the approved summary rules.
 
-**Verification:** `python -m unittest tests.test_mixed_scan tests.test_metric -v`
+**Verification:** `python -m unittest tests.test_mixed_scan tests.test_metric`
 
 ## Phase 4 — Mixed output and atomic schema/documentation migration
 
@@ -369,7 +369,7 @@ boundary, including implementation, schema tests, and public documentation.
 - [ ] No committed state from this task emits schema v3 while public documentation still describes schema v2.
 - [ ] The CLI begins exposing mixed npm/PyPI results at this same boundary, so no preceding task emits mixed user-facing results through the PyPI-only v2 representation.
 
-**Verification:** `python -m unittest tests.test_output tests.test_mixed_scan tests.test_cli -v`; then review README/SPEC/AGENTS schema statements against emitted v3 and mixed human examples.
+**Verification:** `python -m unittest tests.test_output tests.test_mixed_scan tests.test_cli`; then review README/SPEC/AGENTS schema statements against emitted v3 and mixed human examples.
 
 **Non-goals:** Changing metric semantics, adding other ecosystems, or combining documentation changes unrelated to the v3/public npm contract.
 
@@ -392,7 +392,7 @@ failure end to end using local evidence and mocked registry metadata.
 - [ ] Tests require no network, npm/Node execution, package installation, or repository-code execution.
 - [ ] The complete deterministic unittest suite passes before release validation; existing PyPI behavior, snapshot semantics, TLS/CA behavior, valid JSON, and no-install/no-resolution invariants remain intact.
 
-**Verification:** `python -m unittest discover -s tests -v`
+**Verification:** `python -m unittest discover -s tests`
 
 ## Phase 5 — Release validation and convergence
 

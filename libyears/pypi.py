@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from datetime import datetime, timezone
 import json
 import re
@@ -14,6 +13,7 @@ from .registry import (
     diagnostic as _diagnostic,
     select_tls_context,
 )
+from .model import RegistryFailure, RegistryResult
 
 
 PACKAGE_NOT_FOUND = "package_not_found"
@@ -26,25 +26,7 @@ INVALID_REGISTRY_RESPONSE = "invalid_registry_response"
 _PRERELEASE = re.compile(r"(?:alpha|beta|preview|dev|rc|c\d|a\d|b\d)", re.IGNORECASE)
 
 
-@dataclass(frozen=True, slots=True)
-class PyPIResult:
-    """Metadata needed to measure one exact-pinned package."""
-
-    name: str
-    used_version: str
-    used_release_time: datetime
-    latest_stable_version: str
-    latest_stable_release_time: datetime
-
-
-@dataclass(frozen=True, slots=True)
-class RegistryFailure:
-    """A stable, machine-readable registry lookup failure."""
-
-    name: str
-    used_version: str
-    reason: str
-    diagnostic: str | None = None
+PyPIResult = RegistryResult
 
 
 def _timestamp(value: Any) -> datetime | None:
