@@ -41,7 +41,7 @@ def file(timestamp, *, yanked=False):
 class PyPITests(unittest.TestCase):
     def lookup(self, payload, version="1.0"):
         adapter = PyPIAdapter(timeout=3.5, user_agent="test-agent")
-        with patch("libyears.pypi.request.urlopen", return_value=Response(payload)) as urlopen:
+        with patch("libyears.registry.request.urlopen", return_value=Response(payload)) as urlopen:
             result = adapter.lookup("example-package", version)
         urlopen.assert_called_once()
         args, kwargs = urlopen.call_args
@@ -143,7 +143,7 @@ class PyPITests(unittest.TestCase):
         adapter = PyPIAdapter()
         response = Response({})
         response.read = lambda: b"not json"
-        with patch("libyears.pypi.request.urlopen", return_value=response):
+        with patch("libyears.registry.request.urlopen", return_value=response):
             result = adapter.lookup("example", "1.0")
         self.assertEqual(result.reason, INVALID_REGISTRY_RESPONSE)
 
@@ -151,7 +151,7 @@ class PyPITests(unittest.TestCase):
         adapter = PyPIAdapter()
         response = Response({})
         response.read = lambda: b"\xff"
-        with patch("libyears.pypi.request.urlopen", return_value=response):
+        with patch("libyears.registry.request.urlopen", return_value=response):
             result = adapter.lookup("example", "1.0")
         self.assertEqual(result.reason, INVALID_REGISTRY_RESPONSE)
 
@@ -168,14 +168,14 @@ class PyPITests(unittest.TestCase):
     def test_http_error(self):
         adapter = PyPIAdapter()
         error = OSError("connection failed")
-        with patch("libyears.pypi.request.urlopen", side_effect=error):
+        with patch("libyears.registry.request.urlopen", side_effect=error):
             result = adapter.lookup("example", "1.0")
         self.assertEqual(result.reason, REGISTRY_ERROR)
         self.assertEqual(result.diagnostic, "network connection failure")
 
     def test_default_request_uses_normal_urlopen_tls_defaults(self):
         adapter = PyPIAdapter()
-        with patch("libyears.pypi.request.urlopen", return_value=Response({"releases": {"1.0": [file("2023-01-01T00:00:00Z")]}})) as urlopen:
+        with patch("libyears.registry.request.urlopen", return_value=Response({"releases": {"1.0": [file("2023-01-01T00:00:00Z")]}})) as urlopen:
             adapter.lookup("example", "1.0")
         context = urlopen.call_args.kwargs["context"]
         self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
@@ -183,22 +183,22 @@ class PyPITests(unittest.TestCase):
 
     def test_custom_ca_bundle_uses_verified_default_context(self):
         context = object()
-        with patch("libyears.pypi.ssl.create_default_context", return_value=context) as create_context:
+        with patch("libyears.registry.ssl.create_default_context", return_value=context) as create_context:
             adapter = PyPIAdapter(ca_bundle="/tmp/org-ca.pem")
         self.assertEqual(adapter.tls_trust, "explicit CA bundle: /tmp/org-ca.pem")
         create_context.assert_called_once_with(cafile="/tmp/org-ca.pem")
-        with patch("libyears.pypi.request.urlopen", return_value=Response({"releases": {"1.0": [file("2023-01-01T00:00:00Z")]}})) as urlopen:
+        with patch("libyears.registry.request.urlopen", return_value=Response({"releases": {"1.0": [file("2023-01-01T00:00:00Z")]}})) as urlopen:
             adapter.lookup("example", "1.0")
         self.assertIs(urlopen.call_args.kwargs["context"], context)
-        with patch("libyears.pypi.ssl.create_default_context", return_value=context), \
-             patch("libyears.pypi._pip_ca_candidates", side_effect=AssertionError("fallback used")), \
-             patch("libyears.pypi.ssl.get_default_verify_paths", side_effect=AssertionError("default checked")):
+        with patch("libyears.registry.ssl.create_default_context", return_value=context), \
+             patch("libyears.registry._pip_ca_candidates", side_effect=AssertionError("fallback used")), \
+             patch("libyears.registry.ssl.get_default_verify_paths", side_effect=AssertionError("default checked")):
             PyPIAdapter(ca_bundle="/tmp/authoritative.pem")
 
     def test_tls_error_diagnostic_is_concise(self):
         adapter = PyPIAdapter()
         error = ssl.SSLCertVerificationError("sensitive underlying details")
-        with patch("libyears.pypi.request.urlopen", side_effect=error):
+        with patch("libyears.registry.request.urlopen", side_effect=error):
             result = adapter.lookup("example", "1.0")
         self.assertEqual(result.reason, REGISTRY_ERROR)
         self.assertEqual(result.diagnostic, "TLS certificate verification failure")
@@ -208,8 +208,8 @@ class PyPITests(unittest.TestCase):
         from libyears.pypi import select_tls_context
         context = Mock()
         context.get_ca_certs.return_value = [{}]
-        with patch("libyears.pypi.ssl.create_default_context", return_value=context) as create, \
-             patch("libyears.pypi._pip_ca_candidates", side_effect=AssertionError("fallback used")):
+        with patch("libyears.registry.ssl.create_default_context", return_value=context) as create, \
+             patch("libyears.registry._pip_ca_candidates", side_effect=AssertionError("fallback used")):
             selected, source = select_tls_context()
         self.assertIs(selected, context)
         self.assertEqual(source, "Python default trust store")
@@ -220,10 +220,21 @@ class PyPITests(unittest.TestCase):
         context = Mock()
         context.get_ca_certs.return_value = [{}]
         with patch.dict("os.environ", {"SSL_CERT_FILE": "/approved/ca.pem"}), \
-             patch("libyears.pypi.ssl.create_default_context", return_value=context) as create:
+             patch("libyears.registry.ssl.create_default_context", return_value=context) as create:
             selected, source = select_tls_context()
         self.assertIs(selected, context)
         self.assertEqual(source, "SSL_CERT_FILE")
+        create.assert_called_once_with()
+
+    def test_ssl_cert_dir_is_reported_and_used_through_python_defaults(self):
+        from libyears.pypi import select_tls_context
+        context = Mock()
+        context.get_ca_certs.return_value = [{}]
+        with patch.dict("os.environ", {"SSL_CERT_DIR": "/approved/ca-dir"}, clear=True), \
+             patch("libyears.registry.ssl.create_default_context", return_value=context) as create:
+            selected, source = select_tls_context()
+        self.assertIs(selected, context)
+        self.assertEqual(source, "SSL_CERT_DIR")
         create.assert_called_once_with()
 
     def test_pip_fallback_only_when_default_has_no_trust_and_uses_verified_cafile(self):
@@ -237,9 +248,9 @@ class PyPITests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             ca_path = Path(directory) / "cacert.pem"
             ca_path.write_text("test fixture", encoding="ascii")
-            with patch("libyears.pypi.ssl.create_default_context", side_effect=[empty, populated]) as create, \
-                 patch("libyears.pypi.ssl.get_default_verify_paths", return_value=ssl.DefaultVerifyPaths(None, None, "", "", "", "")), \
-                 patch("libyears.pypi._pip_ca_candidates", return_value=(ca_path,)):
+            with patch("libyears.registry.ssl.create_default_context", side_effect=[empty, populated]) as create, \
+                 patch("libyears.registry.ssl.get_default_verify_paths", return_value=ssl.DefaultVerifyPaths(None, None, "", "", "", "")), \
+                 patch("libyears.registry._pip_ca_candidates", return_value=(ca_path,)):
                 selected, source = select_tls_context()
         self.assertIs(selected, populated)
         self.assertEqual(source, "pip-bundled CA fallback")
@@ -253,9 +264,9 @@ class PyPITests(unittest.TestCase):
         empty.get_ca_certs.return_value = []
         empty.verify_mode = ssl.CERT_REQUIRED
         empty.check_hostname = True
-        with patch("libyears.pypi.ssl.create_default_context", return_value=empty), \
-             patch("libyears.pypi.ssl.get_default_verify_paths", return_value=ssl.DefaultVerifyPaths(None, None, "", "", "", "")), \
-             patch("libyears.pypi._pip_ca_candidates", return_value=()):
+        with patch("libyears.registry.ssl.create_default_context", return_value=empty), \
+             patch("libyears.registry.ssl.get_default_verify_paths", return_value=ssl.DefaultVerifyPaths(None, None, "", "", "", "")), \
+             patch("libyears.registry._pip_ca_candidates", return_value=()):
             selected, source = select_tls_context()
         self.assertIs(selected, empty)
         self.assertEqual(source, "Python default trust store")
@@ -266,7 +277,7 @@ class PyPITests(unittest.TestCase):
         adapter = PyPIAdapter()
         error = OSError("not found")
         error.code = 404
-        with patch("libyears.pypi.request.urlopen", side_effect=error):
+        with patch("libyears.registry.request.urlopen", side_effect=error):
             result = adapter.lookup("example", "1.0")
         self.assertEqual(result.reason, PACKAGE_NOT_FOUND)
 

@@ -125,9 +125,9 @@ from PyPI, preserving its current registry semantics.
 - `tests/test_pypi.py`
 
 **Acceptance criteria:**
-- [ ] PyPI retains HTTPS, positive finite timeout, User-Agent, verified TLS, current CA-bundle precedence, and current error classification/diagnostics.
-- [ ] PyPI release ordering, yanked handling, timestamp canonicalization, prerelease behavior, and lookup results remain equivalent.
-- [ ] The transport boundary is mockable and contains no ecosystem discovery or adapter registration framework.
+- [x] PyPI retains HTTPS, positive finite timeout, User-Agent, verified TLS, current CA-bundle precedence, and current error classification/diagnostics.
+- [x] PyPI release ordering, yanked handling, timestamp canonicalization, prerelease behavior, and lookup results remain equivalent.
+- [x] The transport boundary is mockable and contains no ecosystem discovery or adapter registration framework.
 
 **Verification:** `python -m unittest tests.test_pypi -v`
 
