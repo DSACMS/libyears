@@ -104,6 +104,7 @@ class SourceResult:
     unmeasurable: tuple[UnmeasurableDependency, ...]
     source_errors: tuple[SourceError, ...]
     evidence: SourceEvidence
+    source_present: bool = True
 
     @property
     def dependencies_discovered(self) -> int | None:
@@ -124,10 +125,10 @@ class DependencyMeasurement:
 @dataclass(frozen=True, slots=True)
 class MetricSummary:
     """Aggregate values for a repository scan."""
-    dependencies_discovered: int
-    dependencies_measured: int
+    dependencies_discovered: int | None
+    dependencies_measured: int | None
     coverage: float | None
-    total_libyears: float
+    total_libyears: float | None
     mean_libyears: float | None
     median_libyears: float | None
     max_libyears: float | None

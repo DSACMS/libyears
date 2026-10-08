@@ -1,7 +1,7 @@
 import json
 import tempfile
 import unittest
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from libyears.model import RegistryFailure, RegistryResult
@@ -29,6 +29,11 @@ class MixedScanTests(unittest.TestCase):
     def successful_lookup(self, name, version):
         used = datetime(2023, 1, 1, tzinfo=timezone.utc)
         latest = datetime(2024, 1, 1, tzinfo=timezone.utc)
+        return RegistryResult(name, version, used, "2.0.0", latest)
+
+    def lookup_for_libyears(self, name, version, value):
+        used = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        latest = used + timedelta(days=365.25 * value)
         return RegistryResult(name, version, used, "2.0.0", latest)
 
     def write_one_npm_dependency(self):
@@ -172,6 +177,118 @@ class MixedScanTests(unittest.TestCase):
         self.assertEqual(report.unmeasurable[0].ecosystem, "npm")
         self.assertEqual(report.unmeasurable[0].reason, "invalid_lockfile")
         self.assertEqual(report.source_errors, ())
+
+    def test_repository_and_ecosystem_aggregates_use_each_source_denominator(self):
+        self.write_python("py-one==1.0\npy-two==1.0\n")
+        npm_dependencies = {name: "^1.0.0" for name in ("npm-one", "npm-two", "npm-three")}
+        lock_packages = {"": {"name": "fixture"}}
+        lock_packages.update({
+            f"node_modules/{name}": {"version": "1.0.0"}
+            for name in npm_dependencies
+        })
+        self.write_npm(
+            json.dumps({"dependencies": npm_dependencies}),
+            json.dumps({"lockfileVersion": 3, "packages": lock_packages}),
+        )
+
+        def pypi_lookup(name, version):
+            if name == "py-two":
+                return RegistryFailure(name, version, "registry_error")
+            return self.lookup_for_libyears(name, version, 1.0)
+
+        def npm_lookup(name, version):
+            if name == "npm-three":
+                return RegistryFailure(name, version, "registry_error")
+            value = 2.0 if name == "npm-one" else 4.0
+            return self.lookup_for_libyears(name, version, value)
+
+        report = scan_mixed_repository(
+            self.root, pypi_lookup=pypi_lookup, npm_lookup=npm_lookup
+        )
+        summary = report.summary
+        self.assertEqual(summary.dependencies_discovered, 5)
+        self.assertEqual(summary.dependencies_measured, 3)
+        self.assertEqual(summary.coverage, 0.6)
+        self.assertEqual(summary.total_libyears, 7.0)
+        self.assertAlmostEqual(summary.mean_libyears, 7 / 3)
+        self.assertEqual(summary.median_libyears, 2.0)
+        self.assertEqual(summary.max_libyears, 4.0)
+        self.assertEqual(list(report.by_ecosystem), ["npm", "pypi"])
+        pypi = report.by_ecosystem["pypi"]
+        self.assertEqual(
+            (pypi.dependencies_discovered, pypi.dependencies_measured, pypi.coverage),
+            (2, 1, 0.5),
+        )
+        self.assertEqual(pypi.total_libyears, 1.0)
+        npm = report.by_ecosystem["npm"]
+        self.assertEqual(
+            (npm.dependencies_discovered, npm.dependencies_measured), (3, 2)
+        )
+        self.assertAlmostEqual(npm.coverage, 2 / 3)
+        self.assertEqual(
+            (npm.total_libyears, npm.mean_libyears, npm.median_libyears, npm.max_libyears),
+            (6.0, 3.0, 3.0, 4.0),
+        )
+
+    def test_failed_discovery_nulls_ecosystem_and_repository_denominators(self):
+        self.write_python()
+        self.write_npm('{"dependencies": {"ghost": "^1.0.0"')
+        report = scan_mixed_repository(
+            self.root,
+            pypi_lookup=lambda name, version: self.lookup_for_libyears(
+                name, version, 1.0
+            ),
+            npm_lookup=lambda *_: self.fail("invalid manifest has no npm candidate"),
+        )
+        self.assertIsNone(report.summary.dependencies_discovered)
+        self.assertEqual(report.summary.dependencies_measured, 1)
+        self.assertIsNone(report.summary.coverage)
+        self.assertEqual(report.summary.total_libyears, 1.0)
+        self.assertEqual(report.summary.mean_libyears, 1.0)
+        npm = report.by_ecosystem["npm"]
+        self.assertEqual(
+            (
+                npm.dependencies_discovered,
+                npm.dependencies_measured,
+                npm.coverage,
+                npm.total_libyears,
+                npm.mean_libyears,
+                npm.median_libyears,
+                npm.max_libyears,
+            ),
+            (None, None, None, None, None, None, None),
+        )
+        self.assertEqual(report.by_ecosystem["pypi"].dependencies_measured, 1)
+
+    def test_empty_and_zero_measurement_source_summaries(self):
+        self.write_python("")
+        self.write_npm(json.dumps({"dependencies": {"alpha": "^1.0.0"}}))
+        report = scan_mixed_repository(
+            self.root,
+            pypi_lookup=lambda *_: self.fail("no Python candidates"),
+            npm_lookup=lambda *_: self.fail("missing lockfile gives no npm candidates"),
+        )
+        pypi = report.by_ecosystem["pypi"]
+        self.assertEqual((pypi.dependencies_discovered, pypi.dependencies_measured), (0, 0))
+        self.assertIsNone(pypi.coverage)
+        self.assertEqual(pypi.total_libyears, 0.0)
+        self.assertIsNone(pypi.mean_libyears)
+
+        npm = report.by_ecosystem["npm"]
+        self.assertEqual((npm.dependencies_discovered, npm.dependencies_measured), (1, 0))
+        self.assertEqual(npm.coverage, 0.0)
+        self.assertEqual(npm.total_libyears, 0.0)
+        self.assertIsNone(npm.mean_libyears)
+        self.assertEqual((report.summary.dependencies_discovered, report.summary.dependencies_measured), (1, 0))
+
+    def test_missing_sources_are_not_added_to_ecosystem_summaries(self):
+        self.write_python()
+        report = scan_mixed_repository(
+            self.root,
+            pypi_lookup=self.successful_lookup,
+            npm_lookup=lambda *_: self.fail("npm manifest is absent"),
+        )
+        self.assertEqual(list(report.by_ecosystem), ["pypi"])
 
 
 if __name__ == "__main__":

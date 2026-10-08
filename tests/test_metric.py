@@ -100,6 +100,32 @@ class MetricTests(unittest.TestCase):
         self.assertIsNone(summary.median_libyears)
         self.assertIsNone(summary.max_libyears)
 
+    def test_unknown_discovery_denominator_retains_successful_measurements(self) -> None:
+        measurement = measure_dependency(dependency(0, 365.25))
+        summary = calculate_summary([measurement], dependencies_discovered=None)
+        self.assertIsNone(summary.dependencies_discovered)
+        self.assertEqual(summary.dependencies_measured, 1)
+        self.assertIsNone(summary.coverage)
+        self.assertEqual(summary.total_libyears, 1.0)
+        self.assertEqual(summary.mean_libyears, 1.0)
+
+    def test_failed_discovery_returns_all_unknown_summary_fields(self) -> None:
+        summary = calculate_summary(
+            [measure_dependency(dependency(0, 365.25))], discovery_failed=True
+        )
+        self.assertEqual(
+            (
+                summary.dependencies_discovered,
+                summary.dependencies_measured,
+                summary.coverage,
+                summary.total_libyears,
+                summary.mean_libyears,
+                summary.median_libyears,
+                summary.max_libyears,
+            ),
+            (None, None, None, None, None, None, None),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

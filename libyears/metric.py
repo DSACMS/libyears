@@ -11,6 +11,13 @@ from .model import Dependency, DependencyMeasurement, MetricReport, MetricSummar
 DAYS_PER_LIBYEAR = 365.25
 
 
+class _InferDiscovered:
+    __slots__ = ()
+
+
+_INFER_DISCOVERED = _InferDiscovered()
+
+
 def libyears_between(used_release_time: datetime, latest_stable_release_time: datetime) -> tuple[float, bool]:
     """Return ``(libyears, anomaly)`` for two UTC-aware timestamps."""
     probe = Dependency("_", "_", "_", used_release_time, "_", latest_stable_release_time)
@@ -26,15 +33,27 @@ def measure_dependency(dependency: Dependency) -> DependencyMeasurement:
 
 
 def calculate_summary(
-    measurements: Iterable[DependencyMeasurement], *, dependencies_discovered: int | None = None
+    measurements: Iterable[DependencyMeasurement],
+    *,
+    dependencies_discovered: int | None | _InferDiscovered = _INFER_DISCOVERED,
+    discovery_failed: bool = False,
 ) -> MetricSummary:
     """Calculate aggregates from measured dependencies only."""
+    if discovery_failed:
+        return MetricSummary(None, None, None, None, None, None, None)
+
     values = [measurement.libyears for measurement in measurements]
     measured = len(values)
-    discovered = measured if dependencies_discovered is None else dependencies_discovered
-    if discovered < 0 or discovered < measured:
+    discovered = (
+        measured
+        if dependencies_discovered is _INFER_DISCOVERED
+        else dependencies_discovered
+    )
+    if discovered is not None and (discovered < 0 or discovered < measured):
         raise ValueError("discovered dependency count is invalid")
-    coverage = None if discovered == 0 else measured / discovered
+    coverage = (
+        None if discovered is None or discovered == 0 else measured / discovered
+    )
     if not values:
         return MetricSummary(discovered, 0, coverage, 0.0, None, None, None)
     return MetricSummary(
@@ -43,8 +62,18 @@ def calculate_summary(
 
 
 def build_report(
-    measurements: Iterable[DependencyMeasurement], *, dependencies_discovered: int | None = None
+    measurements: Iterable[DependencyMeasurement],
+    *,
+    dependencies_discovered: int | None | _InferDiscovered = _INFER_DISCOVERED,
+    discovery_failed: bool = False,
 ) -> MetricReport:
     """Build a report while preserving the measured dependency records."""
     records = tuple(measurements)
-    return MetricReport(calculate_summary(records, dependencies_discovered=dependencies_discovered), records)
+    return MetricReport(
+        calculate_summary(
+            records,
+            dependencies_discovered=dependencies_discovered,
+            discovery_failed=discovery_failed,
+        ),
+        records,
+    )

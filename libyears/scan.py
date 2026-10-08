@@ -11,7 +11,7 @@ from .constraints import (
     SNAPSHOT_VERSION_INCOMPATIBLE,
     validate_snapshot_version,
 )
-from .metric import build_report, measure_dependency
+from .metric import build_report, calculate_summary, measure_dependency
 from .model import (
     Dependency,
     DependencyCandidate,
@@ -244,6 +244,8 @@ class MixedScanReport:
     unmeasurable: tuple[UnmeasurableDependency, ...]
     source_errors: tuple[SourceError, ...]
     source_results: tuple[SourceResult, ...]
+    summary: MetricSummary
+    by_ecosystem: dict[str, MetricSummary]
     diagnostics: tuple[tuple[str, str], ...] = ()
     tls_trust: str | None = None
 
@@ -337,13 +339,14 @@ def _python_source_result(
         tuple(unmeasurable),
         (),
         SourceEvidence("requirements.txt", snapshot_source),
+        source_present=_requirements_path(path) is not None,
     )
 
 
 def _npm_source_result(root: Path | None) -> SourceResult:
     evidence = SourceEvidence("package.json", "package-lock.json")
     if root is None:
-        return SourceResult("npm", (), (), (), evidence)
+        return SourceResult("npm", (), (), (), evidence, source_present=False)
 
     discovery = discover_manifest(root)
     if discovery.reason is not None:
@@ -353,6 +356,7 @@ def _npm_source_result(root: Path | None) -> SourceResult:
             (),
             (SourceError("npm", "package.json", discovery.reason),),
             evidence,
+            source_present=True,
         )
 
     resolved = resolve_lockfile(root, discovery)
@@ -380,7 +384,12 @@ def _npm_source_result(root: Path | None) -> SourceResult:
             # The source resolver must account for every declaration.
             raise ValueError(f"npm source produced no evidence or reason for {declaration.name}")
     return SourceResult(
-        "npm", tuple(candidates), tuple(unmeasurable), (), evidence
+        "npm",
+        tuple(candidates),
+        tuple(unmeasurable),
+        (),
+        evidence,
+        source_present=(root / "package.json").is_file(),
     )
 
 
@@ -453,11 +462,40 @@ def scan_mixed_repository(
             )
             measurements.append(measure_dependency(dependency))
 
+    detected_sources = tuple(
+        source
+        for source in (python_result, npm_result)
+        if source.source_present or source.source_errors
+    )
+    failed_discovery = any(source.source_errors for source in detected_sources)
+    discovered = (
+        None
+        if failed_discovery
+        else sum(source.dependencies_discovered or 0 for source in detected_sources)
+    )
+    summary = calculate_summary(
+        measurements, dependencies_discovered=discovered
+    )
+    by_ecosystem = {
+        source.ecosystem: calculate_summary(
+            (
+                measurement
+                for measurement in measurements
+                if measurement.dependency.ecosystem == source.ecosystem
+            ),
+            dependencies_discovered=source.dependencies_discovered,
+            discovery_failed=bool(source.source_errors),
+        )
+        for source in sorted(detected_sources, key=lambda item: item.ecosystem)
+    }
+
     return MixedScanReport(
         tuple(measurements),
         tuple(unmeasurable),
         tuple(source_errors),
         (python_result, npm_result),
+        summary,
+        by_ecosystem,
         tuple(diagnostics),
         getattr(pypi_adapter or active_npm_adapter, "tls_trust", None),
     )

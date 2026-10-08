@@ -333,10 +333,10 @@ and per-ecosystem statistics, including unknown discovery denominators.
 - `tests/test_mixed_scan.py`
 
 **Acceptance criteria:**
-- [ ] Repository and per-ecosystem counts, coverage, total, mean, median, and max handle known, zero, and unknown discovery correctly.
-- [ ] The specified PyPI `2/1` value `1.0` plus npm `3/2` values `2.0`, `4.0` yields repository discovered `5`, measured `3`, coverage `0.6`, total `7.0`, mean `7/3`, median `2.0`, max `4.0`; per-ecosystem values use only that ecosystem's measurements.
-- [ ] Failed discovery makes that ecosystem's summary fields and repository discovered count/coverage null while retaining successful measured counts and aggregate values.
-- [ ] Empty and zero-measurement ecosystem cases follow the approved summary rules.
+- [x] Repository and per-ecosystem counts, coverage, total, mean, median, and max handle known, zero, and unknown discovery correctly.
+- [x] The specified PyPI `2/1` value `1.0` plus npm `3/2` values `2.0`, `4.0` yields repository discovered `5`, measured `3`, coverage `0.6`, total `7.0`, mean `7/3`, median `2.0`, max `4.0`; per-ecosystem values use only that ecosystem's measurements.
+- [x] Failed discovery makes that ecosystem's summary fields and repository discovered count/coverage null while retaining successful measured counts and aggregate values.
+- [x] Empty and zero-measurement ecosystem cases follow the approved summary rules.
 
 **Verification:** `python -m unittest tests.test_mixed_scan tests.test_metric`
 
