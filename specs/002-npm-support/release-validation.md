@@ -72,3 +72,26 @@ The sandbox-only transport failures are recorded above as an environment
 limitation; the approved network-enabled run completed successfully.
 
 T015 acceptance criteria are satisfied.
+
+## T016 Optional live npm registry smoke
+
+- Date: 2026-10-08
+- Environment: macOS 25.3.0, arm64; Python 3.11.0
+- Method: local temporary fixture; no CI job was added
+- Fixture: one direct dependency, `d3` declared as `^7.9.0`, resolved as
+  `7.9.0` in a lockfile v3
+- CLI command: `python3 -B -m libyears <temporary-fixture-directory> --json`
+- Result: pass; schema v3 reported 1 discovered, 1 measured, 100% coverage,
+  no unmeasurable entries, and `d3` at latest stable with exactly 0.0
+  libyears
+- Registry/network outcome: the sandboxed attempt returned `registry_error`;
+  the same temporary-fixture command was rerun with approved network access
+  and successfully queried the public npm registry
+
+The fixture was created inside the workspace with Python's temporary-directory
+support and removed automatically. No packages were installed; npm, Node, and
+target repository code were not invoked. The live check was separate from the
+offline deterministic test suite, and CI configuration was not changed.
+
+T016 acceptance criteria are satisfied. No deterministic tests were run or
+affected by this optional live check.

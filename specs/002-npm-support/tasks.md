@@ -426,9 +426,9 @@ registry check after local repository dogfooding.
 - Release validation record or issue/release notes designated by the project
 
 **Acceptance criteria:**
-- [ ] If run, validation uses a dedicated optional CI smoke job or an equivalent documented live command against the public npm registry; it is separate from offline unit correctness.
-- [ ] Record pass/fail, date, environment, command/job, and registry/network outcome.
-- [ ] A network failure alone is not reported as a deterministic unit-test failure and does not make ordinary CI network-dependent.
+- [x] If run, validation uses a dedicated optional CI smoke job or an equivalent documented live command against the public npm registry; it is separate from offline unit correctness.
+- [x] Record pass/fail, date, environment, command/job, and registry/network outcome.
+- [x] A network failure alone is not reported as a deterministic unit-test failure and does not make ordinary CI network-dependent.
 
 **Verification:** Optionally run the dedicated smoke job or documented live command; record its result and environment. Skip without affecting deterministic test status when not scheduled or network is unavailable.
 
