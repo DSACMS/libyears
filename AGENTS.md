@@ -167,6 +167,103 @@ Do not make opportunistic cleanup changes.
 - Never combine unrelated tasks merely to reduce commit count.
 - Do not mark a task complete unless its acceptance criteria and required verification pass.
 
+## Commit Messages and Changelog Conventions
+
+Write Git commit messages using Conventional Commits.
+
+Format:
+
+`type(scope): concise description`
+
+Supported types:
+
+- `feat` — new functionality
+- `fix` — bug fixes
+- `docs` — documentation changes
+- `test` — test additions or corrections
+- `refactor` — internal restructuring without behavior changes
+- `perf` — performance improvements
+- `build` — build or dependency tooling
+- `ci` — continuous integration changes
+- `chore` — repository maintenance
+
+Guidelines:
+
+- Use lowercase types and scopes.
+- Write concise, descriptive subjects in the imperative mood.
+- Explain the motivation and important consequences in the commit body when useful.
+- Reference the SDD feature and task ID when applicable.
+- Include `BREAKING CHANGE:` in the commit footer for breaking public contracts.
+- Do not claim tests passed unless they actually ran.
+- Do not rewrite existing commits merely to enforce this convention.
+
+Example:
+
+```text
+feat(npm): support package-lock v3
+
+Extract exact versions for direct production dependencies
+without installing packages or executing npm.
+
+Exclude transitive-only dependencies from measurement.
+
+SDD: 002-npm-support/T004
+Tests: 101 passed
+```
+
+### Changelog Policy
+
+Maintain `CHANGELOG.md` according to Keep a Changelog 1.1.0.
+
+Use these categories when applicable:
+
+- Added
+- Changed
+- Deprecated
+- Removed
+- Fixed
+- Security
+
+Keep an `Unreleased` section for notable changes not yet released.
+
+Changelog entries must:
+
+- describe meaningful changes from the user's perspective;
+- distinguish new functionality from fixes and breaking changes;
+- use clear, concise language;
+- avoid internal implementation details unless relevant to users;
+- avoid duplicating raw Git commit history;
+- remain accurate and human-reviewable.
+
+Do not automatically add every commit to `CHANGELOG.md`.
+
+When implementing an approved SDD feature, identify user-visible changes
+that warrant changelog entries.
+
+Update the changelog at an approved release or documentation checkpoint,
+rather than generating noisy entries after every implementation task.
+
+Do not create releases, move version tags, or publish changelogs without
+explicit authorization.
+
+### SuperChangelog Compatibility
+
+Write commit messages and changelog entries so they remain meaningful when
+aggregated across repositories and organizations.
+
+Prefer descriptions that communicate:
+
+- what capability changed;
+- why the change matters;
+- whether behavior or compatibility changed;
+- which feature or task introduced the change.
+
+Do not invent impact, adoption, security improvements, or organizational
+outcomes that have not been verified.
+
+Keep machine-readable commit conventions separate from human-curated
+release notes.
+
 ## Filesystem Boundaries
 
 Treat the repository workspace as the default filesystem boundary.
