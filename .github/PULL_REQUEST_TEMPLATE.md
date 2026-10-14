@@ -33,7 +33,7 @@ Describe the modifications you've done.
 
 - [ ] Generative AI was used in this contribution
 
-<!-- TODO(TIER2): If the PR contains AI-generated code, add an "AI-assisted" label to the PR -->
+<!-- If the PR contains AI-generated code, add the "AI-assisted" label. -->
 
 If checked, please provide an explanation on how AI was used in the development of this pull request:
 

@@ -4,6 +4,16 @@ Libyears is a local Python CLI that measures the age of direct Python and npm
 dependencies using release timestamps from PyPI and the public npm registry.
 It uses only the Python standard library at runtime.
 
+Project website: https://dsacms.github.io/libyears
+
+## CMS Open Source Program Office Mission
+
+The function of the CMS Open Source Program Office is to:
+
+> Establish and maintain guidance, policies, practices, and talent pipelines
+> that advance access, build trust, and amplify impact across CMS, HHS, and
+> Federal Open Source Ecosystems by working and sharing openly.
+
 ## What libyears measures
 
 For each measurable dependency, libyears compares the release timestamp of its
@@ -194,3 +204,22 @@ python3 -m unittest discover -s tests -v
 
 See [SPEC.md](SPEC.md) for the full behavioral specification and [AGENTS.md](AGENTS.md)
 for repository engineering rules.
+
+## Policies
+
+### Open Source Policy
+We adhere to the [CMS Open Source Policy](https://github.com/CMSGov/cms-open-source-policy).
+If you have any questions, just [shoot us an email](mailto:opensource@cms.hhs.gov).
+
+### Security and Responsible Disclosure Policy
+*Submit a vulnerability:* Vulnerability reports can be submitted through [Bugcrowd](https://bugcrowd.com/cms-vdp). Reports may be submitted anonymously. If you share contact information, we will acknowledge receipt of your report within 3 business days.
+For more information about our Security, Vulnerability, and Responsible Disclosure Policies, see [SECURITY.md](SECURITY.md).
+
+### Software Bill of Materials (SBOM)
+A Software Bill of Materials (SBOM) is a formal record containing the details and supply chain relationships of various components used in building software.
+In the spirit of [Executive Order 14028 - Improving the Nation's Cyber Security](https://www.gsa.gov/technology/it-contract-vehicles-and-purchasing-programs/information-technology-category/it-security/executive-order-14028), a SBOM for this repository is provided here: https://github.com/DSACMS/libyears/network/dependencies.
+For more information and resources about SBOMs, visit: https://www.cisa.gov/sbom.
+
+## Public Domain
+This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/) as indicated in [LICENSE](LICENSE).
+All contributions to this project will be released under the CC0 dedication. By submitting a pull request or issue, you are agreeing to comply with this waiver of copyright interest.

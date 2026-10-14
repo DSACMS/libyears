@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ['3.11', '3.12', '3.13']
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -51,7 +51,7 @@ jobs:
           with open(sys.argv[1], encoding="utf-8") as report_file:
               report = json.load(report_file)
 
-          assert report["schema_version"] == 2
+          assert report["schema_version"] == 3
           assert report["summary"]["dependencies_measured"] >= 1
           assert any(
               dependency["name"].lower() == "requests"

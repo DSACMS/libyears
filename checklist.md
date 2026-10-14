@@ -4,8 +4,9 @@
 
 Source: [CMS OSPO Tier 2 checklist](https://github.com/DSACMS/repo-scaffolder/blob/14e2a01482084da7bc1a5aac825e2f1ea23e8529/tier2/checklist.md)
 and [Tier 2 templates](https://github.com/DSACMS/repo-scaffolder/tree/14e2a01482084da7bc1a5aac825e2f1ea23e8529/tier2).
-The source revision was retrieved from `main` for this audit. The sections and
-unchecked attestations below retain the upstream review format.
+The source revision was retrieved from `main` for this audit. The upstream
+review format is retained. Approval outcomes supplied by the project owner are
+identified as reported outcomes; remaining unchecked attestations remain open.
 
 ### Phase 1 — audit completed before repository edits
 
@@ -51,36 +52,26 @@ unchecked attestations below retain the upstream review format.
 - Gitleaks workflow and custom rules are copied from Tier 2. They are not a full
   vulnerability/privacy assessment, and the custom patterns have limited scope.
 - CODEOWNERS uses GitHub's recognized filename instead of upstream CODEOWNERS.md.
-- LICENSE is only a decision placeholder. It does not satisfy the substantive
-  licensing requirement, even if a file-presence check passes.
-- code.json is a draft, not ready for inventory ingestion. TODO values can violate
-  schema enums/formats; laborHours has no evidence-backed numeric value. No labor
-  estimate is fabricated. `repositoryURL` remains
-  `TODO(TIER2): Confirm authorized public repository URL`.
-  CMS documentation says `private` may represent a closed repository, but the
-  current CMS schema marks this field as `format: uri`; validation with URI
-  format checking rejects `private`. Since this repository is being prepared for
-  public release and no authorized public URL exists, no schema-valid unresolved
-  value is available. The placeholder is deliberately schema-invalid until the
-  public destination is established; do not submit this draft as final metadata.
-- TODO(TIER2): Confirm the host permits the referenced Actions and runners, validate
-  hosted runs, and approve workflow/action dependencies and token permissions.
-- TODO(TIER2): Decide whether to adopt Tier 2's optional contributors.yml,
-  auto-changelog.yml, and updateCodeJSON.yml automations. They write commits/PRs
-  and can change contributor/metadata records; omitted pending ownership, release,
-  and metadata policy decisions. No runtime dependencies were added.
-- TODO(TIER2): Review tracked bytecode and decide its disposition; nothing removed.
-- TODO(TIER2): Confirm repository description, website, topic tags, homepage
-  releases/packages/deployments, public destination, and inventory metadata.
-- TODO(TIER2): Configure/verify Dependabot alerts, secret scanning, branch
-  protections, and branching policy; determine whether optional DCO is wanted.
-- TODO(TIER2): Complete all human review sections below, including benefit/risk
-  statements, independent reviewers, security/PII/PHI/internal-system/credential
-  checks, licensing and provenance, history review, export/national-security/FOIA
-  attestations, ISSO, ISG technical approval, and business-owner risk acceptance.
-- TODO(TIER2): After approval, have authorized humans perform outbound and the
-  required communications/rollout and inventory tracking. These actions are not
-  performed by this repository preparation.
+- LICENSE now contains the approved CC0 1.0 Universal text. The project owner
+  reports approval by `decause-gov` on 2026-10-13 and confirms the terms apply to
+  outside contributions.
+- code.json contains project-owner answers and retains TODO values only for
+  public fork/clone counts that cannot be observed before publication. The
+  contract number is recorded as `[0]` per the owner's instruction; CMS schema
+  acceptance of an integer array item must still be verified.
+- The target repository and website are future destinations. Public GitHub
+  settings, hosted workflow runs, SBOM availability, and reuse counts must be
+  verified after the switch. Administrators will enable Dependabot alerts,
+  secret scanning, and branch protection after the switch.
+- Optional `contributors.yml`, auto-changelog, and updateCodeJSON automations
+  remain omitted. DCO is not required. There are no tracked `.pyc` files in the
+  current Git index; the initial audit's four-file finding is historical.
+- Branch/merge workflow, release policy, and recurring code-scan schedule and
+  responsible role are deferred. Static code vulnerability analysis remains
+  pending. `SECURITY.md` remains unchanged at the project owner's direction.
+- The project owner reports a one-reviewer waiver, completed full-history review,
+  and stakeholder outcomes as documented in the sections below. Public release,
+  communications, and inventory tracking remain future actions.
 
 ### Phase 2 — validation and re-audit
 
@@ -109,9 +100,9 @@ Validation performed on 2026-10-07:
   parse, contain triggers/jobs, and use read-only contents permissions. Hosted
   Actions have not run; parsing is not execution validation.
 - `git diff --check`: passed. Existing user changes were preserved.
-- Application tests were not run: only documentation/repository scaffolding was
-  added, with no application/test/build behavior changes. No application linter
-  is configured. The local `python` is 3.11; project instructions require 3.12+.
+- Application tests were not run: this authorization requested repository
+  artifact validation. The local Python is 3.11, which meets the current 3.11+
+  minimum; CONTRIBUTING.md's older 3.12+ minimum is corrected in this update.
 - CMS code.json validation used the current `DSACMS/gov-codejson` CMS schema
   `schemas/cms/schema-2.1.0.json` with Ajv 8.20.0, Draft 2020-12, and ajv-formats
   3.0.1. Overall validation fails on the known TODO placeholders in status,
@@ -126,20 +117,28 @@ Re-audit against the full checklist:
 
 | Requirement area | Repository preparation result | Outbound review status |
 | --- | --- | --- |
-| Prerequisites | Git repository and CMS remote established | TODO(TIER2): Confirm Tier 2 suitability and hosting/access arrangements |
-| Benefits and risks; sensitive-data questions | Technical purpose documented | TODO(TIER2): Business, financial, security, privacy, and sensitive-system determinations |
-| Independent code review | Review record ready | TODO(TIER2): At least two qualified independent engineers and their recommendations |
-| Code analysis | Hygiene and limited secret checks run; workflows added | TODO(TIER2): Security analysis, findings disposition, recurring schedule and responsible people |
-| Licensing | Decision placeholder only | TODO(TIER2): Ownership/provenance review and approved vanilla license text |
-| Commit history | Limited Gitleaks scan only | TODO(TIER2): Full remarks, internal URLs/IPs, credentials, privacy and provenance review |
-| Repository hygiene | Mandatory file locations, required section scaffolding, ignore rules and Tier 2 checks present | TODO(TIER2): Fill factual/policy placeholders; tracked bytecode disposition; optional sections as appropriate |
-| Project metadata | Current template shape and supported technical facts recorded | TODO(TIER2): Complete and validate inventory metadata and SBOM decision |
-| Repository details | Proposed description and technical tags in local documents | TODO(TIER2): Verify/configure hosted About and homepage settings |
-| Risk acceptance | All attestations remain unchecked | TODO(TIER2): Security/privacy, national-security/intelligence/FOIA, export/regulatory, ISSO, ISG and business-owner approvals |
-| Public release and rollout | No outbound action taken | TODO(TIER2): Hosted settings, authorized publication, announcements, and inventory tracking after approval |
+| Prerequisites | Tier 2 suitability approval reported by project owner | Hosting access and outbound switch remain external actions |
+| Benefits and risks; sensitive-data questions | Project-owner answers recorded; six selected benefits marked | Outcomes are reported by project owner, not independently verified |
+| Independent code review | One review and a one-reviewer waiver reported | Review evidence is not included in this repository |
+| Code analysis | Gitleaks no-findings result reported | Static code analysis pending; schedule and responsible role deferred |
+| Licensing | CC0 1.0 approval and outside-contribution terms reported; license text added | Review evidence is not included in this repository |
+| Commit history | Full-history review and Gitleaks no-findings results reported | Review evidence is not included in this repository |
+| Repository hygiene | Owner/maintainer, policies, AI policy, and community information recorded | JSON/YAML, local Markdown links, and diff checks passed; repolinter could not run because npm registry DNS was unavailable and its package was not cached |
+| Project metadata | Supplied values recorded; future repo URL and SBOM path supplied | Fork/clone counts and CMS schema acceptance of `contractNumber: [0]` remain unresolved |
+| Repository details | Description, website, and topics supplied | Admin configuration and hosted availability remain external actions |
+| Risk acceptance | Sign-offs and not-required decisions reported by project owner | No independent sign-off artifact is included in this repository |
+| Public release and rollout | No outbound action taken | Hosted settings, publication, communications, and inventory tracking remain |
 
 The repository is prepared for further review, not cleared for outbound release.
 File and heading presence do not satisfy unresolved substantive requirements.
+
+### Phase 3 — interactive completion and authorized updates (2026-10-14)
+
+The project owner supplied the project facts, policy choices, review outcomes,
+waiver, and sign-offs recorded in this checklist. Reported reviews and approvals
+are attributed to the named reviewer and date; their source artifacts are not
+included here. Repository files were updated only after the project owner
+authorized the write step.
 
 ---
 
@@ -188,15 +187,17 @@ Does your repository align with the requirements of a Tier 2 project? To verify:
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+Tier 2 suitability was approved by `decause-gov` on 2026-10-13, as reported by
+the project owner. The intended destination is `https://github.com/DSACMS/libyears`;
+it remains a future public destination until the outbound switch is completed.
 
 ### State the Benefits of Open Sourcing the Project
 
-- [ ] **Cost Savings**
+- [x] **Cost Savings**
 
   By making the project freely available, this reduces licensing and acquisition costs.
 
-- [ ] **Ease of Repurposing**
+- [x] **Ease of Repurposing**
 
   The open nature of the code allows users to modify and adapt the software to suit their specific needs, fostering customization and flexibility.
 
@@ -204,23 +205,27 @@ _TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or appr
 
   Users are not tied to a single vendor, providing the freedom to choose between different vendors.
 
-- [ ] **Enable Transparency**
+- [x] **Enable Transparency**
 
   The source code is accessible and visible to anyone, promoting transparency in how the software functions, which helps build trust.
 
-- [ ] **Enable extension/extensibility**
+- [x] **Enable extension/extensibility**
 
   Users can extend and enhance the functionality of the software by adding their own features.
 
-- [ ] **Increase Interoperability**
+- [x] **Increase Interoperability**
 
   Planning in the open enables future compatibility and interoperability between different systems and software applications.
 
-- [ ] **Facilitate Experimentation/Early Adoption**
+- [x] **Facilitate Experimentation/Early Adoption**
 
   Working in the open encourages experimentation and early adoption of cutting-edge technologies, leading to faster innovation and improvement in software capabilities.
 
 ### State the Risks of Open Sourcing the Project
+
+The project owner reports no ongoing costs and no connection to CMS-internal
+systems, no private PII/PHI or privacy risk, no CMS credentials, and no job-code
+requirement. These are project-owner responses, not independent findings.
 
 - [ ] **Security Risks**
 
@@ -252,7 +257,10 @@ If you answered “yes” to any of the above questions, your project may be ‘
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+The project owner reports the risk answers above and the related stakeholder
+sign-offs by `decause-gov` on 2026-10-08. The project owner reports the required
+security/privacy, national-security/intelligence, FOIA, export, TSA, and
+classified-information attestations were covered in that sign-off.
 
 ### Code Review
 
@@ -266,7 +274,11 @@ As part of the code review, engineers should reference modern listings of the mo
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+One code review was completed by `decause-gov` on 2026-10-08, following the
+CMS OSPO Tier 2 outbound review checklist, as reported by the project owner.
+The project owner reports an authorized waiver of the two-reviewer requirement
+by `decause-gov` on 2026-10-08. This record reflects the reported waiver; the
+underlying review artifact was not added here.
 
 ### Code Analysis
 
@@ -287,7 +299,10 @@ Below is a list of suggested tools to run for code analysis:
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+Gitleaks was run on 2026-10-08 with no findings, as reported by the project
+owner. Gitleaks checks for secrets and does not complete the required static
+code vulnerability analysis. That analysis remains pending. Scan frequency
+and responsible role are deferred.
 
 ### Review Licensing
 
@@ -306,7 +321,9 @@ If your project is not being dedicated to the public domain under CC0, due to be
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+CC0 1.0 Universal was approved by `decause-gov` on 2026-10-13, as reported by
+the project owner. The project owner confirmed the same CC0 terms apply to
+outside contributions. The approved license text is in [LICENSE](LICENSE).
 
 ### Review Commit History
 
@@ -328,7 +345,10 @@ Consider using the following tools to perform the tasks above:
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+The project owner reports that `decause-gov` completed a full-history review on
+2026-10-08 with no findings. Gitleaks was also reported to have no findings on
+2026-10-08. These reported outcomes cover the review and scan; they do not
+independently verify their scope or evidence.
 
 ### Review Repository Hygiene
 
@@ -460,7 +480,15 @@ Please refer to the style guides below for additional tips and guidance:
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+Local repository artifacts and policy text have been updated from the answers
+and evidence recorded in this session. Four `.pyc` files were reported in the
+initial audit; the current Git index contains no tracked `.pyc` files. JSON
+parsing passed for `code.json` and `repolinter.json`; all three workflow YAML
+files parsed; local Markdown links passed in six reviewed documents; and
+`git diff --check` passed. Repolinter could not run: npm registry DNS resolution
+failed in the sandbox, and the requested package was not in the local npm cache.
+The CMS code.json schema was not available for validation; contract-number
+acceptance and pre-publication fork/clone values remain unresolved.
 
 ### Review Project Metadata
 
@@ -503,7 +531,13 @@ As you continue development in this repository, it is important to keep this fil
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+Known fields are populated from project-owner answers. Public reuse counts are
+not available until publication. The intended repository URL and visibility
+describe the future public destination. CMS schema validation must confirm the
+contract number array containing integer `0`; the owner specified this value.
+The project owner reports FISMA Low classification reviewed by `decause-gov` on
+2026-10-13. The intended supported platforms are Linux, macOS, and Windows;
+Windows support is included in the CI matrix.
 
 ### Review Repository Details
 
@@ -534,7 +568,10 @@ comprehensive overview for users and contributors.
 
 #### Results
 
-_TODO(TIER2): Record reviewer, evidence, outcome, and date. Not reviewed or approved._
+The project owner approved the description, website `https://dsacms.github.io/libyears`,
+and topics `python`, `pypi`, `libyears`, `dependency-freshness`, and `npm`.
+Repository administrators will configure the About details after the public
+switch. Releases, packages, and deployments are not yet available to verify.
 
 ### Additional Notes & Questions
 
@@ -542,29 +579,35 @@ _See the local audit and remediation notes at the beginning of this file._
 
 ### Sign off on risk acceptance of open-sourcing the software product
 
-- **Date:** TODO(TIER2): approval date
+- **Date:** 2026-10-08 (reported by project owner)
 - **Repository Name:** Libyears
+
+The project owner reports that `decause-gov` signed off on the business-owner
+risk acceptance and the security/privacy and regulatory attestations on
+2026-10-08. The project owner also reports ISSO and ISG sign-offs as not
+required, recorded by `decause-gov` on 2026-10-08. This approval record is based
+on the project owner's report; the signed source artifact is not attached.
 
 Before outbounding this repository, it’s important that the appropriate stakeholders review and acknowledge the risks and responsibilities associated with releasing the code to the public. This step ensures transparency and accountability while enabling informed decision making.
 
 #### Security and Privacy Verification
-- [ ] I acknowledge that this project does **NOT**:
-  - [ ] contain any PII/PHI, or create an identifiable risk to the privacy of an individual.
-  - [ ] interface with any CMS Internal Systems. 
-  - [ ] contain any keys or credentials to authenticate with CMS systems.
+- [x] I acknowledge that this project does **NOT**:
+  - [x] contain any PII/PHI, or create an identifiable risk to the privacy of an individual.
+  - [x] interface with any CMS Internal Systems.
+  - [x] contain any keys or credentials to authenticate with CMS systems.
 
 #### National Security and Intelligence Verification
-- [ ] I acknowledge that this project is **NOT**:
-  - [ ] primarily for use in national security systems, as defined in Section 11103 of title 40, USC.
-  - [ ] created by an agency or part of an agency that is an element of the intelligence community, as defined in section 3(4) of the National Security Act of 1947.
-  - [ ] exempt under section 552(b) of title 5, USC (commonly known as the "Freedom of Information Act").
+- [x] I acknowledge that this project is **NOT**:
+  - [x] primarily for use in national security systems, as defined in Section 11103 of title 40, USC.
+  - [x] created by an agency or part of an agency that is an element of the intelligence community, as defined in section 3(4) of the National Security Act of 1947.
+  - [x] exempt under section 552(b) of title 5, USC (commonly known as the "Freedom of Information Act").
 
 #### Export and Regulatory Compliance
-- [ ] I acknowledge that this project is **NOT** prohibited under:
-  - [ ] Export Administration Regulations.
-  - [ ] International Traffic in Arms Regulations (ITAR).
-  - [ ] Regulations of the Transportation Security Administration related to the protection of sensitive information.
-  - [ ] Federal laws and regulations governing the sharing of classified information.
+- [x] I acknowledge that this project is **NOT** prohibited under:
+  - [x] Export Administration Regulations.
+  - [x] International Traffic in Arms Regulations (ITAR).
+  - [x] Regulations of the Transportation Security Administration related to the protection of sensitive information.
+  - [x] Federal laws and regulations governing the sharing of classified information.
 
 If all boxes have been checked, please proceed to the **Flipping the Switch** section below this one, otherwise, this section must be filled out and approved by the indicated stakeholders before public release.
 
@@ -574,14 +617,19 @@ Requesting sign off from key people on this request.
 
 | Reviewer Organization            | Reviewer Names                                            | Reviewer’s Recommendation                                                               |
 | -------------------------------- | --------------------------------------------------------- | --------------------------------------------------------------------------------------- |
-| Code Reviewer 's Reccommendation | TODO(TIER2): CODE REVIEWER 1 <br> TODO(TIER2): CODE REVIEWER 2 <br> TODO(TIER2): CODE REVIEWER 3 | Needs Approval <br> Needs Approval <br> Needs Approval |
-| ISSO                             | TODO(TIER2): ISSO REVIEWER                                             | Needs Approval                                                               |
-| ISG Technical Approval           | TODO(TIER2): ISG REVIEWER                                              | Needs Approval                                                               |
-| Business Owner(s)                | TODO(TIER2): BUSINESS OWNER 1 </n> TODO(TIER2): BUSINESS OWNER 2                    | Needs Approval </n> Needs Approval                                |
+| Code Reviewer Recommendation | `decause-gov` | Approved 2026-10-08; one-reviewer waiver reported, authorized by `decause-gov` on 2026-10-08 |
+| ISSO | `decause-gov` | Not required; signed off 2026-10-08 |
+| ISG Technical Approval | `decause-gov` | Not required; signed off 2026-10-08 |
+| Business Owner(s) | CMS OSPO / `decause-gov` | Risk acceptance signed off 2026-10-08 |
 
 ### Flipping the Switch: Making the Repository Public
 
 Once the repository has passed outbound review, we are ready to “flip the switch” and officially make it public. Once made public, there are a couple of actions that need to be taken:
+
+The repository is a future public destination. Repository administrators will
+enable Dependabot alerts, secret scanning, and branch protection after the
+switch. GitHub Actions and hosted workflow execution will also be enabled and
+verified after the switch.
 
 #### Repository Actions
 
@@ -609,6 +657,8 @@ quality:
   _For ongoing adherence to repository hygiene standards, integrate the [repolinter GitHub Action](https://github.com/DSACMS/metrics/blob/main/.github/workflows/checks.yml) into your CI pipeline. This addition enhances your workflow by automatically enforcing repository cleanliness standards._
 
 - [ ] **Optional: DCO (Developer Certificate of Origin)**
+
+  _Project policy: DCO sign-off is not required._
 
   _Requires all commit messages to contain the Signed-off-by line with an email address that matches the commit author. The Developer Certificate of Origin (DCO) is a lightweight way for contributors to certify that they wrote or otherwise have the right to submit the code they are contributing to the project. The GitHub app to enforce DCO can be found [here](https://github.com/apps/dco) ._
 

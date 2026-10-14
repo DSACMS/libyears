@@ -1,7 +1,7 @@
 # Contributor Code of Conduct
 
-TODO(TIER2): Approve this template-derived conduct policy and assign reporting,
-enforcement, and escalation responsibilities before treating it as operational.
+This Code of Conduct is approved. CMS OSPO is responsible for reports and
+enforcement.
 
 As contributors and maintainers of this project, we pledge to respect all people who contribute through reporting issues, posting feature requests, updating documentation, submitting pull requests or patches, and other activities.
 
@@ -11,11 +11,13 @@ Examples of unacceptable behavior by participants include the use of sexual lang
 
 Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned with this Code of Conduct.
 
-TODO(TIER2): Provide a confirmed private reporting contact and escalation path.
-The scaffolder lists opensource@cms.hhs.gov; confirm applicability rather than
-assuming that address belongs to this project's maintainers.
+To report conduct concerns privately, contact CMS OSPO at
+[opensource@cms.hhs.gov](mailto:opensource@cms.hhs.gov). CMS OSPO is the
+escalation contact.
 
 This Code of Conduct is adapted from the [Contributor Covenant](http://contributor-covenant.org), version 1.0.0, available at [http://contributor-covenant.org/version/1/0/0/](http://contributor-covenant.org/version/1/0/0/)
+
+Approved by `decause-gov` on 2023-08-01.
 
 ## Acknowledgements
 

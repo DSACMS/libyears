@@ -1,78 +1,75 @@
 {
   "name": "Libyears",
-  "description": "A local Python CLI measuring freshness of direct PyPI dependencies using release dates.",
-  "longDescription": "Libyears reads direct Python dependency evidence from requirements.txt, optionally supplements it with exact versions from a supplied resolved snapshot, and uses public PyPI release metadata to report dependency freshness and measurement coverage.",
-  "status": "TODO(TIER2): status",
+  "description": "A local CLI that measures the age of direct Python and npm dependencies using release timestamps from PyPI and the public npm registry.",
+  "longDescription": "Libyears measures the age of direct Python and npm dependencies using release timestamps from PyPI and the public npm registry. It uses repository evidence for exact versions, reports measurement coverage, and does not resolve or install dependencies.",
+  "status": "Development",
   "permissions": {
     "licenses": [
       {
-        "name": "TODO(TIER2): license",
-        "URL": "TODO(TIER2): license_url"
+        "name": "CC0 1.0 Universal",
+        "URL": "https://creativecommons.org/publicdomain/zero/1.0/"
       }
     ],
     "usageType": [
-      "TODO(TIER2): usage_type"
-    ],
-    "exemptionText": "TODO(TIER2): Determine usage classification and any applicable exemption; remove if not applicable"
+      "openSource"
+    ]
   },
-  "organization": "TODO(TIER2): Confirm sponsoring organization",
-  "repositoryURL": "TODO(TIER2): Confirm authorized public repository URL",
-  "repositoryHost": "github.cms.gov",
-  "repositoryVisibility": "TODO(TIER2): repository_visibility",
+  "organization": "CMS Open Source Program Office",
+  "repositoryURL": "https://github.com/DSACMS/libyears",
+  "repositoryHost": "github.com/DSACMS",
+  "repositoryVisibility": "public",
+  "homepageURL": "https://dsacms.github.io/libyears",
   "vcs": "git",
-  "laborHours": null,
+  "laborHours": 6,
   "reuseFrequency": {
-    "forks": "TODO(TIER2): forks",
-    "clones": "TODO(TIER2): clones"
+    "forks": "TODO(TIER2): Record public fork count after repository publication",
+    "clones": "TODO(TIER2): Record public clone count after repository publication"
   },
   "platforms": [
-    "TODO(TIER2): Confirm platforms"
+    "linux",
+    "mac",
+    "windows"
   ],
   "categories": [
-    "TODO(TIER2): Confirm categories"
+    "it-development"
   ],
   "softwareType": "standalone/other",
   "languages": [
     "Python"
   ],
-  "maintenance": "TODO(TIER2): maintenance",
+  "maintenance": "internal",
   "contractNumber": [
-    "TODO(TIER2): Confirm contractNumber"
+    0
   ],
-  "SBOM": "TODO(TIER2): sbom",
+  "SBOM": "https://github.com/DSACMS/libyears/network/dependencies",
   "date": {
     "created": "2026-10-01T20:43:52Z",
-    "lastModified": "2026-10-07T17:09:39Z",
-    "metadataLastUpdated": "2026-10-07T17:09:39Z"
+    "lastModified": "2026-10-14T10:24:23Z",
+    "metadataLastUpdated": "2026-10-14T10:24:23Z"
   },
   "tags": [
     "python",
     "pypi",
     "libyears",
-    "dependency-freshness"
+    "dependency-freshness",
+    "npm"
   ],
   "contact": {
-    "email": "TODO(TIER2): contact_email",
-    "name": "TODO(TIER2): contact_name"
+    "email": "opensource@cms.hhs.gov",
+    "name": "CMS OSPO"
   },
-  "feedbackMechanism": "TODO(TIER2): Confirm issue tracker or other feedback channel",
-  "AIUseCaseID": "TODO(TIER2): ai_use_case_id",
+  "feedbackMechanism": "https://github.com/DSACMS/libyears/issues",
+  "AIUseCaseID": "0",
   "localisation": false,
   "repositoryType": "tools",
   "userInput": true,
-  "fismaLevel": "TODO(TIER2): fisma_level",
-  "group": "TODO(TIER2): group",
-  "projects": [
-    "TODO(TIER2): Confirm projects"
-  ],
-  "systems": [
-    "TODO(TIER2): Confirm systems"
-  ],
-  "subsetInHealthcare": [
-    "TODO(TIER2): Confirm subsetInHealthcare"
-  ],
+  "fismaLevel": "low",
+  "group": "CMS Open Source Program Office",
+  "projects": [],
+  "systems": [],
+  "subsetInHealthcare": [],
   "userType": [
-    "TODO(TIER2): Confirm userType"
+    "government"
   ],
   "maturityModelTier": 2
 }

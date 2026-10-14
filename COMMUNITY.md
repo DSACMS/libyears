@@ -1,19 +1,22 @@
 # COMMUNITY.md
 
-Project ownership and community arrangements are pending confirmation.
-
-TODO(TIER2): Approve the template-derived community principles and guidelines below.
+The CMS Open Source Program Office (CMS OSPO) supports this project. Community
+principles and guidelines below are approved.
 
 ## Project Members
 
-| Role   | Name    | Affiliation    |
-| :----- | :------ | :------------- |
-| TODO(TIER2): accountable roles | TODO(TIER2): names and contacts | TODO(TIER2): affiliations |
+| Role | Name or contact | Affiliation |
+| :--- | :-------------- | :---------- |
+| Project owner and policy contact | CMS OSPO, [opensource@cms.hhs.gov](mailto:opensource@cms.hhs.gov) | CMS OSPO |
+| Maintainer, PR approver, and reviewer | [@decause-gov](https://github.com/decause-gov) | CMS OSPO |
 
 ## Roles & Responsibilities
 
-TODO(TIER2): Identify maintainers, approvers, reviewers, security and policy owners;
-confirm their responsibilities and populate [.github/CODEOWNERS](.github/CODEOWNERS).
+CMS OSPO is the project contact and policy owner. The identified GitHub
+maintainer, PR approver, and reviewer is [@decause-gov](https://github.com/decause-gov).
+Private security reports go to the CMS OSPO at
+[opensource@cms.hhs.gov](mailto:opensource@cms.hhs.gov). Repository ownership is
+recorded in [.github/CODEOWNERS](.github/CODEOWNERS).
 
 ## Libyears Open Source Community Guidelines
 
@@ -27,8 +30,6 @@ The existing engineering guidance in [AGENTS.md](AGENTS.md) prioritizes:
 - Measurements supported by repository and registry evidence.
 - Explicit unmeasurable results instead of guessed versions or dates.
 - Small, focused modules and offline tests.
-
-TODO(TIER2): Confirm any additional community principles with the project owner.
 
 ### Community Guidelines
 

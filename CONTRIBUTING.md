@@ -1,14 +1,14 @@
 # How to Contribute
 
-Read [README.md](README.md), [AGENTS.md](AGENTS.md), and the pending
-[licensing decision](LICENSE) before preparing a contribution.
-TODO(TIER2): Confirm whether external contributions are accepted, the submission
-and support channels, and contribution licensing terms.
+External contributions are accepted. Open a pull request directly against
+`github.com/DSACMS/libyears`. Read [README.md](README.md), [AGENTS.md](AGENTS.md),
+and [LICENSE](LICENSE) before preparing a contribution. Contributions are
+released under CC0 1.0 Universal as described in [Public Domain](#public-domain).
 
 ## Getting Started
 
 Obtain an authorized checkout or source archive and open a terminal at its root.
-Use Python 3.12+. See [Local Development](README.md#local-development) for CLI examples.
+Use Python 3.11+. See [Development](README.md#development) for CLI examples.
 
 ### Building dependencies
 
@@ -27,8 +27,9 @@ python -m unittest discover -s tests -v
 ### Workflow and Branching
 
 The inspected checkout uses `main`.
-TODO(TIER2): Approve the branch/merge workflow, review rules, and contribution
-eligibility. Git history alone does not establish those policies.
+The branch and merge workflow, review rules, and contribution eligibility
+policy are deferred for later decision. Git history alone does not establish
+those policies.
 
 ### Testing Conventions
 
@@ -47,7 +48,9 @@ formatter or linter is currently configured. Repository checks use `repolinter l
 
 Use the [issue template](.github/ISSUE_TEMPLATE.md) to describe expected behavior,
 actual behavior, and reproducible steps with synthetic examples.
-TODO(TIER2): Confirm the issue tracker and development support destination.
+File project issues at
+https://github.com/DSACMS/libyears/issues. For CMS OSPO support, email
+[opensource@cms.hhs.gov](mailto:opensource@cms.hhs.gov).
 Security disclosures follow [SECURITY.md](SECURITY.md).
 
 ### Writing Pull Requests
@@ -57,13 +60,14 @@ problem, solution, result, validation, and AI assistance where applicable.
 
 ### Reviewing Pull Requests
 
-TODO(TIER2): Identify authorized reviewers and merge approvers and configure
-branch protections. Routine PR review does not replace independent outbound review.
+`@decause-gov` is the identified project reviewer and approver. Repository
+administrators will configure branch protections after the repository becomes
+public. Routine PR review does not replace independent outbound review.
 
 ## Shipping Releases
 
-TODO(TIER2): Define release ownership, versioning, cadence, support lifecycle, and
-approval workflow. Complete the [outbound checklist](checklist.md) before release.
+Release ownership, versioning, cadence, support lifecycle, and approval workflow
+are deferred. Complete the [outbound checklist](checklist.md) before release.
 
 ## Documentation
 
@@ -73,24 +77,25 @@ current CLI use, including resolved snapshots added after the specification.
 
 ## AI Usage
 
-The Tier 2 PR template includes disclosure of AI assistance and its scope.
-TODO(TIER2): Confirm the project's AI contribution policy; contributors remain
-responsible for understanding and verifying submitted changes.
+Disclose AI assistance and its scope in the pull request template. Add the
+`AI-assisted` label when a pull request contains AI-generated code. Contributors
+remain responsible for understanding and verifying submitted changes.
 
 ## Policies
 
 ### Open Source Policy
-
-Review the [CMS Open Source Policy](https://github.com/CMSGov/cms-open-source-policy).
-TODO(TIER2): Confirm policy applicability and required compliance evidence; see
-[README policies](README.md#policies).
+We adhere to the [CMS Open Source Policy](https://github.com/CMSGov/cms-open-source-policy).
+If you have any questions, just [shoot us an email](mailto:opensource@cms.hhs.gov).
 
 ### Security and Responsible Disclosure Policy
+*Submit a vulnerability:* Vulnerability reports can be submitted through [Bugcrowd](https://bugcrowd.com/cms-vdp). Reports may be submitted anonymously. If you share contact information, we will acknowledge receipt of your report within 3 business days.
+ For more information about our Security, Vulnerability, and Responsible Disclosure Policies, see [SECURITY.md](SECURITY.md).
 
 See [SECURITY.md](SECURITY.md). Do not post credentials or sensitive information
 in issues or pull requests.
 
-## Public domain
+## Public Domain
+This project is in the public domain within the United States, and copyright and related rights in the work worldwide are waived through the [CC0 1.0 Universal public domain dedication](https://creativecommons.org/publicdomain/zero/1.0/) as indicated in [LICENSE](LICENSE).
+ All contributions to this project will be released under the CC0 dedication. By submitting a pull request or issue, you are agreeing to comply with this waiver of copyright interest.
 
-TODO(TIER2): Approve licensing and contribution terms and replace [LICENSE](LICENSE)
-with the approved text. No CC0 dedication or contributor waiver is asserted.
+DCO sign-off is not required for contributions.

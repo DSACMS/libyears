@@ -1,28 +1,39 @@
-### Factual metadata needed
+# Remaining Tier 2 Outbound Actions
 
-- **code.json:** Confirm project status, license and usage classification, CMS organization, repository visibility and authorized public URL, reuse counts, supported platforms and category, maintenance model, contract number, SBOM, contact, feedback channel, AI Use Case ID, FISMA level, group, related projects and systems, healthcare subset, and user types. The current TODO values make the file fail CMS schema validation; the public repository URL is specifically unresolved.
-- **README.md:** Supply approved project vision and mission, agency mission, team mission and charter, and applicable federal policy/compliance references.
-- **COMMUNITY.md and .github/CODEOWNERS:** Identify accountable project contacts, roles, affiliations, maintainers, approvers, reviewers, and authorized GitHub handles. Confirm community principles.
-- **CONTRIBUTING.md:** Decide whether outside contributions are accepted; provide issue/support channels; establish branching, review, release, and AI contribution policies; identify applicable policy evidence.
-- **checklist.md:** Determine Tier 2 suitability; document project-specific open-source benefits, financial/security/privacy risks, and answers about PII/PHI, CMS systems, credentials, and job codes.
+This list reflects the interactive completion session recorded in
+[checklist.md](checklist.md). Approval and review outcomes there are attributed
+as reported by the project owner; this repository does not contain their source
+artifacts.
 
-### Security/privacy review
+## Human review
 
-- **checklist.md:** Complete independent full-history review for sensitive remarks, internal URLs/IPs, credentials, privacy, and provenance. The Gitleaks scan is limited evidence and does not complete this review.
-- **SECURITY.md:** Confirm policy coverage, security contact and escalation path, response expectations, and supported versions. Select and run static security analysis; triage findings; define scan frequency and responsible reviewers.
-- **CODE\_OF\_CONDUCT.md:** Approve the conduct policy and assign a private reporting contact, enforcement owner, and escalation path.
+- Run static code vulnerability analysis and triage any findings. The project
+  owner deferred the recurring scan schedule and responsible role.
+- `SECURITY.md` retains its existing unresolved policy and static-analysis
+  TODOs at the project owner's direction.
+- Branch/merge policy and release ownership/versioning/cadence/lifecycle remain
+  deferred.
 
-### Licensing/provenance
+## External verification and repository administration
 
-- **LICENSE, CONTRIBUTING.md, and checklist.md:** Establish rights ownership and provenance; have the authorized reviewer select and approve the license and contribution terms; replace the placeholder with approved license text. Complete the separate commit-history/provenance review.
+- Verify the CMS code.json schema accepts `contractNumber: [0]`; this exact
+  value was specified by the project owner.
+- After publication, record public fork and clone counts in `code.json`.
+- After the public switch, verify the GitHub Pages site and dependency graph
+  SBOM URL, and configure the repository About details and topics.
+- Repository administrators will enable and verify Dependabot alerts, secret
+  scanning, and branch protection after the public switch.
+- Enable GitHub Actions after the switch, approve workflow/action dependencies
+  and permissions, and verify hosted CI, Gitleaks, and repolinter runs.
 
-### Repository settings
+## Publication and rollout
 
-- **checklist.md:** Verify Dependabot and secret-scanning alerts, branch protections, branching policy, repository About details and homepage features. Confirm Actions/runners are supported and validate hosted workflows.
-- **checklist.md:** Decide the disposition of tracked Python bytecode. Complete the remaining repository hygiene and code.json metadata before treating the draft as inventory-ready.
+- Complete outbound review, then perform the authorized public switch.
+- Prepare and distribute the required CMS announcements and add the completed
+  metadata to the relevant inventory.
+- Releases, packages, and deployments are not configured or available to verify.
 
-### Required approvals/sign-offs
+## Optional automation
 
-- **checklist.md:** Obtain recommendations from at least two qualified independent code reviewers; ISSO and ISG technical approvals; and business-owner risk acceptance.
-- **checklist.md:** Authorized stakeholders must complete security/privacy, national-security/intelligence, FOIA, export, TSA, and classified-information attestations; document review outcomes and dates.
-- **checklist.md:** After approval, complete the required release settings, communications, and inventory tracking.
+- `contributors.yml`, auto-changelog, and updateCodeJSON automation remain
+  omitted. DCO is not required.
