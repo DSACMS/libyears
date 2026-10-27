@@ -38,6 +38,8 @@ No implementation or existing ecosystem behavior changes; fixtures and tests are
 
 ### T002 — Parse bounded Yarn v1 lock entries
 
+**Status:** COMPLETE — 16 focused deterministic tests passed; diff reviewed and whitespace checked.
+
 **Outcome:**
 The parser returns ordered entries with decoded selectors and one usable exact version, preserving distinct entries for later ambiguity checks.
 
@@ -62,6 +64,8 @@ T001 header classifications remain stable; no semver evaluation or registry beha
 
 **Suggested commit:**
 `feat(yarn): parse bounded Classic v1 entries`
+
+**Phase gate result:** PASS — 16 Yarn tests, 52 existing parser/npm regression tests, and the full 155-test deterministic suite passed; `git diff --check` passed. Phase 2 remains unstarted.
 
 **Phase gate:**
 - The independent parser recognizes supported and unsupported generations and emits ordered, structurally validated entries.
