@@ -1,10 +1,51 @@
-# Feature 004 Discovery: Validate the Next User Workflow
+# Feature 004 Discovery: Evidence and Candidate Direction
 
 ## Status
 
-Draft — committed before independent review. This is a recommendation for human
-challenge, not an approved product decision. No Feature 004 implementation
-direction has been selected.
+**READY FOR FOCUSED RUBY FEASIBILITY REVIEW**
+
+No Feature 004 implementation direction approved yet. Discovery remains before
+specification. Ruby support is a candidate, not an approved Feature 004.
+
+## Initial Recommendation — Historical
+
+The initial draft was committed as
+`df7aee60446795f67da321331f778c3d1457fea7`
+(`docs(discovery): draft Feature 004 direction`) before independent review.
+It recommended **no-code workflow validation**, with Python exact-evidence
+usability as the runner-up. The rationale was that manifest prevalence alone
+did not establish the next useful capability; it proposed asking users about
+measurement attempts before choosing a parser or ecosystem.
+
+That recommendation is preserved as history, not the current direction.
+The exact initial inventory, comparisons, proposed research, and rationale
+remain available in the corresponding reconstructed commit, with publication-hygiene sanitization only. The review and bounded technical
+investigation below supersede its candidate ranking and broad human questions.
+See [reviews.md](reviews.md) for the review disposition.
+
+## Independent Discovery Review
+
+**Initial recommendation:** no-code workflow validation.
+**Review verdict:** CONTINUE DISCOVERY.
+
+The independent review findings, supplied for this revision, required these
+changes in interpretation:
+
+- The sandboxed `0/77` registry result is **agent-environment evidence**, not
+  evidence of a product need for offline operation. Codex sandbox failures are
+  excluded from product evidence. Feature 003's recorded `77/77` successful
+  dogfood remains separate historical validation.
+- Workflow validation is **continued discovery**, not Feature 004 itself. The
+  initial proposal was too vague to define a product capability.
+- Python exact-evidence compatibility was selected as the next **bounded
+  experiment**, before any new Python parser recommendation.
+- Broad human research was premature while repository evidence could answer
+  the technical questions cheaply.
+- Root identification/listing must remain separate from portfolio aggregation.
+
+The completed experiment tested whether at least two distinct project roots
+have supported non-exact direct declarations and already-produced local exact
+selected-version evidence that current `--resolved` cannot consume unchanged.
 
 ## Current Capability
 
@@ -44,457 +85,251 @@ resolver or semantic-version engine, and registry dependence for timestamp
 authority. README's link to GitHub's dependency page for this repository is not
 a repository-local SBOM and does not change those capabilities.
 
-## Inventory Method
+## Deep Evidence Investigation
 
-The two authorized directory roots were inspected read-only:
-`<local-collection-a>` and `<local-collection-b>`. A bounded filename walk
-pruned `.git`, `node_modules`, vendor directories, common environments, and
-build output; it stopped descending at depth 9 and capped traversal at 250,000
-files per root. It counted filenames and selected project-local evidence. It
-did not execute repository code or package managers, validate every project,
-or inspect dependency contents wholesale. Selected package-lock headers and
-versions and selected Python requirements lines were read as metadata.
+### Method and evidence boundaries
 
-Counts below distinguish **files** from **project roots**. The two named
-directories are the **repository checkouts**; nested project roots are not
-independent repositories. A manifest/lock pair suggests a project root but
-does not prove that the lock covers every declaration or that a root is an
-independent product. Counts are a bounded inventory, not a representative
-sample of CMS repositories.
+The completed read-only investigation examined dependency metadata and relevant
+setup/build/CI evidence under `<local-collection-a>` and
+`<local-collection-b>`, plus current Libyears parsing, matching, reporting,
+tests, and relevant Git history. No external repository code or package manager
+was executed, dependencies were not installed or resolved, and no live package
+lookup was performed. Ruby feasibility also used authoritative public
+RubyGems/Bundler documentation.
 
-The prior Feature 003 inventory remains useful for its reviewed Go/Maven/Yarn
-evidence analysis and recorded 77-dependency dogfood. Some counts differ from
-this current walk (for example, it recorded eight <local-collection-b> package-lock files
-and 22 POM files; this walk found six package-lock files outside excluded
-generated/vendor trees and 21 POM files). This discrepancy is unresolved and
-limits exact comparisons. Material format assumptions were rechecked below.
+**Observation:** the two authorized directories are collections of project
+trees, not two Git checkouts as the initial draft described them. Counts below
+are bounded observations, not population estimates, independent deployments,
+or evidence of adoption. Installed package trees were excluded from project
+counts and inspected separately only for relevant existing metadata.
 
-## Repository Evidence
+### Python
 
-### Current bounded counts
+**Observation:** there are **10 metadata-bearing roots / 8 project families**
+after conservative copy grouping. Paths below are relative to the authorized
+collection named in the first column. Every row contains `requirements.txt`.
 
-| Evidence | <local-collection-a> files | <local-collection-b> files | Notes |
-|---|---:|---:|---|
-| `requirements*.txt` / `constraints*.txt` | 9 | 1 | Mostly requirements declarations; not nine/one repositories. |
-| `pyproject.toml` | 1 | 0 | `<local-collection-a>/<local-copy-group>/super-changelog/pyproject.toml`; no `uv.lock`, `poetry.lock`, or `Pipfile.lock` found. |
-| `package.json` | 8 | 19 | 27 manifest files / candidate roots across the two checkouts. |
-| `package-lock.json` paired with a root manifest | 8 | 6 | The inspected locks were npm lockfile v3 in <local-collection-a> (8) and v2 in <local-collection-b> (5), v3 (1). |
-| `yarn.lock` | 0 | 3 | `easi-app`, `design-system`, and nested token importer. All have `# yarn lockfile v1` on the second line; the first line alone is a generic generated-file warning. |
-| `pnpm-lock.yaml` | 0 | 0 | None found outside pruned generated/vendor trees. |
-| `go.mod` / `go.sum` | 0 | 6 / 6 | Six module roots, each with both files; modules are not six repositories. |
-| `go.work` / `vendor/modules.txt` | 0 | 0 | Not found in the bounded walk. |
-| `pom.xml` | 0 | 21 | Includes parent, aggregator, and child module POMs; not 21 independent projects. |
-| Gradle declarations / lockfiles | 0 | 0 | No `build.gradle[.kts]` or `gradle.lockfile` found. |
-| `Gemfile` / `Gemfile.lock` | 0 | 4 / 4 | Four same-root pairs under <local-collection-b>/dpc-app. |
-| Cargo / .NET project or lock evidence | 0 | 0 | No `Cargo.toml`, `Cargo.lock`, `.csproj`, or `packages.lock.json` found. |
-| Candidate SBOM names | 3 | 0 | The three <local-collection-a> matches are code.gov agency-index records naming SBOM-generator projects, not CycloneDX/SPDX artifacts. |
+| Collection / project root | Requirements entries | Declaration and exact-evidence observations |
+|---|---:|---|
+| <local-collection-a> / `metrics` | 7 | Six bare names and one numeric minimum; urllib3 explicitly described as indirectly required |
+| <local-collection-a> / `code-book` | 4 | Four supported numeric minimums; no retained selected-version artifact found |
+| <local-collection-a> / `year-in-review` | 1 | PyGithub minimum; no selected-version artifact found |
+| <local-collection-a> / `<local-copy-group>/year-in-review` | 1 | Requirements and README byte-identical to the preceding project |
+| <local-collection-a> / `repo-scaffolder` | 5 | cookiecutter exact pin, bare pytest-cookies, three explicitly indirect security bounds |
+| <local-collection-a> / `<local-copy-group>/repo-scaffolder` | 5 | Requirements and README byte-identical to the preceding scaffolder |
+| <local-collection-a> / `share-it-savings` | 2 | matplotlib/numpy minimums; local installed metadata, but no demonstrated project-resolution artifact |
+| <local-collection-a> / `code-gov/scripts` | 2 | Bare names; CI installs this nested requirements file |
+| <local-collection-a> / `<local-copy-group>/super-changelog` | 0 | Empty requirements file; four project dependencies in `pyproject.toml`, unsupported by current discovery |
+| <local-collection-b> / `dpc-app` | 1 | Bare bzt for smoke-test tooling; no retained Python selection artifact found |
 
-The requirements-file scan found simple exact `==` candidates in two files:
-`<local-collection-a>/repo-scaffolder/requirements.txt` and
-`<local-collection-a>/<local-copy-group>/repo-scaffolder/requirements.txt` (each contained
-`cookiecutter==2.6.0`). These may represent reused or copied project evidence;
-they are two files, not two independent deployments. The remaining files did
-not yield a simple exact candidate in this text scan; some may contain ranges,
-includes, options, or unsupported forms, and were not semantically classified.
-The bounded scan does not establish complete Python coverage. The existing
-`--resolved` option can fill exact versions for declared packages, but requires
-the user to provide a separate snapshot whose relationship to the repository
-state must be judged.
+There are **28 non-comment requirements entries: 2 exact pins and 26 non-exact
+declarations**. Both exact pins are the same copied `cookiecutter==2.6.0`
+declaration, not independent resolution evidence. Seven entries across metrics
+and the two scaffolders explicitly describe indirect security bounds; current
+file discovery does not establish that these are direct application dependencies.
 
-Representative paths:
+No requirements includes, hashes, indexes, editable installs, direct URLs, or
+environment markers were observed in these ten files. No retained Python lock,
+compiled/frozen requirements, or dependency export was found. Super-changelog
+ignores `poetry.lock`, but no such file was found; ignoring a filename does not
+prove generation. Its pyproject supplies declarations, not selected versions.
 
-- Python: `<local-collection-a>/repo-scaffolder/requirements.txt`,
-  `<local-collection-b>/dpc-app/requirements.txt`, and the lone
-  `<local-collection-a>/<local-copy-group>/super-changelog/pyproject.toml`.
-- npm: `<local-collection-a>/metrics/{package.json,package-lock.json}` and
-  `<local-collection-b>/dpc-app/dpc-impl/{package.json,package-lock.json}`.
-- Yarn: `<local-collection-b>/easi-app/{package.json,yarn.lock}`;
-  `<local-collection-b>/design-system/yarn.lock` serves a tree with multiple manifests and
-  therefore raises project-boundary questions; the nested
-  `cmsds-token-importer` has its own manifest and lock.
-- Go: `<local-collection-b>/easi-app/{go.mod,go.sum}` and
-  `<local-collection-b>/dpc-app/dpc-testing/performance/{go.mod,go.sum}`.
-- JVM: `<local-collection-b>/ab2d/pom.xml` and child POMs.
-- Ruby: `<local-collection-b>/dpc-app/dpc-impl/{Gemfile,Gemfile.lock}`.
+**Compatibility observation:** current `--resolved` accepts exact
+`NAME==VERSION` text records, comments, and identical normalized duplicates;
+conflicting versions fail closed. Repository declarations determine scope and
+snapshot-only packages are ignored. Snapshot matching supports bare names,
+textually matching exact pins, and numeric-dotted minimums. This conclusion is
+supported by `libyears/snapshot.py`, `libyears/constraints.py`,
+`libyears/scan.py`, and their corresponding tests.
 
-The number of visible project roots is not the number of supported Libyears
-repositories. Libyears currently accepts a selected project root and reads
-supported root files; it does not recursively scan a checkout and discover
-every project boundary.
+One root, share-it-savings, has local installed distribution metadata for
+matplotlib `3.11.1` and numpy `2.4.6`. Separate `Name:`/`Version:` headers could
+be extracted into compatible snapshot records. The metadata establishes that
+local environment's versions; no build association or retention workflow
+establishes historical project selection. It is not Git-tracked and the
+environment contains unrelated packages. Even accepting this as qualifying
+environment evidence would yield only one root, below the required two.
 
-### Feature 003 reach
+**Strict hypothesis result: THRESHOLD NOT MET.** There is no demonstrated
+retained project-resolution artifact blocked by `--resolved`, and no repeated
+retained Python evidence incompatibility. The dominant observed problem is
+**absence of retained exact evidence**, not incompatibility with the current
+snapshot format. Normal installation instructions and CI download caches do
+not demonstrate manual evidence-preparation burden.
 
-Feature 003 changed one material assumption from prior discovery: Yarn Classic
-is no longer merely a promising alternative format. Its approved implementation
-was exercised against `<local-collection-b>/easi-app`; the Feature 003 release-validation
-record says 77 of 77 direct npm dependencies were measured (100% coverage) using
-the live npm registry. This is strong evidence that Yarn support added actual
-measurement reach for at least one CMS project, not just a parser capability.
-It does not show how many of the other two lockfiles are compatible root
-projects, nor population-level adoption. The design-system tree still has
-workspace/project-boundary ambiguity. Go, Maven, Python, pnpm, and SBOM
-assumptions were not changed by Feature 003.
+**Inference:** no new Python exact-evidence parser is justified by this sample.
+Pyproject declaration discovery is a separate, weaker opportunity: it would
+expose four declarations in one root without establishing their used versions.
 
-## Observed User Problems
+### Project roots
 
-1. **A declaration often does not tell a user what exact release was selected.**
-   Python requirements files are common, but simple exact pins were observed in
-   only two files. Libyears can use a supplied snapshot, but a user must create
-   and retain that evidence and decide whether it represents the repository's
-   intended state. This is an observed evidence gap; the inventory does not
-   establish how often users need a new Python lock parser.
-2. **Many projects in a checkout require explicit root selection.** The
-   inventory found multiple manifest roots in both checkouts, while the CLI
-   measures a selected root and does not discover a portfolio. A user may need
-   repeated invocations or a wrapper. This is a workflow burden, but the right
-   project boundaries and cross-project semantics remain unclear.
-3. **Registry dependence can prevent a usable measurement.** A valid lock or
-   snapshot gives the selected version, but not the authoritative release
-   timestamp; scans need the public registry. A live dogfood attempt below
-   encountered transport failures. That demonstrates dependence and a failure
-   mode in this environment, not that ordinary user environments are commonly
-   offline or that a cache is the best remedy.
-4. **The current bounded repositories expose a format mismatch between
-   prevalence and trustworthy interpretation.** Go and Maven evidence is
-   present, but declaration files do not necessarily mean selected versions.
-   Adding parsing based on filename prevalence would risk measuring the wrong
-   thing.
-5. **The next high-value product problem is not established.** Feature 003
-   addressed a clear evidence chain and delivered useful reach. This inventory
-   did not reveal another comparably strong, low-ambiguity evidence source or
-   repeated output defect. Choosing a parser now would mostly be roadmap
-   momentum.
+**Observation:** structural/project-root multiplicity is real. DPC has separate
+application build targets, Dockerfiles, and portal test invocations;
+`design-system/lerna.json` lists `packages/*` and workspace use; Maven parent
+POMs enumerate modules; code-gov CI explicitly installs
+`scripts/requirements.txt`. These build/workspace systems encode multiple roots.
+The inspected design-system copy has no root `package.json`, despite nested
+manifests and its workspace configuration.
 
-No recurring UX defect was established from successful current output. A
-network-failed run is not sufficient evidence that reports are generally hard
-to interpret. No user-time measurement was made.
+**Missing evidence:** no demonstrated Libyears root-selection failure,
+repeated measurement invocation, or recurring user pain was found. Existing
+root lists may already be sufficient for an external wrapper.
 
-## Candidate Directions
+**Inference:** candidate-root discovery/listing may help navigation, but this
+is distinct from portfolio aggregation. No cross-project metric aggregation
+or denominator semantics are evaluated or proposed here.
 
-The candidates below start with user problems, then consider possible product
-responses.
+### Ruby
 
-| User problem | Possible direction | Evidence and status |
-|---|---|---|
-| Users may have Python declarations but no exact selected versions in checked-in files, and snapshot preparation is manual. | Validate a repository-local Python evidence workflow before supporting another Python lock format; possible later support for a format only if present and semantically bounded. | Requirements are common, exact candidates uncommon in this bounded sample; one `pyproject.toml`, no recognized Python lockfile. Need user workflow evidence. |
-| Users may need to invoke Libyears separately for each nested project. | Project-root discovery or portfolio orchestration. | Multiple roots observed. Boundary and aggregation semantics unresolved; this may belong in a wrapper or higher-level tool. |
-| Existing supported projects cannot get timestamps when registry access fails. | Explicit local metadata cache or offline mode. | All 77 lookups failed in this environment; no user request/cache artifact evidence. Cache provenance, freshness, and security semantics add cost. |
-| npm users have exact versions in a common lock source not currently supported. | pnpm evidence. | No pnpm lockfile found in either checkout; no observed reach. Defer. |
-| Go users need selected module versions. | Conservative Go module support. | Six `go.mod` + `go.sum` pairs exist, but `go.sum` is integrity evidence and `go.mod` requirements do not alone establish MVS-selected versions. No `go.work`/vendor selected snapshot found. Defer unless a safe local selected-version artifact is evidenced. |
-| JVM users need selected artifact versions and timestamps. | Conservative Maven/Gradle evidence. | 21 POMs, no Gradle or dependency lock/report found; inheritance/BOM model ambiguity and timestamp authority remain. Defer. |
-| Consumers need interoperable cross-ecosystem dependency evidence. | SBOM ingestion. | No actual SBOM found. Names of SBOM generator projects are not SBOM files. Defer. |
-| Downstream automation needs richer trust/provenance. | Expand evidence provenance in schema. | Schema v3 already reports ecosystem, source, version source, counts, and failure reasons. No downstream consumer or missing provenance field was observed. Defer schema change until a real consumer identifies a gap. |
-| Users need more direct/indirect coverage or package risk recommendations. | Broaden scope, vulnerability scanning, or update advice. | No observed request or evidence; changes the meaning and boundary of the metric. Reject for this discovery. |
-| Users cannot measure a useful project because no validated next need is known. | No-code workflow validation and product clarification. | Supported by the mismatch between many metadata files and few proven evidence chains, plus unresolved project boundaries and no user-demand evidence. Recommended as the next investment. |
+**Observation:** four application roots under `<local-collection-b>/dpc-app` each contain a
+Gemfile and Gemfile.lock. Their Dockerfiles explicitly copy and consume those
+locks through Bundler installation, and run dependency audits. This is retained
+evidence consumed by build instructions, not merely four unexplored file pairs;
+builds were not executed during discovery.
 
-## Evidence-Fitness Analysis
+| Application | Literal Gemfile declarations, all groups | Names with ordinary exact lock specs |
+|---|---:|---:|
+| `dpc-admin` | 69 | 67 |
+| `dpc-adminv2` | 57 | 55 |
+| `dpc-impl` | 55 | 53 |
+| `dpc-web` | 66 | 64 |
 
-The test for a dependency-evidence feature remains:
+In each root, literal direct declaration names match the lock's `DEPENDENCIES`
+name set. Most declarations have ordinary exact locked versions, and all four
+locks identify the public RubyGems source. No active Git/PATH lock sources were
+observed; a Git source helper and commented examples do not establish active
+Git dependencies. These are four application roots in one project family,
+not four independent users or validated deployments.
 
-> direct dependency declaration + exact repository-local selected-version
-> evidence + authoritative public release timestamp + static interpretation
-> without dependency resolution or package-manager execution
+Groups, platforms, and special entries remain material semantic questions.
+Development/test groups are present. `bundler` and platform-conditioned
+`tzinfo-data` lack ordinary gem-spec entries in each lock; `BUNDLED WITH` must
+not automatically be substituted for application dependency evidence.
+Adminv2 has generic and Darwin nokogiri variants. Build instructions set
+`force_ruby_platform true`, but this does not establish a general platform rule.
+The table is not an approved production scope or measured coverage result.
 
-- **Python exact pins:** an exact `==` declaration can supply the used version;
-  PyPI supplies release timestamps. Most observed requirements declarations
-  did not appear to be exact pins. A generated `pip freeze` file is exact
-  environment evidence, not necessarily committed project-resolution
-  evidence. It must not silently be treated as historical or project-selected
-  truth.
-- **Python lock formats:** `pyproject.toml` declarations are not selected
-  versions. No `uv.lock`, `poetry.lock`, or `Pipfile.lock` was found in this
-  bounded walk. Adding a parser based only on ecosystem popularity would not
-  demonstrate reach here. If user evidence later identifies a lock format, its
-  declaration-to-lock scope and selected-version semantics need separate
-  validation.
-- **npm package-lock and Yarn:** direct declarations plus supported lock data
-  can provide exact selected versions; the npm registry supplies timestamps.
-  Feature 003 dogfood demonstrates this chain for `easi-app`. Its value is
-  established, and the remaining Yarn inventory is small and structurally
-  ambiguous.
-- **pnpm:** no evidence artifact observed. A package-manager lockfile can be
-  exact evidence only after format and workspace semantics are specified; its
-  existence elsewhere cannot be inferred from npm prevalence.
-- **Go:** `go.mod` `require` directives express module requirements, not in
-  every case the final selected graph under Minimal Version Selection. `go.sum`
-  hashes authenticate content but do not establish the currently selected
-  version. The bounded inventory found no `go.work` or `vendor/modules.txt`
-  selection evidence. Treating a sum entry as selection would be unsafe.
-- **Maven/JVM:** POM literal versions are declarations, while properties,
-  parent inheritance, dependency management, and imported BOMs can determine
-  effective versions. The inventory found no local resolved report or lock
-  artifact to avoid build-model interpretation. The prior discovery also left
-  canonical release timestamp authority unresolved. POM presence alone fails
-  the evidence test.
-- **Ruby:** matched Gemfile/Gemfile.lock pairs were observed, but no Ruby
-  ecosystem support or authoritative timestamp model is established by this
-  inventory. A pair is a candidate for a future separate investigation, not
-  enough to recommend an ecosystem.
-- **SBOMs and generated reports:** no actual SBOM or generated resolved
-  dependency report was found. The three filename matches are agency-index
-  descriptions of SBOM generator projects. An SBOM may contain selected
-  versions but its provenance, component scope, and timestamp source would
-  still need a carefully bounded evidence model.
+**Inference:** many ordinary declarations appear conservatively mappable to
+exact lock evidence without running Bundler. General Gemfiles are executable
+Ruby, so this does not establish that arbitrary declaration evaluation can be
+supported statically. See the [Gemfile reference](https://guides.rubygems.org/gemfile/)
+and [lockfile documentation](https://guides.rubygems.org/gemfile-lock/).
 
-Integrity hashes, declared minimums/ranges, and generated evidence are not
-interchangeable. This discovery rejects the unsafe shortcuts of interpreting
-Go sums as selected versions, POM declarations as effective versions, or a
-current environment snapshot as repository history.
+Public RubyGems timestamp metadata appears available: the
+[RubyGems API documentation](https://guides.rubygems.org/rubygems-org-api/)
+describes version records with creation timestamps, prerelease indicators,
+and platforms. Canonical publication-time, platform, and yanked-release
+semantics still need technical review; no live package lookups validated them.
 
-## Candidate Comparison
+**Evidence fitness: MEDIUM-HIGH. Demand confidence: LOW-MEDIUM.** These are
+qualitative judgments based on the evidence above. User demand and useful
+conservative scope remain unproven. This is not implementation readiness.
 
-Ratings are qualitative judgments about this bounded evidence, not ROI or
-population estimates. Reach is included as evidence strength rather than an
-adoption claim.
+### Go/JVM
 
-| Candidate and user problem | Observed evidence / reach | Evidence fitness | Complexity | Semantic risk | Product-boundary fit | Recommendation strength |
-|---|---|---|---|---|---|---|
-| **Workflow validation (recommended):** the project does not yet know which recurring user problem deserves the next implementation. | Two checkouts; several evidence gaps; one proven Yarn win; no user-demand evidence or user-time measures. | HIGH for learning; no evidence parser is assumed. | LOW–MEDIUM: focused user workflow evidence and a clarified product decision. | LOW. | HIGH: product discovery stays with Libyears maintainers. | MEDIUM; strongest responsible next investment, not an implementation feature. |
-| **Python exact-evidence usability:** Python declarations often lack selected versions and snapshots require manual preparation. | 10 requirement/constraint files; simple exact pin candidates in 2; no common lock artifacts observed; one pyproject. | MEDIUM for existing exact pins and supplied snapshot; LOW for a new parser absent identified lock evidence. | MEDIUM–HIGH depending on evidence format and compatibility rules. | MEDIUM: confusion between environment and repository state. | HIGH if narrowly evidence-based. | LOW–MEDIUM; runner-up for validation, not yet for implementation. |
-| **Offline/cache support:** users cannot obtain release dates without public registry access. | This run failed 77/77 registry calls; no evidence this is frequent outside the restricted environment. | MEDIUM if cache records authoritative metadata with provenance; freshness and missing timestamps remain. | HIGH: cache format, invalidation, trust, privacy, network behavior. | MEDIUM–HIGH. | MEDIUM; can remain adapter-side but expands state and user expectations. | LOW until user demand is confirmed. |
-| **Project-root/portfolio workflow:** users repeat invocations or cannot understand repository boundaries. | 27 npm manifest files, nested Python/Go/JVM/Ruby roots; two repository checkouts. | Not an evidence-chain extension. | MEDIUM–HIGH due to discovery, exclusion, aggregation, and reporting. | HIGH for denominator/aggregation comparability. | LOW inside the core single-project metric; stronger above/beside it. | LOW; defer as Libyears feature. |
-| **Go selected-version evidence:** Go users cannot measure dependencies from module evidence. | Six module roots with go.mod/go.sum, no selected graph artifact observed. | LOW for current files; sum is integrity, requirement may differ from selected version. | HIGH for static graph interpretation or additional artifact support. | HIGH. | MEDIUM only with a reliable selected-version artifact. | LOW; reject current evidence shortcut. |
-| **JVM selected-version evidence:** POM-heavy projects remain unsupported. | 21 POM files, no lock/reports identified. | LOW: declarations need effective model and canonical timestamp authority remains uncertain. | HIGH. | HIGH. | LOW–MEDIUM; risks build-system interpretation. | LOW. |
+**NO MATERIAL EVIDENCE DELTA.** Six Go module/sum pairs remain, without a retained
+selected build list, generated module inventory, or `vendor/modules.txt`.
+No JVM dependency lock, resolved tree/report, or build-associated inventory was
+found. The deeper walk found 22 POMs, correcting the initial draft's 21-file
+count without improving selected-version evidence. Feature 003's evidence
+limitations remain; sums and declarations must not be treated as resolution.
 
-## Product-Boundary Analysis
+### Provenance
 
-Libyears should remain a small, static, explainable metric tool. It should not
-become a dependency resolver, package-manager emulator, build-system
-interpreter, portfolio analytics service, vulnerability scanner,
-update-recommendation engine, package-health score, or generalized SBOM
-platform merely because those tools encounter dependency metadata.
+**NO DEMONSTRATED PROBLEM.** Schema v3 already distinguishes declaration and
+version sources and source-level versus dependency-level failures. The metrics
+project has historical Libyears graphs, but collection delegates to another
+package; no consumer of this CLI schema demonstrated a missing provenance
+field. Possible missing root identity, content hashes, or lookup timestamps
+are not by themselves product requirements.
 
-Portfolio invocation may help users, but it adds project detection and
-cross-project comparability semantics that the metric has not defined. A
-thin external script or orchestration tool can own that workflow while
-invoking Libyears once per known root. A future product discovery can revisit
-it if users demonstrate a recurring need and propose meaningful boundaries.
+### Offline/cache
 
-Vulnerability and package-health questions require different data and
-interpretation than release age. Recommendations can be generated by adjacent
-tools that consume Libyears output, but should not be implied by a high age
-score. SBOM production/interchange is also broader than reading a narrow,
-validated source as evidence for direct dependencies.
+**PLAUSIBLE BUT UNDEMONSTRATED.** CI installation caches and historical metric
+outputs exist, but no air-gapped measurement, public-registry restriction,
+release-metadata cache, or requirement to replay historical registry state was
+demonstrated. npm `--prefer-offline` is installation evidence; EASI's offline
+feature-flag mode is unrelated. Codex sandbox/network failures are explicitly
+excluded from product evidence.
 
-## Surprising Findings
+## Candidate Ranking
 
-- **Yarn materially increased CMS measurement reach.** Feature 003 release
-  validation recorded 77/77 measurable direct dependencies in `easi-app`.
-  Thus Yarn support was not merely format coverage. The bounded current walk
-  confirms three Yarn lock files, but only the `easi-app` pairing is clearly a
-  single root; the design-system tree and token importer need boundary review.
-- **Another npm evidence source is not yet more valuable than another
-  ecosystem.** pnpm did not appear in either bounded checkout. Existing Yarn
-  support has a demonstrated 77-dependency result; no comparable pnpm demand
-  or artifact was observed.
-- **Python remains nominally supported but can be under-measurable from
-  declarations.** Requirements files are present, while simple exact pins were
-  found in two files. The supported snapshot path can address non-exact
-  declarations, but requires a user-supplied environment snapshot and may not
-  represent repository state. This makes Python workflow validation stronger
-  than speculative parser selection.
-- **No repository-local generated Go/Maven evidence solved prior gaps.** The
-  bounded walk found six Go module pairs but no workspace or vendor selected
-  inventory, and 21 POM files but no Gradle lock or dependency report.
-- **No actual SBOM appeared.** The three SBOM-name matches are code.gov agency
-  index records for generator projects. The README's GitHub dependency-page
-  link is not an SBOM file in these checkouts.
-- **Provenance already exists at a useful baseline.** Schema v3 reports
-  declaration/evidence sources and per-dependency `version_source`; source
-  errors and unmeasurable dependencies are separate. No downstream consumer
-  exposed a specific missing provenance field. A schema addition now would be
-  speculative.
-- **Network dependence is concrete; demand for an offline mode is not.** A
-  current scan of the supported `easi-app` root recognized all 77 declarations
-  and Yarn lock selections, but measured 0/77 because registry requests failed
-  with `registry_error` in this environment. Feature 003's earlier live run
-  measured 77/77. Together these confirm that registry access determines
-  timestamp availability and that results can differ by environment; they do
-  not establish a widespread offline-user problem. No cache or network-free
-  timestamp source was present in the inspected repositories.
-- **Manual preparation and project-root selection are plausible friction,
-  not yet demonstrated user pain.** The evidence inventory exposes multiple
-  roots, but did not observe actual user scripts, errors, or requests. There
-  was no repeated UX problem in successful Libyears output to justify output
-  expansion.
-- **Direct-production-only npm scope remains defensible.** The inventory does
-  not show that users need dev, peer, optional-only, workspace, or transitive
-  dependencies included in the same metric. Expanding it would change the
-  denominator and the meaning of comparable reports.
+This ranks **investigation priority**, not implementation approval. Counts
+express observed evidence reach, not demand or expected adoption.
+
+| Rank | Serious product candidate | Evidence and limitations | Scope and boundary judgment |
+|---|---|---|---|
+| 1 | Bounded Ruby evidence support | Four build-consumed manifest/lock pairs; MEDIUM-HIGH evidence fitness, LOW-MEDIUM demand confidence | Potential static subset; new registry and ecosystem maintenance; group/platform semantics unresolved |
+| 2 | Project-root discovery/listing | Multiple roots encoded in build/workspace systems; user pain unproven | Potentially bounded navigation aid; external wrapper remains credible; no portfolio aggregation |
+| 3 | Python pyproject declaration discovery | Four invisible project declarations in one root; no retained exact selections | Could improve discovery completeness, not demonstrated measurement coverage; overlapping declaration tables need care |
+
+The following are lowered or removed from the serious shortlist unless new
+evidence changes their case:
+
+- **New Python exact-evidence parser:** the explicit two-root threshold failed.
+- **Offline/cache:** no demonstrated measurement requirement; sandbox failures
+  provide no product evidence.
+- **Go and JVM:** no new selected-version artifacts address prior limitations.
+- **Provenance expansion:** no observed downstream consumer gap.
+- **pnpm/SBOM:** no relevant project evidence establishes demand for ingestion;
+  generator index records and an installed library's own SBOM are not project
+  resolution inventories.
+
+Workflow validation is ongoing discovery, not a ranked product feature.
 
 ## Recommended Direction
 
-### Problem
+**No Feature 004 implementation direction approved yet.**
 
-The evidence does not currently distinguish a high-value recurring user
-problem from several plausible but costly extensions. Existing user metadata
-shows gaps, but not which gaps prevent real workflows or what repository
-evidence users can provide safely.
+Bounded Ruby exact-evidence support is the strongest current candidate and
+should receive **one focused feasibility/product-scope review before a human
+Feature 004 decision**. Do not call Ruby Feature 004 yet.
 
-### Evidence
+The review should use the four observed application pairs to assess a useful
+static scope, groups/platforms and special entries, timestamp authority,
+conservative coverage limits, and the cost of a third registry. It should
+identify what can be established without runtime Gemfile evaluation or
+resolution, and present remaining product choices rather than silently making
+them. This is investigation, not specification, architecture, or implementation.
 
-The strongest product evidence is the successful Feature 003 result: Yarn
-Classic made an existing npm root with 77 direct declarations fully measurable.
-Beyond that, the inventory shows Python declarations with few simple exact
-pins, many nested project roots, unsupported Go/JVM metadata, and no actual
-SBOMs. The current dogfood attempt found all 77 exact Yarn versions but no
-timestamps because this environment could not reach the npm registry. None of
-those facts alone identifies the next feature.
+Preserve the small static metric boundary: no package-manager execution,
+repository-code evaluation, dependency resolution, generic plugin framework,
+portfolio aggregation, or metric-semantic changes are authorized.
 
-### User outcome
+## Falsification: Reasons Not to Build Ruby
 
-Users and maintainers can identify whether the next meaningful limitation is
-Python version evidence, registry access, repeated project-root selection,
-another evidence format, or something not visible in these two checkouts.
-That answer would make a subsequent feature smaller and more likely to solve
-an observed problem.
+Do not build the candidate if evidence establishes that:
 
-### Why now
+- Intended users do not measure these applications.
+- The applications are irrelevant or historical copies for the intended use.
+- Useful scope requires runtime Gemfile evaluation.
+- Platform/group semantics cannot be conservatively bounded.
+- Conservative measurable coverage is too small to be useful.
+- Third-registry maintenance cost is not justified by the user benefit.
 
-Feature 003 completed a strong npm evidence extension and made the next
-roadmap-shaped choices tempting. The bounded inventory does not support
-choosing pnpm, Go, Maven, SBOM, portfolio scanning, or a new schema field by
-prevalence alone. A short workflow-validation investment prevents premature
-parser and semantic commitments.
+Four matching file pairs alone do not overcome any of these conditions.
 
-### Why this belongs in libyears
+## Remaining Human Questions
 
-This is a product-discovery investment rather than a runtime capability. It
-belongs in the Feature 004 discovery/specification process because the core
-uncertainty is what Libyears should measure and what evidence users trust. The
-result may be a no-code decision, a narrowly evidenced feature, or a conclusion
-that an adjacent tool should own the workflow.
+After the focused technical review, the smallest useful human question is:
 
-### Smallest useful scope
+- Does the demonstrated conservative Ruby scope serve an intended measurement
+  workflow well enough to justify adding and maintaining a third registry?
 
-Ask a small number of actual users/maintainers to walk through one recent
-measurement attempt and identify: the project root, declaration/evidence
-files, whether registry access was available, what result they needed, and
-where manual work or ambiguity occurred. Compare responses against existing
-README guidance and the observed repository evidence. Record anonymized
-patterns and counterexamples, then decide whether any single problem has enough
-evidence for a specification. Do not collect package lists, credentials, or
-private registry configuration.
+This requires user/product judgment. Most remaining Ruby semantics can be
+investigated technically before human attention is required: declaration/lock
+mapping, special entries, platform variants, group information retained in
+artifacts, timestamp authority, and resulting coverage limits. Only unresolved
+scope/value tradeoffs should be escalated. Broad workflow research is not the
+next step, and no product direction is approved by this question.
 
-### Explicit non-goals
+## Process Record
 
-- No new parser, ecosystem, evidence format, dependency scope, or schema field
-  is approved by this recommendation.
-- Do not infer selection from hashes, declarations, or a transient environment.
-- Do not add registry caching, offline timestamp substitution, project
-  aggregation, vulnerability findings, or update recommendations during this
-  validation.
-- Do not treat the bounded CMS inventory as a representative prevalence
-  survey.
-
-### Principal risks
-
-- A small qualitative sample can miss important users and over-weight the
-  loudest workflow.
-- User reports may suggest formats that still fail the exact-evidence or
-  static-analysis test.
-- The no-code recommendation may defer a demonstrably useful parser if a
-  strong user need is already known outside this repository evidence.
-- Research itself consumes human attention; keep it bounded and tie every
-  follow-up to an observable decision.
-
-### Questions requiring human judgment before specification
-
-- Is there an established user group or known workflow problem not represented
-  in these two repositories?
-- Which user outcome matters most: exact coverage, repeatable timestamps,
-  fewer manual invocations, offline operation, or another goal?
-- What evidence do users already produce and trust for Python and other
-  ecosystems?
-- Are users measuring one selected project root, many roots, or release/build
-  environments, and what constitutes the denominator they care about?
-- Is the current public registry dependency acceptable for intended use, or is
-  offline/reproducible operation a real requirement?
-- What is the smallest useful evidence of demand that should trigger a
-  substantive Feature 004 specification?
-
-## Runner-Up
-
-Validate and improve Python exact-version evidence usability. This is the most
-plausible product capability candidate because requirements files are common,
-exact pins were uncommon in this sample, and `--resolved` asks users to supply
-environment-derived evidence. It should win over workflow validation if users
-confirm that this is a recurring blocker and identify repository-local exact
-evidence that is both common and safe to interpret. No specific Python lock
-format is recommended from the current inventory.
-
-## Explicitly Deferred
-
-The tempting option is **Go support**, because six `go.mod`/`go.sum` pairs
-provide a visible ecosystem footprint. It remains deferred: `go.sum` is
-integrity evidence, and the observed `go.mod` requirements do not by themselves
-establish the selected versions. Go should move ahead only if user need and a
-safe repository-local selected-version artifact or tightly bounded evidence
-model are established.
-
-Portfolio scanning is also deferred from Libyears core; repeated invocation
-may be better handled by a wrapper. pnpm and SBOM ingestion lack observed local
-artifacts. Maven has high file counts but weak static evidence fitness and
-unresolved timestamp authority.
-
-## What Would Falsify This Recommendation
-
-The recommendation assumes that no stronger, already-known user need exists
-outside the bounded repository evidence; that two CMS checkouts are useful but
-not representative; and that user workflow information can be gathered
-cheaply enough to affect product choice.
-
-Evidence that would make this recommendation wrong:
-
-- Existing support requests or user interviews already establish one urgent,
-  recurring limitation with a clear safe boundary.
-- Users consistently identify Python snapshot preparation as the blocking
-  task and point to one repository-local lock/evidence format already produced
-  by their projects. In that case the Python runner-up should win and proceed
-  to evidence-specific discovery.
-- Users consistently report registry access restrictions or repeated
-  identical scans as the blocker, and can identify an authoritative metadata
-  artifact or acceptable cache freshness/provenance model. Then offline/cache
-  work may be stronger.
-- A broader, authorized inventory finds pnpm or another exact lock source in
-  many relevant roots with direct declarations and clear selected versions.
-  That could displace Python workflow work, subject to the full evidence test.
-- A validated generated Go/JVM report is already produced in repositories and
-  records selected versions without executing build systems at scan time. That
-  could reopen those ecosystems.
-- Users' actual task is repeatedly measuring many nested roots, with clear
-  project boundaries and no need for cross-project aggregation. A root-listing
-  or orchestration feature could then be useful, though it may still belong
-  above the metric core.
-- Successful registry-backed output reveals a recurring interpretation or
-  provenance failure not found in this scan.
-
-The current 0/77 live measurement is not sufficient on its own to make the
-offline candidate win: the earlier 77/77 run on the same root shows the
-registry path can work, and this attempt reflects the current execution
-environment.
-
-## Process Observations
-
-Prior artifacts made this investigation substantially easier. Feature 003's
-discovery preserves its earlier portfolio recommendation, human challenge,
-Go/Maven/Yarn evidence comparison, explicit boundaries, and rationale for
-deferring SBOM. Its reviews preserve specification, architecture, task-graph,
-and convergence findings. Its retrospective points directly to the draft
-before review experiment used here. Feature 002's retrospective explains why
-that durable decision trail matters.
-
-Missing information included user demand outside these checkouts, how users
-currently choose project roots, whether Python snapshots are actually
-prepared, and why users would need offline results. The inventory also had a
-count discrepancy with Feature 003's original bounded walk. This required
-additional repository archaeology to verify lock versions, Yarn headers,
-Python pin examples, and whether apparent SBOM hits were artifacts or merely
-generator references. No external directories beyond the two authorized roots
-were inspected.
-
-The Feature 003 retrospective recommendations appear useful: the discovery and
-review artifacts made the initial direction and later challenge reconstructable,
-and committing this draft before challenge will preserve its exact reviewed
-starting state in Git. That improves process evidence, but does not make the
-product recommendation more certain. Independent review has not occurred.
+Feature 002's retrospective exposed missing review rationale; Feature 003's
+discovery/reviews improved that record and recommended committing drafts before
+review. Feature 004 applies that experiment: `df7aee60446795f67da321331f778c3d1457fea7` preserves the exact initial
+discovery, while this separate revision preserves the supplied independent
+review disposition and completed deep-investigation findings. Git retains the
+before/after artifacts without preserving chat transcripts or rewriting history.
+The evidence summary distinguishes observations, inferences, and missing demand;
+it does not claim a new independent review of this revision.
