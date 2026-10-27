@@ -2,7 +2,9 @@
 
 ## Status
 
-Ready for implementation
+Complete
+
+11 / 11 tasks closed: 10 COMPLETE and optional T010 intentionally SKIPPED as redundant under its optional semantics. All 30 / 30 acceptance criteria are mapped and satisfied; final convergence verdict: CONVERGED.
 
 Tasks are ordered within the approved implementation phases. Do not mark a task complete until its acceptance criteria and verification pass. Each task is independently reviewable and leaves a coherent repository state.
 
@@ -367,6 +369,8 @@ No deterministic test requires network access; no registry behavior changes.
 
 ### T011 — Complete read-only feature convergence audit
 
+**Status:** COMPLETE — initial verdict CONVERGED WITH LOW-SEVERITY FINDINGS; safe malformed-Yarn parser context was lost before human verbose diagnostics. Separate remediation commit `ace9ccf69d259ad6041dd0c19e00bf5df2208309` resolved the finding; narrow independent re-verification returned CONVERGED. All 30 / 30 acceptance criteria are satisfied; 187 deterministic tests passed after remediation. Final evidence is recorded in `reviews.md`; T009 evidence is sufficient and optional T010 remains intentionally SKIPPED as redundant.
+
 **Outcome:**
 A read-only audit checks approved specification, architecture, implementation, tests, documentation, and release evidence for convergence and reports findings without remediation.
 
@@ -397,6 +401,8 @@ No commit unless a review record is explicitly added as audit evidence; any such
 - No further phase begins under this feature plan.
 
 ### Post-convergence lifecycle activity (not an implementation task)
+
+**Status:** PENDING — the retrospective has not been performed and `retrospective.md` has not been created.
 
 After T011 convergence, perform the same fresh-context repository-storytelling retrospective used after Feature 002 and create `specs/003-yarn-lock-evidence/retrospective.md`. Compare Feature 003 storytelling against Feature 002's **MOSTLY** result, specifically evaluating whether `discovery.md` and `reviews.md` preserved the decision journey better. This activity follows convergence and does not block the deterministic implementation DAG or convergence verdict.
 

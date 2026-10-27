@@ -18,3 +18,11 @@
 - **Status:** SKIPPED.
 - **Reason:** Successful T009 dogfood already exercised the live public npm registry and verified HTTPS path end-to-end across 77 real dependencies. An additional synthetic live smoke would provide no material release evidence.
 - **Effect:** Skipping T010 does not affect deterministic correctness or convergence eligibility.
+
+## Final convergence disposition — T011
+
+- **Status:** COMPLETE; final verdict CONVERGED, with 30 / 30 acceptance criteria mapped and satisfied.
+- **Disposition:** The initial CONVERGED WITH LOW-SEVERITY FINDINGS verdict identified lost safe malformed-Yarn parser context in human diagnostics. Separate remediation commit `ace9ccf69d259ad6041dd0c19e00bf5df2208309` resolved the finding; narrow independent re-verification confirmed human diagnostic PASS, unchanged stable reason and JSON contract, and no regression concern.
+- **Verification:** 187 deterministic tests passing after remediation; architecture conformance and human readability PASS; schema v3 unchanged; package-lock/PyPI/snapshot/TLS regressions PASS.
+- **Release evidence:** Existing T009 evidence is sufficient; optional T010 remains intentionally SKIPPED as redundant.
+- **Lifecycle:** Post-convergence retrospective PENDING; `retrospective.md` has not been created.
