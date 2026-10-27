@@ -120,3 +120,202 @@ The detailed behavioral questions listed in
 This approves specification work only, not implementation. The next gate is a
 Feature 004 specification draft followed by clarification/review; no `spec.md`
 is created by this decision record.
+
+## Specification Review
+
+**Reviewed draft:** `c761b113ea19988e7e9ea5ca16b373c1e2c526fb`
+**Verdict:** REVISE
+
+This record preserves the supplied completed independent Feature 004
+Adversarial Specification Review, not a new review or product clarification.
+The committed first draft remains unchanged as the pre-review baseline.
+
+### What the draft got right
+
+- The approved all-direct lock-snapshot product boundary was preserved.
+- No Gemfile evaluation or package-manager execution was introduced.
+- Coverage/source isolation and special-dependency handling were substantially
+  coherent.
+- Security boundary: PASS. Discovery conformance: PASS.
+- No hidden scope expansion was found.
+- All three JSON examples parsed; no requirement for schema v4 was demonstrated.
+- The failure taxonomy was largely reusable without reason inflation.
+
+### Material findings
+
+#### F1 — Canonical release policy is under-decomposed
+
+Q3 combines comparison domain, canonical timestamp population, artifact
+availability, incomplete historical visibility, and eligibility. A package-level
+freshness decision alone does not resolve these separate policies.
+
+**Classification:** PRODUCT DECISION REQUIRED
+
+#### F2 — Yank/history visibility was overstated
+
+Ordinary public RubyGems endpoints expose currently public records but do not
+establish complete historical/yanked visibility. Missing ordinary public records
+alone cannot establish a known yank, a never-existing package/version, or
+complete historical publication evidence.
+
+**Classification:** AUTHORITATIVE SEMANTICS CORRECTION
+
+#### F3 — Lock boundary does not uniquely determine failure level
+
+Clarify repeated/same-remote GEM blocks, missing remote, unsupported nested
+requirement framing, empty/repeated PLATFORMS, simultaneous malformed and
+unsupported evidence, and source-error precedence. These affect count
+availability and failure isolation.
+
+**Classification:** SPEC CORRECTION
+
+#### F4 — Registry case identity is a product decision
+
+Endpoint choice must not change whether case-only identity differences are
+accepted. Promote the previous MAY question to a before-approval product
+decision.
+
+**Classification:** PRODUCT DECISION REQUIRED
+
+#### F5 — Version + platform is not always complete artifact identity
+
+RubyGems may expose additional artifact identity such as `ruby_abi`. Feature 004
+need not support those artifact classes, but must recognize that they cannot
+silently collapse into ordinary version/platform evidence.
+
+**Classification:** AUTHORITATIVE SEMANTICS CORRECTION
+
+#### F6 — Historical import predicate is only a heuristic
+
+The observable RubyGems import-day predicate does not attest that all other
+creation timestamps are historically authoritative. Separate technical
+detection from acceptable product uncertainty.
+
+**Classification:** AUTHORITATIVE SEMANTICS CORRECTION
+
+#### F7 — Exact-requirement comparison needs a bounded syntax
+
+Clarify bare exact versions, `=` exact terms, whitespace, repeated terms, and
+exact terms inside compound requirements. Do not create a general Ruby
+requirement evaluator.
+
+**Classification:** SPEC CORRECTION
+
+#### F8 — Same-version platform variants need explicit ratification
+
+Unconditional rejection is conservative but is a product policy, especially if
+package-level freshness is selected.
+
+**Classification:** PRODUCT DECISION REQUIRED
+
+### Acceptance Criteria Audit
+
+| Review category | Count |
+|---|---:|
+| Draft count | 45 |
+| Clearly testable | 29 |
+| Ambiguous | 6 |
+| Redundant | 0 |
+| Process-only | 0 |
+| Contradict spec | 0 |
+| Depend on unresolved questions | 10 |
+
+The reviewer found no evidence that the draft criterion count was inflated
+merely by the absence of a numerical cap. Criterion count remains emergent and
+may change after clarification; 45 is not a target.
+
+### Schema Assessment
+
+**Schema v3:** AMBIGUOUS, but no v4 requirement demonstrated.
+
+Ordinary RubyGems evidence appears additive. Final compatibility depends on
+resolving artifact/canonicalization provenance without reinterpreting existing
+schema fields.
+
+### Human Clarification Packet
+
+All eight decisions below remain pending human judgment; no option is selected
+by this review record.
+
+#### H1 — Lock-only recognition
+
+- A. Root Gemfile.lock alone activates Ruby discovery.
+- B. Companion Gemfile presence is required.
+
+#### H2 — Single platform-qualified lock evidence
+
+- A. Reject initially.
+- B. Accept explicit platform-qualified evidence without host-platform inference.
+
+#### H3 — Freshness comparison domain
+
+- A. Compare a defined artifact class.
+- B. Compare package versions across supported artifacts.
+
+If A, generic-only versus exact recorded platform class remains a product choice.
+
+#### H4 — Observable history versus historical certainty
+
+If package-level comparison is chosen:
+
+- A. Use a defined canonical date over supported currently observable records,
+  while explicitly disclosing the limitation.
+- B. Decline measurement where required historical publication time cannot be
+  established.
+
+Availability and timestamp uncertainty still need explicit participation rules.
+
+#### H5 — Same-version public platform variants
+
+If package-level comparison is chosen:
+
+- A. Continue rejecting multiple variants.
+- B. Accept one package version established by same-version supported variants.
+
+Different-version and uncertain-source evidence remains fail-closed.
+
+#### H6 — Historical timestamp uncertainty threshold
+
+- A. Reject the whole identified import-day interval or another justified broad
+  interval.
+- B. Reject only records meeting a narrower documented heuristic.
+
+Missing auxiliary metadata needs an explicit conservative result.
+
+#### H7 — Exact requirement disagreement
+
+- A. Trust selected lock evidence.
+- B. Require literal extracted-version agreement for the deliberately supported
+  exact-term syntax.
+
+Do not characterize textual disagreement as proven semantic incompatibility.
+
+#### H8 — Registry case-only identity
+
+- A. Require exact spelling.
+- B. Permit ASCII case-only agreement at the registry boundary.
+
+Punctuation normalization remains excluded.
+
+### Clarification order
+
+1. Correct authoritative facts about artifact identity, public-history
+   visibility, absence, case lookup, and historical-import semantics.
+2. Resolve freshness comparison domain and dependent canonicalization/history
+   policy.
+3. Resolve platform-qualified evidence and same-version variant treatment.
+4. Resolve historical uncertainty threshold.
+5. Resolve lock-only recognition, exact-requirement consistency, and case
+   identity.
+6. Clarify parser/failure precedence, provenance fields, acceptance criteria,
+   and schema compatibility.
+7. Perform a narrow independent verification review before specification
+   approval.
+
+### Status
+
+**Specification status:** REVISE — awaiting human product clarification
+
+**Implementation status:** NOT APPROVED
+
+**Next gate:** Human clarification of H1–H8
