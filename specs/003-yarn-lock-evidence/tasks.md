@@ -274,6 +274,8 @@ Do not patch summary fields in output code; metric arithmetic and existing JSON 
 
 ### T008 — Add end-to-end Yarn and mixed-repository regression fixtures
 
+**Status:** COMPLETE — 18 focused deterministic tests and the 186-test full suite passed; diff reviewed and whitespace checked.
+
 **Outcome:**
 A focused deterministic end-to-end mixed fixture proves the unique full flow from discovery through evidence selection, Yarn parsing/matching, mocked registry lookup, metric and aggregation to JSON and human output.
 

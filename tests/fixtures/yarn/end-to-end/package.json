@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@example/widget": "^2.0.0",
+    "missing-widget": "^3.0.0",
+    "optional-widget": "^1.0.0"
+  },
+  "optionalDependencies": {
+    "optional-widget": "^1.0.0"
+  }
+}

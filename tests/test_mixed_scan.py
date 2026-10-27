@@ -403,6 +403,79 @@ class MixedScanTests(unittest.TestCase):
         })
         self.assertIn("Version evidence: yarn.lock", format_human(report, "."))
 
+    def test_yarn_fixture_reports_mixed_end_to_end_result(self):
+        fixture = Path(__file__).parent / "fixtures" / "yarn" / "end-to-end"
+        used = datetime(2023, 1, 1, tzinfo=timezone.utc)
+        latest = datetime(2024, 1, 1, tzinfo=timezone.utc)
+        pypi_lookup = Mock(return_value=RegistryResult(
+            "python-helper", "1.0", used, "1.0", used,
+        ))
+        npm_lookup = Mock(return_value=RegistryResult(
+            "@example/widget", "2.1.4", used, "3.0.0", latest,
+        ))
+
+        report = scan_mixed_repository(
+            fixture, pypi_lookup=pypi_lookup, npm_lookup=npm_lookup,
+        )
+
+        pypi_lookup.assert_called_once_with("python-helper", "1.0")
+        npm_lookup.assert_called_once_with("@example/widget", "2.1.4")
+        self.assertEqual(report.source_errors, ())
+        self.assertEqual(
+            [(item.ecosystem, item.name, item.declared, item.reason)
+             for item in report.unmeasurable],
+            [("npm", "missing-widget", "^3.0.0", "lock_version_missing")],
+        )
+        expected_libyears = 365 / 365.25
+        self.assertEqual(
+            (report.summary.dependencies_discovered,
+             report.summary.dependencies_measured, report.summary.coverage),
+            (3, 2, 2 / 3),
+        )
+        self.assertAlmostEqual(report.summary.total_libyears, expected_libyears)
+        self.assertEqual(report.by_ecosystem["npm"].coverage, 0.5)
+        self.assertEqual(report.by_ecosystem["pypi"].coverage, 1.0)
+
+        data = json.loads(format_json(report, str(fixture)))
+        self.assertEqual(data["schema_version"], 3)
+        self.assertEqual(data["ecosystems"], ["npm", "pypi"])
+        self.assertEqual(data["version_evidence"]["npm"], {
+            "declaration_source": "package.json",
+            "snapshot_source": "yarn.lock",
+            "format": "yarn_lock_v1",
+        })
+        self.assertEqual(data["version_evidence"]["pypi"], {
+            "declaration_source": "requirements.txt", "snapshot_source": None,
+        })
+        self.assertEqual(
+            [(item["ecosystem"], item["name"], item["used_version"],
+              item["version_source"], item["libyears"])
+             for item in data["dependencies"]],
+            [("pypi", "python-helper", "1.0", "requirements_exact", 0.0),
+             ("npm", "@example/widget", "2.1.4", "yarn_lock", expected_libyears)],
+        )
+        self.assertEqual(data["summary"]["dependencies_discovered"], 3)
+        self.assertEqual(data["summary"]["dependencies_measured"], 2)
+        self.assertEqual(data["summary"]["by_ecosystem"]["npm"]["coverage"], 0.5)
+        self.assertEqual(data["summary"]["by_ecosystem"]["pypi"]["total_libyears"], 0.0)
+        self.assertEqual(data["unmeasurable"], [{
+            "ecosystem": "npm", "name": "missing-widget",
+            "declared": "^3.0.0", "reason": "lock_version_missing",
+        }])
+        self.assertEqual(data["source_errors"], [])
+
+        human = format_human(report, str(fixture))
+        self.assertIn("Repository: 66.7% coverage; 2 / 3 measured", human)
+        self.assertIn("npm: 50.0% coverage; 1 / 2 measured", human)
+        self.assertIn("pypi: 100.0% coverage; 1 / 1 measured", human)
+        self.assertIn("@example/widget", human)
+        self.assertIn("2.1.4", human)
+        self.assertIn("1.00  yarn.lock", human)
+        self.assertIn("python-helper", human)
+        self.assertIn("npm: missing-widget (^3.0.0)    exact version unavailable in yarn.lock", human)
+        self.assertNotIn("optional-widget", human)
+        self.assertNotIn("transitive-only", human)
+
     def test_yarn_dependency_failures_preserve_declarations_and_partial_coverage(self):
         declarations = {
             "good": "^1.0.0", "missing": "^3.0.0", "local": "file:../local",

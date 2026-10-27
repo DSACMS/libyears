@@ -1,0 +1,9 @@
+# yarn lockfile v1
+"@example/widget@^2.0.0", "@example/widget@~2.1.0":
+  version "2.1.4"
+
+optional-widget@^1.0.0:
+  version "1.0.0"
+
+transitive-only@^1.0.0:
+  version "1.0.0"

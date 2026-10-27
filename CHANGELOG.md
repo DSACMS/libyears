@@ -6,6 +6,8 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Use root Yarn Classic v1 `yarn.lock` evidence to measure direct npm production
+  dependencies with exact resolved versions.
 - Scan direct npm production dependencies from the root `package.json`, using
   exact versions from root `package-lock.json` v2 or v3 without running npm or
   resolving dependency ranges.
