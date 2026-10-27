@@ -97,3 +97,49 @@ The narrow verification review confirmed all six findings resolved, schema v3
 compatibility, 30/30 clearly testable acceptance criteria, zero ambiguous
 criteria, no missing material cases, and a sound contradiction check. Its final
 verdict was APPROVE. No product question remains before technical planning.
+
+## Architecture Review
+
+**Initial verdict:** APPROVE WITH CHANGES
+**Spec conformance:** PASS
+**Architecture-review status:** APPROVED
+
+### Material findings
+
+The review found that source rejection was ambiguously inferred from error
+presence; the Yarn parser grammar was insufficiently bounded; npm evidence
+selection ownership was not singular; human-only diagnostics should reuse the
+existing diagnostics channel; and `metric.py` was listed too eagerly despite
+arithmetic remaining unchanged.
+
+### Approved technical decisions
+
+- Carry explicit source-result measurement availability, separate from source
+  errors; select architecture approach B.
+- Let scan aggregation derive repository and per-ecosystem count and coverage
+  availability while preserving successful measurements from unaffected
+  ecosystems.
+- Use one npm evidence selector, `npm.resolve_npm_evidence(root, discovery)`,
+  as the sole owner of root lock-presence inspection and dispatch.
+- Keep Yarn parsing focused on bounded Yarn Classic v1 lock-key and entry
+  syntax, preserve decoded selector text, and fail closed on malformed or
+  unsupported quoting/escaping.
+- Carry human-only unsupported/unclassifiable detail through the existing
+  report diagnostics channel without changing source-error JSON.
+- Isolate metric arithmetic: formulas do not change, summary calculation does
+  not learn source semantics, and Yarn does not appear in metric arithmetic.
+- Keep `metric.py` unchanged unless a narrowly justified summary-construction
+  input is required to represent scan-derived nullable availability without
+  duplicating arithmetic.
+
+### Narrow verification outcome
+
+- Findings 1–5 resolved.
+- Mixed-summary architecture: SOUND.
+- Implementation sequencing: SOUND.
+- Readability: PASS.
+- Spec conformance: PASS.
+- Blocking technical questions: NONE.
+- Final verdict: APPROVE.
+
+The architecture is approved, and Feature 003 is ready for task decomposition.
