@@ -427,6 +427,8 @@ def _resolve_yarn_evidence(path: Path, discovery: ManifestDiscovery) -> SourceRe
         if entries.reason == "unsupported_lockfile_format":
             evidence = SourceEvidence("package.json", "yarn.lock", include_format=True)
             diagnostic = entries.diagnostic
+        elif entries.diagnostic:
+            diagnostic += f": {entries.diagnostic}"
         return SourceResult(
             "npm", (), (),
             (SourceError("npm", "yarn.lock", entries.reason),), evidence,

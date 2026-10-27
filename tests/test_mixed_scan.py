@@ -1,6 +1,7 @@
 import json
 import tempfile
 import unittest
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import Mock, patch
@@ -509,6 +510,42 @@ class MixedScanTests(unittest.TestCase):
             self.assertIn(explanation, human)
         self.assertEqual(len(json.loads(format_json(report, "."))["unmeasurable"]), 4)
 
+    def test_malformed_yarn_preserves_safe_parser_context_only_in_human_output(self):
+        self.write_npm(json.dumps({"dependencies": {"widget": "^1.0.0"}}))
+        (self.root / "yarn.lock").write_text(
+            '# yarn lockfile v1\nwidget@^1.0.0:\n'
+            '  version "1.0.0"\n  version "1.1.0"\n',
+            encoding="utf-8",
+        )
+        lookup = Mock(side_effect=AssertionError("rejected source must not reach lookup"))
+        report = scan_mixed_repository(self.root, npm_lookup=lookup)
+        lookup.assert_not_called()
+        self.assertEqual(report.source_errors, (
+            SourceError("npm", "yarn.lock", "invalid_lockfile"),
+        ))
+        self.assertEqual(report.unmeasurable, ())
+        self.assertEqual(report.summary, MetricSummary(1, None, None, 0.0, None, None, None))
+
+        explanation = "malformed Yarn Classic v1 structure"
+        context = "line 4: duplicate entry field"
+        self.assertEqual(report.diagnostics, (("yarn.lock", f"{explanation}: {context}"),))
+        human = format_human(report, ".", verbose=True)
+        self.assertIn(f"{explanation}: {context}", human)
+        self.assertNotIn("ValueError", human)
+        self.assertNotIn("Traceback", human)
+
+        machine = format_json(report, ".")
+        previous_report = replace(report, diagnostics=(("yarn.lock", explanation),))
+        self.assertEqual(machine, format_json(previous_report, "."))
+        data = json.loads(machine)
+        self.assertEqual(data["schema_version"], 3)
+        self.assertEqual(data["source_errors"], [{
+            "ecosystem": "npm", "source": "yarn.lock", "reason": "invalid_lockfile",
+        }])
+        self.assertNotIn("diagnostic", machine)
+        self.assertNotIn(explanation, machine)
+        self.assertNotIn(context, machine)
+
     def test_yarn_whole_source_failures_preserve_mixed_aggregates(self):
         cases = (
             ('# yarn lockfile v1\ninvalid key\n', "invalid_lockfile", "yarn_lock_v1",
@@ -553,7 +590,9 @@ class MixedScanTests(unittest.TestCase):
                     self.assertIn(source, human)
                     self.assertIn("npm: null coverage", human)
                     self.assertIn("Repository: null coverage", human)
-                    self.assertNotIn("unsafe", human)
+                    self.assertNotIn("ValueError", human)
+                    self.assertNotIn("Traceback", human)
+                    self.assertNotIn("invalid key", human)
                     self.assertNotIn(explanation, format_json(report, "."))
 
     def test_yarn_without_root_manifest_does_not_create_npm_scope(self):
