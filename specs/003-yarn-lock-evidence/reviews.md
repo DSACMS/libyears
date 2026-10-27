@@ -143,3 +143,20 @@ arithmetic remaining unchanged.
 - Final verdict: APPROVE.
 
 The architecture is approved, and Feature 003 is ready for task decomposition.
+
+## Task-Graph Review
+
+**Initial verdict:** REVISE
+**Task-graph review status:** APPROVED
+
+### Material findings and corrections
+
+1. T005 risked premature public activation. It now tests the npm evidence selector directly; public scan consumption begins at T007.
+2. Optional T010 incorrectly blocked required T011. T010 is independently skippable after T008; T011 depends on T009 and records whether T010 was completed or skipped.
+3. T006 verification did not match its expected mixed-scan files. T006 no longer includes mixed-scan files and remains internally tested; public mixed behavior belongs to T007.
+4. T001 mixed recognition with structural parsing. T001 now covers header/generation recognition only; T002 owns malformed v1 structure.
+5. Changelog and post-convergence retrospective lifecycle were incomplete. T008 schedules one Unreleased changelog entry; a clearly separate post-T011 activity schedules the retrospective.
+6. T008 duplicated regression verification. It now runs focused end-to-end tests and one full suite at the phase boundary.
+7. The T004/T005 boundary did not explain direct selector verification. T005 now explicitly uses direct unit tests and leaves scans unchanged.
+
+The task graph and acceptance mappings were updated without changing approved product behavior or architecture. The narrow verification found findings 1–7 resolved, 30/30 acceptance criteria mapped, no weak or missing mappings, a sound dependency graph and safe boundaries, good verification efficiency and commit-story quality, a sound artifact lifecycle, and no contradictions. **Final verdict: READY FOR EXECUTION.** Feature 003 is ready for implementation. This record captures the review outcome and corrections; it is not a task execution log.
