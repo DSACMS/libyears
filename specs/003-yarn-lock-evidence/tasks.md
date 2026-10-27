@@ -76,6 +76,8 @@ T001 header classifications remain stable; no semver evaluation or registry beha
 
 ### T003 — Match declarations to decoded Yarn selectors
 
+**Status:** COMPLETE — 10 focused matcher tests and 42 parser/npm tests passed; diff reviewed and whitespace checked.
+
 **Outcome:**
 A focused npm evidence matcher maps each declaration to exactly one parsed entry by exact decoded selector text and returns candidate or dependency-level failure results.
 
@@ -101,6 +103,8 @@ The existing package-lock resolver and registry adapter remain unchanged; packag
 
 **Suggested commit:**
 `feat(npm): match declarations to Yarn selectors`
+
+**Phase gate result:** PASS — 42 parser/npm tests and the full 165-test deterministic suite passed, including existing package-lock and registry regressions; `git diff --check` passed. Phase 3 remains unstarted.
 
 **Phase gate:**
 - Parser and matcher jointly cover selector identity, missing evidence, conflicts, and ambiguity with offline tests.

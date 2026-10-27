@@ -10,8 +10,14 @@ import re
 from typing import Any
 from urllib.parse import quote
 
-from .model import RegistryFailure, RegistryResult
+from .model import (
+    DependencyCandidate,
+    RegistryFailure,
+    RegistryResult,
+    UnmeasurableDependency,
+)
 from .registry import TransportFailure, VerifiedJSONTransport
+from .yarn import YarnEntry
 
 
 INVALID_MANIFEST = "invalid_manifest"
@@ -20,6 +26,7 @@ UNSUPPORTED_LOCKFILE_VERSION = "unsupported_lockfile_version"
 UNSUPPORTED_DEPENDENCY_SOURCE = "unsupported_dependency_source"
 LOCK_VERSION_MISSING = "lock_version_missing"
 DECLARATION_LOCK_CONFLICT = "declaration_lock_conflict"
+AMBIGUOUS_LOCK_EVIDENCE = "ambiguous_lock_evidence"
 PACKAGE_NOT_FOUND = "package_not_found"
 VERSION_NOT_FOUND = "version_not_found"
 RELEASE_DATE_MISSING = "release_date_missing"
@@ -216,6 +223,53 @@ def _is_exact_version(declared: str) -> bool:
     return _EXACT_VERSION.fullmatch(declared) is not None
 
 
+def match_yarn_entries(
+    declarations: tuple[NpmDeclaration, ...], entries: tuple[YarnEntry, ...]
+) -> tuple[tuple[DependencyCandidate, ...], tuple[UnmeasurableDependency, ...]]:
+    """Match decoded selector text without resolving ranges or reading files.
+
+    Count matching entries rather than selectors, keeping repeated entries
+    ambiguous even when they contain the same version.
+    """
+    candidates = []
+    unmeasurable = []
+    for declaration in declarations:
+        reason = declaration.reason
+        version = None
+        if reason is None:
+            target = declaration.name + "@" + declaration.declared
+            matches = [entry for entry in entries if target in entry.selectors]
+            if not matches:
+                reason = LOCK_VERSION_MISSING
+            elif len(matches) > 1:
+                reason = AMBIGUOUS_LOCK_EVIDENCE
+            else:
+                version = matches[0].version
+                if version is None or not _is_exact_version(version):
+                    reason = AMBIGUOUS_LOCK_EVIDENCE
+                elif _is_exact_version(declaration.declared) and declaration.declared != version:
+                    reason = DECLARATION_LOCK_CONFLICT
+
+        if reason is not None:
+            unmeasurable.append(
+                UnmeasurableDependency(
+                    "npm", declaration.name, declaration.declared, reason
+                )
+            )
+        else:
+            candidates.append(
+                DependencyCandidate(
+                    "npm",
+                    declaration.name,
+                    declaration.name,
+                    declaration.declared,
+                    version,
+                    "yarn_lock",
+                )
+            )
+    return tuple(candidates), tuple(unmeasurable)
+
+
 def resolve_v2_lockfile(
     discovery: ManifestDiscovery, packages: Any
 ) -> ManifestDiscovery:
@@ -390,6 +444,7 @@ def discover_manifest(root: str | Path) -> ManifestDiscovery:
 
 
 __all__ = [
+    "AMBIGUOUS_LOCK_EVIDENCE",
     "INVALID_MANIFEST",
     "INVALID_LOCKFILE",
     "INVALID_REGISTRY_RESPONSE",
@@ -409,6 +464,7 @@ __all__ = [
     "VERSION_NOT_FOUND",
     "discover_manifest",
     "resolve_lockfile",
+    "match_yarn_entries",
     "resolve_v2_lockfile",
     "resolve_v3_lockfile",
 ]

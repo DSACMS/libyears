@@ -2,8 +2,13 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
+
+from libyears.model import DependencyCandidate, UnmeasurableDependency
+from libyears.yarn import YarnFailure, parse_lockfile
 
 from libyears.npm import (
+    AMBIGUOUS_LOCK_EVIDENCE,
     DECLARATION_LOCK_CONFLICT,
     INVALID_MANIFEST,
     LOCK_VERSION_MISSING,
@@ -12,6 +17,7 @@ from libyears.npm import (
     UNSUPPORTED_LOCKFILE_VERSION,
     discover_manifest,
     resolve_lockfile,
+    match_yarn_entries,
     resolve_v2_lockfile,
     resolve_v3_lockfile,
 )
@@ -325,6 +331,152 @@ class NpmManifestTests(unittest.TestCase):
                 self.assertTrue(
                     all(item.used_version is None for item in result.dependencies)
                 )
+
+
+class YarnMatchingTests(unittest.TestCase):
+    def match(self, dependencies, body=None, fixture=None):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "package.json").write_text(
+                json.dumps({"dependencies": dependencies}), encoding="utf-8"
+            )
+            discovery = discover_manifest(root)
+            if fixture is not None:
+                path = Path(__file__).parent / "fixtures" / "yarn" / fixture
+            else:
+                path = root / "yarn.lock"
+                path.write_text("# yarn lockfile v1\n" + body, encoding="utf-8")
+            entries = parse_lockfile(path)
+            self.assertNotIsInstance(entries, YarnFailure)
+            return match_yarn_entries(discovery.dependencies, entries)
+
+    def test_unscoped_scoped_exact_and_range_declarations(self):
+        candidates, failures = self.match(
+            {"alpha": "^1.0.0", "@scope/alpha": "1.2.3", "tagged": "latest"},
+            'alpha@^1.0.0:\n  version "9.0.0"\n'
+            '"@scope/alpha@1.2.3":\n  version "1.2.3"\n'
+            'tagged@latest:\n  version "2.0.0"\n'
+            'transitive@^1:\n  version "1.0.0"\n',
+        )
+        self.assertEqual(failures, ())
+        self.assertEqual(candidates, (
+            DependencyCandidate("npm", "alpha", "alpha", "^1.0.0", "9.0.0", "yarn_lock"),
+            DependencyCandidate("npm", "@scope/alpha", "@scope/alpha", "1.2.3", "1.2.3", "yarn_lock"),
+            DependencyCandidate("npm", "tagged", "tagged", "latest", "2.0.0", "yarn_lock"),
+        ))
+
+    def test_multi_selector_entry_matches_each_target_without_ambiguity(self):
+        for declaration in ("^1.0.0", "~1.2.0"):
+            with self.subTest(declaration=declaration):
+                candidates, failures = self.match(
+                    {"alpha": declaration},
+                    'alpha@^1.0.0, "alpha@~1.2.0":\n  version "1.2.3"\n',
+                )
+                self.assertEqual(failures, ())
+                self.assertEqual(candidates[0].used_version, "1.2.3")
+                self.assertEqual(candidates[0].declared, declaration)
+
+    def test_existing_fixture_matches_decoded_escapes_and_scoped_identity(self):
+        candidates, failures = self.match(
+            {"escaped": 'a\\b"c,d', "@scope/widget": "^2.0.0", "plain": "1.0.0"},
+            fixture="entries.lock",
+        )
+        self.assertEqual(failures, ())
+        self.assertEqual(
+            [(candidate.name, candidate.declared, candidate.used_version) for candidate in candidates],
+            [("escaped", 'a\\b"c,d', "1.0.0"),
+             ("@scope/widget", "^2.0.0", "2.4.0-beta.1+build"),
+             ("plain", "1.0.0", "1.0.0")],
+        )
+
+    def test_no_name_only_compatible_range_or_normalized_match(self):
+        cases = [
+            ("alpha", "^1.0.0", 'alpha@~1.0.0'),
+            ("alpha", "1.0.0", 'alpha@^1.0.0'),
+            ("@scope/alpha", "^1.0.0", 'alpha@^1.0.0'),
+            ("@scope/alpha", "^1.0.0", '"@other/alpha@^1.0.0"'),
+            ("alpha", " ^1.0.0", 'alpha@^1.0.0'),
+            ("alpha", "^1.0.0", '"alpha@^1.0.0 "'),
+            ("Alpha", "^1.0.0", 'alpha@^1.0.0'),
+        ]
+        for name, declaration, key in cases:
+            with self.subTest(name=name, declaration=declaration, key=key):
+                candidates, failures = self.match(
+                    {name: declaration}, key + ':\n  version "1.0.0"\n'
+                )
+                self.assertEqual(candidates, ())
+                self.assertEqual(failures, (
+                    UnmeasurableDependency("npm", name, declaration, LOCK_VERSION_MISSING),
+                ))
+
+    def test_no_entries_means_missing_evidence(self):
+        candidates, failures = self.match({"alpha": "^1.0.0"}, "")
+        self.assertEqual(candidates, ())
+        self.assertEqual(failures[0].reason, LOCK_VERSION_MISSING)
+
+    def test_exact_declaration_disagreement_is_a_conflict(self):
+        candidates, failures = self.match(
+            {"alpha": "1.2.3"}, 'alpha@1.2.3:\n  version "1.2.4"\n'
+        )
+        self.assertEqual(candidates, ())
+        self.assertEqual(failures, (
+            UnmeasurableDependency("npm", "alpha", "1.2.3", DECLARATION_LOCK_CONFLICT),
+        ))
+
+    def test_repeated_entries_are_ambiguous_even_when_versions_agree(self):
+        for second_version in ("1.2.3", "1.2.4"):
+            with self.subTest(second_version=second_version):
+                candidates, failures = self.match(
+                    {"alpha": "^1.0.0"},
+                    'alpha@^1.0.0:\n  version "1.2.3"\n'
+                    '"alpha@^1.0.0", alpha@~1.2.0:\n'
+                    f'  version "{second_version}"\n',
+                )
+                self.assertEqual(candidates, ())
+                self.assertEqual(failures[0].reason, AMBIGUOUS_LOCK_EVIDENCE)
+
+    def test_repeated_entry_in_existing_fixture_is_ambiguous(self):
+        candidates, failures = self.match({"alpha": "^1.0.0"}, fixture="entries.lock")
+        self.assertEqual(candidates, ())
+        self.assertEqual(failures[0].reason, AMBIGUOUS_LOCK_EVIDENCE)
+
+    def test_single_entry_without_usable_exact_version_is_ambiguous(self):
+        for field in ('', '  version ""\n', '  version "^1.0.0"\n',
+                      '  version "latest"\n', '  version "v1.0.0"\n'):
+            with self.subTest(field=field):
+                candidates, failures = self.match(
+                    {"alpha": "1.0.0"}, 'alpha@1.0.0:\n' + field
+                )
+                self.assertEqual(candidates, ())
+                self.assertEqual(failures[0].reason, AMBIGUOUS_LOCK_EVIDENCE)
+
+    def test_dependency_failures_preserve_declarations_and_other_candidates(self):
+        dependencies = {
+            "good": "^1.0.0", "missing": "^2.0.0", "pinned": "1.0.0",
+            "ambiguous": "^1.0.0", "alias": "npm:other@^1.0.0",
+            "workspace": "workspace:*", "local": "file:../local",
+            "remote": "https://example.test/remote.tgz", "git": "github:owner/repo",
+        }
+        body = (
+            'good@^1.0.0:\n  version "1.2.0"\n'
+            'pinned@1.0.0:\n  version "2.0.0"\n'
+            'ambiguous@^1.0.0:\n  version ""\n'
+        )
+        # Even exact selector text cannot make unsupported sources eligible.
+        for name in ("alias", "workspace", "local", "remote", "git"):
+            body += f'"{name}@{dependencies[name]}":\n  version "1.0.0"\n'
+        with patch("libyears.npm.NpmAdapter.lookup") as lookup:
+            candidates, failures = self.match(dependencies, body)
+        lookup.assert_not_called()
+        self.assertEqual([candidate.name for candidate in candidates], ["good"])
+        self.assertEqual(
+            [(failure.name, failure.declared, failure.reason) for failure in failures],
+            [("missing", "^2.0.0", LOCK_VERSION_MISSING),
+             ("pinned", "1.0.0", DECLARATION_LOCK_CONFLICT),
+             ("ambiguous", "^1.0.0", AMBIGUOUS_LOCK_EVIDENCE)] +
+            [(name, dependencies[name], UNSUPPORTED_DEPENDENCY_SOURCE)
+             for name in ("alias", "workspace", "local", "remote", "git")],
+        )
 
 
 if __name__ == "__main__":
