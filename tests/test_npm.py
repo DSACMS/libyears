@@ -461,7 +461,7 @@ class NpmEvidenceSelectorTests(unittest.TestCase):
                 self.assertFalse(result.measurement_available)
                 self.assertEqual(result.candidates, ())
                 self.assertEqual(result.unmeasurable, ())
-                self.assertEqual(result.evidence, SourceEvidence("package.json", None))
+                self.assertEqual(result.evidence, SourceEvidence("package.json", None, include_format=True))
 
     def test_invalid_manifest_stops_before_lock_inspection(self):
         (self.root / "package.json").write_text("{", encoding="utf-8")
@@ -519,7 +519,7 @@ class NpmEvidenceSelectorTests(unittest.TestCase):
         self.assertEqual(result.source_errors, ())
         self.assertEqual(result.dependencies_discovered, 3)
         self.assertTrue(result.measurement_available)
-        self.assertEqual(result.evidence, SourceEvidence("package.json", "yarn.lock"))
+        self.assertEqual(result.evidence, SourceEvidence("package.json", "yarn.lock", "yarn_lock_v1", include_format=True))
 
     def test_yarn_dependency_failures_leave_unrelated_candidates_available(self):
         for ambiguous_field in ('', '  version "latest"\n', '  version "^1.0.0"\n'):
@@ -569,7 +569,10 @@ class NpmEvidenceSelectorTests(unittest.TestCase):
                 self.assertFalse(result.measurement_available)
                 self.assertEqual(result.candidates, ())
                 self.assertEqual(result.unmeasurable, ())
-                self.assertEqual(result.evidence, SourceEvidence("package.json", "yarn.lock"))
+                evidence_format = "yarn_lock_v1" if reason == INVALID_LOCKFILE else None
+                self.assertEqual(result.evidence, SourceEvidence(
+                    "package.json", "yarn.lock", evidence_format, include_format=True,
+                ))
 
     def test_header_only_yarn_is_available_with_missing_dependency_evidence(self):
         result = self.resolve_yarn('# yarn lockfile v1\n')

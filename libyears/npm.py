@@ -420,14 +420,19 @@ def resolve_lockfile(
 
 def _resolve_yarn_evidence(path: Path, discovery: ManifestDiscovery) -> SourceResult:
     """Adapt Yarn evidence without promoting dependency failures to the source."""
-    evidence = SourceEvidence("package.json", "yarn.lock")
+    evidence = SourceEvidence("package.json", "yarn.lock", "yarn_lock_v1", include_format=True)
     entries = parse_lockfile(path)
     if isinstance(entries, YarnFailure):
+        diagnostic = "malformed Yarn Classic v1 structure"
+        if entries.reason == "unsupported_lockfile_format":
+            evidence = SourceEvidence("package.json", "yarn.lock", include_format=True)
+            diagnostic = entries.diagnostic
         return SourceResult(
             "npm", (), (),
             (SourceError("npm", "yarn.lock", entries.reason),), evidence,
             dependencies_discovered=len(discovery.dependencies),
             measurement_available=False,
+            diagnostics=(("yarn.lock", diagnostic),),
         )
 
     candidates, unmeasurable = match_yarn_entries(discovery.dependencies, entries)
@@ -439,7 +444,7 @@ def _resolve_yarn_evidence(path: Path, discovery: ManifestDiscovery) -> SourceRe
 
 
 def resolve_npm_evidence(root: str | Path, discovery: ManifestDiscovery) -> SourceResult:
-    """Select root npm resolution evidence; public scans adopt this at T007."""
+    """Select root npm resolution evidence without resolving declarations."""
     evidence = SourceEvidence("package.json", "package-lock.json")
     if discovery.reason is not None:
         return SourceResult(
@@ -457,7 +462,7 @@ def resolve_npm_evidence(root: str | Path, discovery: ManifestDiscovery) -> Sour
             (SourceError(
                 "npm", "package-lock.json + yarn.lock", CONFLICTING_RESOLUTION_SOURCES
             ),),
-            SourceEvidence("package.json", None),
+            SourceEvidence("package.json", None, include_format=True),
             dependencies_discovered=len(discovery.dependencies),
             measurement_available=False,
         )

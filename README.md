@@ -179,9 +179,33 @@ totals cannot be interpreted as equivalent, even if both are low.
 
 For npm repositories, `package.json` root `dependencies` define direct
 production scope, excluding names also declared in `optionalDependencies`.
-`package-lock.json` lockfile versions 2 and 3 provide exact used versions.
+Root `package-lock.json` versions 2 and 3 or root Yarn Classic v1 `yarn.lock`
+provide exact used versions. Yarn evidence requires the canonical v1 header and
+an exact textual match between the manifest declaration and a lock selector;
+libyears does not evaluate ranges or execute Yarn/npm, install packages, or
+resolve dependencies.
 Development, peer, optional-only, workspace, and transitive dependencies are
-outside this feature. npm ranges are never resolved during a scan.
+outside this feature. Yarn Berry/v2+, PnP, and workspace aggregation are not
+supported. `--resolved` remains Python-specific.
+
+If both root lockfiles exist, neither is used, even if their versions agree:
+`source_errors` reports `conflicting_resolution_sources`. Malformed supported
+Yarn v1 uses `invalid_lockfile`; unsupported or safely unclassifiable Yarn uses
+`unsupported_lockfile_format`. These whole-source failures retain the known
+npm declaration count, but npm measured count and coverage are null. Mixed
+repository coverage is also null; successful Python measurements and their
+numeric aggregates survive. An invalid manifest makes npm counts and coverage
+unknown.
+
+Missing, unsupported-source, conflicting, or ambiguous dependency evidence
+appears in `unmeasurable`, preserves the original declaration, and reduces
+ordinary measured/discovered coverage without blocking other dependencies.
+Human output identifies `yarn.lock` evidence and explains source failures.
+JSON remains schema v3: Yarn measurements use `version_source: "yarn_lock"`,
+and `version_evidence.npm` includes `format: "yarn_lock_v1"` and
+`snapshot_source: "yarn.lock"`. Rejected unsupported/unclassifiable formats have
+null format; simultaneous lockfiles have null format and snapshot source.
+Existing package-lock and PyPI evidence representations are unchanged.
 
 ## Current limitations
 

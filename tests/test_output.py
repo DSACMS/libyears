@@ -1,5 +1,6 @@
 import json
 import unittest
+from dataclasses import replace
 from datetime import datetime, timezone
 
 from libyears.model import (Dependency, DependencyMeasurement, MetricSummary,
@@ -93,6 +94,39 @@ class OutputTests(unittest.TestCase):
             self.assertEqual(data["ecosystems"], expected)
             self.assertEqual(set(data["version_evidence"]), set(expected))
             self.assertEqual(set(data["summary"]["by_ecosystem"]), set(expected))
+
+    def test_yarn_format_is_additive_and_existing_evidence_is_unchanged(self):
+        summary = MetricSummary(1, 1, 1.0, 0.0, 0.0, 0.0, 0.0)
+        original = report_with_data().measurements[0].dependency
+        for ecosystem, snapshot, version_source, evidence_format, include_format in (
+            ("npm", "yarn.lock", "yarn_lock", "yarn_lock_v1", True),
+            ("npm", "package-lock.json", "package_lock", None, False),
+            ("pypi", None, "requirements_exact", None, False),
+        ):
+            with self.subTest(ecosystem=ecosystem, snapshot=snapshot):
+                declaration = "package.json" if ecosystem == "npm" else "requirements.txt"
+                source = SourceResult(
+                    ecosystem, (), (), (),
+                    SourceEvidence(declaration, snapshot, evidence_format, include_format),
+                    dependencies_discovered=1, measurement_available=True,
+                )
+                dependency = replace(original, ecosystem=ecosystem, version_source=version_source)
+                report = MixedScanReport(
+                    (DependencyMeasurement(dependency, 0.0),), (), (), (source,),
+                    summary, {ecosystem: summary},
+                )
+                data = report_to_dict(report, ".")
+                expected = {"declaration_source": declaration, "snapshot_source": snapshot}
+                if include_format:
+                    expected["format"] = evidence_format
+                self.assertEqual(data["version_evidence"], {ecosystem: expected})
+                self.assertEqual(data["schema_version"], 3)
+                self.assertEqual(data["dependencies"][0]["version_source"], version_source)
+                if version_source == "yarn_lock":
+                    self.assertIn("yarn.lock", format_human(report, "."))
+                    python_source = replace(source, ecosystem="pypi", evidence=SourceEvidence("requirements.txt", None))
+                    mixed = replace(report, source_results=(source, python_source))
+                    self.assertIn("yarn.lock", format_human(mixed, "."))
 
     def test_schema_v3_keeps_source_failure_distinct_from_dependency_rows(self):
         summary = MetricSummary(None, 0, None, 0.0, None, None, None)

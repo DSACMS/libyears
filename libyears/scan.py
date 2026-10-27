@@ -24,7 +24,7 @@ from .model import (
     SourceResult,
     UnmeasurableDependency,
 )
-from .npm import NpmAdapter, discover_manifest, resolve_lockfile
+from .npm import NpmAdapter, discover_manifest, resolve_npm_evidence
 from .pypi import PyPIAdapter, PyPIResult
 from .requirements import (
     ExactRequirement,
@@ -353,53 +353,13 @@ def _npm_source_result(root: Path | None) -> SourceResult:
             dependencies_discovered=0, measurement_available=True, source_present=False,
         )
 
-    discovery = discover_manifest(root)
-    if discovery.reason is not None:
+    # Lockfiles alone do not establish npm dependency scope.
+    if not (root / "package.json").exists():
         return SourceResult(
-            "npm",
-            (),
-            (),
-            (SourceError("npm", "package.json", discovery.reason),),
-            evidence,
-            dependencies_discovered=None,
-            measurement_available=False,
-            source_present=True,
+            "npm", (), (), (), evidence,
+            dependencies_discovered=0, measurement_available=True, source_present=False,
         )
-
-    resolved = resolve_lockfile(root, discovery)
-    candidates: list[DependencyCandidate] = []
-    unmeasurable: list[UnmeasurableDependency] = []
-    for declaration in resolved.dependencies:
-        if declaration.reason is not None:
-            unmeasurable.append(
-                UnmeasurableDependency(
-                    "npm", declaration.name, declaration.declared, declaration.reason
-                )
-            )
-        elif declaration.used_version is not None:
-            candidates.append(
-                DependencyCandidate(
-                    "npm",
-                    declaration.name,
-                    declaration.name,
-                    declaration.declared,
-                    declaration.used_version,
-                    "package_lock",
-                )
-            )
-        else:
-            # The source resolver must account for every declaration.
-            raise ValueError(f"npm source produced no evidence or reason for {declaration.name}")
-    return SourceResult(
-        "npm",
-        tuple(candidates),
-        tuple(unmeasurable),
-        (),
-        evidence,
-        dependencies_discovered=len(discovery.dependencies),
-        measurement_available=True,
-        source_present=(root / "package.json").is_file(),
-    )
+    return resolve_npm_evidence(root, discover_manifest(root))
 
 
 def _available_summary(
@@ -470,7 +430,11 @@ def scan_mixed_repository(
         for source in (python_result, npm_result)
         for error in source.source_errors
     ]
-    diagnostics: list[tuple[str, str]] = []
+    diagnostics = [
+        diagnostic
+        for source in (python_result, npm_result)
+        for diagnostic in source.diagnostics
+    ]
 
     for source, registry_lookup in source_pairs:
         for candidate in source.candidates:

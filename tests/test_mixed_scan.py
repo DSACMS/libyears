@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from libyears.model import (
     MetricSummary, RegistryFailure, RegistryResult, SourceError, SourceEvidence, SourceResult,
@@ -374,6 +374,123 @@ class MixedScanTests(unittest.TestCase):
             )
         self.assertEqual(report.summary, MetricSummary(0, 0, None, 0.0, None, None, None))
         self.assertEqual(report.by_ecosystem["npm"], report.summary)
+
+    def test_yarn_candidate_reaches_npm_adapter_with_scoped_identity(self):
+        self.write_npm(json.dumps({"dependencies": {"@scope/widget": "^2.0.0"}}))
+        (self.root / "yarn.lock").write_text(
+            '# yarn lockfile v1\n"@scope/widget@^2.0.0":\n  version "2.0.0"\n'
+        )
+        adapter = Mock()
+        timestamp = datetime(2024, 1, 1, tzinfo=timezone.utc)
+        adapter.lookup.return_value = RegistryResult(
+            "@scope/widget", "2.0.0", timestamp, "2.0.0", timestamp
+        )
+        report = scan_mixed_repository(
+            self.root, npm_adapter=adapter,
+            pypi_lookup=lambda *_: self.fail("no Python candidates"),
+        )
+        adapter.lookup.assert_called_once_with("@scope/widget", "2.0.0")
+        dependency = report.measurements[0].dependency
+        self.assertEqual((dependency.ecosystem, dependency.version_source), ("npm", "yarn_lock"))
+        self.assertEqual(report.measurements[0].libyears, 0.0)
+        self.assertEqual(report.summary.coverage, 1.0)
+        data = json.loads(format_json(report, "."))
+        self.assertEqual(data["schema_version"], 3)
+        self.assertEqual(data["dependencies"][0]["version_source"], "yarn_lock")
+        self.assertEqual(data["version_evidence"]["npm"], {
+            "declaration_source": "package.json", "snapshot_source": "yarn.lock",
+            "format": "yarn_lock_v1",
+        })
+        self.assertIn("Version evidence: yarn.lock", format_human(report, "."))
+
+    def test_yarn_dependency_failures_preserve_declarations_and_partial_coverage(self):
+        declarations = {
+            "good": "^1.0.0", "missing": "^3.0.0", "local": "file:../local",
+            "conflict": "1.0.0", "ambiguous": "^1.0.0",
+        }
+        self.write_npm(json.dumps({"dependencies": declarations}))
+        (self.root / "yarn.lock").write_text(
+            '# yarn lockfile v1\ngood@^1.0.0:\n  version "1.2.0"\n'
+            'conflict@1.0.0:\n  version "1.1.0"\n'
+            'ambiguous@^1.0.0:\n  version "1.0.0"\n'
+            'ambiguous@^1.0.0, ambiguous@~1.0.0:\n  version "1.0.0"\n'
+        )
+        lookup = Mock(side_effect=self.successful_lookup)
+        report = scan_mixed_repository(
+            self.root, npm_lookup=lookup, pypi_lookup=self.successful_lookup,
+        )
+        lookup.assert_called_once_with("good", "1.2.0")
+        self.assertEqual((report.summary.dependencies_discovered,
+                          report.summary.dependencies_measured, report.summary.coverage), (5, 1, 0.2))
+        self.assertEqual({item.name: item.reason for item in report.unmeasurable}, {
+            "missing": "lock_version_missing", "local": "unsupported_dependency_source",
+            "conflict": "declaration_lock_conflict", "ambiguous": "ambiguous_lock_evidence",
+        })
+        self.assertEqual(report.source_errors, ())
+        human = format_human(report, ".")
+        for item in report.unmeasurable:
+            self.assertEqual(item.declared, declarations[item.name])
+            self.assertIn(item.declared, human)
+        for explanation in ("exact version unavailable in yarn.lock", "unsupported dependency source",
+                            "lock version conflicts", "ambiguous exact version evidence"):
+            self.assertIn(explanation, human)
+        self.assertEqual(len(json.loads(format_json(report, "."))["unmeasurable"]), 4)
+
+    def test_yarn_whole_source_failures_preserve_mixed_aggregates(self):
+        cases = (
+            ('# yarn lockfile v1\ninvalid key\n', "invalid_lockfile", "yarn_lock_v1",
+             "malformed Yarn Classic v1 structure"),
+            ('# yarn lockfile v2\n', "unsupported_lockfile_format", None,
+             "unsupported or contradictory Yarn generation header"),
+            ('widget@^1.0.0:\n  version "1.0.0"\n', "unsupported_lockfile_format", None,
+             "could not identify Yarn Classic v1"),
+            ('# yarn lockfile v1\n', "conflicting_resolution_sources", None,
+             "neither lockfile supplied evidence"),
+        )
+        self.write_npm(json.dumps({"dependencies": {f"npm-{i}": "^1.0.0" for i in range(10)}}))
+        for contents, reason, evidence_format, explanation in cases:
+            for mixed in (False, True):
+                with self.subTest(reason=reason, explanation=explanation, mixed=mixed):
+                    (self.root / "yarn.lock").write_text(contents)
+                    if reason == "conflicting_resolution_sources":
+                        (self.root / "package-lock.json").write_text("invalid JSON is not parsed")
+                    if mixed:
+                        self.write_python("one==1.0\ntwo==1.0\nthree==1.0\nfour>=1.0\n")
+                    else:
+                        (self.root / "requirements.txt").unlink(missing_ok=True)
+                    report = scan_mixed_repository(
+                        self.root,
+                        npm_lookup=lambda *_: self.fail("rejected npm source must not reach lookup"),
+                        pypi_lookup=lambda name, version: self.lookup_for_libyears(name, version, 1.0),
+                    )
+                    self.assertEqual(report.by_ecosystem["npm"], MetricSummary(10, None, None, 0.0, None, None, None))
+                    expected = MetricSummary(14, 3, None, 3.0, 1.0, 1.0, 1.0) if mixed else report.by_ecosystem["npm"]
+                    self.assertEqual(report.summary, expected)
+                    self.assertFalse(any(item.ecosystem == "npm" for item in report.unmeasurable))
+                    data = json.loads(format_json(report, "."))
+                    source = "package-lock.json + yarn.lock" if reason == "conflicting_resolution_sources" else "yarn.lock"
+                    self.assertEqual(data["source_errors"], [{"ecosystem": "npm", "source": source, "reason": reason}])
+                    self.assertEqual(data["version_evidence"]["npm"], {
+                        "declaration_source": "package.json",
+                        "snapshot_source": None if reason == "conflicting_resolution_sources" else "yarn.lock",
+                        "format": evidence_format,
+                    })
+                    human = format_human(report, ".")
+                    self.assertIn(explanation, human)
+                    self.assertIn(source, human)
+                    self.assertIn("npm: null coverage", human)
+                    self.assertIn("Repository: null coverage", human)
+                    self.assertNotIn("unsafe", human)
+                    self.assertNotIn(explanation, format_json(report, "."))
+
+    def test_yarn_without_root_manifest_does_not_create_npm_scope(self):
+        (self.root / "yarn.lock").write_text("unsupported")
+        report = scan_mixed_repository(
+            self.root, npm_lookup=lambda *_: self.fail("no npm scope"),
+            pypi_lookup=lambda *_: self.fail("no Python scope"),
+        )
+        self.assertEqual(report.source_errors, ())
+        self.assertNotIn("npm", report.by_ecosystem)
 
     def test_missing_sources_are_not_added_to_ecosystem_summaries(self):
         self.write_python()

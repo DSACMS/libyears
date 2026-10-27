@@ -230,6 +230,8 @@ No registry URL, TLS/CA, timeout, timestamp, stable-release, or failure semantic
 
 ### T007 — Activate the complete public Yarn evidence contract
 
+**Status:** COMPLETE — 44 focused mixed/output/metric tests passed; 82 tests passed with selector regressions included. Public scans now use Yarn evidence with coherent schema-v3, human output, and README behavior. Diff reviewed and whitespace checked.
+
 **Outcome:**
 This is the first public activation of Feature 003. Repository scans consume `npm.resolve_npm_evidence`; Yarn exact-version evidence, source/dependency failures, count semantics, schema-v3 JSON, human output, and README become coherent together while preserving existing package-lock and PyPI behavior.
 
@@ -260,6 +262,8 @@ Do not patch summary fields in output code; metric arithmetic and existing JSON 
 
 **Suggested commit:**
 `feat(npm): activate Yarn evidence reporting`
+
+**Phase gate result:** PASS — full 185-test deterministic suite passed, including package-lock v2/v3, PyPI, resolved snapshots, npm registry/TLS, arithmetic, mixed-scan, output, and CLI regressions. Schema remains v3; deterministic fixtures confirm dependency/source isolation, nullable measured counts and coverage, retained mixed aggregates, and human/JSON agreement. README matches emitted behavior; `git diff --check` passed. Supporting changes in `npm.py` carry format and safe diagnostics from the existing selector; `tests/test_npm.py` expectations reflect that metadata. Parser, matcher, registry, and metric semantics are unchanged. CHANGELOG remains untouched. Phase 7 / T008 remains unstarted.
 
 **Phase gate:**
 - JSON, human output, and README consistently describe schema-v3 Yarn evidence and source availability.

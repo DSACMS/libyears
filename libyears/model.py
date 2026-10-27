@@ -93,6 +93,9 @@ class SourceEvidence:
 
     declaration_source: str
     snapshot_source: str | None
+    format: str | None = None
+    # Existing evidence omits format; rejected Yarn evidence explicitly uses null.
+    include_format: bool = False
 
 
 @dataclass(frozen=True, slots=True)
@@ -107,6 +110,7 @@ class SourceResult:
     dependencies_discovered: int | None
     measurement_available: bool
     source_present: bool = True
+    diagnostics: tuple[tuple[str, str], ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
