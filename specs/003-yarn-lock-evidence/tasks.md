@@ -338,6 +338,8 @@ No dependency state is changed and deterministic correctness remains established
 
 ### T010 — Optional live npm registry smoke validation
 
+**Status:** SKIPPED — T009 already exercised the live public npm registry and verified HTTPS path end-to-end across 77 real dependencies. A separate synthetic smoke would add no material release evidence; skipping does not affect deterministic correctness or T011 eligibility.
+
 **Outcome:**
 If approved network policy permits and it adds evidence beyond dogfooding, a separately recorded live lookup confirms Yarn-backed versions use the existing public npm registry path.
 

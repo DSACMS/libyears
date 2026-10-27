@@ -11,4 +11,10 @@
 - **Network/TLS:** An initial sandboxed run returned registry transport errors because network access was restricted. The authorized live scans succeeded using libyears' normal verified HTTPS transport; TLS verification was not disabled.
 - **Target modification:** None by this validation. The root manifest and lockfile SHA-256 hashes were identical before and after scanning.
 - **Discrepancies:** None in the successful live validation.
-- **T009 acceptance:** COMPLETE. T010 and T011 remain unstarted.
+- **T009 acceptance:** COMPLETE. T011 remains unstarted.
+
+## T010 optional live registry smoke
+
+- **Status:** SKIPPED.
+- **Reason:** Successful T009 dogfood already exercised the live public npm registry and verified HTTPS path end-to-end across 77 real dependencies. An additional synthetic live smoke would provide no material release evidence.
+- **Effect:** Skipping T010 does not affect deterministic correctness or convergence eligibility.
