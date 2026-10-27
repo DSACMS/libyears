@@ -310,6 +310,8 @@ Deterministic tests remain offline; no live registry assertion is used as a corr
 
 ### T009 — Dogfood a real Yarn Classic repository read-only
 
+**Status:** COMPLETE — authorized easi-app root pairing confirmed; live human and JSON scans agreed with the Feature 003 contract, with no target modification or product discrepancy. Evidence is recorded in `release-validation.md`.
+
 **Outcome:**
 A suitable repository from approved discovery is statically confirmed and scanned read-only; human and JSON results and discrepancies are recorded as evidence.
 
