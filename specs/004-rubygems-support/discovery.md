@@ -2,10 +2,11 @@
 
 ## Status
 
-**READY FOR FOCUSED RUBY FEASIBILITY REVIEW**
+**APPROVED FOR SPECIFICATION**
 
-No Feature 004 implementation direction approved yet. Discovery remains before
-specification. Ruby support is a candidate, not an approved Feature 004.
+Bounded RubyGems lock-snapshot support is selected for specification only.
+Implementation is not approved. The historical investigation and recommendations
+below preserve the evidence available before the human product decision.
 
 ## Initial Recommendation — Historical
 
@@ -252,7 +253,7 @@ demonstrated. npm `--prefer-offline` is installation evidence; EASI's offline
 feature-flag mode is unrelated. Codex sandbox/network failures are explicitly
 excluded from product evidence.
 
-## Candidate Ranking
+## Candidate Ranking — Historical (`67b7d89ca6f1c48bc92dcd128b19bb478a6ba969`)
 
 This ranks **investigation priority**, not implementation approval. Counts
 express observed evidence reach, not demand or expected adoption.
@@ -277,7 +278,7 @@ evidence changes their case:
 
 Workflow validation is ongoing discovery, not a ranked product feature.
 
-## Recommended Direction
+## Recommended Direction — Historical (`67b7d89ca6f1c48bc92dcd128b19bb478a6ba969`)
 
 **No Feature 004 implementation direction approved yet.**
 
@@ -309,7 +310,7 @@ Do not build the candidate if evidence establishes that:
 
 Four matching file pairs alone do not overcome any of these conditions.
 
-## Remaining Human Questions
+## Remaining Human Questions — Historical (`67b7d89ca6f1c48bc92dcd128b19bb478a6ba969`)
 
 After the focused technical review, the smallest useful human question is:
 
@@ -323,7 +324,7 @@ artifacts, timestamp authority, and resulting coverage limits. Only unresolved
 scope/value tradeoffs should be escalated. Broad workflow research is not the
 next step, and no product direction is approved by this question.
 
-## Process Record
+## Process Record — Historical (`67b7d89ca6f1c48bc92dcd128b19bb478a6ba969`)
 
 Feature 002's retrospective exposed missing review rationale; Feature 003's
 discovery/reviews improved that record and recommended committing drafts before
@@ -333,3 +334,57 @@ review disposition and completed deep-investigation findings. Git retains the
 before/after artifacts without preserving chat transcripts or rewriting history.
 The evidence summary distinguishes observations, inferences, and missing demand;
 it does not claim a new independent review of this revision.
+
+## Human Product Decision
+
+**Decision:** SELECTED FOR SPECIFICATION
+
+**Feature 004:** Bounded RubyGems lock-snapshot support
+
+**Human decision rationale:**
+
+- Ruby has the strongest currently observed exact-evidence opportunity.
+- Four DPC application roots retain Gemfile.lock evidence consumed by builds.
+- Conservative static matching retains approximately **238/247 observed direct
+  dependency occurrences before registry lookup**, as reported by the completed
+  Ruby Feasibility Review. This is evidence fitness, not measured coverage.
+- The capability can preserve libyears' no-execution/no-resolution boundary.
+- RubyGems.org appears to provide suitable public release metadata.
+- This meaningfully expands measurable dependency evidence rather than adding
+  workflow orchestration.
+
+The selected ecosystem is RubyGems. Committed `Gemfile.lock` supplies both the
+recorded direct dependency scope (`DEPENDENCIES`) and exact selected-version
+evidence (lock specs). RubyGems.org is the intended public release-metadata
+authority. Unsupported or ambiguous evidence fails closed.
+
+The selected scope intentionally measures **ALL DIRECT dependencies recorded in
+the lock snapshot**, including development/test groups where present. Dependency
+groups are not interpreted. The human accepts this tradeoff because recovering
+production/group scope would require interpreting Gemfile Ruby semantics and
+materially increase complexity and risk. The human also accepts the maintenance
+cost of a third ecosystem.
+
+Gemfile is not evaluated; Ruby and Bundler are not executed; gems are not
+installed; dependencies are not resolved. The measurement describes the
+committed lock snapshot. It does not claim to represent the currently evaluated
+Gemfile, production-only dependencies, an installed environment, or a runtime
+environment.
+
+**Interpreted Gemfile/group/production scope is DEFERRED future exploration,
+not part of Feature 004.** Its separate EXPLORE entry in
+[ROADMAP.md](../../ROADMAP.md) preserves a bounded research opportunity, not
+approval to add that scope to this feature.
+
+**Feature 004 is selected for SPECIFICATION, not implementation.** Platform
+variants, unsupported sources, explicit bundler dependency behavior, missing
+ordinary specs, prereleases, yanked versions, release timestamp canonicalization,
+historical/import-era timestamps, exact-requirement conflicts, reason identifiers,
+and schema/output behavior remain for specification. This decision does not
+silently settle those details or approve a plan, task graph, or implementation.
+
+The Git record preserves `df7aee60446795f67da321331f778c3d1457fea7` (initial workflow-validation recommendation),
+`67b7d89ca6f1c48bc92dcd128b19bb478a6ba969` (post-review/deep-evidence revision: Ruby strongest, still unapproved),
+and this subsequent human selection. The normal directory rename to
+`specs/004-rubygems-support/` reflects the selected direction without rewriting
+those commits or their historical narrative.

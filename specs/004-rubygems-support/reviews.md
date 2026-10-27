@@ -1,5 +1,9 @@
 # Feature 004 Reviews
 
+**Discovery review status:** APPROVED FOR SPECIFICATION
+
+Implementation is not approved. Earlier review statuses below are historical.
+
 ## Initial Discovery Review
 
 **Initial draft commit:** df7aee60446795f67da321331f778c3d1457fea7
@@ -53,7 +57,7 @@ limitations, and candidate comparisons in [discovery.md](discovery.md).
 - **Offline/cache: PLAUSIBLE BUT UNDEMONSTRATED.** Codex sandbox failures are
   excluded from product evidence.
 
-**Status:** READY FOR FOCUSED RUBY FEASIBILITY REVIEW
+**Status at `67b7d89ca6f1c48bc92dcd128b19bb478a6ba969`:** READY FOR FOCUSED RUBY FEASIBILITY REVIEW
 
 **Feature 004 product direction remains unapproved.** Bounded Ruby evidence
 support ranks first for investigation, followed by project-root listing and
@@ -67,8 +71,52 @@ approved by this status.
 The initial discovery was committed before review as `df7aee60446795f67da321331f778c3d1457fea7`
 (`df7aee60446795f67da321331f778c3d1457fea7`,
 `docs(discovery): draft Feature 004 direction`). That commit is unchanged.
-This revision intentionally preserves the post-review state separately.
-With this revision committed, Git contains exact before/after discovery
-artifacts without preserving chat transcripts. The initial recommendation
-remains explicitly historical in discovery.md; the updated evidence and
-review disposition do not imply that Ruby has been selected as Feature 004.
+`67b7d89ca6f1c48bc92dcd128b19bb478a6ba969` (`docs(discovery): refine Feature 004 evidence`) preserves the
+post-review/deep-evidence state separately: Ruby was the strongest candidate,
+but remained unapproved. Git retains exact before/after discovery artifacts
+without preserving chat transcripts. The subsequent human decision below is
+recorded in a separate change, alongside the normal directory rename to
+`specs/004-rubygems-support/`. Neither earlier commit is rewritten.
+
+## Ruby Feasibility Review
+
+This concise record preserves the completed review findings supplied for this
+human decision; it does not claim a new independent review or registry lookup.
+
+**Verdict:** RUBY IS READY FOR HUMAN PRODUCT SELECTION
+
+- **Bounded static model:** `Gemfile.lock DEPENDENCIES` -> direct scope;
+  lock specs -> exact versions; RubyGems.org -> release metadata.
+- Gemfile evaluation is unnecessary for the selected all-direct lock scope.
+- Observed strict static evidence retains **238/247 direct occurrences** before
+  registry lookup; this is not a registry-backed measurement result.
+- The security/no-execution boundary is preservable.
+- **Parser complexity:** MEDIUM when bounded.
+- **Maintenance burden:** HIGH relative to the small CLI.
+- Demand breadth remains limited to one observed project family.
+- Production/group interpretation would materially change the proposition.
+
+## Human Product Decision
+
+**Decision:** SELECTED FOR SPECIFICATION
+
+**Feature 004:** Bounded RubyGems lock-snapshot support
+
+The human accepted all-direct lock-snapshot scope, including development/test
+dependencies where present; the third-ecosystem maintenance cost; and deferred
+interpreted-Gemfile/group/production scope. Gemfile.lock supplies recorded direct
+scope and exact selected-version evidence; RubyGems.org is the intended public
+release-metadata authority. No Gemfile evaluation, Ruby/Bundler execution, gem
+installation, or dependency resolution is authorized. Unsupported or ambiguous
+evidence fails closed.
+
+The result describes the committed lock snapshot, not the currently evaluated
+Gemfile, production-only scope, an installed environment, or a runtime environment.
+The detailed behavioral questions listed in
+[discovery.md](discovery.md#human-product-decision) remain for specification.
+
+**Discovery review status:** APPROVED FOR SPECIFICATION
+
+This approves specification work only, not implementation. The next gate is a
+Feature 004 specification draft followed by clarification/review; no `spec.md`
+is created by this decision record.
