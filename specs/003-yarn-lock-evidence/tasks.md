@@ -115,6 +115,8 @@ The existing package-lock resolver and registry adapter remain unchanged; packag
 
 ### T004 — Represent discovery and measurement availability explicitly
 
+**Status:** COMPLETE — 26 focused mixed-scan/metric tests passed; diff reviewed and whitespace checked. Existing shared-model fixtures in `tests/test_pypi.py` and `tests/test_output.py` now supply explicit availability fields. `metric.py` remains unchanged.
+
 **Outcome:**
 `SourceResult` represents discovery-unavailable, known-discovery/measurement-unavailable, and measurement-available states without deriving them from source errors.
 
@@ -139,6 +141,8 @@ Existing invalid-manifest and package-lock source behavior is preserved; prefer 
 
 **Suggested commit:**
 `refactor(scan): model source availability explicitly`
+
+**Phase gate result:** PASS — 26 focused tests and the full 168-test deterministic suite passed, including shared-model, mixed-scan, package-lock, PyPI, snapshot, registry, and output regressions; `git diff --check` passed. Phase 4 / T005 and Yarn integration remain unstarted.
 
 **Phase gate:**
 - Existing npm and PyPI scans represent all three states and preserve numeric aggregation.

@@ -3,8 +3,11 @@ import tempfile
 import unittest
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from unittest.mock import patch
 
-from libyears.model import RegistryFailure, RegistryResult
+from libyears.model import (
+    MetricSummary, RegistryFailure, RegistryResult, SourceError, SourceEvidence, SourceResult,
+)
 from libyears.output import format_human, format_json
 from libyears.scan import scan_mixed_repository
 from libyears.snapshot import parse_snapshot_text
@@ -160,6 +163,7 @@ class MixedScanTests(unittest.TestCase):
             [("npm", "package.json", "invalid_manifest")],
         )
         self.assertIsNone(report.source_results[1].dependencies_discovered)
+        self.assertFalse(report.source_results[1].measurement_available)
         data = json.loads(format_json(report, str(self.root)))
         self.assertEqual(data["schema_version"], 3)
         self.assertEqual(data["source_errors"][0]["reason"], "invalid_manifest")
@@ -193,6 +197,8 @@ class MixedScanTests(unittest.TestCase):
         self.assertEqual(report.unmeasurable[0].ecosystem, "npm")
         self.assertEqual(report.unmeasurable[0].reason, "invalid_lockfile")
         self.assertEqual(report.source_errors, ())
+        self.assertTrue(report.source_results[1].measurement_available)
+        self.assertEqual(report.by_ecosystem["npm"], MetricSummary(1, 0, 0.0, 0.0, None, None, None))
 
     def test_repository_and_ecosystem_aggregates_use_each_source_denominator(self):
         self.write_python("py-one==1.0\npy-two==1.0\n")
@@ -309,6 +315,65 @@ class MixedScanTests(unittest.TestCase):
         self.assertEqual(npm.total_libyears, 0.0)
         self.assertIsNone(npm.mean_libyears)
         self.assertEqual((report.summary.dependencies_discovered, report.summary.dependencies_measured), (1, 0))
+
+    def test_rejected_source_retains_known_count_without_dependency_rows(self):
+        # Inject source results before the evidence selector is integrated.
+        for discovered in (0, 10):
+            for errors in ((), (SourceError("npm", "fixture", "invalid_lockfile"),)):
+                with self.subTest(discovered=discovered, errors=errors):
+                    rejected = SourceResult(
+                        "npm", (), (), errors, SourceEvidence("package.json", None),
+                        dependencies_discovered=discovered, measurement_available=False,
+                    )
+                    with patch("libyears.scan._npm_source_result", return_value=rejected):
+                        report = scan_mixed_repository(
+                            self.root,
+                            pypi_lookup=lambda *_: self.fail("no Python candidates"),
+                            npm_lookup=lambda *_: self.fail("rejected source has no candidates"),
+                        )
+                    expected = MetricSummary(discovered, None, None, 0.0, None, None, None)
+                    self.assertEqual(report.summary, expected)
+                    self.assertEqual(report.by_ecosystem["npm"], expected)
+                    self.assertEqual(report.measurements, ())
+                    self.assertEqual(report.unmeasurable, ())
+                    self.assertEqual(report.source_errors, errors)
+
+    def test_rejected_source_preserves_mixed_counts_and_numeric_aggregates(self):
+        self.write_python("one==1.0\ntwo==1.0\nthree==1.0\nfour>=1.0\n")
+        rejected = SourceResult(
+            "npm", (), (), (SourceError("npm", "fixture", "invalid_lockfile"),),
+            SourceEvidence("package.json", None),
+            dependencies_discovered=10, measurement_available=False,
+        )
+
+        def lookup(name, version):
+            return self.lookup_for_libyears(name, version, {"one": 1, "two": 2, "three": 6}[name])
+
+        with patch("libyears.scan._npm_source_result", return_value=rejected):
+            report = scan_mixed_repository(
+                self.root, pypi_lookup=lookup,
+                npm_lookup=lambda *_: self.fail("rejected source has no candidates"),
+            )
+        self.assertEqual(report.summary, MetricSummary(14, 3, None, 9.0, 3.0, 2.0, 6.0))
+        self.assertEqual(report.by_ecosystem["pypi"], MetricSummary(4, 3, 0.75, 9.0, 3.0, 2.0, 6.0))
+        self.assertEqual(report.by_ecosystem["npm"], MetricSummary(10, None, None, 0.0, None, None, None))
+        self.assertEqual(len(report.measurements), 3)
+        self.assertEqual([item.ecosystem for item in report.unmeasurable], ["pypi"])
+
+    def test_available_source_is_not_rejected_based_on_errors(self):
+        available = SourceResult(
+            "npm", (), (), (SourceError("npm", "fixture", "diagnostic"),),
+            SourceEvidence("package.json", None),
+            dependencies_discovered=0, measurement_available=True,
+        )
+        with patch("libyears.scan._npm_source_result", return_value=available):
+            report = scan_mixed_repository(
+                self.root,
+                pypi_lookup=lambda *_: self.fail("no Python candidates"),
+                npm_lookup=lambda *_: self.fail("no npm candidates"),
+            )
+        self.assertEqual(report.summary, MetricSummary(0, 0, None, 0.0, None, None, None))
+        self.assertEqual(report.by_ecosystem["npm"], report.summary)
 
     def test_missing_sources_are_not_added_to_ecosystem_summaries(self):
         self.write_python()

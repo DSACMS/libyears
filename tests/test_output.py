@@ -77,8 +77,14 @@ class OutputTests(unittest.TestCase):
 
     def test_schema_v3_supports_npm_and_mixed_source_evidence(self):
         summary = MetricSummary(1, 0, 0.0, 0.0, None, None, None)
-        npm = SourceResult("npm", (), (), (), SourceEvidence("package.json", "package-lock.json"))
-        pypi = SourceResult("pypi", (), (), (), SourceEvidence("requirements.txt", None))
+        npm = SourceResult(
+            "npm", (), (), (), SourceEvidence("package.json", "package-lock.json"),
+            dependencies_discovered=0, measurement_available=True,
+        )
+        pypi = SourceResult(
+            "pypi", (), (), (), SourceEvidence("requirements.txt", None),
+            dependencies_discovered=0, measurement_available=True,
+        )
         for sources, expected in (((npm,), ["npm"]), ((pypi,), ["pypi"]), ((npm, pypi), ["npm", "pypi"])):
             report = MixedScanReport((), (), (), sources, summary,
                                      {source.ecosystem: summary for source in sources})
@@ -93,6 +99,7 @@ class OutputTests(unittest.TestCase):
         source = SourceResult(
             "npm", (), (), (SourceError("npm", "package.json", "invalid_manifest"),),
             SourceEvidence("package.json", "package-lock.json"),
+            dependencies_discovered=None, measurement_available=False,
         )
         report = MixedScanReport((), (), source.source_errors, (source,), summary, {"npm": summary})
         data = json.loads(format_json(report, "."))

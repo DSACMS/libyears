@@ -80,7 +80,7 @@ class UnmeasurableDependency:
 
 @dataclass(frozen=True, slots=True)
 class SourceError:
-    """A source-level discovery failure with no fabricated dependency row."""
+    """A source-level failure with no fabricated dependency row."""
 
     ecosystem: str
     source: str
@@ -104,14 +104,9 @@ class SourceResult:
     unmeasurable: tuple[UnmeasurableDependency, ...]
     source_errors: tuple[SourceError, ...]
     evidence: SourceEvidence
+    dependencies_discovered: int | None
+    measurement_available: bool
     source_present: bool = True
-
-    @property
-    def dependencies_discovered(self) -> int | None:
-        """Return the known denominator, or unknown after source failure."""
-        if self.source_errors:
-            return None
-        return len(self.candidates) + len(self.unmeasurable)
 
 
 @dataclass(frozen=True, slots=True)

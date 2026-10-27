@@ -157,6 +157,7 @@ class PyPITests(unittest.TestCase):
             ),
             (),
             SourceEvidence("requirements.txt", None),
+            dependencies_discovered=2, measurement_available=True,
         )
         failed_npm_result = SourceResult(
             "npm",
@@ -164,6 +165,7 @@ class PyPITests(unittest.TestCase):
             (),
             (SourceError("npm", "package.json", "invalid_manifest"),),
             SourceEvidence("package.json", "package-lock.json"),
+            dependencies_discovered=None, measurement_available=False,
         )
         self.assertEqual(python_result.dependencies_discovered, 2)
         self.assertEqual(python_result.candidates[0].registry_name, "requests")

@@ -339,6 +339,8 @@ def _python_source_result(
         tuple(unmeasurable),
         (),
         SourceEvidence("requirements.txt", snapshot_source),
+        dependencies_discovered=requirements.discovered,
+        measurement_available=True,
         source_present=_requirements_path(path) is not None,
     )
 
@@ -346,7 +348,10 @@ def _python_source_result(
 def _npm_source_result(root: Path | None) -> SourceResult:
     evidence = SourceEvidence("package.json", "package-lock.json")
     if root is None:
-        return SourceResult("npm", (), (), (), evidence, source_present=False)
+        return SourceResult(
+            "npm", (), (), (), evidence,
+            dependencies_discovered=0, measurement_available=True, source_present=False,
+        )
 
     discovery = discover_manifest(root)
     if discovery.reason is not None:
@@ -356,6 +361,8 @@ def _npm_source_result(root: Path | None) -> SourceResult:
             (),
             (SourceError("npm", "package.json", discovery.reason),),
             evidence,
+            dependencies_discovered=None,
+            measurement_available=False,
             source_present=True,
         )
 
@@ -389,7 +396,36 @@ def _npm_source_result(root: Path | None) -> SourceResult:
         tuple(unmeasurable),
         (),
         evidence,
+        dependencies_discovered=len(discovery.dependencies),
+        measurement_available=True,
         source_present=(root / "package.json").is_file(),
+    )
+
+
+def _available_summary(
+    measurements: list[DependencyMeasurement],
+    *,
+    discovered: int | None,
+    measurement_available: bool,
+    coverage_available: bool,
+    discovery_failed: bool = False,
+) -> MetricSummary:
+    """Combine scan-derived availability with the existing numeric aggregates."""
+    numeric = calculate_summary(
+        measurements,
+        dependencies_discovered=discovered,
+        discovery_failed=discovery_failed,
+    )
+    return MetricSummary(
+        dependencies_discovered=numeric.dependencies_discovered,
+        dependencies_measured=(
+            numeric.dependencies_measured if measurement_available else None
+        ),
+        coverage=numeric.coverage if coverage_available else None,
+        total_libyears=numeric.total_libyears,
+        mean_libyears=numeric.mean_libyears,
+        median_libyears=numeric.median_libyears,
+        max_libyears=numeric.max_libyears,
     )
 
 
@@ -467,24 +503,36 @@ def scan_mixed_repository(
         for source in (python_result, npm_result)
         if source.source_present or source.source_errors
     )
-    failed_discovery = any(source.source_errors for source in detected_sources)
+    discovery_unavailable = any(
+        source.dependencies_discovered is None for source in detected_sources
+    )
     discovered = (
         None
-        if failed_discovery
-        else sum(source.dependencies_discovered or 0 for source in detected_sources)
+        if discovery_unavailable
+        else sum(source.dependencies_discovered for source in detected_sources)
     )
-    summary = calculate_summary(
-        measurements, dependencies_discovered=discovered
+    summary = _available_summary(
+        measurements,
+        discovered=discovered,
+        measurement_available=(
+            not detected_sources
+            or any(source.measurement_available for source in detected_sources)
+        ),
+        coverage_available=all(
+            source.measurement_available for source in detected_sources
+        ),
     )
     by_ecosystem = {
-        source.ecosystem: calculate_summary(
-            (
+        source.ecosystem: _available_summary(
+            [
                 measurement
                 for measurement in measurements
                 if measurement.dependency.ecosystem == source.ecosystem
-            ),
-            dependencies_discovered=source.dependencies_discovered,
-            discovery_failed=bool(source.source_errors),
+            ],
+            discovered=source.dependencies_discovered,
+            measurement_available=source.measurement_available,
+            coverage_available=source.measurement_available,
+            discovery_failed=source.dependencies_discovered is None,
         )
         for source in sorted(detected_sources, key=lambda item: item.ecosystem)
     }
