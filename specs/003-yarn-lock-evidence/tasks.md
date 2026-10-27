@@ -10,6 +10,8 @@ Tasks are ordered within the approved implementation phases. Do not mark a task 
 
 ### T001 — Recognize Yarn Classic v1 lock headers
 
+**Status:** COMPLETE — 5 focused deterministic tests passed; diff reviewed and whitespace checked.
+
 **Outcome:**
 A focused parser module recognizes Yarn Classic v1 from its canonical header and classifies explicitly unsupported or safely unclassifiable/contradictory generation evidence, without interpreting lock entries.
 
