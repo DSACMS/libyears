@@ -2,13 +2,19 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import call, patch
 
-from libyears.model import DependencyCandidate, UnmeasurableDependency
+from libyears.model import (
+    DependencyCandidate,
+    SourceError,
+    SourceEvidence,
+    UnmeasurableDependency,
+)
 from libyears.yarn import YarnFailure, parse_lockfile
 
 from libyears.npm import (
     AMBIGUOUS_LOCK_EVIDENCE,
+    CONFLICTING_RESOLUTION_SOURCES,
     DECLARATION_LOCK_CONFLICT,
     INVALID_MANIFEST,
     LOCK_VERSION_MISSING,
@@ -17,6 +23,7 @@ from libyears.npm import (
     UNSUPPORTED_LOCKFILE_VERSION,
     discover_manifest,
     resolve_lockfile,
+    resolve_npm_evidence,
     match_yarn_entries,
     resolve_v2_lockfile,
     resolve_v3_lockfile,
@@ -331,6 +338,141 @@ class NpmManifestTests(unittest.TestCase):
                 self.assertTrue(
                     all(item.used_version is None for item in result.dependencies)
                 )
+
+
+class NpmEvidenceSelectorTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        (self.root / "package.json").write_text(json.dumps({
+            "dependencies": {
+                "alpha": "^1.0.0", "@scope/beta": "2.0.0", "local": "file:../local",
+            },
+            "optionalDependencies": {"optional": "1.0.0"},
+            "devDependencies": {"development": "1.0.0"},
+        }), encoding="utf-8")
+        self.discovery = discover_manifest(self.root)
+
+    def assert_matches_existing_resolver(self, result, resolved):
+        expected_candidates = []
+        expected_failures = []
+        for declaration in resolved.dependencies:
+            if declaration.reason is not None:
+                expected_failures.append(UnmeasurableDependency(
+                    "npm", declaration.name, declaration.declared, declaration.reason
+                ))
+            else:
+                expected_candidates.append(DependencyCandidate(
+                    "npm", declaration.name, declaration.name, declaration.declared,
+                    declaration.used_version, "package_lock",
+                ))
+        self.assertEqual(result.candidates, tuple(expected_candidates))
+        self.assertEqual(result.unmeasurable, tuple(expected_failures))
+        self.assertEqual(result.source_errors, ())
+        self.assertEqual(result.dependencies_discovered, 3)
+        self.assertTrue(result.measurement_available)
+        self.assertEqual(result.evidence, SourceEvidence("package.json", "package-lock.json"))
+
+    def test_package_lock_versions_and_failures_preserve_existing_results(self):
+        for version in (2, 3, 1, 4, None):
+            for beta in ({"version": "2.0.0"}, {"version": "2.1.0"}, {"link": True}):
+                with self.subTest(version=version, beta=beta):
+                    (self.root / "package-lock.json").write_text(json.dumps({
+                        "lockfileVersion": version,
+                        "packages": {
+                            "node_modules/alpha": {"version": "1.2.0"},
+                            "node_modules/@scope/beta": beta,
+                            "node_modules/transitive": {"version": "5.0.0"},
+                        },
+                    }), encoding="utf-8")
+                    expected = resolve_lockfile(self.root, self.discovery)
+                    with patch("libyears.npm.resolve_lockfile", wraps=resolve_lockfile) as resolver:
+                        result = resolve_npm_evidence(self.root, self.discovery)
+                    resolver.assert_called_once_with(
+                        self.root, self.discovery, lockfile_present=True
+                    )
+                    self.assert_matches_existing_resolver(result, expected)
+
+    def test_malformed_package_lock_preserves_dependency_failures(self):
+        for contents in ("{", "[]", '{"lockfileVersion": 3, "packages": null}'):
+            with self.subTest(contents=contents):
+                (self.root / "package-lock.json").write_text(contents, encoding="utf-8")
+                self.assert_matches_existing_resolver(
+                    resolve_npm_evidence(self.root, self.discovery),
+                    resolve_lockfile(self.root, self.discovery),
+                )
+
+    def test_neither_lock_preserves_missing_evidence_and_unsupported_sources(self):
+        result = resolve_npm_evidence(self.root, self.discovery)
+        self.assert_matches_existing_resolver(result, resolve_lockfile(self.root, self.discovery))
+        self.assertEqual(
+            [item.reason for item in result.unmeasurable],
+            [LOCK_VERSION_MISSING, LOCK_VERSION_MISSING, UNSUPPORTED_DEPENDENCY_SOURCE],
+        )
+
+    def test_each_lock_presence_is_inspected_once(self):
+        actual_exists = Path.exists
+        for package_present, yarn_present in ((False, False), (True, False), (False, True), (True, True)):
+            with self.subTest(package_lock=package_present, yarn_lock=yarn_present):
+                def exists(path):
+                    if path.name == "package-lock.json":
+                        return package_present
+                    if path.name == "yarn.lock":
+                        return yarn_present
+                    return actual_exists(path)
+
+                (self.root / "package-lock.json").write_text("{}", encoding="utf-8")
+                with patch.object(Path, "exists", autospec=True, side_effect=exists) as presence:
+                    with patch("libyears.npm._resolve_yarn_evidence"):
+                        resolve_npm_evidence(self.root, self.discovery)
+                self.assertEqual(presence.call_args_list, [
+                    call(self.root / "package-lock.json"), call(self.root / "yarn.lock"),
+                ])
+
+    def test_both_locks_reject_source_without_reading_or_dispatching(self):
+        for contents in ("malformed", "", "same evidence"):
+            with self.subTest(contents=contents):
+                for name in ("package-lock.json", "yarn.lock"):
+                    (self.root / name).write_text(contents, encoding="utf-8")
+                with (
+                    patch.object(Path, "read_text", side_effect=AssertionError("lock read")),
+                    patch("libyears.npm.resolve_lockfile") as package_resolver,
+                    patch("libyears.npm._resolve_yarn_evidence") as yarn_resolver,
+                ):
+                    result = resolve_npm_evidence(self.root, self.discovery)
+                package_resolver.assert_not_called()
+                yarn_resolver.assert_not_called()
+                self.assertEqual(result.source_errors, (SourceError(
+                    "npm", "package-lock.json + yarn.lock", CONFLICTING_RESOLUTION_SOURCES
+                ),))
+                self.assertEqual(result.dependencies_discovered, 3)
+                self.assertFalse(result.measurement_available)
+                self.assertEqual(result.candidates, ())
+                self.assertEqual(result.unmeasurable, ())
+                self.assertEqual(result.evidence, SourceEvidence("package.json", None))
+
+    def test_invalid_manifest_stops_before_lock_inspection(self):
+        (self.root / "package.json").write_text("{", encoding="utf-8")
+        discovery = discover_manifest(self.root)
+        with patch.object(Path, "exists", side_effect=AssertionError("lock inspection")):
+            result = resolve_npm_evidence(self.root, discovery)
+        self.assertEqual(result.source_errors, (SourceError("npm", "package.json", INVALID_MANIFEST),))
+        self.assertIsNone(result.dependencies_discovered)
+        self.assertFalse(result.measurement_available)
+        self.assertEqual(result.candidates, ())
+        self.assertEqual(result.unmeasurable, ())
+
+    def test_yarn_only_dispatches_without_claiming_evidence(self):
+        (self.root / "yarn.lock").write_text("not parsed in T005", encoding="utf-8")
+        with patch("libyears.npm._resolve_yarn_evidence") as yarn_resolver:
+            with patch("libyears.npm.resolve_lockfile") as package_resolver:
+                result = resolve_npm_evidence(self.root, self.discovery)
+        yarn_resolver.assert_called_once_with(self.root / "yarn.lock", self.discovery)
+        package_resolver.assert_not_called()
+        self.assertIs(result, yarn_resolver.return_value)
+        with self.assertRaisesRegex(NotImplementedError, "Yarn evidence integration"):
+            resolve_npm_evidence(self.root, self.discovery)
 
 
 class YarnMatchingTests(unittest.TestCase):

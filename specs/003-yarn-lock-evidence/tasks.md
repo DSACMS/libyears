@@ -153,6 +153,8 @@ Existing invalid-manifest and package-lock source behavior is preserved; prefer 
 
 ### T005 — Centralize internal npm resolution-source selection
 
+**Status:** COMPLETE — 7 direct selector tests and the 46-test focused npm/registry verification passed; diff reviewed and whitespace checked. Yarn dispatch is reserved for T006 and public scans retain the existing package-lock resolver.
+
 **Outcome:**
 `npm.resolve_npm_evidence(root, discovery)` becomes the single owner of root lockfile presence checks and dispatches package-lock, conflict, and no-lock behavior.
 
@@ -178,6 +180,8 @@ No package-lock reason/output/lookup behavior changes; no npm registry behavior 
 
 **Suggested commit:**
 `refactor(npm): centralize resolution source selection`
+
+**Phase gate result:** PASS — 46 focused npm/registry tests and the full 175-test deterministic suite passed, including package-lock v2/v3, unsupported-version, mixed-scan, and output regressions; `git diff --check` passed. Public Feature 003 activation remains unstarted. Phase 5 / T006 remains unstarted.
 
 **Phase gate:**
 - Selector is the sole root lock-presence owner; package-lock and neither-lock paths are regression-tested.

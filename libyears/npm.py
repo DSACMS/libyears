@@ -14,6 +14,9 @@ from .model import (
     DependencyCandidate,
     RegistryFailure,
     RegistryResult,
+    SourceError,
+    SourceEvidence,
+    SourceResult,
     UnmeasurableDependency,
 )
 from .registry import TransportFailure, VerifiedJSONTransport
@@ -27,6 +30,7 @@ UNSUPPORTED_DEPENDENCY_SOURCE = "unsupported_dependency_source"
 LOCK_VERSION_MISSING = "lock_version_missing"
 DECLARATION_LOCK_CONFLICT = "declaration_lock_conflict"
 AMBIGUOUS_LOCK_EVIDENCE = "ambiguous_lock_evidence"
+CONFLICTING_RESOLUTION_SOURCES = "conflicting_resolution_sources"
 PACKAGE_NOT_FOUND = "package_not_found"
 VERSION_NOT_FOUND = "version_not_found"
 RELEASE_DATE_MISSING = "release_date_missing"
@@ -352,14 +356,22 @@ def _valid_lock_entry(package: Any) -> bool:
 
 
 def resolve_lockfile(
-    root: str | Path, discovery: ManifestDiscovery
+    root: str | Path,
+    discovery: ManifestDiscovery,
+    *,
+    lockfile_present: bool | None = None,
 ) -> ManifestDiscovery:
-    """Resolve direct evidence from a supported root package-lock file."""
+    """Resolve direct evidence from a supported root package-lock file.
+
+    The selector supplies its presence check; legacy callers still check here.
+    """
     if discovery.reason is not None or not discovery.dependencies:
         return discovery
 
     lockfile_path = Path(root) / "package-lock.json"
-    if not lockfile_path.exists():
+    if lockfile_present is None:
+        lockfile_present = lockfile_path.exists()
+    if not lockfile_present:
         return resolve_v2_lockfile(discovery, {})
 
     try:
@@ -406,6 +418,59 @@ def resolve_lockfile(
     return ManifestDiscovery(dependencies)
 
 
+def _resolve_yarn_evidence(path: Path, discovery: ManifestDiscovery) -> SourceResult:
+    """Reserved dispatch boundary for T006's Yarn parser/matcher integration."""
+    raise NotImplementedError("Yarn evidence integration is not implemented yet")
+
+
+def resolve_npm_evidence(root: str | Path, discovery: ManifestDiscovery) -> SourceResult:
+    """Select root npm resolution evidence; public scans adopt this at T007."""
+    evidence = SourceEvidence("package.json", "package-lock.json")
+    if discovery.reason is not None:
+        return SourceResult(
+            "npm", (), (),
+            (SourceError("npm", "package.json", discovery.reason),), evidence,
+            dependencies_discovered=None, measurement_available=False,
+        )
+
+    root = Path(root)
+    package_lock_present = (root / "package-lock.json").exists()
+    yarn_lock_present = (root / "yarn.lock").exists()
+    if package_lock_present and yarn_lock_present:
+        return SourceResult(
+            "npm", (), (),
+            (SourceError(
+                "npm", "package-lock.json + yarn.lock", CONFLICTING_RESOLUTION_SOURCES
+            ),),
+            SourceEvidence("package.json", None),
+            dependencies_discovered=len(discovery.dependencies),
+            measurement_available=False,
+        )
+    if yarn_lock_present:
+        return _resolve_yarn_evidence(root / "yarn.lock", discovery)
+
+    resolved = resolve_lockfile(root, discovery, lockfile_present=package_lock_present)
+    candidates = []
+    unmeasurable = []
+    for declaration in resolved.dependencies:
+        if declaration.reason is not None:
+            unmeasurable.append(UnmeasurableDependency(
+                "npm", declaration.name, declaration.declared, declaration.reason
+            ))
+        elif declaration.used_version is not None:
+            candidates.append(DependencyCandidate(
+                "npm", declaration.name, declaration.name, declaration.declared,
+                declaration.used_version, "package_lock",
+            ))
+        else:
+            raise ValueError(f"npm source produced no evidence or reason for {declaration.name}")
+    return SourceResult(
+        "npm", tuple(candidates), tuple(unmeasurable), (), evidence,
+        dependencies_discovered=len(discovery.dependencies), measurement_available=True,
+        source_present=(root / "package.json").is_file(),
+    )
+
+
 def discover_manifest(root: str | Path) -> ManifestDiscovery:
     """Discover production dependencies from *root*/``package.json``.
 
@@ -445,6 +510,7 @@ def discover_manifest(root: str | Path) -> ManifestDiscovery:
 
 __all__ = [
     "AMBIGUOUS_LOCK_EVIDENCE",
+    "CONFLICTING_RESOLUTION_SOURCES",
     "INVALID_MANIFEST",
     "INVALID_LOCKFILE",
     "INVALID_REGISTRY_RESPONSE",
@@ -464,6 +530,7 @@ __all__ = [
     "VERSION_NOT_FOUND",
     "discover_manifest",
     "resolve_lockfile",
+    "resolve_npm_evidence",
     "match_yarn_entries",
     "resolve_v2_lockfile",
     "resolve_v3_lockfile",
