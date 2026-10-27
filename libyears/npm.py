@@ -20,7 +20,7 @@ from .model import (
     UnmeasurableDependency,
 )
 from .registry import TransportFailure, VerifiedJSONTransport
-from .yarn import YarnEntry
+from .yarn import YarnEntry, YarnFailure, parse_lockfile
 
 
 INVALID_MANIFEST = "invalid_manifest"
@@ -419,8 +419,23 @@ def resolve_lockfile(
 
 
 def _resolve_yarn_evidence(path: Path, discovery: ManifestDiscovery) -> SourceResult:
-    """Reserved dispatch boundary for T006's Yarn parser/matcher integration."""
-    raise NotImplementedError("Yarn evidence integration is not implemented yet")
+    """Adapt Yarn evidence without promoting dependency failures to the source."""
+    evidence = SourceEvidence("package.json", "yarn.lock")
+    entries = parse_lockfile(path)
+    if isinstance(entries, YarnFailure):
+        return SourceResult(
+            "npm", (), (),
+            (SourceError("npm", "yarn.lock", entries.reason),), evidence,
+            dependencies_discovered=len(discovery.dependencies),
+            measurement_available=False,
+        )
+
+    candidates, unmeasurable = match_yarn_entries(discovery.dependencies, entries)
+    return SourceResult(
+        "npm", candidates, unmeasurable, (), evidence,
+        dependencies_discovered=len(discovery.dependencies),
+        measurement_available=True,
+    )
 
 
 def resolve_npm_evidence(root: str | Path, discovery: ManifestDiscovery) -> SourceResult:

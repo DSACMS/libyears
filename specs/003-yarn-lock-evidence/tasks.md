@@ -192,6 +192,8 @@ No package-lock reason/output/lookup behavior changes; no npm registry behavior 
 
 ### T006 — Connect Yarn parsing and matching behind the selector
 
+**Status:** COMPLETE — 54 focused Yarn/npm tests and 13 npm registry regression tests passed; diff reviewed and whitespace checked. Yarn parsing and matching return internal candidates or approved source/dependency failures; public scans remain on the existing package-lock path.
+
 **Outcome:**
 The npm evidence selector connects the concrete parser and matcher and returns approved candidates, dependency failures, or whole-source failures; scan orchestration does not activate the new path yet.
 
@@ -216,6 +218,8 @@ No registry URL, TLS/CA, timeout, timestamp, stable-release, or failure semantic
 
 **Suggested commit:**
 `feat(npm): use Yarn lock evidence for npm dependencies`
+
+**Phase gate result:** PASS — 54 focused Yarn/npm tests, 13 npm registry regression tests, and the full 180-test deterministic suite passed, including package-lock and mixed-source isolation regressions; `git diff --check` passed. `scan.py`, public output, schema, and README remain unchanged. Phase 6 / T007 public-contract activation remains unstarted.
 
 **Phase gate:**
 - Selector-level Yarn evidence and all approved source/dependency failure classifications pass deterministic tests.

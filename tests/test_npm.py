@@ -10,7 +10,7 @@ from libyears.model import (
     SourceEvidence,
     UnmeasurableDependency,
 )
-from libyears.yarn import YarnFailure, parse_lockfile
+from libyears.yarn import UNSUPPORTED_LOCKFILE_FORMAT, YarnFailure, parse_lockfile
 
 from libyears.npm import (
     AMBIGUOUS_LOCK_EVIDENCE,
@@ -431,18 +431,29 @@ class NpmEvidenceSelectorTests(unittest.TestCase):
                 ])
 
     def test_both_locks_reject_source_without_reading_or_dispatching(self):
-        for contents in ("malformed", "", "same evidence"):
-            with self.subTest(contents=contents):
-                for name in ("package-lock.json", "yarn.lock"):
-                    (self.root / name).write_text(contents, encoding="utf-8")
+        package_lock = json.dumps({
+            "lockfileVersion": 3,
+            "packages": {"node_modules/alpha": {"version": "1.2.0"}},
+        })
+        yarn_lock = '# yarn lockfile v1\nalpha@^1.0.0:\n  version "1.2.0"\n'
+        for package_contents, yarn_contents in (
+            ("malformed", "malformed"), ("", ""),
+            (package_lock, yarn_lock), (package_lock, "malformed"),
+            ("malformed", yarn_lock),
+        ):
+            with self.subTest(package_lock=package_contents, yarn_lock=yarn_contents):
+                (self.root / "package-lock.json").write_text(package_contents, encoding="utf-8")
+                (self.root / "yarn.lock").write_text(yarn_contents, encoding="utf-8")
                 with (
                     patch.object(Path, "read_text", side_effect=AssertionError("lock read")),
                     patch("libyears.npm.resolve_lockfile") as package_resolver,
                     patch("libyears.npm._resolve_yarn_evidence") as yarn_resolver,
+                    patch("libyears.npm.NpmAdapter.lookup") as lookup,
                 ):
                     result = resolve_npm_evidence(self.root, self.discovery)
                 package_resolver.assert_not_called()
                 yarn_resolver.assert_not_called()
+                lookup.assert_not_called()
                 self.assertEqual(result.source_errors, (SourceError(
                     "npm", "package-lock.json + yarn.lock", CONFLICTING_RESOLUTION_SOURCES
                 ),))
@@ -463,16 +474,122 @@ class NpmEvidenceSelectorTests(unittest.TestCase):
         self.assertEqual(result.candidates, ())
         self.assertEqual(result.unmeasurable, ())
 
-    def test_yarn_only_dispatches_without_claiming_evidence(self):
-        (self.root / "yarn.lock").write_text("not parsed in T005", encoding="utf-8")
+    def test_yarn_only_dispatches_to_yarn_resolver(self):
+        (self.root / "yarn.lock").write_text("dispatch test", encoding="utf-8")
         with patch("libyears.npm._resolve_yarn_evidence") as yarn_resolver:
             with patch("libyears.npm.resolve_lockfile") as package_resolver:
                 result = resolve_npm_evidence(self.root, self.discovery)
         yarn_resolver.assert_called_once_with(self.root / "yarn.lock", self.discovery)
         package_resolver.assert_not_called()
         self.assertIs(result, yarn_resolver.return_value)
-        with self.assertRaisesRegex(NotImplementedError, "Yarn evidence integration"):
-            resolve_npm_evidence(self.root, self.discovery)
+
+    def resolve_yarn(self, contents, dependencies=None):
+        if dependencies is not None:
+            (self.root / "package.json").write_text(
+                json.dumps({"dependencies": dependencies}), encoding="utf-8"
+            )
+        discovery = discover_manifest(self.root)
+        (self.root / "yarn.lock").write_text(contents, encoding="utf-8")
+        with (
+            patch("libyears.npm.NpmAdapter.lookup") as lookup,
+            patch("libyears.npm.resolve_lockfile") as package_resolver,
+        ):
+            result = resolve_npm_evidence(self.root, discovery)
+        lookup.assert_not_called()
+        package_resolver.assert_not_called()
+        return result
+
+    def test_yarn_only_returns_direct_candidates_with_full_scoped_identity(self):
+        result = self.resolve_yarn(
+            '# yarn lockfile v1\n'
+            'alpha@^1.0.0, "alpha@~1.2.0":\n  version "9.0.0"\n'
+            '"@scope/beta@2.0.0":\n  version "2.0.0"\n'
+            '"local@file:../local":\n  version "1.0.0"\n'
+            'optional@1.0.0:\n  version "1.0.0"\n'
+            'development@1.0.0:\n  version "1.0.0"\n'
+            'transitive@1.0.0:\n  version "1.0.0"\n'
+        )
+        self.assertEqual(result.candidates, (
+            DependencyCandidate("npm", "alpha", "alpha", "^1.0.0", "9.0.0", "yarn_lock"),
+            DependencyCandidate("npm", "@scope/beta", "@scope/beta", "2.0.0", "2.0.0", "yarn_lock"),
+        ))
+        self.assertEqual(result.unmeasurable, (
+            UnmeasurableDependency("npm", "local", "file:../local", UNSUPPORTED_DEPENDENCY_SOURCE),
+        ))
+        self.assertEqual(result.source_errors, ())
+        self.assertEqual(result.dependencies_discovered, 3)
+        self.assertTrue(result.measurement_available)
+        self.assertEqual(result.evidence, SourceEvidence("package.json", "yarn.lock"))
+
+    def test_yarn_dependency_failures_leave_unrelated_candidates_available(self):
+        for ambiguous_field in ('', '  version "latest"\n', '  version "^1.0.0"\n'):
+            with self.subTest(ambiguous_field=ambiguous_field):
+                result = self.resolve_yarn(
+                    '# yarn lockfile v1\n'
+                    'good@^1.0.0:\n  version "1.2.0"\n'
+                    'pinned@1.0.0:\n  version "2.0.0"\n'
+                    'repeated@^1.0.0:\n  version "1.2.0"\n'
+                    '"repeated@^1.0.0":\n  version "1.2.0"\n'
+                    'unusable@^1.0.0:\n' + ambiguous_field +
+                    '"alias@npm:other@^1.0.0":\n  version "1.2.0"\n',
+                    dependencies={
+                        "good": "^1.0.0", "missing": "^2.0.0", "pinned": "1.0.0",
+                        "repeated": "^1.0.0", "unusable": "^1.0.0",
+                        "alias": "npm:other@^1.0.0",
+                    },
+                )
+                self.assertEqual(result.candidates, (
+                    DependencyCandidate("npm", "good", "good", "^1.0.0", "1.2.0", "yarn_lock"),
+                ))
+                self.assertEqual(result.unmeasurable, (
+                    UnmeasurableDependency("npm", "missing", "^2.0.0", LOCK_VERSION_MISSING),
+                    UnmeasurableDependency("npm", "pinned", "1.0.0", DECLARATION_LOCK_CONFLICT),
+                    UnmeasurableDependency("npm", "repeated", "^1.0.0", AMBIGUOUS_LOCK_EVIDENCE),
+                    UnmeasurableDependency("npm", "unusable", "^1.0.0", AMBIGUOUS_LOCK_EVIDENCE),
+                    UnmeasurableDependency("npm", "alias", "npm:other@^1.0.0", UNSUPPORTED_DEPENDENCY_SOURCE),
+                ))
+                self.assertEqual(result.source_errors, ())
+                self.assertEqual(result.dependencies_discovered, 6)
+                self.assertTrue(result.measurement_available)
+
+    def test_yarn_source_rejection_has_known_discovery_and_no_dependency_rows(self):
+        valid_entry = 'alpha@^1.0.0:\n  version "1.2.0"\n'
+        for contents, reason in (
+            ('# yarn lockfile v1\n' + valid_entry + 'broken@^1.0.0,\n', INVALID_LOCKFILE),
+            ('# yarn lockfile v1\n' + valid_entry + '  version "1.2.0"\n', INVALID_LOCKFILE),
+            ('# yarn lockfile v2\n' + valid_entry, UNSUPPORTED_LOCKFILE_FORMAT),
+            (valid_entry, UNSUPPORTED_LOCKFILE_FORMAT),
+            ('# yarn lockfile v1\n# yarn lockfile v2\n' + valid_entry, UNSUPPORTED_LOCKFILE_FORMAT),
+            ('', UNSUPPORTED_LOCKFILE_FORMAT),
+        ):
+            with self.subTest(contents=contents):
+                result = self.resolve_yarn(contents)
+                self.assertEqual(result.source_errors, (SourceError("npm", "yarn.lock", reason),))
+                self.assertEqual(result.dependencies_discovered, 3)
+                self.assertFalse(result.measurement_available)
+                self.assertEqual(result.candidates, ())
+                self.assertEqual(result.unmeasurable, ())
+                self.assertEqual(result.evidence, SourceEvidence("package.json", "yarn.lock"))
+
+    def test_header_only_yarn_is_available_with_missing_dependency_evidence(self):
+        result = self.resolve_yarn('# yarn lockfile v1\n')
+        self.assertEqual(result.candidates, ())
+        self.assertEqual(result.source_errors, ())
+        self.assertEqual([item.reason for item in result.unmeasurable], [
+            LOCK_VERSION_MISSING, LOCK_VERSION_MISSING, UNSUPPORTED_DEPENDENCY_SOURCE,
+        ])
+        self.assertEqual(result.dependencies_discovered, 3)
+        self.assertTrue(result.measurement_available)
+
+    def test_yarn_source_is_validated_even_with_empty_discovery(self):
+        for contents, available in (('# yarn lockfile v1\n', True), ('', False)):
+            with self.subTest(contents=contents):
+                result = self.resolve_yarn(contents, dependencies={})
+                self.assertEqual(result.dependencies_discovered, 0)
+                self.assertEqual(result.measurement_available, available)
+                self.assertEqual(result.candidates, ())
+                self.assertEqual(result.unmeasurable, ())
+                self.assertEqual(len(result.source_errors), 0 if available else 1)
 
 
 class YarnMatchingTests(unittest.TestCase):
