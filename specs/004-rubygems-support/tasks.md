@@ -185,7 +185,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T011 — Enforce Ruby transport and validate registry population
 
-- **Status:** Pending; **Phase:** 4; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_rubygems_registry` (12 tests passed); **Phase:** 4; **Parallelizable:** No.
 - **Objective and approved scope:** Build internal RubyGemsAdapter identity-then-population requests only through T009’s opt-in verified transport, with fixed supported HTTPS authority rubygems.org, all redirects rejected, 16 MiB per response, two requests/32 MiB per candidate and default positive 10-second timeout. Consume shared controls without duplicating their implementation; preserve CA precedence and User-Agent. Map typed response_too_large/incomplete_response to invalid_registry_response without partial evidence; ordinary transport/TLS/timeout failures remain registry_error. Defensively validate identity/quoting and establish endpoint-independent ASCII case-only identity even when population records omit names; reject punctuation/Unicode substitutions. Apply strict JSON/required field/ABI/full-artifact validation. Use the pinned upstream source chain to document fixtures. Handle equivalent versus contradictory duplicates and public absence without inventing history.
 - **Expected files:** libyears/rubygems_registry.py; tests/test_rubygems_registry.py; registry fixtures and fixture documentation.
 - **Acceptance criteria mapped:** 08 (endpoint-independent registry identity), 18–19 (Ruby transport enforcement), 20, 27 (absence), 44 (Ruby budgets and bounded-failure mapping).
