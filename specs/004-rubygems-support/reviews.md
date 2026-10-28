@@ -395,3 +395,47 @@ Remaining product questions: NONE.
 Specification status: Clarified draft — ready for narrow verification review.
 Implementation status: NOT APPROVED.
 Next gate: independent narrow verification review, before specification approval.
+
+## Specification Verification
+
+**Clarified specification:** `3b315696e4d03b5e7aac325b47a800abbade70e0`
+**Verification verdict:** APPROVE
+**Specification status:** APPROVED FOR TECHNICAL PLANNING
+
+The completed independent narrow verification found:
+
+- F1–F8 resolved; H1–H8 faithfully incorporated and internally coherent.
+- Canonicalization: PASS.
+- Supply-chain/source-authority boundary: PASS.
+- Failure taxonomy: PASS.
+- Coverage/availability: PASS.
+- Schema: SCHEMA V3 COMPATIBLE.
+- Security boundary: PASS.
+- Acceptance criteria: 52/52 clearly testable; no ambiguous, redundant,
+  process-only, contradictory, or unresolved-product-question-dependent criteria.
+- No missing material behavioral cases or unresolved product questions.
+- Discovery conformance: PASS; no hidden scope expansion.
+- No material findings remain.
+
+## Git-Before-Review Process Result
+
+**USEFUL BEFORE/AFTER EVIDENCE**
+
+The repository preserves:
+
+- `c761b113ea19988e7e9ea5ca16b373c1e2c526fb` — committed pre-review specification.
+- `5c5b69adb810827cd4c8e74d1bbbeef44bd34465` — adversarial review findings.
+- Human clarification of H1–H8 and canonicalization, recorded above.
+- `3b315696e4d03b5e7aac325b47a800abbade70e0` — clarified specification.
+
+The independent verifier found this history materially useful for reconstructing
+what review and clarification changed. This is evidence from this review, not
+proof of the broader process hypothesis.
+
+## Status
+
+**Specification-review status:** APPROVED FOR TECHNICAL PLANNING
+
+**Implementation status:** NOT APPROVED
+
+**Next gate:** Draft technical plan, commit it before independent architecture review.
