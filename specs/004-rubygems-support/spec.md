@@ -2,18 +2,12 @@
 
 ## Status
 
-Draft — committed before independent specification review
+Clarified draft — ready for narrow verification review
 
-Feature 004 is selected for specification. Implementation is not approved.
-This first draft preserves unresolved product choices for independent review;
-it is not an approved implementation contract. No independent specification
-review has occurred. The drafting checks and acceptance coverage audit below
-are author checks, not that independent review.
-
-Unless marked **documented semantics**, **repository observation**, or **open
-choice**, behavioral requirements below are **proposed Feature 004 product
-policy**. They do not assert general Bundler compatibility. Alternatives in
-Product Questions are not defaults and must not be implemented by inference.
+Human clarification H1–H8 and canonicalization decisions are authoritative.
+The adversarial review is recorded in reviews.md. This revision is an author
+clarification, not independent verification or specification approval.
+Implementation is not approved. No plan or tasks are authorized by this draft.
 
 ## Problem
 
@@ -102,19 +96,18 @@ the feature activates through a directory scan.
 |---|---|
 | Neither | No RubyGems source, rows, lookup, evidence, or ecosystem summary. |
 | Gemfile only | Same no-source result; do not interpret or count declarations. |
-| Gemfile.lock only | **Open Q1:** recognize the snapshot, or require companion Gemfile presence. |
+| Gemfile.lock only | Activate bounded lock-snapshot discovery. |
 | Both | Attempt bounded lock discovery; Gemfile contents have no effect. |
 | Recognized lock unreadable, not a regular readable artifact, or invalid text | Source-level `invalid_lockfile`; no Ruby lookup. |
 | Recognized lock malformed or unsupported | Failure Model applies; no recovery through Gemfile. |
 
-Q1 is a product choice, not a Bundler fact. Lock-only recognition fits snapshot
-scope; companion-file recognition fits a stricter root convention. Neither
-requires opening or evaluating Gemfile. In both cases, root recognition does
-not certify commit status or runtime relevance.
+Gemfile is neither required nor inspected nor evaluated, including when both
+files exist. Recognition asserts only a supported recorded root lock snapshot,
+not commit status or runtime relevance.
 
 ## Supported Gemfile.lock Boundary
 
-The proposed initial format is a bounded sectioned Bundler lock snapshot,
+The initial supported format is a bounded sectioned Bundler lock snapshot,
 identified as `gemfile_lock` in evidence metadata. This is a libyears format
 identifier, not a claim that Bundler has a numbered lock schema.
 
@@ -139,8 +132,10 @@ The bounded syntax is:
   text, optional trailing `!`. Preserve the row text excluding its structural
   indentation as `declared`. Empty scope is valid. Duplicate direct names,
   even identical rows, reject the whole source rather than inflate counts.
-- `PLATFORMS`: two-space nonempty platform tokens; these record snapshot
-  coverage and do not choose the scanning machine's platform.
+- `PLATFORMS`: required exactly once, with at least one two-space nonempty
+  ASCII platform token (letters, digits, underscores, periods, hyphens). Empty,
+  repeated sections, duplicate tokens, or malformed entries are invalid. These
+  record snapshot coverage and never choose the scanning machine's platform.
 - Optional singleton `BUNDLED WITH`: one indented tool-version token;
   optional singleton `RUBY VERSION`: one indented runtime-description line.
   Neither contributes dependency or selected-version evidence.
@@ -150,22 +145,45 @@ The bounded syntax is:
   `revision`, `branch`, `ref`, `tag`, `submodules`, `glob` for GIT. Values are
   inert nonempty text. No paths, revisions, URLs, or code are followed.
 - Distinct source blocks are allowed. Repeated singleton sections, repeated
-  metadata keys (except multiple GEM remotes as below), or duplicated source
-  blocks are malformed. Separate spec rows remain visible to matching; they
+  metadata keys (except multiple GEM remotes as below) are malformed.
+  Separate spec rows remain visible to matching; they
   are never silently collapsed.
+
+Repeated GEM blocks are supported when each independently establishes the same
+public remote and their evidence is compatible: disjoint specs or distinct
+supported artifacts agreeing on selected version text. Different versions for
+a direct name are dependency-level `ambiguous_lock_evidence`; identical artifact
+rows, within or across blocks, are also ambiguous even if versions agree.
+Different remotes remain separate authorities: safely attributable nonpublic
+sources are dependency-level unsupported sources. A name spanning conflicting
+or uncertain authorities cannot fall back to its public namesake. Repeated
+blocks with unsafe boundaries are source-level `invalid_lockfile`.
+A missing remote or insufficient source metadata yields dependency-level
+`unsupported_dependency_source` when spec ownership and direct scope remain
+safe; otherwise reject the whole lock as `invalid_lockfile`.
+
+Nested six-space requirements are framing evidence only. Supported requirement
+forms below apply without semantic evaluation. Unsupported but safely delimited
+nested text does not expand scope or invalidate a direct selection; malformed
+nested framing preventing safe interpretation is `invalid_lockfile`.
 
 Names and selected-version tokens must be separable without inference. The
 initial ordinary selected-version spelling is digits followed by zero or more
 period-separated nonempty ASCII alphanumeric segments (for example `1`,
 `1.2.0`, `1.2.pre.1`). A suffix after the first hyphen is platform evidence,
-not part of that ordinary version. No version sorting or equivalence is
+not part of that ordinary version. Supported platform spelling uses nonempty
+ASCII letters, digits, underscores, periods and hyphens, with no extra identity
+qualifier; inseparable version/platform/extra identity fails closed rather than
+being split by guesswork. No version sorting or equivalence is
 implied. A recognizable spec row with an unsupported version spelling fails
 that direct dependency with `unsupported_lock_evidence`; broken row framing
 is source-level `invalid_lockfile`.
 
 Supported requirement framing is an optional nonempty parenthesized list of
 comma-separated terms: optional `=`, `!=`, `>`, `<`, `>=`, `<=`, or `~>` followed
-by a version token. Bare version terms are exact requirements. Framing does
+by a version token. Bare version terms are exact requirements. Surrounding term whitespace is
+permitted; repeated terms and exact terms within compound lists are framing,
+not consistency checks. Framing does
 not evaluate satisfaction. Unrecognized requirement syntax on an otherwise
 isolated direct row is `unsupported_requirement`; if the row's name/boundary
 cannot be recovered safely, discovery fails at source level. Transitive
@@ -211,10 +229,14 @@ uses case-insensitive uniqueness and case-insensitive lookup fallback. Registry
 lookup convenience does not prove that differently cased lock entries are the
 same selected evidence.
 
-Proposed conservative policy: preserve spelling and compare lock names exactly,
-case-sensitively; never fold case, replace hyphens/underscores/periods, or import
-PyPI normalization. Match returned registry identity exactly where a name is
-returned; case-only response differences remain open under Q6.
+Preserve lock spelling and compare lock identities exactly, case-sensitively.
+After public source authority is independently established, registry identity
+may differ only by ASCII letter case. This contract is endpoint-independent:
+identity must be established even if an endpoint omits a package-name field.
+No punctuation normalization, hyphen/underscore equivalence, period substitution,
+Unicode case folding, fuzzy matching, typo correction, or public-namesake
+substitution is permitted. Failure to establish identity under this contract is
+`invalid_registry_response`. Typosquatting detection is outside scope.
 
 Accept ASCII letters, digits, periods, underscores, and hyphens, with an
 alphanumeric first and last character and at least one letter. This is a
@@ -235,45 +257,30 @@ be inferred; source-pin interpretation is outside the supported subset.
 
 | Evidence for an otherwise supported direct name | Outcome before registry lookup |
 |---|---|
-| Exactly one ordinary public spec | Exact candidate, subject to Q3 platform/registry record policy and Q5 exact-requirement policy. |
-| No selected spec | `lock_version_missing`; neither requirement nor tool version substitutes. |
-| Multiple versions | `ambiguous_lock_evidence`. |
-| Duplicate ordinary spec rows, even same version | `ambiguous_lock_evidence`. |
-| Multiple platform variants, even same version | `ambiguous_lock_evidence`; no platform resolution. |
-| One platform-qualified spec | **Open Q2**, subject to registry policy Q3 if accepted. |
-| Isolated unsupported version syntax | `unsupported_lock_evidence`. |
-| Broken spec framing or unsafe source boundaries | Whole-source failure. |
+| One supported generic or platform-qualified public spec | Accept exact selected package version; retain artifact provenance. |
+| No selected spec | `lock_version_missing`; requirement/tool text never substitutes. |
+| Distinct supported public artifacts all agreeing on exact version text | Accept one dependency; retain every selected artifact. |
+| Different selected version text or identical duplicate artifact rows | `ambiguous_lock_evidence`. |
+| Conflicting/uncertain source association | `unsupported_dependency_source`; no public fallback. |
+| Isolated unsupported version or required artifact identity | `unsupported_lock_evidence`. |
+| Broken framing or unsafe attribution | Whole-source `invalid_lockfile`. |
 
-Missing or ambiguous evidence is never repaired from registry data. Requirement
-text is retained but does not select a used version. Non-exact requirements
-(including unconstrained, minimum, pessimistic, and compound ranges) are not
-checked for satisfaction. For a single exact requirement, text equality can
-confirm literal agreement; inequality does not prove Ruby semantic conflict.
-**Open Q5** determines whether to trust the selected spec or conservatively
-reject differing exact text. No Ruby version engine is authorized.
-
-**Documented semantics:** Ruby's
-[Gem::Version](https://raw.githubusercontent.com/rubygems/rubygems/master/lib/rubygems/version.rb)
-compares canonical segments and transforms hyphenated version notation; textual
-inequality is not semantic inequality (for example, trailing zero precision).
-This is why an npm-style literal-conflict rule cannot be imported silently.
+Trust selected evidence for unconstrained, bare exact, `=` exact, ranges, and
+compound requirements. Preserve requirement text; do not evaluate satisfaction,
+Ruby version equivalence, or resolution. Neither textual equality nor inequality
+establishes semantic compatibility. Unsupported isolated direct framing remains
+`unsupported_requirement`; unsafe framing rejects the source.
 
 ## Platform Policy
 
-Reject multiple selected spec rows as ambiguous, including generic plus native
-variants of the same version. Do not infer selection from host OS/architecture,
-Dockerfile, `PLATFORMS`, environment variables, or `force_ruby_platform`.
-
-**Open Q2:** a single platform-qualified lock record could be rejected by the
-smallest generic-only subset, or accepted as an explicitly recorded artifact
-without claiming it runs on the host. The latter still needs Q3.
-
-**Open Q3:** RubyGems can expose multiple records for one version. The API's
-platform selector establishes artifact identity, not a unique package-level
-publication date. Generic-only comparison, same-artifact-class comparison, and
-package-level canonicalization have different outcomes. No earliest/latest
-cross-platform timestamp rule is selected implicitly. Ordinary locks are not
-permission to pick the first registry record.
+A single supported platform-qualified record and agreeing multi-variant records
+establish package version, not runtime compatibility. Never infer host/runtime
+platform or select variants from PLATFORMS, build files, environment variables,
+or force_ruby_platform. Do not restrict latest comparison to locked platforms.
+Version plus platform is not universally complete artifact identity: additional
+identity such as ruby_abi exists. No ABI/runtime resolution is authorized.
+Required lock identity outside the bounded generic/platform model fails closed;
+identifiable unsupported registry classes are treated as specified below.
 
 ## Special Dependencies
 
@@ -311,94 +318,82 @@ latest candidates. Any returned name must agree with the accepted identity
 policy. Missing or contradictory required metadata cannot produce a guess.
 Do not use a server's numerically latest response as timestamp-based latest.
 
-**Documented semantics:** the
-[API reference](https://guides.rubygems.org/rubygems-org-api/) exposes version
-numbers, platforms, prerelease flags, creation/build timestamps, and
-version-specific metadata including yank state. A platform parameter selects a
-specific record. Endpoint choice is not frozen by this draft; it must establish
-those facts, including completeness for latest selection. An unrecognized or
-truncated response is not a complete release history.
+Endpoint selection belongs in planning. Supported observable response population
+must be obtained without silent truncation, but ordinary public APIs do not
+establish complete historical or yanked publication visibility. Missing metadata
+proves neither yanking nor never-existence. Required identity evidence cannot
+depend on whether a chosen endpoint happens to return a name field.
 
 ## Publication Timestamp Policy
 
-Use version-record creation time (`created_at`, or an authoritatively equivalent
-`version_created_at`) as the proposed ordinary publication timestamp. Parse
-only valid timezone-aware timestamps, normalize to UTC, and preserve precision.
-Do not use package creation/update time, lock mtime, gemspec date, `built_at`,
-commit dates, or scan time as fallback. If equivalent authoritative fields
-contradict each other, fail the dependency with `invalid_registry_response`.
+This is the single normative canonicalization definition for used and latest
+roles. The population is supported generic and platform-specific public
+RubyGems artifact records for the exact package-version text whose full required
+identity is understood by Feature 004. It is independent of locked platforms.
+Identifiable unsupported classes, including additional ruby_abi identity, are
+excluded without poisoning otherwise supported records. Contradictory identity,
+conflicting source association, malformed metadata, or unclassifiable required
+identity fails the dependency with `invalid_registry_response`. No qualifying
+records yields `version_not_found` for used evidence.
 
-**Documented semantics:** RubyGems.org's
-[version model](https://raw.githubusercontent.com/rubygems/rubygems.org/master/app/models/version.rb)
-assigns `built_at` from `spec.date` and contains special handling for the
-2009-07-25 import date. This supports the ordinary creation-time candidate and
-identifies a historical exception; it does not prove all creation dates are
-original publication times. The website's authored-date fallback is not adopted
-as publication authority.
+Supported observable yanked artifacts may contribute publication timestamps.
+Missing records are neither presumed yanked nor reconstructed. For each
+qualifying record, use authoritative version creation time (`created_at` or
+an authoritatively equivalent `version_created_at`), parsed as a valid aware
+timestamp, normalized to UTC with precision preserved. Exclude missing, invalid,
+or historically inadmissible timestamp evidence. Every timestamp on 2009-07-25
+UTC is inadmissible. Never use built_at as authority, fallback, or rehabilitation;
+package times, lock times, commit times, and scan time are also inadmissible.
+An unusable timestamp alone does not poison other admissible records.
+Contradictory authoritative timestamp fields remain `invalid_registry_response`.
 
-Known uncertain publication time is unusable: the used record gets
-`release_date_missing`; an uncertain latest candidate is excluded. If no eligible
-stable candidate remains, use `no_stable_release`. This does not substitute a
-different platform record unless Q3 explicitly authorizes canonicalization.
+The canonical package-version publication date is the EARLIEST admissible
+authoritative publication timestamp across qualifying supported observable
+records, including observable yanked records. No remaining timestamp yields
+`release_date_missing` for used evidence and excludes the version from latest.
+Used and latest apply this identical rule.
 
-**Open Q4:** define the exact historical/import uncertainty predicate before
-approval. No arbitrary cutoff or evidence-free historical exception is adopted.
-The creation date alone on the import day cannot be assumed to be publication.
-**Open Q3** also governs any same-version cross-platform timestamp mapping.
+Canonical date means “earliest admissible supported observable publication
+evidence,” not first-ever historical publication or complete historical
+knowledge. Missing historical records are not inferred. Future record
+disappearance may change future measurements. The website/import predicate is
+a heuristic, not historical attestation; other dates remain observable evidence,
+not proof of historical certainty.
 
 ## Stable Release Eligibility
 
-An eligible latest candidate must have supported identity/platform evidence,
-authoritative `prerelease: false`, public availability (not yanked/unavailable),
-and a usable publication timestamp under Q3/Q4. Prereleases never become latest
-stable. Do not guess missing prerelease flags from version spelling. Do not
-apply Gemfile requirements, Ruby compatibility, host platform, or version
-ordering to filter latest candidates.
-
-For the accepted record class/canonicalization selected by Q3, latest stable
-is the eligible release with the greatest authoritative timestamp. Equal-time
-different-version ties use lexicographically ascending exact version text as
-a deterministic tie-break, not a version-order claim. Same-version record
-multiplicity must be settled by Q3 before this tie-break applies.
-
-Well-identified candidates lacking timestamps are ineligible. Missing or
-invalid required identity, platform, prerelease, or availability semantics that
-prevent safe classification make the package response
-`invalid_registry_response`. Conflicting duplicate metadata for the same record
-also fails that dependency; byte-equivalent duplicate records may be collapsed.
-An empty eligible set is `no_stable_release`. A successful response must
-establish a complete eligible history; response limits must never silently
-select latest from a partial prefix.
+A version requires supported currently available stable artifact evidence with
+authoritative prerelease=false, plus its canonical date, to qualify as latest.
+A version represented only by yanked artifacts may be measurable as used but
+cannot be latest. Do not infer prerelease or availability from spelling or
+absence. Missing/contradictory required classification is
+`invalid_registry_response`. Prerelease used versions may be measured.
+Requirements, Ruby compatibility, host platform, and numeric version ordering
+do not filter latest. Choose the eligible version with greatest canonical date;
+equal-date different-version ties use ascending exact version text, not semantic
+ordering. No eligible candidate yields `no_stable_release`.
+Byte-equivalent duplicate registry records may collapse; conflicting duplicates
+are invalid. Response order never determines canonicalization or selection.
 
 ## Used-Version Semantics
 
-The exact locked version is repository evidence independently of today's
-availability. A prerelease or now-yanked used version may be measured when its
-exact accepted record and defensible historical timestamp remain available.
-It does not thereby become a latest-stable candidate. This permission does not
-require inventing a history-recovery mechanism or fetching a gem archive.
+`package_not_found` means supported public metadata reports package absence;
+`version_not_found` means no qualifying supported observable exact used-version
+record. Neither claims never-existence or known yanking. No yank-specific missing
+reason is introduced. Missing dates use `release_date_missing`. Requirements or
+similar versions never repair absence.
 
-When the package is authoritatively absent, use `package_not_found`; when the
-package exists but the exact used record cannot be found, use
-`version_not_found`. Absent metadata cannot be reconstructed from requirement
-text or a semantically similar version. If authoritative available metadata
-exists but its time is missing/unsafe, use `release_date_missing`.
-Multiple records for the used version are governed by Q3, not response order.
-
-Arithmetic remains centralized and ecosystem-agnostic: timestamp difference
-in seconds divided by `86400 * 365.25`, no grace period. Use the same canonical
-timestamp for a version in used and latest roles. Identical used/latest version
-identity produces exactly `0.0`; differing platform timestamps must not create
-age for that identity. Negative timestamp anomalies clamp to zero and set
-`timestamp_anomaly`; otherwise no anomaly is asserted. Aggregate only measured
-rows, using existing sum, mean, median, and maximum semantics.
+Arithmetic remains UTC elapsed seconds / (86400 * 365.25), no grace period.
+Same used/latest exact version identity yields exactly 0.0 using the shared
+canonical date. Negative differences clamp to zero with timestamp_anomaly=true;
+otherwise false. Aggregate only measured rows with existing sum/mean/median/max.
 
 ## Failure Model
 
-Reasons below are proposed stable identifiers. Existing identifiers are reused
+Reasons below are stable identifiers for this clarified draft. Existing identifiers are reused
 where their ecosystem-neutral meanings fit; human wording must name RubyGems or
 Gemfile.lock rather than PyPI/package-lock/Yarn. No new Ruby-prefixed aliases
-are needed. Q2/Q3/Q5 may narrow which cases use the proposed identifiers.
+are needed. No requirement-conflict, yank-missing, typo, or platform-specific reason is added.
 
 | Reason | Origin | Level / meaning | Availability class |
 |---|---|---|---|
@@ -407,11 +402,11 @@ are needed. Q2/Q3/Q5 may narrow which cases use the proposed identifiers.
 | `unsupported_dependency_name` | New | Isolated direct identity outside supported syntax | D-local |
 | `unsupported_requirement` | Reused | Isolated direct requirement outside supported framing | D-local |
 | `lock_version_missing` | Reused | Direct name lacks selected spec | D-local |
-| `ambiguous_lock_evidence` | Reused | Multiple selected records or versions, including duplicate/platform variants | D-local |
+| `ambiguous_lock_evidence` | Reused | Different selected version texts or identical duplicate artifact rows | D-local |
 | `unsupported_lock_evidence` | New | Isolated selected evidence cannot be interpreted under bounded version/platform policy | D-local |
 | `unsupported_dependency_source` | Reused | Git/PATH/nonpublic/explicit pin or unattributable multiple-remotes source | D-local |
-| `package_not_found` | Reused | Public authority establishes package absence | D-registry |
-| `version_not_found` | Reused | Exact accepted used record absent | D-registry |
+| `package_not_found` | Reused | Supported public metadata reports package absence, not never-existence | D-registry |
+| `version_not_found` | Reused | No qualifying supported observable exact used-version record | D-registry |
 | `release_date_missing` | Reused | Used publication timestamp missing or unsafe | D-registry |
 | `no_stable_release` | Reused | No eligible stable release remains | D-registry |
 | `registry_error` | Reused | Transport, TLS, timeout, HTTP/service/rate-limit failure | D-registry |
@@ -434,13 +429,16 @@ applies. A service-wide outage produces individual failures for candidates,
 not loss of an already known denominator. No registry reason is promoted to a
 source error merely because many dependencies fail.
 
-Precedence is structural source failure first, then isolated name/requirement
-framing failure, unsupported source, selected-spec absence/multiplicity,
-unsupported selected spelling/platform, and registry failure. Within metadata
-validation, invalid response structure precedes missing used record, missing
-used time, and lack of stable candidate. Diagnostic detail may clarify causes
-without multiplying stable reasons. Q5's exact-text outcome remains unsettled;
-this draft does not assert a semantic `declaration_lock_conflict` for Ruby.
+Failure precedence is independent of parser order: malformed supported structure
+(including conflict markers) takes precedence over unsupported whole-source
+sections/fields; both precede dependency-level interpretation. Structural failure
+preventing safe attribution always rejects the whole source. An otherwise
+unclassifiable file is `unsupported_lockfile_format`. Once structure is safe,
+precedence is isolated name, direct requirement framing, unsupported source,
+missing/ambiguous selection, unsupported selected identity, then registry failure.
+Registry validation precedes missing used record, missing used date, and lack of
+stable candidates. Narrow dependency failures never become source errors merely
+because all dependencies fail.
 
 ## Coverage Semantics
 
@@ -453,7 +451,9 @@ this draft does not assert a semantic `declaration_lock_conflict` for Ruby.
 | E. All three valid ecosystems | Each retains its own N, M, and coverage | Sum discovered counts and measured rows across ecosystems; coverage is total M/total N. |
 | F. Ruby rejected, others succeed | Same as B | Successful PyPI/npm rows, measured count, and numeric aggregates remain available. |
 
-If every detected source is unavailable, repository measured count is null.
+With no detected sources at all, ecosystems/evidence are empty, discovered=0,
+measured=0, coverage=null, total=0.0, and mean/median/maximum=null.
+If there are detected sources and every detected source is unavailable, repository measured count is null.
 If at least one detected source has measurement available, repository measured
 count is the number of successful rows, including zero. Repository discovered
 count is null if any detected denominator is unknown; coverage is null if any
@@ -483,7 +483,7 @@ specified above, including Ruby source failure alongside successful ecosystems.
 
 ## JSON Schema
 
-Propose retaining **schema version 3**. Existing ecosystem-keyed objects,
+Retain **schema version 3**; additive representation suffices, with no structural incompatibility. Existing ecosystem-keyed objects,
 `version_source`, nullable counts, `unmeasurable`, and `source_errors` represent
 the bounded feature without structural reinterpretation. Human diagnostics
 are not currently serialized in schema v3 and remain human-only.
@@ -503,20 +503,23 @@ JSON have the same structure and values.
 
 These are **partial JSON examples**, not complete reports. Package names and
 timestamps are illustrative, not live lookup results. The successful fragment
-assumes ordinary generic records with no platform multiplicity or historical
-uncertainty, where the choices below agree.
+illustrates ordinary generic evidence; the additive provenance contract below
+also applies to platform-qualified and multi-variant selections.
 
 ```json
 {
   "schema_version": 3,
   "dependency_scope": "direct",
-  "ecosystems": ["rubygems"],
+  "ecosystems": [
+    "rubygems"
+  ],
   "version_evidence": {
     "rubygems": {
       "declaration_source": "Gemfile.lock",
       "snapshot_source": "Gemfile.lock",
       "format": "gemfile_lock",
-      "scope": "all_direct_locked"
+      "scope": "all_direct_locked",
+      "publication_basis": "earliest_admissible_supported_observable"
     }
   },
   "dependencies": [
@@ -529,7 +532,32 @@ uncertainty, where the choices below agree.
       "latest_stable_release_time": "2024-01-01T00:00:00Z",
       "libyears": 0.0,
       "timestamp_anomaly": false,
-      "version_source": "gemfile_lock"
+      "version_source": "gemfile_lock",
+      "rubygems_evidence": {
+        "selected_artifacts": [
+          {
+            "version": "1.0.0",
+            "platform": "ruby",
+            "source": "https://rubygems.org"
+          }
+        ],
+        "used_publication_artifacts": [
+          {
+            "version": "1.0.0",
+            "platform": "ruby",
+            "publication_time": "2024-01-01T00:00:00Z",
+            "yanked": false
+          }
+        ],
+        "latest_publication_artifacts": [
+          {
+            "version": "1.0.0",
+            "platform": "ruby",
+            "publication_time": "2024-01-01T00:00:00Z",
+            "yanked": false
+          }
+        ]
+      }
     }
   ],
   "unmeasurable": [],
@@ -602,10 +630,21 @@ Partial mixed report: rejected Ruby discovery and one successful PyPI row with
 }
 ```
 
-Q3 may require additional artifact/platform evidence fields if artifact-level
-comparison is selected. Additive fields can still fit v3, but their exact
-contract must be specified before approval; the current examples do not
-silently encode an artifact identity in `used_version`.
+Add `publication_basis: "earliest_admissible_supported_observable"` to
+version_evidence.rubygems. Each measured Ruby row adds `rubygems_evidence` with:
+- `selected_artifacts`: array retaining every selected artifact as `version`
+  and `platform` (generic is `ruby`), and `source: "https://rubygems.org"`;
+- `used_publication_artifacts` and `latest_publication_artifacts`: arrays of
+  supported records contributing admissible timestamps, each with `version`,
+  `platform`, `publication_time`, and `yanked` where authoritatively known.
+
+Existing used/latest release time fields contain canonical dates; version fields
+remain package-version text, never platform-encoded identity. On unmeasurable
+rows retain safely established selected artifact evidence where material, using
+the same additive object without fabricated publication arrays. No parser
+internals are serialized. The basis value explicitly denotes observable history,
+not complete historical publication knowledge; normal human output must state
+that limitation and that future disappearance can change measurements.
 
 ## Human Output
 
@@ -620,7 +659,9 @@ unsupported source, ambiguous/platform evidence, malformed/unsupported whole
 lock, or registry/timestamp failure as applicable. Do not describe a known
 single unsupported platform as ambiguous merely to reuse wording. Name the
 source file for whole-source failures; show null coverage as unavailable,
-never 0%. Include original direct text on dependency failures.
+never 0%. Include original direct text on dependency failures. Explain source
+authority failures as inability to establish supported public RubyGems evidence;
+state that a public namesake is not substituted, without disclosing private URLs.
 
 Keep normal output concise. Verbose diagnostics may supply safe line/section
 context or explain timestamp uncertainty, source rejection, and registry
@@ -696,44 +737,41 @@ Gemfile interpretation and production/default/group reconstruction remain the
 separate EXPLORE opportunity in [ROADMAP.md](../../ROADMAP.md). Arbitrary Ruby
 evaluation, general Bundler compatibility, Git/PATH/private registry support,
 platform resolution, installation/resolution, and portfolio orchestration are
-not approved by this feature. Supporting a recorded single artifact (Q2) would
-not authorize resolving a platform. New lock sections and historical metadata
+not approved by this feature. Supporting recorded artifacts does not authorize
+resolving a platform. New lock sections and historical metadata
 reconstruction also require explicit scope decisions, not parser guesswork.
 
 ## Acceptance Criteria
 
-These criteria test defined draft rules. They do not settle the alternative
-outcomes in Q1–Q6. Affected criteria explicitly name the open decision; final
-approval requires replacing those gaps with concrete outcome cases. Numbers
-are stable draft references, not implementation tasks.
+Criteria cover normative outcomes; numbering is not an implementation task graph.
 
-- [ ] **AC-01:** Directory scans with neither root Ruby file or Gemfile alone produce no RubyGems source, rows, requests, or summary; both files activate bounded lock discovery without interpreting Gemfile. Lock-only activation remains Q1.
+- [ ] **AC-01:** Root Gemfile.lock alone activates directory discovery; Gemfile alone or neither file does not. Gemfile is never inspected or evaluated, including when present alongside the lock.
 - [ ] **AC-02:** Nested locks, alternate filenames, gemspecs, and direct-file arguments do not activate Ruby discovery; supplied local lock bytes are usable without inspecting Git history or installed state.
 - [ ] **AC-03:** Supported section structure positively identifies `gemfile_lock`; optional BUNDLED WITH presence/version does not independently certify or reject a generation.
-- [ ] **AC-04:** Unreadable/invalid text, malformed supported framing, conflict markers, duplicate singleton/source sections, duplicate direct rows, or missing required sections produce source-level `invalid_lockfile`, without partial Ruby measurements.
+- [ ] **AC-04:** Malformed supported framing, conflict markers, duplicate direct/singleton structure, missing required sections, unreadable/nonregular artifacts, or invalid text reject the source with invalid_lockfile and no partial Ruby results.
 - [ ] **AC-05:** Unclassifiable content, unknown sections/fields, and recognized unsupported sections produce source-level `unsupported_lockfile_format`, without silently ignoring evidence that could alter scope or source interpretation.
 - [ ] **AC-06:** Every supported DEPENDENCIES identity contributes once to direct discovered count regardless of group, local evidence failure, or registry failure; no group filter is reconstructed.
 - [ ] **AC-07:** Specs and nested requirements not named in DEPENDENCIES create neither direct rows nor registry requests; tool/runtime metadata creates no dependency scope.
-- [ ] **AC-08:** Package spelling is preserved and lock identity comparisons are exact; case, hyphen, underscore, and period variants are not silently aliased. Returned registry case differences remain Q6.
+- [ ] **AC-08:** Lock spelling is preserved and lock comparisons remain exact; after independent public-source authority, registry identity permits only ASCII letter-case differences, endpoint-independently, with no punctuation/Unicode/fuzzy substitutions.
 - [ ] **AC-09:** An isolated direct name outside the specified ASCII identity syntax is `unsupported_dependency_name` with no lookup; structurally unrecoverable identity rejects discovery.
-- [ ] **AC-10:** One supported ordinary public selected spec supplies its exact version to lookup without resolving requirements or selecting another version; ordinary single-record metadata permits measurement when other requirements are met. Q3/Q5 govern their stated exceptional cases.
+- [ ] **AC-10:** One supported generic or platform-qualified public spec establishes exact package version and retains selected artifact provenance without runtime claims.
 - [ ] **AC-11:** A direct name without a selected spec is `lock_version_missing` with no lookup; exact requirement text cannot substitute for the spec.
-- [ ] **AC-12:** Multiple matching selected specs yield `ambiguous_lock_evidence` without lookup, including differing versions, identical duplicate rows, and same-version platform variants.
-- [ ] **AC-13:** Git/PATH/nonpublic/multiple-remote/explicitly pinned direct evidence yields `unsupported_dependency_source` without public namesake substitution, even when another public spec shares the name.
-- [ ] **AC-14:** Isolated unsupported selected-version spelling yields `unsupported_lock_evidence`; broken spec framing is a source error. Single platform-qualified evidence remains Q2.
-- [ ] **AC-15:** Non-exact supported requirement text is preserved without satisfaction evaluation; unsupported isolated requirement syntax is `unsupported_requirement` with no lookup. Differing exact text is not asserted to be semantic incompatibility; its outcome remains Q5.
+- [ ] **AC-12:** Distinct supported public artifacts agreeing on exact version text establish one counted dependency; differing version text or identical duplicate artifact rows produce ambiguous_lock_evidence without lookup.
+- [ ] **AC-13:** Git/PATH/nonpublic/multiple-remote/explicitly pinned direct evidence yields `unsupported_dependency_source` without public namesake substitution, even when another public spec shares the name; human diagnostics explain this authority boundary without exposing private URLs.
+- [ ] **AC-14:** Unsupported required selected version/artifact identity yields unsupported_lock_evidence when isolated; unsafe framing rejects the source.
+- [ ] **AC-15:** Unconstrained, bare exact, = exact, range, compound, repeated, and whitespace-framed supported requirements retain evidence without satisfaction/equivalence checks; textual agreement/disagreement does not establish compatibility. Unsupported isolated direct framing is unsupported_requirement.
 - [ ] **AC-16:** Host/platform/build configuration cannot select among lock or registry variants, change direct scope, or influence measurement results.
 - [ ] **AC-17:** Direct bundler and tzinfo-data without ordinary selected specs remain counted and `lock_version_missing`; BUNDLED WITH and Gemfile conditions never replace or remove that evidence.
 - [ ] **AC-18:** Ruby requests use only safely constructed public RubyGems.org HTTPS metadata URLs; repository/metadata links, redirects to other authorities, and credentials cannot redirect a lookup or alter identity.
 - [ ] **AC-19:** Ruby requests enforce certificate and hostname verification, the existing CA selection precedence, positive finite timeout, and User-Agent; unusable trust never falls back to unverified TLS.
-- [ ] **AC-20:** Successful metadata interpretation requires exact release identity, platform, authoritative prerelease status, latest availability, and complete eligible history; malformed or contradictory required metadata produces `invalid_registry_response`.
-- [ ] **AC-21:** Publication time uses valid aware version-record creation timestamps in UTC with precision preserved; built_at, package-level times, lock dates, and scan time never substitute.
-- [ ] **AC-22:** A known unsafe/missing used publication time produces `release_date_missing`; unsafe/missing candidate times are excluded. The historical uncertainty predicate remains Q4.
-- [ ] **AC-23:** Multiple platform records for one version are never selected by response order or silently assigned a package timestamp; the accepted record class and canonicalization remain Q3.
-- [ ] **AC-24:** Prerelease and yanked/unavailable records are excluded from latest stable; no local spelling heuristic substitutes for missing classification, and declared ranges/runtime compatibility do not filter latest.
-- [ ] **AC-25:** Within the accepted Q3 record policy, latest uses greatest authoritative eligible timestamp, with ascending exact-version lexical tie-break; numeric version order and server latest labels do not override time.
+- [ ] **AC-20:** Metadata must establish full supported artifact identity and required classification; contradictory identity/source, unclassifiable identity, malformed evidence, or conflicting duplicate metadata yields invalid_registry_response; byte-equivalent duplicates may collapse.
+- [ ] **AC-21:** Only aware authoritative version creation timestamps establish publication evidence, normalized to UTC with precision; built_at and all other fallback dates are prohibited.
+- [ ] **AC-22:** Missing/invalid timestamps and every 2009-07-25 UTC timestamp are excluded individually without poisoning admissible records; contradictory authoritative fields fail invalid_registry_response. No admissible used date yields release_date_missing.
+- [ ] **AC-23:** Canonical date is earliest admissible authoritative timestamp over supported observable generic/platform artifacts, independent of locked platforms; identifiable unsupported classes such as ruby_abi are excluded, and no qualifying used records yields version_not_found.
+- [ ] **AC-24:** Latest requires supported currently available authoritative stable artifact evidence and a canonical date; only-yanked versions cannot be latest. Missing classification is invalid_registry_response; requirements/runtime/platform do not filter candidates.
+- [ ] **AC-25:** Latest uses greatest canonical date, then ascending exact-version lexical tie-break, independently of response order, numeric version order, or server latest labels.
 - [ ] **AC-26:** No eligible stable candidate yields `no_stable_release`, even when exact used-version evidence exists.
-- [ ] **AC-27:** A prerelease or yanked used version remains measurable when exact accepted metadata and a defensible timestamp exist; missing package or used record yields `package_not_found` or `version_not_found` respectively, without historical fabrication.
+- [ ] **AC-27:** Supported observable yanked and prerelease used evidence may be measured; observable yanked records may contribute canonical dates. Missing metadata is neither reconstructed nor assumed yanked; absence reasons make no never-existence claim.
 - [ ] **AC-28:** Ruby age uses UTC elapsed seconds divided by (86400 * 365.25) with no grace period; same-version identity uses one canonical time and yields exactly 0.0.
 - [ ] **AC-29:** Negative timestamp differences clamp to zero and set timestamp_anomaly; nonnegative differences do not set it.
 - [ ] **AC-30:** Numerical aggregates use only successful rows and preserve sum, mean, median, and maximum arithmetic; unmeasurable rows never enter those calculations.
@@ -744,164 +782,49 @@ are stable draft references, not implementation tasks.
 - [ ] **AC-35:** Valid empty scope yields discovered=0, measured=0, coverage=null, total=0.0, other aggregates=null; valid nonempty wholly unmeasurable scope yields coverage=0.0. Empty repository measurement aggregates remain total=0.0 and other aggregates=null even when counts are unavailable.
 - [ ] **AC-36:** Three valid ecosystems coexist with distinct identities/provenance and per-ecosystem denominators; repository counts combine known direct scope and successful rows without merging same-name packages across ecosystems.
 - [ ] **AC-37:** Adding RubyGems preserves existing PyPI/npm versions, source selection, reasons, registry semantics, and serialized evidence, including Python snapshots and npm lock conflicts.
-- [ ] **AC-38:** Schema remains v3 with Ruby ecosystem rubygems, measured version_source gemfile_lock, both artifact fields Gemfile.lock, accepted format gemfile_lock/rejected format null, and scope all_direct_locked, without changing existing field meanings.
+- [ ] **AC-38:** Schema v3 retains existing meanings and adds Ruby scope/source metadata, publication_basis, selected artifacts and contributing used/latest publication artifacts as specified, including material safely known evidence for failures.
 - [ ] **AC-39:** Failures use the specified stable reasons and precedence, with direct text in unmeasurable and whole-source path/reason in source_errors; verbosity does not add JSON diagnostics or expose sensitive details.
-- [ ] **AC-40:** Human output identifies RubyGems lock-snapshot/all-direct scope and uninterpreted groups without asserting production, current Gemfile, runtime, or verified-commit equivalence; counts and values agree with JSON.
+- [ ] **AC-40:** Normal human output states all-direct lock snapshot scope, uninterpreted groups, observable-history limitation and possible measurement changes after record disappearance, without production/current Gemfile/runtime/verified-commit claims; values agree with JSON.
 - [ ] **AC-41:** Human failure output distinguishes the specified missing, unsupported, ambiguous/platform, malformed, registry, and timestamp cases, names whole-source paths, and renders unavailable coverage distinctly from 0%; verbose detail remains safe.
 - [ ] **AC-42:** Normal directory CLI scanning requires no new Ruby flag, and --resolved cannot supply Ruby versions; completed partial, empty, and source-error reports exit 0 while existing usage/path and systemic exit categories remain 1 and 2.
 - [ ] **AC-43:** Scanning never executes Ruby/Bundler/Gemfile/gemspec/repository code, installs or resolves dependencies, fetches Git/PATH/private content, reads private credentials, or modifies the target; runtime remains standard-library-only.
 - [ ] **AC-44:** Ruby lookups enforce finite request/response budgets and timeouts; oversized/truncated history never produces a partial-history metric and uses the specified failure reason.
 - [ ] **AC-45:** Ruby requests obey the documented API pacing limit and rate-limit responses without early Retry-After retries, unbounded retries, or alternate-authority evasion; fixed evidence/responses yield order-independent results.
+- [ ] **AC-46:** Repeated GEM blocks with independently established same public remote and compatible disjoint or agreeing distinct-artifact evidence are supported without duplicate dependencies; conflicting versions and duplicate artifact rows remain ambiguous.
+- [ ] **AC-47:** Different/missing/multiple remote or uncertain source evidence never authorizes public lookup; isolate unsupported_dependency_source only when ownership and direct scope remain safe, otherwise invalid_lockfile.
+- [ ] **AC-48:** PLATFORMS is required once and nonempty; duplicate entries, repeated/empty section and malformed tokens are invalid_lockfile; platform entries never select runtime.
+- [ ] **AC-49:** Nested requirements never enlarge scope or receive semantic evaluation; safely delimited unsupported text is inert, while unsafe malformed framing rejects the source.
+- [ ] **AC-50:** Malformed supported structure takes precedence over unsupported whole-source evidence, which precedes local failures; local and registry precedence follows Failure Model independent of parser order.
+- [ ] **AC-51:** Canonical publication is supported observable evidence, not complete historical knowledge: missing public records prove neither yank nor never-existence, outside-import-day times are not historically attested, and disappearing records may change future measurements.
+- [ ] **AC-52:** With no detected sources, report empty ecosystems/evidence, discovered=0, measured=0, coverage=null, total=0.0 and null mean/median/max; Gemfile alone has this result absent other ecosystems.
 
-### Draft bidirectional coverage audit
+### Bidirectional acceptance audit
 
-**Result: 45 numbered criteria.** Every defined normative behavioral rule has
-coverage below; each criterion derives from the listed normative section(s).
-Goals/non-goals restate the boundary rather than adding hidden behavior.
-Unresolved alternatives are explicitly not claimed as complete acceptance
-coverage: Q1–Q6 require outcome criteria during clarification before approval.
+Result: 52 numbered criteria, revised from 45. Every criterion maps to a
+normative rule family below, and every normative behavioral family maps back
+to criteria. Examples of the same rule are combined; independently consequential
+outcomes are separate. Process obligations are excluded. This author audit is
+not independent verification or approval.
 
-| Normative sections / rule family | Acceptance criteria (reverse mapping as well) |
+| Normative rule family | Criteria (bidirectional) |
 |---|---|
-| User Outcome; Source Recognition: snapshot meaning, root matrix, local artifacts | AC-01–02, AC-40 |
-| Supported Gemfile.lock Boundary: recognition, framing, unsupported syntax | AC-03–05, AC-09, AC-14–15 |
-| Direct Dependency Scope | AC-06–07 |
-| Dependency Identity | AC-08–09, AC-18 |
-| Lock Evidence Matching | AC-10–15, AC-39 |
-| Platform Policy | AC-12, AC-14, AC-16, AC-23 |
-| Special Dependencies | AC-13, AC-17 |
-| Registry Authority | AC-18–20, AC-24, AC-44 |
-| Publication Timestamp Policy | AC-21–23 |
-| Stable Release Eligibility | AC-20, AC-24–26 |
-| Used-Version Semantics and arithmetic | AC-27–30 |
-| Failure Model | AC-04–05, AC-09, AC-11–15, AC-20, AC-22, AC-26–27, AC-31–34, AC-39 |
-| Coverage Semantics | AC-30–36 |
-| Mixed-Ecosystem Behavior | AC-31, AC-33, AC-36–37 |
-| Ecosystem Identity; JSON Schema | AC-36, AC-38–39 |
-| Human Output | AC-40–41 |
-| CLI Behavior | AC-01–02, AC-19, AC-42 |
-| Security Boundary; Non-Goals; Deferred Work | AC-02, AC-07, AC-13, AC-16, AC-18–19, AC-43 |
-| Performance and Network Behavior | AC-07, AC-11–15, AC-20, AC-44–45 |
-
-The author audit separates independently consequential rules (for example,
-same-version zero versus negative-anomaly flagging, or per-source versus
-repository availability). Multiple examples of the same outcome remain grouped.
-Release testing, documentation migration, dogfood, commit sequencing, and
-independent review are process obligations outside formal acceptance criteria.
-No count target was used. This audit is not specification approval or an
-independent review.
+| Recognition and snapshot meaning | AC-01–02, AC-40, AC-52 |
+| Lock structure, repeated sources, nested framing, PLATFORMS | AC-03–05, AC-09, AC-14–15, AC-46–50 |
+| Direct scope and special dependencies | AC-06–07, AC-11, AC-17 |
+| Lock/registry identity, source authority and platform policy | AC-08–10, AC-12–16, AC-18, AC-46–47 |
+| Registry authority and metadata validation | AC-18–20, AC-44–45 |
+| Canonical population, dates, observable history and availability | AC-20–28, AC-51 |
+| Arithmetic and aggregates | AC-28–30 |
+| Failure taxonomy and precedence | AC-04–05, AC-09, AC-11–15, AC-20, AC-22, AC-26–27, AC-39, AC-47–50 |
+| Coverage, empty sets and mixed ecosystems | AC-31–37, AC-52 |
+| Schema and provenance | AC-38–39 |
+| Human output | AC-40–41 |
+| CLI | AC-01–02, AC-42 |
+| Security, performance and deferred boundaries | AC-07, AC-13, AC-16, AC-18–19, AC-43–45 |
 
 ## Product Questions
 
-### MUST RESOLVE BEFORE SPEC REVIEW CAN APPROVE
-
-**Q1 — Does a root lock alone activate discovery?**
-
-- Choice A: accept Gemfile.lock alone. Both scope and selection are retained
-  there, and the selected human boundary measures a snapshot. Consequence:
-  useful source archives/orphaned locks can be measured without Gemfile, but
-  recognition makes no assertion of a currently runnable Ruby project.
-- Choice B: require a companion root Gemfile solely as a presence marker.
-  Discovery's observed projects had both files; this is a stricter root
-  convention. Consequence: a sufficient snapshot may be ignored when Gemfile
-  is absent; Gemfile contents still cannot define scope.
-- Smallest human decision: accept lock-only roots or require companion presence.
-  Both-present and Gemfile-only behavior is already defined. No ecosystem fact
-  uniquely dictates this CLI recognition policy.
-
-**Q2 — What happens to one platform-qualified selected spec?**
-
-- Choice A: reject it with `unsupported_lock_evidence`. Ordinary generic records
-  dominate discovery and this is the smallest supported subset. Consequence:
-  lower coverage even where one artifact is unambiguous.
-- Choice B: accept its explicit version/platform as retained artifact evidence,
-  subject to Q3. Official lock/API semantics distinguish that artifact without
-  host selection. Consequence: larger supported evidence/metadata contract,
-  without permission to claim runtime applicability.
-- Smallest human decision: generic-only lock acceptance or single-artifact
-  acceptance. Multiple selected variants remain rejected under either choice.
-
-**Q3 — What is the registry record class and canonical publication date?**
-
-- Choice A: measure only `ruby` records for accepted generic locks; reject
-  unsupported used record classes. This avoids cross-platform timestamp
-  canonicalization and fits most observations. Consequence: latest means
-  latest generic eligible release, not package-wide across native artifacts.
-  Supporting Q2-B would require either extending this policy or choosing B/C.
-- Choice B: measure an explicitly accepted used artifact against stable records
-  of the same exact recorded platform class. The API can identify platforms.
-  Consequence: artifact-specific freshness and output provenance are required;
-  compatibility across platform spellings must not be inferred.
-- Choice C: define a package-version date, such as earliest defensible
-  publication across available platform records, and compare package versions.
-  The user outcome is package age and no runtime selection is necessary.
-  Consequence: an explicit canonicalization/availability rule is needed,
-  including incomplete/yanked record sets; a late artifact must not silently
-  redefine the version's first publication. Equal-version zero must survive.
-- Smallest human decision: generic-class, exact-artifact-class, or package-level
-  freshness. For C also decide whether incomplete same-version platform
-  history is unmeasurable or whether available records suffice. Official API
-  record identity does not uniquely establish package-level canonical time.
-  If no class can be identified safely, fail closed; the concrete registry
-  ambiguity outcome/reason must be finalized with this decision.
-
-**Q4 — Which historical timestamps are unsafe?**
-
-- Choice A: reject all creation timestamps whose UTC date is 2009-07-25 (and
-  any explicitly uncertain record); accept other ordinary creation times.
-  Source identifies that import day. Consequence: conservative rejection may
-  also exclude genuine publications that day; it does not prove no other
-  migration anomaly exists.
-- Choice B: use the narrower official import condition (creation date equals
-  import date and build date is on/before it) only to identify uncertainty,
-  never as a fallback timestamp. Consequence: fewer rejections, but missing or
-  suspect build dates need a defined conservative outcome.
-- Choice C: reject the whole historical era through the import date unless
-  separate public publication evidence proves otherwise. Consequence: strongest
-  historical caution, reduced coverage, and no authorized archive scraping or
-  invented timestamp recovery.
-- Smallest human decision: approve an explicit uncertainty predicate and its
-  missing-data behavior. All choices retain creation-time authority for ordinary
-  records and prohibit built_at substitution. Research established the
-  exception, not a uniquely justified product cutoff.
-
-**Q5 — How should differing exact requirement text affect a selected spec?**
-
-- Choice A: trust the lock selection for exact requirements as for ranges,
-  retaining requirement text without consistency checking. The selected scope
-  is the snapshot, and Ruby equivalence is not text equality. Consequence:
-  genuine hand-edited conflicts may still be measured as recorded selections.
-- Choice B: require literal agreement for a single exact requirement; otherwise
-  report `unsupported_lock_evidence`, explaining that consistency was not
-  established. Consequence: legitimate equivalent spellings can be rejected,
-  but no semantic mismatch is falsely asserted and no version engine is needed.
-- Smallest human decision: selection-only authority or conservative exact-text
-  agreement. General satisfaction/equivalence evaluation is outside scope;
-  `declaration_lock_conflict` is not proposed without a defensible conflict test.
-
-### MAY RESOLVE DURING CLARIFICATION
-
-**Q6 — May a case-only registry response name be accepted?**
-
-- Choice A: require exact returned spelling. It matches the conservative lock
-  identity rule and needs no aliasing. Consequence: a valid server lookup using
-  its documented-in-source case-insensitive fallback can become
-  `invalid_registry_response`.
-- Choice B: allow ASCII case-only agreement at the public registry boundary,
-  preserving lock spelling in output. Official server uniqueness/lookup logic
-  supports this limited equivalence. Consequence: extra identity rule to test;
-  lock-to-lock comparisons remain exact and punctuation never normalizes.
-- Smallest human decision: strict response spelling or case-only registry
-  equivalence. This does not block meaningful draft review, but must be settled
-  before final approval. The naming guide alone is not a normalization rule.
-
-### TECHNICAL / BELONGS IN PLAN.MD
-
-Observable requirements above leave these implementation choices open:
-endpoint selection and availability proof (including whether a bounded extra
-used-version request is needed), finite byte/request limits and pacing
-mechanism, static parsing/error-isolation structure, transport integration,
-and fixture organization. No classes/modules, parser framework, cache, or
-concurrency design is approved here. Implementation research that reveals a
-new observable policy gap must return to specification rather than deciding
-it in the plan or code.
+NONE. H1–H8 and all canonicalization sub-decisions are resolved. No newly
+discovered product questions. Endpoint selection, bounded transport limits,
+parser organization and fixture organization belong to technical planning after
+narrow verification and specification approval; they do not reopen product policy.

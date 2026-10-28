@@ -319,3 +319,79 @@ Punctuation normalization remains excluded.
 **Implementation status:** NOT APPROVED
 
 **Next gate:** Human clarification of H1–H8
+
+
+## Human Product Clarification
+
+The completed human clarification supersedes the pending alternatives in the
+historical review above. Outcomes:
+
+- H1: root Gemfile.lock alone activates; Gemfile is neither required, inspected,
+  nor evaluated; Gemfile alone does not activate.
+- H2: accept a single supported platform-qualified selected record, retaining
+  artifact provenance without runtime/platform compatibility claims.
+- H3: measure package-version freshness across supported artifacts.
+- H4: accept bounded supported observable history, not first-ever historical
+  publication; disappearance can change future measurements.
+- H5: agreeing distinct supported public variants establish one dependency;
+  differing version text, unsafe source/identity and duplicate structure fail
+  closed at the specified boundary.
+- H6: all authoritative publication times on 2009-07-25 UTC are inadmissible;
+  built_at is never authority, fallback, or rehabilitation.
+- H7: trust selected lock evidence across supported requirement forms; no
+  satisfaction/equivalence evaluation or textual consistency test.
+- H8: after independent public source authority, registry identity allows only
+  ASCII case differences, endpoint-independently. Lock comparisons remain exact.
+
+Canonicalization includes fully understood generic/platform public artifact
+records independently of locked platforms; identifiable unsupported classes
+(including ruby_abi) are excluded, unsafe identity/metadata fails closed.
+Observable yanked records may contribute dates; missing records are not inferred
+or presumed yanked. Missing, invalid, import-day timestamps are individually
+excluded; contradictions remain metadata failures. The earliest admissible
+supported observable authoritative timestamp is canonical for both used/latest.
+No admissible date prevents measurement/candidacy; latest additionally requires
+supported currently available stable artifact evidence. Only-yanked versions
+cannot be latest. Other dates are observable evidence, not historical certainty.
+
+Supply-chain boundary: establish supported public source authority before lookup;
+never substitute public namesakes for private/Git/PATH/unsupported/ambiguous
+sources. No fuzzy normalization, ABI/runtime resolution or malicious-package
+detection is introduced.
+
+Newly discovered product questions: NONE.
+Clarification status: READY TO REVISE SPECIFICATION.
+
+## Specification Clarification
+
+H1–H8 and all canonicalization sub-decisions are incorporated. Corrected claims
+about ordinary API historical/yank visibility, version/platform identity
+completeness, import heuristics and endpoint-dependent identity. Absence reasons
+now describe observable evidence without asserting never-existence or yanking.
+
+Repeated GEM blocks, missing remotes, nested framing, PLATFORMS and conflict
+markers have explicit outcomes. Malformed supported structure precedes unsupported
+whole-source evidence, which precedes local failures, independent of parser order;
+unsafe attribution rejects the source, safely isolated failures preserve scope.
+Known denominators survive individual/all registry failures; mixed ecosystem
+success survives Ruby source rejection. Empty-source semantics are explicit.
+
+Acceptance criteria revised from 45 to 52. The fresh bidirectional author audit
+maps all normative behavioral families to criteria and every criterion back to
+normative rules; redundant examples are grouped and process obligations excluded.
+Schema v3 is retained: additive Ruby publication basis and artifact provenance
+suffice without overloading existing fields. Two new draft reasons remain
+unsupported_dependency_name and unsupported_lock_evidence; existing reasons are
+reused with clarified boundaries. No yank/typo/platform-specific reasons added.
+
+Validation: all three JSON examples parse; all 52 formal criteria are uniquely
+and consecutively numbered. Compared the revision against committed pre-review
+baseline c761b113ea19988e7e9ea5ca16b373c1e2c526fb; retained static all-direct snapshot scope, execution/security
+boundaries, metric arithmetic, existing ecosystem behavior and schema-v3 shape.
+The original draft and review remain preserved in Git without rewriting history.
+Only spec.md and reviews.md are changed; no plan, tasks or implementation added.
+
+Remaining product questions: NONE.
+Specification status: Clarified draft — ready for narrow verification review.
+Implementation status: NOT APPROVED.
+Next gate: independent narrow verification review, before specification approval.
