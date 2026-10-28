@@ -152,7 +152,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T008 — Lock down existing transport compatibility
 
-- **Status:** Pending; **Phase:** 3; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_registry tests.test_pypi tests.test_npm_registry` (41 tests passed); **Phase:** 3; **Parallelizable:** No.
 - **Objective and approved scope:** Add focused characterization assertions before bounded transport changes, preserving default urlopen, timeout/context/User-Agent, no-argument read and injected get(url) doubles. Reuse current tests where sufficient.
 - **Expected files:** tests/test_registry.py; possibly tests/test_pypi.py and tests/test_npm_registry.py.
 - **Acceptance criteria mapped:** 19, 37 (transport compatibility).
