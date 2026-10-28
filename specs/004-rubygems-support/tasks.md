@@ -119,7 +119,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T005 — Establish sole public-source candidate gate
 
-- **Status:** Pending; **Phase:** 2; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_rubygems` (5 tests passed); **Phase:** 2; **Parallelizable:** No.
 - **Objective and approved scope:** Implement authorize_public_selection with all exact-name occurrences and pin marker. Only independently authorized literal public GEM blocks may contribute. Reject GIT/PATH/private/missing/multiple remotes and public namesakes; keep remote values out of diagnostics.
 - **Expected files:** libyears/rubygems.py; tests/test_rubygems.py; authority fixtures.
 - **Acceptance criteria mapped:** 13, 47.
