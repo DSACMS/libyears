@@ -3,10 +3,12 @@ import os
 import tempfile
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from libyears.gemfile_lock import ParsedGemfileLock, parse_lockfile
-from libyears.rubygems import authorize_public_selection, match_lock_dependencies, ruby_source_result
+from libyears.rubygems import (
+    authorize_public_selection, match_lock_dependencies, ruby_source_result, schedule_ruby_candidates,
+)
 
 from libyears.model import (
     Dependency, DependencyCandidate, RegistryFailure, RegistryResult,
@@ -351,3 +353,51 @@ class RootSourceTests(unittest.TestCase):
         path = self.root / 'Gemfile.lock'
         path.write_text(path.read_text().replace('  ruby\n  java', '  x86_64-linux'))
         self.assertEqual(ruby_source_result(self.root), original)
+
+
+class CandidateSchedulingTests(unittest.TestCase):
+    def test_exact_name_and_version_lexical_order_preserves_candidates(self):
+        from dataclasses import replace
+
+        lock = parsed_lock()
+        candidate = authorize_public_selection(lock, lock.dependencies[0])
+        candidates = tuple(replace(candidate, name=name, used_version=version)
+                           for name, version in (('a', '2'), ('a', '10'), ('Z', '1'), ('A', '1')))
+        scheduled = schedule_ruby_candidates(candidates)
+        self.assertEqual([(item.name, item.used_version) for item in scheduled],
+                         [('A', '1'), ('Z', '1'), ('a', '10'), ('a', '2')])
+        self.assertEqual(set(scheduled), set(candidates))
+        self.assertEqual(schedule_ruby_candidates(()), ())
+
+    def test_rejected_source_and_direct_evidence_never_reaches_lookup(self):
+        lookup = Mock(side_effect=AssertionError('rejected evidence reached lookup'))
+        ordinary = source_block()
+        rejected_blocks = [
+            source_block('GIT'), source_block('PATH'), source_block(remotes=()),
+            source_block(remotes=('https://private.invalid/secret',)),
+            source_block(remotes=('https://rubygems.org', 'https://rubygems.org')),
+        ]
+        texts = []
+        for block in rejected_blocks:
+            for blocks in (block, block + ordinary, ordinary + block):
+                texts.append(blocks + 'PLATFORMS\n  ruby\nDEPENDENCIES\n  sample\n')
+        for specs, direct in (
+            (('123 (1)',), '123'), (('sample (1)',), 'sample (*)'),
+            (('sample (1)',), 'sample!'), (('other (1)',), 'sample'),
+            (('sample (1)', 'sample (2)'), 'sample'),
+            (('sample (1)', 'sample (1)'), 'sample'),
+            (('sample (unknown)',), 'sample'),
+        ):
+            texts.append(source_block(specs=specs) + 'PLATFORMS\n  ruby\nDEPENDENCIES\n  '
+                         + direct + '\n')
+        texts.extend(('arbitrary', ordinary + 'DEPENDENCIES\n  sample\n',
+                      ordinary + 'PLATFORMS\n  ruby\nDEPENDENCIES\n  sample\nCHECKSUMS\n'))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for text in texts:
+                (root / 'Gemfile.lock').write_text(text)
+                source = ruby_source_result(root)
+                self.assertEqual(source.candidates, ())
+                for candidate in schedule_ruby_candidates(source.candidates):
+                    lookup(candidate.registry_name, candidate.used_version)
+        lookup.assert_not_called()

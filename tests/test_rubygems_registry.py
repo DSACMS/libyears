@@ -462,3 +462,88 @@ class RateLimitTests(RegistryTestCase):
         self.assertEqual(self.adapter.lookup('other', '1.0').reason, 'registry_error')
         self.assertEqual(self.opener.open.call_count, 1)
         self.assertEqual(self.clock.sleeps, [])
+
+
+class SchedulingCompositionTests(RegistryTestCase):
+    def measure_source(self, source, header):
+        from dataclasses import replace
+        from libyears.metric import calculate_summary, measure_dependency
+        from libyears.model import Dependency, RubyGemsEvidence
+        from libyears.rubygems import schedule_ruby_candidates
+
+        scheduled = schedule_ruby_candidates(source.candidates)
+        outcomes = []
+        measurements = []
+        for candidate in scheduled:
+            result = self.adapter.lookup(candidate.registry_name, candidate.used_version)
+            publications = result.rubygems_evidence
+            evidence = RubyGemsEvidence(
+                candidate.rubygems_evidence.selected_artifacts,
+                publications.used_publication_artifacts if publications else None,
+                publications.latest_publication_artifacts if publications else None,
+            )
+            outcomes.append(replace(result, rubygems_evidence=evidence))
+            if not isinstance(result, RegistryFailure):
+                measurements.append(measure_dependency(Dependency(
+                    'rubygems', candidate.name, result.used_version,
+                    result.used_release_time, result.latest_stable_version,
+                    result.latest_stable_release_time, 'gemfile_lock', evidence,
+                )))
+        summary = calculate_summary(measurements, dependencies_discovered=source.dependencies_discovered)
+        self.assertEqual([item.name for item in scheduled], ['Alpha', 'beta', 'zeta'])
+        self.assertEqual(outcomes[1].reason, 'registry_error')
+        self.assertEqual(summary.dependencies_discovered, 3)
+        self.assertEqual(summary.dependencies_measured, 2 if header == '0' else 1)
+        return scheduled, outcomes, summary
+
+    def run_source(self, root, text, header):
+        from libyears.rubygems import ruby_source_result
+
+        (root / 'Gemfile.lock').write_text(text)
+        source = ruby_source_result(root)
+        self.clock = FakeClock()
+        self.adapter = self.new_adapter()
+        starts = []
+        responses = [BoundedResponse(b'{"name":"Alpha"}'),
+                     BoundedResponse(json.dumps([artifact()]).encode()),
+                     HTTPError('https://rubygems.org', 429, 'limited',
+                               {} if header is None else {'Retry-After': header}, None)]
+        if header == '0':
+            responses.extend([BoundedResponse(b'{"name":"zeta"}'),
+                              BoundedResponse(json.dumps([artifact()]).encode())])
+        responses = iter(responses)
+
+        def open_response(request, **kwargs):
+            starts.append((request.full_url, self.clock.now))
+            response = next(responses)
+            if isinstance(response, Exception):
+                raise response
+            return response
+
+        self.opener.open.side_effect = open_response
+        observed = self.measure_source(source, header)
+        self.assertEqual(len(starts), 5 if header == '0' else 3)
+        self.assertTrue(all(delay <= 0.11 for delay in self.clock.sleeps))
+        self.assertEqual((root / 'Gemfile.lock').read_text(), text)
+        return observed, starts
+
+    def test_lock_permutations_have_identical_requests_outcomes_evidence_and_summary(self):
+        from itertools import permutations, product
+        import tempfile
+        from tests.test_rubygems import source_block
+
+        blocks = (source_block(specs=('Alpha (1.0)', 'beta (1.0)', 'zeta (1.0)')),
+                  source_block(specs=('Alpha (1.0-java)',)))
+        orders = tuple(product(permutations(('Alpha', 'beta', 'zeta')),
+                               (blocks, tuple(reversed(blocks)))))
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            for header in ('30', 'Mon, 01 Jan 2024 00:00:30 GMT', None, '0'):
+                baseline = None
+                for directs, sources in orders:
+                    text = ''.join(sources) + 'PLATFORMS\n  ruby\nDEPENDENCIES\n'
+                    text += ''.join('  ' + name + '\n' for name in directs)
+                    observed = self.run_source(root, text, header)
+                    if baseline is None:
+                        baseline = observed
+                    self.assertEqual(observed, baseline)

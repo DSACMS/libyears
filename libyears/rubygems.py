@@ -108,6 +108,13 @@ def match_lock_dependencies(lock: ParsedGemfileLock):
     return tuple(candidates), tuple(failures)
 
 
+def schedule_ruby_candidates(
+    candidates: tuple[DependencyCandidate, ...],
+) -> tuple[DependencyCandidate, ...]:
+    """Order authorized candidates before a scan-local adapter starts requests."""
+    return tuple(sorted(candidates, key=lambda candidate: (candidate.name, candidate.used_version)))
+
+
 def _source_evidence(accepted: bool) -> SourceEvidence:
     return SourceEvidence(
         'Gemfile.lock', 'Gemfile.lock', 'gemfile_lock' if accepted else None, True,

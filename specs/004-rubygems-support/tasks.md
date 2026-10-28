@@ -218,7 +218,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T014 — Prepare deterministic candidate scheduling
 
-- **Status:** Pending; **Phase:** 4; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_gemfile_lock tests.test_rubygems tests.test_rubygems_registry` (68 tests passed, Phase 4 gate); required transport/PyPI/npm/Yarn/mixed regressions (91 tests passed); full deterministic phase-boundary suite (273 tests passed); **Phase:** 4; **Parallelizable:** No.
 - **Objective and approved scope:** Provide the plan's internal pre-measurement lexical (exact name, exact version) scheduling boundary for Ruby candidates. Exercise source-to-adapter composition internally with one scan-local adapter and fixed per-request responses; do not add a public source pair.
 - **Expected files:** libyears/rubygems.py; tests/test_rubygems.py; tests/test_rubygems_registry.py.
 - **Acceptance criteria mapped:** 45 (order independence), 43 (authority before HTTP).
