@@ -262,7 +262,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T018 — Validate an authorized real Ruby root
 
-- **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
+- **Status:** Blocked; authorized dpc-admin human/JSON runs agree on available evidence, but all 67 Ruby lookups failed verified TLS; required Ruby publication dogfood incomplete. Partial evidence and UNAVAILABLE smoke disposition: [release-validation.md](release-validation.md). **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** Use one explicitly authorized real root, inspecting only necessary root evidence; discovery paths grant no permission. Run normal verified human/JSON CLI without tooling execution; compare scope/counts/reasons/arithmetic/provenance/disclosures and record environment/limits. Verify target unchanged. Record discrepancies without remediation inside validation. In the same release-validation record assign separate live-smoke disposition: PERFORMED when a separate smoke supplied nonredundant evidence; REDUNDANT when authorized dogfood already exercised the same live path; UNAVAILABLE when useful smoke evidence could not be obtained; or DEFERRED when explicitly postponed with rationale. Run a separate bounded verified smoke only when useful; record its rationale/outcome without requiring it to permit convergence. Authorized real-root dogfood remains required; smoke disposition does not waive it.
 - **Expected files:** specs/004-rubygems-support/release-validation.md; tasks.md.
 - **Acceptance criteria mapped:** Release validation of approved contract; no exclusive AC ownership.
@@ -599,3 +599,32 @@ No approved specification/plan or user-facing documentation needed alteration.
 Diff inspected; `git diff --check` passed. No blockers or deviations. Phase 7 /
 T018 remains unstarted; no real-root validation, smoke, convergence review,
 completion/radar reconciliation or retrospective has begun.
+
+
+## Phase 7 T018 partial release-validation evidence
+
+T018 **blocked, not complete**. The user explicitly authorized read-only dpc-admin
+validation at `<authorized-checkout>/dpc-app/dpc-admin`, then separately
+authorized the npm registry requests needed by normal mixed CLI runs. Human and
+JSON live runs each exited 0: 10/79 measured, all ten npm dependencies measured,
+67 Ruby registry_error results from TLS certificate verification failure, and
+bundler/tzinfo-data lock_version_missing without lookup. Human/JSON counts,
+rows/reasons, arithmetic for available measurements, selected provenance, absent
+Ruby publication arrays and disclosures agree. No Ruby population or successful
+publication/metric evidence was obtained. Transport stayed verified and bounded;
+no TLS bypass or remediation was attempted. Preliminary sandbox DNS failures are
+recorded separately from live TLS failure and offline correctness.
+
+[release-validation.md](release-validation.md) retains both public outputs,
+environment/limits, transport observations, incomplete checks, smoke disposition
+**UNAVAILABLE** with rationale, and unchanged-target evidence (280 entries, 218
+regular files, identical before/after manifests). The optional separate smoke is
+not a prerequisite; required Ruby real-root dogfood remains the blocker.
+
+T018 focused release checks passed for available evidence; its completion
+conditions did not. Cite T017's 289 offline tests and 52/52 AC audit; no new
+deterministic suite is required for this record. Diff inspected;
+`git diff --check` passed before the partial-evidence commit.
+Approved spec/plan and runtime behavior unchanged. T018 must resume before T019;
+independent convergence, completion/radar reconciliation and retrospective remain
+unstarted. No other external root accessed; no push, tag or history rewrite.
