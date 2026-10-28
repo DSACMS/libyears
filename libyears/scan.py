@@ -19,6 +19,7 @@ from .model import (
     MetricSummary,
     RegistryFailure,
     RegistryResult,
+    RubyGemsEvidence,
     SourceError,
     SourceEvidence,
     SourceResult,
@@ -33,6 +34,8 @@ from .requirements import (
     discover_requirements,
     normalize_name,
 )
+from .rubygems import ruby_source_result, schedule_ruby_candidates
+from .rubygems_registry import RubyGemsAdapter
 from .snapshot import SNAPSHOT_VERSION_CONFLICT, Snapshot
 
 
@@ -394,16 +397,19 @@ def scan_mixed_repository(
     *,
     adapter: PyPIAdapter | None = None,
     npm_adapter: NpmAdapter | None = None,
+    rubygems_adapter: RubyGemsAdapter | None = None,
     pypi_lookup: Callable[[str, str], PyPIResult | RegistryFailure] | None = None,
     npm_lookup: Callable[[str, str], RegistryResult | RegistryFailure] | None = None,
+    rubygems_lookup: Callable[[str, str], RegistryResult | RegistryFailure] | None = None,
     snapshot: Snapshot | None = None,
     ca_bundle: str | None = None,
 ) -> MixedScanReport:
-    """Discover and measure the two explicit supported ecosystems internally."""
+    """Discover and measure the three explicit supported ecosystems."""
     python_result = _python_source_result(path, snapshot)
     root = Path(path)
     npm_root = root if root.is_dir() else None
     npm_result = _npm_source_result(npm_root)
+    ruby_result = ruby_source_result(npm_root)
 
     pypi_adapter = adapter or (
         None if pypi_lookup is not None else PyPIAdapter(ca_bundle=ca_bundle)
@@ -414,31 +420,48 @@ def scan_mixed_repository(
     pypi_registry_lookup = pypi_lookup or pypi_adapter.lookup
     npm_registry_lookup = npm_lookup or active_npm_adapter.lookup
 
-    # This static pair list is deliberately limited to the two approved sources.
+    active_ruby_adapter = rubygems_adapter or (
+        None if rubygems_lookup is not None else RubyGemsAdapter(ca_bundle=ca_bundle)
+    )
+    ruby_registry_lookup = rubygems_lookup or active_ruby_adapter.lookup
+
+    # Keep discovery explicit; each source owns its ecosystem policy.
     source_pairs = (
         (python_result, pypi_registry_lookup),
         (npm_result, npm_registry_lookup),
+        (ruby_result, ruby_registry_lookup),
     )
+    sources = tuple(source for source, _ in source_pairs)
     measurements: list[DependencyMeasurement] = []
     unmeasurable = [
         item
-        for source in (python_result, npm_result)
+        for source in sources
         for item in source.unmeasurable
     ]
     source_errors = [
         error
-        for source in (python_result, npm_result)
+        for source in sources
         for error in source.source_errors
     ]
     diagnostics = [
         diagnostic
-        for source in (python_result, npm_result)
+        for source in sources
         for diagnostic in source.diagnostics
     ]
 
     for source, registry_lookup in source_pairs:
-        for candidate in source.candidates:
+        candidates = source.candidates
+        if source.ecosystem == "rubygems":
+            candidates = schedule_ruby_candidates(candidates)
+        for candidate in candidates:
             result = registry_lookup(candidate.registry_name, candidate.used_version)
+            ruby_evidence = candidate.rubygems_evidence
+            if ruby_evidence is not None and result.rubygems_evidence is not None:
+                ruby_evidence = RubyGemsEvidence(
+                    ruby_evidence.selected_artifacts,
+                    result.rubygems_evidence.used_publication_artifacts,
+                    result.rubygems_evidence.latest_publication_artifacts,
+                )
             if isinstance(result, RegistryFailure):
                 if result.diagnostic:
                     diagnostics.append((candidate.name, result.diagnostic))
@@ -448,6 +471,7 @@ def scan_mixed_repository(
                         candidate.name,
                         candidate.declared,
                         result.reason,
+                        ruby_evidence,
                     )
                 )
                 continue
@@ -459,12 +483,13 @@ def scan_mixed_repository(
                 result.latest_stable_version,
                 result.latest_stable_release_time,
                 candidate.version_source,
+                ruby_evidence,
             )
             measurements.append(measure_dependency(dependency))
 
     detected_sources = tuple(
         source
-        for source in (python_result, npm_result)
+        for source in sources
         if source.source_present or source.source_errors
     )
     discovery_unavailable = any(
@@ -501,15 +526,25 @@ def scan_mixed_repository(
         for source in sorted(detected_sources, key=lambda item: item.ecosystem)
     }
 
+    tls_trust = None
+    for source, active_adapter in (
+        (python_result, pypi_adapter),
+        (npm_result, active_npm_adapter),
+        (ruby_result, active_ruby_adapter),
+    ):
+        if source.source_present and active_adapter is not None:
+            tls_trust = getattr(active_adapter, "tls_trust", None)
+            break
+
     return MixedScanReport(
         tuple(measurements),
         tuple(unmeasurable),
         tuple(source_errors),
-        (python_result, npm_result),
+        sources,
         summary,
         by_ecosystem,
         tuple(diagnostics),
-        getattr(pypi_adapter or active_npm_adapter, "tls_trust", None),
+        tls_trust,
     )
 
 __all__ = [

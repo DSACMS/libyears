@@ -6,6 +6,11 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Measure direct RubyGems dependencies from a bounded root `Gemfile.lock` snapshot,
+  alongside Python and npm, without executing Ruby or Bundler. Preserve selected
+  artifact and observable publication provenance in additive schema-v3 evidence;
+  report unsupported or missing evidence with honest coverage.
+
 - Use root Yarn Classic v1 `yarn.lock` evidence to measure direct npm production
   dependencies with exact resolved versions.
 - Scan direct npm production dependencies from the root `package.json`, using

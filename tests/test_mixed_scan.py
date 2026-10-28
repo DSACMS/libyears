@@ -117,7 +117,7 @@ class MixedScanTests(unittest.TestCase):
         )
         self.assertEqual(
             [result.ecosystem for result in report.source_results],
-            ["pypi", "npm"],
+            ["pypi", "npm", "rubygems"],
         )
 
     def test_registry_failure_in_either_ecosystem_preserves_other_measurement(self):
@@ -612,6 +612,195 @@ class MixedScanTests(unittest.TestCase):
             npm_lookup=lambda *_: self.fail("npm manifest is absent"),
         )
         self.assertEqual(list(report.by_ecosystem), ["pypi"])
+
+
+class RubyPublicScanTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        for target in ('urllib.request.urlopen', 'urllib.request.OpenerDirector.open',
+                       'subprocess.Popen', 'os.system'):
+            guard = patch(target, side_effect=AssertionError('external execution or live HTTP'))
+            guard.start()
+            self.addCleanup(guard.stop)
+
+    def write_lock(self, specs=('alpha (1.0)',), directs=('alpha',), remote='https://rubygems.org'):
+        text = 'GEM\n  remote: ' + remote + '\n  specs:\n'
+        text += ''.join('    ' + spec + '\n' for spec in specs)
+        text += '\nPLATFORMS\n  ruby\n\nDEPENDENCIES\n'
+        text += ''.join('  ' + direct + '\n' for direct in directs)
+        (self.root / 'Gemfile.lock').write_text(text)
+        return text
+
+    def lookup(self, name, version):
+        from libyears.model import RubyGemsEvidence, RubyPublicationArtifact
+        used = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        latest = used + timedelta(days=365.25)
+        evidence = RubyGemsEvidence((), (
+            RubyPublicationArtifact(version, 'ruby', used, False),
+            RubyPublicationArtifact(version, 'java', used + timedelta(days=1)),
+        ), (RubyPublicationArtifact('2.0', 'java', latest, False),))
+        return RegistryResult(name, version, used, '2.0', latest, evidence)
+
+    def scan(self, **kwargs):
+        return scan_mixed_repository(self.root, pypi_lookup=self.lookup,
+                                     npm_lookup=self.lookup, **kwargs)
+
+    def test_three_same_names_remain_distinct_with_exact_prior_evidence(self):
+        self.write_lock()
+        (self.root / 'requirements.txt').write_text('alpha==1.0\n')
+        (self.root / 'package.json').write_text('{"dependencies":{"alpha":"^1.0"}}')
+        (self.root / 'package-lock.json').write_text(
+            '{"lockfileVersion":3,"packages":{"node_modules/alpha":{"version":"1.0.0"}}}')
+        report = self.scan(rubygems_lookup=self.lookup)
+        self.assertEqual([(row.dependency.ecosystem, row.dependency.name)
+                          for row in report.measurements],
+                         [('pypi', 'alpha'), ('npm', 'alpha'), ('rubygems', 'alpha')])
+        self.assertEqual(report.summary, MetricSummary(3, 3, 1.0, 3.0, 1.0, 1.0, 1.0))
+        data = json.loads(format_json(report, '.'))
+        self.assertEqual(data['version_evidence']['pypi'], {
+            'declaration_source': 'requirements.txt', 'snapshot_source': None})
+        self.assertEqual(data['version_evidence']['npm'], {
+            'declaration_source': 'package.json', 'snapshot_source': 'package-lock.json'})
+        for row in data['dependencies'][:2]:
+            self.assertNotIn('rubygems_evidence', row)
+        self.assertEqual(data['version_evidence']['rubygems'], {
+            'declaration_source': 'Gemfile.lock', 'snapshot_source': 'Gemfile.lock',
+            'format': 'gemfile_lock', 'scope': 'all_direct_locked',
+            'publication_basis': 'earliest_admissible_supported_observable'})
+        ruby = data['dependencies'][2]
+        self.assertEqual(ruby['version_source'], 'gemfile_lock')
+        self.assertEqual(ruby['rubygems_evidence']['selected_artifacts'], [
+            {'version': '1.0', 'platform': 'ruby', 'source': 'https://rubygems.org'}])
+        self.assertEqual(len(ruby['rubygems_evidence']['used_publication_artifacts']), 2)
+        self.assertEqual(ruby['rubygems_evidence']['latest_publication_artifacts'][0]['platform'], 'java')
+        self.assertIn('rubygems: 100.0% coverage; 1 / 1 measured', format_human(report, '.'))
+
+    def test_availability_matrix_preserves_known_scope_and_sibling_success(self):
+        for kind in ('empty', 'local', 'outage', 'rejected', 'success'):
+            for sibling in (False, True):
+                with self.subTest(kind=kind, sibling=sibling):
+                    python = self.root / 'requirements.txt'
+                    python.write_text('alpha==1.0\n' if sibling else '')
+                    if not sibling:
+                        python.unlink()
+                    if kind == 'empty':
+                        self.write_lock(specs=(), directs=())
+                    elif kind == 'local':
+                        self.write_lock(specs=(), directs=('bundler (~> 2)', 'tzinfo-data'))
+                    else:
+                        self.write_lock()
+                    if kind == 'rejected':
+                        with (self.root / 'Gemfile.lock').open('a') as lock:
+                            lock.write('CHECKSUMS\n  ignored\n')
+                    lookup = Mock(side_effect=(
+                        lambda name, version: RegistryFailure(name, version, 'registry_error')
+                        if kind == 'outage' else self.lookup(name, version)))
+                    report = self.scan(rubygems_lookup=lookup)
+                    ruby = report.by_ecosystem['rubygems']
+                    if kind in ('empty', 'local', 'rejected'):
+                        lookup.assert_not_called()
+                    if kind == 'rejected':
+                        self.assertEqual(ruby, MetricSummary(None, None, None, None, None, None, None))
+                        self.assertIsNone(report.summary.dependencies_discovered)
+                        self.assertEqual(report.summary.dependencies_measured, 1 if sibling else None)
+                        self.assertIsNone(report.summary.coverage)
+                        self.assertEqual(report.unmeasurable, ())
+                        self.assertEqual(report.source_errors[0].source, 'Gemfile.lock')
+                        data = json.loads(format_json(report, '.'))
+                        self.assertIsNone(data['version_evidence']['rubygems']['format'])
+                        self.assertEqual(len(data['dependencies']), int(sibling))
+                    else:
+                        count = {'empty': 0, 'local': 2}.get(kind, 1)
+                        measured = int(kind == 'success')
+                        self.assertEqual(ruby, MetricSummary(
+                            count, measured, measured / count if count else None,
+                            float(measured), 1.0 if measured else None,
+                            1.0 if measured else None, 1.0 if measured else None))
+                        self.assertEqual(report.summary.dependencies_discovered, count + int(sibling))
+                    self.assertEqual(report.summary.total_libyears,
+                                     float(sibling) + float(kind == 'success'))
+
+    def test_public_recognition_and_static_unchanged_target(self):
+        (self.root / 'Gemfile').mkdir()  # Even a non-readable-as-text Gemfile is irrelevant.
+        for filename in ('gems.locked', 'project.gemspec'):
+            (self.root / filename).write_text('not evaluated')
+        nested = self.root / 'nested'
+        nested.mkdir()
+        (nested / 'Gemfile.lock').write_text('not inspected')
+        lookup = Mock(side_effect=self.lookup)
+        absent = self.scan(rubygems_lookup=lookup)
+        self.assertEqual(absent.summary, MetricSummary(0, 0, None, 0.0, None, None, None))
+        self.assertEqual(json.loads(format_json(absent, '.'))['version_evidence'], {})
+        before = self.write_lock()
+        direct = scan_mixed_repository(self.root / 'Gemfile.lock', rubygems_lookup=lookup)
+        self.assertEqual(direct.by_ecosystem, {})
+        lookup.assert_not_called()
+        report = self.scan(rubygems_lookup=lookup)
+        lookup.assert_called_once_with('alpha', '1.0')
+        self.assertEqual(len(report.measurements), 1)
+        self.assertEqual((self.root / 'Gemfile.lock').read_text(), before)
+        self.assertTrue((self.root / 'Gemfile').is_dir())
+
+    def test_rejected_authority_and_source_never_reach_lookup(self):
+        lookup = Mock(side_effect=AssertionError('rejected evidence'))
+        self.write_lock(remote='https://user:secret@private.invalid')
+        report = self.scan(rubygems_lookup=lookup)
+        self.assertEqual(report.unmeasurable[0].reason, 'unsupported_dependency_source')
+        human = format_human(report, '.', verbose=True)
+        self.assertIn('no public namesake is substituted', human)
+        self.assertNotIn('secret', human)
+        self.assertNotIn('private.invalid', human)
+        (self.root / 'Gemfile.lock').write_text('GEM\n  specs:\n\tbad\nDEPENDENCIES\n  alpha\n')
+        report = self.scan(rubygems_lookup=lookup)
+        self.assertEqual(report.source_errors[0].reason, 'invalid_lockfile')
+        self.assertEqual(report.unmeasurable, ())
+        self.assertIn('malformed Gemfile.lock', format_human(report, '.'))
+        lookup.assert_not_called()
+
+    def test_failure_provenance_merges_selected_and_established_publications(self):
+        self.write_lock()
+        def failure(name, version):
+            result = self.lookup(name, version)
+            return RegistryFailure(name, version, 'no_stable_release',
+                                   rubygems_evidence=result.rubygems_evidence)
+        report = self.scan(rubygems_lookup=failure)
+        evidence = json.loads(format_json(report, '.'))['unmeasurable'][0]['rubygems_evidence']
+        self.assertEqual(len(evidence['selected_artifacts']), 1)
+        self.assertEqual(len(evidence['used_publication_artifacts']), 2)
+        report = self.scan(rubygems_lookup=lambda n, v: RegistryFailure(n, v, 'registry_error'))
+        evidence = json.loads(format_json(report, '.'))['unmeasurable'][0]['rubygems_evidence']
+        self.assertEqual(set(evidence), {'selected_artifacts'})
+
+    def test_public_fixed_response_cooldown_is_order_independent(self):
+        from libyears.registry import TransportFailure
+        from libyears.rubygems_registry import RubyGemsAdapter
+        from tests.test_rubygems_registry import FakeClock
+        for retry_after in ('60', None):
+            outcomes = []
+            for names in (('zebra', 'alpha', 'middle'), ('middle', 'zebra', 'alpha')):
+                self.write_lock(specs=tuple(name + ' (1.0)' for name in names), directs=names)
+                clock = FakeClock()
+                adapter = RubyGemsAdapter(monotonic=clock.monotonic, sleep=clock.sleep,
+                                          wall_clock=clock.wall_clock)
+                adapter.transport = Mock()
+                adapter.transport.get.return_value = TransportFailure(
+                    429, 'HTTP failure', retry_after=retry_after)
+                report = self.scan(rubygems_adapter=adapter)
+                outcomes.append((format_json(report, '.'), adapter.transport.get.call_args_list))
+                self.assertEqual([item.name for item in report.unmeasurable], ['alpha', 'middle', 'zebra'])
+                self.assertEqual(adapter.transport.get.call_count, 1)
+            self.assertEqual(outcomes[0], outcomes[1])
+
+    def test_ruby_adapter_receives_ca_and_reports_active_trust(self):
+        self.write_lock()
+        with patch('libyears.scan.RubyGemsAdapter') as factory:
+            factory.return_value.lookup.side_effect = self.lookup
+            factory.return_value.tls_trust = 'explicit CA bundle'
+            report = self.scan(ca_bundle='approved.pem')
+        factory.assert_called_once_with(ca_bundle='approved.pem')
+        self.assertEqual(report.tls_trust, 'explicit CA bundle')
 
 
 if __name__ == "__main__":

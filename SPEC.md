@@ -4,7 +4,9 @@
 
 Implement a dependency-free CLI that calculates the CHAOSS Libyears metric for a local source repository.
 
-The initial implementation supports Python dependencies published on PyPI.
+The current implementation supports direct Python, npm, and RubyGems dependencies.
+The original MVP sections below describe Python policy; the ecosystem extensions
+in section 26 govern npm and RubyGems without changing PyPI behavior.
 
 It must work equally well for public repositories, private repositories, source archives, and ordinary local directories.
 
@@ -65,7 +67,7 @@ The MVP does not:
 - infer versions from the developer's machine
 - inspect transitive dependencies
 - support private package registries
-- support ecosystems other than PyPI
+- support ecosystems beyond the explicitly approved PyPI, npm, and RubyGems scope
 
 The tool MUST NOT turn an unresolved dependency declaration into an exact version by resolving it against the package registry at scan time.
 
@@ -99,7 +101,8 @@ It does not mean:
 
 ## 5. Dependency Scope
 
-The MVP measures direct Python dependencies only.
+The Python scope is direct dependencies from requirements.txt; section 26 defines
+additional ecosystem scopes.
 
 Dependency discovery and exact-version resolution are separate concepts.
 
@@ -149,7 +152,7 @@ If multiple supported dependency sources eventually establish the same normalize
 
 If equally authoritative supported sources declare conflicting exact versions, mark the dependency unmeasurable rather than selecting one.
 
-Lockfile support is intentionally deferred to later milestones.
+Lockfile support is ecosystem-specific as defined in section 26.
 
 ## 7. Package Name Normalization
 
@@ -605,7 +608,6 @@ Not part of MVP:
 - constraints files
 - environment markers
 - requirements file inclusion
-- npm
 - Maven
 - Go
 - Cargo
@@ -650,3 +652,84 @@ Adding support for a new file format MUST explicitly define whether that source 
 - or both
 
 The tool MUST NOT assume that every dependency manifest is a resolution artifact.
+
+## 26. Current ecosystem extensions
+
+npm scope and package-lock v2/v3 behavior are defined by approved
+[Feature 002](specs/002-npm-support/spec.md); Yarn Classic evidence and lock
+conflicts follow [Feature 003](specs/003-yarn-lock-evidence/spec.md). npm scope
+remains root package.json dependencies excluding optionalDependencies names.
+Python snapshot behavior and existing registry policies remain unchanged.
+
+RubyGems follows the approved [Feature 004](specs/004-rubygems-support/spec.md).
+Directory scans read only root Gemfile.lock, without requiring or inspecting
+Gemfile. Direct-file scans remain Python-only. Every DEPENDENCIES name counts,
+including bundler/tzinfo-data without selected specs. This is all-direct locked
+snapshot scope, with no group interpretation or certification of commit status,
+current Gemfile, installed environment, or runtime compatibility.
+
+The bounded format supports GEM, DEPENDENCIES, required nonempty PLATFORMS,
+optional BUNDLED WITH and RUBY VERSION, and inert GIT/PATH envelopes for source
+isolation. Unknown fields/sections (including CHECKSUMS, CONTENT ADDRESSES and
+PLUGIN SOURCE) reject the source. Malformed supported structure precedes
+unsupported format. No partial scope is salvaged from a rejected lock.
+
+Only independently established literal public RubyGems.org authority permits
+lookup. Private/GIT/PATH/multiple-remotes/explicit pins cannot fall back to a
+public namesake. Exact lock identities and selected version text are preserved;
+registry identity permits ASCII case differences only after source authority.
+Supported requirements are retained without evaluation. Distinct agreeing
+platform artifacts establish one version with provenance; duplicate artifacts
+or differing versions are ambiguous. Host platforms never select evidence.
+
+Canonical publication is the earliest admissible authoritative creation timestamp
+across supported observable artifacts, including observable yanked contributors,
+independently of locked platforms. Identifiable unsupported ABI classes are
+excluded; unsafe identity or contradictory metadata fails closed. Missing/invalid
+and 2009-07-25 UTC timestamps are excluded individually; built_at never supplies
+a fallback. Latest requires currently available stable evidence and a canonical
+date; select greatest date then ascending exact-version text. Used and latest
+share canonicalization and existing metric arithmetic, including exact 0.0 for
+the same version. Observable history is incomplete: absence proves neither yank
+nor never-existence, and disappearing records may change future measurements.
+
+Schema v3 adds version_evidence.rubygems with declaration_source and
+snapshot_source Gemfile.lock, format gemfile_lock (null for whole rejection),
+scope all_direct_locked and publication_basis
+earliest_admissible_supported_observable. Ruby rows use ecosystem rubygems and
+version_source gemfile_lock. Their rubygems_evidence contains selected_artifacts
+(version/platform/public source) and established used_publication_artifacts /
+latest_publication_artifacts (version/platform/UTC publication_time, plus yanked
+only when known). Failures retain material safely known artifacts and original
+direct text; unavailable publication populations are omitted. Human diagnostics
+are excluded from JSON, including with --verbose.
+
+Ruby whole-source errors use source_errors with source Gemfile.lock and null
+per-Ruby counts, coverage and numeric aggregates. Local/registry dependency
+failures use unmeasurable and preserve known scope and available measured count.
+Repository unknown denominators or rejected sources null coverage while retaining
+successful rows and aggregates. Every detected source unavailable makes repository
+measured count null; otherwise it is successful row count, including zero.
+Absent sources are omitted. Empty valid scope has 0 discovered/measured, null
+coverage, total 0.0 and null mean/median/max. Nonempty wholly unmeasurable scope
+has 0% coverage. No-source reports have empty ecosystems/evidence and the same
+empty aggregate values. Matching names across ecosystems remain separate rows.
+
+Normal Ruby human output identifies Gemfile.lock, all-direct scope, uninterpreted
+groups and observable-history limitations. It distinguishes unavailable coverage
+from 0%, preserves direct failure text and safely explains source authority
+without revealing remotes or substituting public namesakes. Verbose output may
+add safe parser/registry categories. --resolved remains Python-specific; existing
+flags and exit categories 0/1/2 remain unchanged. Completed source-error scans
+return 0.
+
+Ruby requests are metadata-only to fixed verified HTTPS rubygems.org, rejecting
+all redirects and preserving CA precedence/User-Agent. Limits are two requests
+per candidate, 16 MiB per response / 32 MiB total, default 10-second timeout,
+and at least 0.11 seconds between request starts. Oversize/truncation is
+invalid_registry_response; ordinary transport/rate-limit failure is registry_error.
+One scan-local adapter enforces Retry-After cooldowns without retries; missing or
+invalid Retry-After closes Ruby requests for that scan. Authorized candidates
+are scheduled in exact name/version lexical order. Static scans never execute
+Ruby/Bundler/Gemfile/gemspecs, install, resolve, inspect private credentials,
+fetch private content/archives, or modify the target.

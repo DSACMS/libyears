@@ -420,7 +420,8 @@ Source-level failures should remain distinct from dependency-level unmeasurable 
 ## Ecosystem Scope
 
 The current implementation supports direct Python packages from PyPI and
-direct npm production dependencies under Feature 002. Public JSON output uses
+direct npm production dependencies under Feature 002, Yarn Classic evidence under
+Feature 003, and direct RubyGems lock snapshots under Feature 004. Public JSON output uses
 schema version 3, with ecosystem-keyed evidence and repository plus
 per-ecosystem summaries. Keep source-discovery failures in `source_errors` and
 dependency-level failures in `unmeasurable`.
@@ -439,6 +440,21 @@ provide exact version evidence. Do not expand npm scope to development,
 peer, workspace, or transitive dependencies without a separately approved
 specification.
 
-Do not infer authorization for Maven, Go, Cargo, RubyGems, NuGet, additional npm dependency scopes, or other registries from the existence of npm support.
+Feature 004 authorizes bounded root `Gemfile.lock` discovery according to
+`specs/004-rubygems-support/spec.md`, `plan.md`, and `tasks.md`.
+RubyGems scope is all recorded direct DEPENDENCIES, with groups uninterpreted.
+Gemfile is never inspected/evaluated; direct-file scans do not activate Ruby.
+Only supported public RubyGems.org source authority permits registry lookup;
+private/GIT/PATH/multiple-remotes/explicit pins never use public namesakes.
+Selected generic/platform evidence establishes package versions, not runtime
+compatibility. Requirements are retained without satisfaction/equivalence checks.
+Unknown lock fields/sections reject the source; new Bundler formats are not
+implicitly authorized. Publication dates describe earliest admissible supported
+observable evidence, not complete history; disappearing records may change
+measurements. Ruby JSON provenance is additive in schema v3. Never execute
+Ruby/Bundler, install/resolve gems, fetch archives/private content, or inspect
+credentials. Gemfile interpretation/group reconstruction remains out of scope.
+
+Do not infer authorization for Maven, Go, Cargo, NuGet, additional npm dependency scopes, or other registries from the existence of npm support.
 
 For ecosystem behavior, the approved feature specification takes precedence over generic assumptions in this file.

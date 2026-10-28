@@ -337,16 +337,6 @@ class RootSourceTests(unittest.TestCase):
         self.assertIn('no public namesake substitution', result.diagnostics[0][1])
         self.assertNotIn('secret', repr(result))
 
-    def test_public_scan_remains_unactivated(self):
-        from libyears.scan import scan_mixed_repository
-
-        self.write_fixture()
-        report = scan_mixed_repository(self.root)
-        self.assertEqual([source.ecosystem for source in report.source_results], ['pypi', 'npm'])
-        self.assertFalse(any(source.source_present for source in report.source_results))
-        self.assertEqual(report.measurements, ())
-        self.assertEqual(report.summary.dependencies_discovered, 0)
-
     def test_platform_metadata_never_selects_internal_candidates(self):
         self.write_fixture()
         original = ruby_source_result(self.root)

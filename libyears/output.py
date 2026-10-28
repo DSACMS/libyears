@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 import json
 from typing import Any
 
+from .model import RubyGemsEvidence
 from .scan import MixedScanReport, ScanReport
 from .snapshot import SNAPSHOT_FORMAT
 
@@ -59,6 +60,10 @@ def _report_parts(report: ScanReport | MixedScanReport) -> tuple[Any, dict[str, 
         for source in sources:
             if source.evidence.include_format:
                 evidence[source.ecosystem]["format"] = source.evidence.format
+            if source.evidence.scope is not None:
+                evidence[source.ecosystem]["scope"] = source.evidence.scope
+            if source.evidence.publication_basis is not None:
+                evidence[source.ecosystem]["publication_basis"] = source.evidence.publication_basis
         ecosystems = sorted(set(evidence) | {error.ecosystem for error in report.source_errors})
         summaries = {key: _summary_dict(value) for key, value in report.by_ecosystem.items()}
         return report.summary, evidence, ecosystems, list(report.measurements), list(report.unmeasurable), list(report.source_errors), summaries
@@ -70,6 +75,32 @@ def _report_parts(report: ScanReport | MixedScanReport) -> tuple[Any, dict[str, 
     }}
     ecosystems = ["pypi"] if report.summary.dependencies_discovered != 0 else []
     return report.summary, evidence, ecosystems, list(report.measurements), list(report.unmeasurable), [], {"pypi": _summary_dict(report.summary)}
+
+
+def _ruby_evidence_dict(evidence: RubyGemsEvidence) -> dict[str, Any]:
+    """Serialize only established artifacts, omitting unavailable populations."""
+    result = {"selected_artifacts": [
+        {"version": item.version, "platform": item.platform, "source": item.source}
+        for item in evidence.selected_artifacts
+    ]}
+    for field, artifacts in (
+        ("used_publication_artifacts", evidence.used_publication_artifacts),
+        ("latest_publication_artifacts", evidence.latest_publication_artifacts),
+    ):
+        if artifacts is None:
+            continue
+        rows = []
+        for artifact in artifacts:
+            row = {
+                "version": artifact.version,
+                "platform": artifact.platform,
+                "publication_time": _timestamp(artifact.publication_time),
+            }
+            if artifact.yanked is not None:
+                row["yanked"] = artifact.yanked
+            rows.append(row)
+        result[field] = rows
+    return result
 
 
 def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str, Any]:
@@ -91,6 +122,15 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
                 "version_source": dependency.version_source,
             }
         )
+        if dependency.rubygems_evidence is not None:
+            dependencies[-1]["rubygems_evidence"] = _ruby_evidence_dict(dependency.rubygems_evidence)
+    failures = []
+    for item in unmeasurable:
+        row = {"ecosystem": item.ecosystem, "name": item.name,
+               "declared": item.declared, "reason": item.reason}
+        if getattr(item, "rubygems_evidence", None) is not None:
+            row["rubygems_evidence"] = _ruby_evidence_dict(item.rubygems_evidence)
+        failures.append(row)
     return {
         "schema_version": 3,
         "metric": "libyears",
@@ -99,15 +139,7 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
         "version_evidence": version_evidence,
         "summary": {**asdict(summary), "by_ecosystem": by_ecosystem},
         "dependencies": dependencies,
-        "unmeasurable": [
-            {
-                "ecosystem": item.ecosystem,
-                "name": item.name,
-                "declared": item.declared,
-                "reason": item.reason,
-            }
-            for item in unmeasurable
-        ],
+        "unmeasurable": failures,
         "source_errors": [asdict(item) for item in source_errors],
     }
 
@@ -228,9 +260,19 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
         source.evidence.snapshot_source == "yarn.lock"
         for source in report.source_results
     )
+    ruby_disclosure = []
+    if "rubygems" in ecosystems:
+        ruby_disclosure = [
+            "RubyGems version evidence: Gemfile.lock.",
+            "All direct dependencies recorded in Gemfile.lock; groups are not interpreted.",
+            "Publication dates are earliest admissible supported observable evidence, not complete historical knowledge.",
+            "Missing public records prove neither yanking nor never-existence; record disappearance may change future measurements.",
+            "Null counts and coverage mean unavailable.",
+        ]
     if len(ecosystems) == 1 and not report.source_errors:
         ecosystem = ecosystems[0]
         lines = [f"Libyears: {path}", f"Ecosystem: {ecosystem}", ""]
+        lines.extend(ruby_disclosure)
         if yarn_evidence:
             lines.append("Version evidence: yarn.lock")
         if report.measurements:
@@ -255,13 +297,16 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
                 declaration = item.declared
                 if yarn_evidence:
                     declaration = f"{item.name} ({item.declared})"
-                reason = _dependency_reason_text(item.reason, yarn_evidence)
+                reason = _dependency_reason_text(item.reason, yarn_evidence, item.ecosystem)
                 lines.append(f"  {declaration}    {reason}")
+        if verbose and report.tls_trust:
+            lines.extend(["", f"TLS trust: {report.tls_trust}"])
         if verbose and report.diagnostics:
             lines.extend(["", "Registry diagnostics:", *(f"  {name}: {message}" for name, message in report.diagnostics)])
         return "\n".join(lines) + "\n"
 
     lines = [f"Libyears: {path}", f"Ecosystems: {labels}", ""]
+    lines.extend(ruby_disclosure)
     lines.append(
         f"Repository: {_coverage(summary.coverage)} coverage; "
         f"{summary.dependencies_measured} / {summary.dependencies_discovered} measured; "
@@ -288,13 +333,15 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
     if report.unmeasurable:
         lines.extend(["", "Unmeasurable:"])
         lines.extend(
-            f"  {item.ecosystem}: {item.name} ({item.declared})    {_dependency_reason_text(item.reason, yarn_evidence and item.ecosystem == 'npm')}"
+            f"  {item.ecosystem}: {item.name} ({item.declared})    {_dependency_reason_text(item.reason, yarn_evidence and item.ecosystem == 'npm', item.ecosystem)}"
             for item in report.unmeasurable
         )
     if report.source_errors:
         lines.extend(["", "Source errors:"])
         for error in report.source_errors:
             explanation = "npm manifest discovery failed; no npm dependencies were invented" if error.reason == "invalid_manifest" else _reason_text(error.reason)
+            if error.ecosystem == "rubygems":
+                explanation = _ruby_reason_text(error.reason)
             if error.source == "yarn.lock":
                 context = dict(report.diagnostics).get("yarn.lock")
                 explanation = context or _reason_text(error.reason)
@@ -328,10 +375,26 @@ def _number(value: float | None) -> str:
     return "null" if value is None else f"{value:.2f}"
 
 
-def _dependency_reason_text(reason: str, yarn_evidence: bool) -> str:
+def _dependency_reason_text(reason: str, yarn_evidence: bool, ecosystem: str = "") -> str:
+    if ecosystem == "rubygems":
+        return _ruby_reason_text(reason)
     if yarn_evidence and reason == "lock_version_missing":
         return "exact version unavailable in yarn.lock"
     return _reason_text(reason)
+
+
+def _ruby_reason_text(reason: str) -> str:
+    return {
+        "package_not_found": "public RubyGems metadata reports package absence",
+        "version_not_found": "used version absent from supported observable RubyGems records",
+        "lock_version_missing": "exact selected spec unavailable in Gemfile.lock",
+        "unsupported_dependency_name": "unsupported RubyGems dependency name",
+        "unsupported_dependency_source": "supported public RubyGems authority not established; no public namesake is substituted",
+        "unsupported_lock_evidence": "unsupported selected version or artifact identity in Gemfile.lock",
+        "ambiguous_lock_evidence": "differing versions or duplicate selected artifacts in Gemfile.lock",
+        "invalid_lockfile": "unreadable or malformed Gemfile.lock",
+        "unsupported_lockfile_format": "unsupported or unclassifiable Gemfile.lock format",
+    }.get(reason, _reason_text(reason))
 
 
 def _reason_text(reason: str) -> str:
@@ -343,6 +406,7 @@ def _source_text(source: str) -> str:
         "requirements_exact": "requirements.txt",
         "resolved_snapshot": "snapshot",
         "yarn_lock": "yarn.lock",
+        "gemfile_lock": "Gemfile.lock",
     }.get(source, source)
 
 

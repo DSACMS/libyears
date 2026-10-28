@@ -1,7 +1,7 @@
 # Libyears
 
-Libyears is a local Python CLI that measures the age of direct Python and npm
-dependencies using release timestamps from PyPI and the public npm registry.
+Libyears is a local Python CLI that measures the age of direct Python, npm, and RubyGems
+dependencies using release timestamps from their public registries.
 It uses only the Python standard library at runtime.
 
 Project website: https://dsacms.github.io/libyears
@@ -78,7 +78,7 @@ now, not historical repository state.
 
 ## TLS and enterprise environments
 
-PyPI requests use HTTPS with certificate verification enabled. Libyears follows
+Registry requests use HTTPS with certificate verification enabled. Libyears follows
 Python/OpenSSL defaults, including `SSL_CERT_FILE` and `SSL_CERT_DIR`. If the
 active interpreter has no usable default CA source, it can fall back to an
 existing pip-bundled CA file. An explicit bundle takes precedence:
@@ -207,10 +207,67 @@ and `version_evidence.npm` includes `format: "yarn_lock_v1"` and
 null format; simultaneous lockfiles have null format and snapshot source.
 Existing package-lock and PyPI evidence representations are unchanged.
 
+## RubyGems support
+
+A directory scan recognizes exactly the root `Gemfile.lock`, even without a
+Gemfile. All direct dependencies recorded in Gemfile.lock are counted; groups
+are not interpreted. The report describes the supplied lock snapshot. It does
+not certify committed bytes, current Gemfile contents, installed versions, or
+runtime compatibility. Gemfile is never read or executed. `--resolved` remains
+Python-specific; direct-file arguments do not activate Ruby discovery.
+
+The supported bounded section format includes GEM, DEPENDENCIES, required
+nonempty PLATFORMS, and optional BUNDLED WITH / RUBY VERSION. GIT and PATH
+framing only isolates unsupported dependencies. Unknown fields/sections,
+including CHECKSUMS, CONTENT ADDRESSES and PLUGIN SOURCE, reject the source.
+This intentionally supports a subset of Bundler locks, not every generation.
+No Ruby, Bundler, gemspec, installer, or resolver is executed.
+
+Only a literal `https://rubygems.org` remote (optional trailing slash) supplies
+public authority. Private, Git, PATH, multiple-remote and explicitly pinned
+sources remain unmeasurable; a public namesake is never substituted. Exact
+selected specs establish used versions; requirements are retained without
+satisfaction or equivalence checks. Missing specs for direct `bundler` or
+`tzinfo-data` remain counted. Agreeing distinct generic/platform artifacts
+establish one package version and retain provenance; differing versions or
+duplicate artifact rows are ambiguous. No host-platform selection occurs.
+
+Ruby publication dates are the earliest admissible authoritative creation times
+across supported observable artifacts, independently of locked platforms.
+Missing/invalid dates and all 2009-07-25 UTC dates are excluded; build times are
+never a fallback. Latest requires currently available stable artifact evidence
+and chooses the greatest canonical date, with ascending exact version text for
+ties. These dates are observable evidence, not complete historical knowledge.
+Missing public records prove neither yanking nor never-existence. Disappearing
+records may change future measurements.
+
+JSON stays schema v3. `version_evidence.rubygems` identifies `Gemfile.lock`,
+`format: "gemfile_lock"` (null on source rejection), `scope: "all_direct_locked"`,
+and `publication_basis: "earliest_admissible_supported_observable"`.
+Ruby rows use `version_source: "gemfile_lock"` and additive `rubygems_evidence`
+with selected artifacts and admissible used/latest publication contributors.
+Safely established evidence survives dependency failures; unavailable publication
+arrays are omitted. Existing Python/npm evidence objects are unchanged.
+
+Whole-lock rejection uses `source_errors`, with null Ruby counts, coverage and
+numeric aggregates, and no invented rows. Known direct scope survives local or
+registry failures, including total outages, in `unmeasurable`. Other ecosystems'
+successes survive. Null coverage means unavailable; valid nonempty scope with no
+measurements has 0% coverage. Completed partial/empty/source-error scans exit 0.
+
+Ruby metadata requests use verified HTTPS with the existing CA precedence,
+reject all redirects, and allow at most two requests per candidate, 16 MiB per
+response (32 MiB total), with a default 10-second timeout. One scan-local adapter
+paces request starts at least 0.11 seconds apart and respects 429 cooldowns
+without retries. Authorized candidates run in exact name/version lexical order.
+No archives or private source content are fetched. See the approved
+[Feature 004 specification](specs/004-rubygems-support/spec.md) for the full boundary.
+
 ## Current limitations
 
 - Python declarations are read from `requirements.txt`; npm declarations are
-  read from the root `package.json`.
+  read from the root `package.json`; RubyGems scope comes from root
+  `Gemfile.lock` DEPENDENCIES.
 - Direct dependencies only.
 - The resolved snapshot format is a narrow list of exact `NAME==VERSION`
   entries; repository declarations determine which entries are in scope.

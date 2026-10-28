@@ -270,5 +270,74 @@ class OutputTests(unittest.TestCase):
         self.assertNotIn("Total:", human)
 
 
+class RubyPublicOutputTests(unittest.TestCase):
+    def ruby_report(self, reason=None):
+        from libyears.model import RubyGemsEvidence, RubyPublicationArtifact, SelectedRubyArtifact, UnmeasurableDependency
+        date = datetime(2024, 1, 1, 2, 0, 0, 123456, tzinfo=timezone.utc)
+        evidence = RubyGemsEvidence(
+            (SelectedRubyArtifact('1.0', 'java', 'https://rubygems.org'),),
+            (RubyPublicationArtifact('1.0', 'java', date),),
+            (RubyPublicationArtifact('1.0', 'java', date, False),),
+        )
+        dependency = Dependency('rubygems', 'sample', '1.0', date, '1.0', date,
+                                'gemfile_lock', evidence)
+        source = SourceResult('rubygems', (), (), (), SourceEvidence(
+            'Gemfile.lock', 'Gemfile.lock', 'gemfile_lock', True,
+            'all_direct_locked', 'earliest_admissible_supported_observable'), 1, True)
+        return MixedScanReport(
+            () if reason else (DependencyMeasurement(dependency, 0.0),),
+            (UnmeasurableDependency('rubygems', 'sample', 'sample (~> 1)', reason,
+                                    RubyGemsEvidence(evidence.selected_artifacts)),) if reason else (),
+            (), (source,), MetricSummary(1, 0 if reason else 1, 0.0 if reason else 1.0,
+                                         0.0, None if reason else 0.0,
+                                         None if reason else 0.0, None if reason else 0.0), {})
+
+    def test_explicit_artifact_serialization_preserves_precision_and_unknown_yank(self):
+        data = report_to_dict(self.ruby_report(), '.')
+        self.assertEqual(data['schema_version'], 3)
+        evidence = data['dependencies'][0]['rubygems_evidence']
+        self.assertEqual(evidence['used_publication_artifacts'], [{
+            'version': '1.0', 'platform': 'java',
+            'publication_time': '2024-01-01T02:00:00.123456Z'}])
+        self.assertIs(evidence['latest_publication_artifacts'][0]['yanked'], False)
+        failure = report_to_dict(self.ruby_report('registry_error'), '.')['unmeasurable'][0]
+        self.assertEqual(set(failure['rubygems_evidence']), {'selected_artifacts'})
+
+    def test_scope_and_history_disclosures_are_present_in_normal_and_verbose_output(self):
+        report = self.ruby_report()
+        for verbose in (False, True):
+            human = format_human(report, '.', verbose=verbose)
+            for text in ('RubyGems', 'Gemfile.lock', 'All direct dependencies recorded',
+                         'groups are not interpreted', 'not complete historical knowledge',
+                         'record disappearance may change future measurements', '0.00', '100.0%'):
+                self.assertIn(text, human)
+        self.assertEqual(format_json(report, '.'), format_json(
+            replace(report, diagnostics=(('sample', 'safe diagnostic'),)), '.'))
+
+    def test_ruby_failure_words_are_contextual_and_preserve_direct_text(self):
+        cases = {
+            'lock_version_missing': 'exact selected spec unavailable in Gemfile.lock',
+            'unsupported_dependency_name': 'unsupported RubyGems dependency name',
+            'unsupported_requirement': 'unsupported requirement format',
+            'unsupported_lock_evidence': 'unsupported selected version or artifact identity',
+            'ambiguous_lock_evidence': 'differing versions or duplicate selected artifacts',
+            'unsupported_dependency_source': 'no public namesake is substituted',
+            'package_not_found': 'public RubyGems metadata reports package absence',
+            'version_not_found': 'supported observable RubyGems records',
+            'release_date_missing': 'release timestamp unavailable',
+            'invalid_registry_response': 'invalid registry response',
+            'registry_error': 'registry or transport error',
+            'no_stable_release': 'no stable release available',
+        }
+        for reason, words in cases.items():
+            with self.subTest(reason=reason):
+                human = format_human(self.ruby_report(reason), '.')
+                self.assertIn(words, human)
+                self.assertIn('sample (~> 1)', human)
+                self.assertIn('Coverage: 0.0%', human)
+                for wrong in ('PyPI', 'package-lock.json', 'yarn.lock'):
+                    self.assertNotIn(wrong, human)
+
+
 if __name__ == "__main__":
     unittest.main()

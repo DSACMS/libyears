@@ -229,7 +229,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T015 — Activate complete public RubyGems contract
 
-- **Status:** Pending; **Phase:** 5; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_mixed_scan tests.test_output tests.test_cli` (62 tests passed); full deterministic Phase 5 gate (285 tests passed); **Phase:** 5; **Parallelizable:** No.
 - **Objective and approved scope:** In one coherent change add the third explicit source pair and one local sources tuple, injectable Ruby lookup/adapter and CA propagation; merge provenance on successes/failures before existing metric calls. Activate all availability summaries, explicit additive schema-v3 serialization, contextual safe human output/disclosures and CLI behavior. Update README/SPEC/CHANGELOG Unreleased Added/AGENTS ecosystem scope together. Preserve all existing ecosystem paths, evidence and flags.
 - **Expected files:** libyears/scan.py; libyears/output.py; tests/test_mixed_scan.py; tests/test_output.py; tests/test_cli.py; tests/fixtures/rubygems/; README.md; SPEC.md; CHANGELOG.md; AGENTS.md.
 - **Acceptance criteria mapped:** 01–02 (public discovery), 30–42, 43 (public static boundary), 45 (public scheduling), 51 (disclosure), 52.
@@ -450,3 +450,37 @@ no live registry resources were used. `git diff --check` passed before each task
 commit. Default urlopen/no-argument read and injected get(url) paths remain
 compatible. Restricted transport is opt-in; Ruby scan and adapter activation
 remain unstarted. No blockers or scope deviations. Phase 4 / T011 unstarted.
+
+
+## Phase 5 execution evidence
+
+T015 complete. Focused verification:
+`python -m unittest tests.test_mixed_scan tests.test_output tests.test_cli`
+passed (62 tests). Phase gate: `python -m unittest discover -s tests` passed
+(285 tests), including Python declarations/snapshot/constraints/legacy scan,
+PyPI/npm registry, package-lock/Yarn, shared transport, Ruby parser/source/adapter,
+metric, mixed-scan, output and CLI regressions. All correctness verification was
+offline; new public scan/CLI cases prohibit live HTTP and process execution.
+
+Public activation is one coherent T015 change: third explicit source pair,
+scan-local Ruby adapter and deterministic candidate scheduling, CA/trust
+propagation, selected/publication provenance on successes and failures,
+availability summaries, additive schema-v3 serialization and contextual human
+output. Focused assertions cover same-name three-ecosystem isolation, known /
+unknown / empty / outage scope, source/direct rejection without lookup,
+contributors and absent failure populations, original Python/npm evidence,
+scope/history disclosures, safe diagnostics, JSON verbosity equality,
+--resolved isolation, --ca-bundle and existing exit categories. Fixed-response
+429 permutations with valid/missing Retry-After yield identical public JSON and
+request schedules. Static discovery tests exclude alternate/nested/direct-file
+Ruby activation, ignore Gemfile contents, and verify retained lock bytes.
+
+Manually compared deterministic human/JSON fixture output with README.md,
+SPEC.md, CHANGELOG.md Unreleased Added and AGENTS.md ecosystem scope. Counts,
+values, source names, scope, history limitations and schema provenance agree.
+The temporary pre-activation-only assertion in tests/test_rubygems.py is retired;
+public activation and exclusion assertions now live in tests/test_mixed_scan.py.
+Existing internal and ecosystem policy behavior remains unchanged. Reused local
+Ruby fixtures; no new fixture files were needed. Approved spec/plan unchanged.
+`git diff --check` passed. No blockers or scope deviations.
+Phase 6 / T016 unstarted.

@@ -229,5 +229,88 @@ zipp==4.1.0
         self.assertEqual(code, 1)
 
 
+class RubyPublicCLITests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        for target in ('urllib.request.urlopen', 'urllib.request.OpenerDirector.open',
+                       'subprocess.Popen', 'os.system'):
+            guard = patch(target, side_effect=AssertionError('live HTTP or execution'))
+            guard.start()
+            self.addCleanup(guard.stop)
+
+    def run_cli(self, *args):
+        output, errors = io.StringIO(), io.StringIO()
+        with redirect_stdout(output), redirect_stderr(errors):
+            code = main([str(self.root), *args])
+        return code, output.getvalue(), errors.getvalue()
+
+    def test_lock_only_cli_json_verbosity_resolved_isolation_and_unchanged_target(self):
+        fixture = Path(__file__).parent / 'fixtures' / 'rubygems' / 'direct_scope.lock'
+        lock = self.root / 'Gemfile.lock'
+        before = fixture.read_bytes()
+        lock.write_bytes(before)
+        snapshot = self.root / 'resolved.txt'
+        snapshot.write_text('sample==99.0\nbundler==2.0\ntzinfo-data==1.0\n')
+        date = datetime(2024, 1, 1, tzinfo=timezone.utc)
+        def lookup(name, version):
+            return PyPIResult(name, version, date, version, date)
+        with patch('libyears.scan.RubyGemsAdapter.lookup', side_effect=lookup) as registry:
+            plain = self.run_cli('--json')
+            verbose = self.run_cli('--json', '--verbose')
+            resolved = self.run_cli('--json', '--resolved', str(snapshot))
+            human = self.run_cli()
+        self.assertEqual(plain, verbose)
+        self.assertEqual(plain, resolved)
+        self.assertEqual(plain[0], 0)
+        data = json.loads(plain[1])
+        self.assertEqual(data['ecosystems'], ['rubygems'])
+        self.assertEqual(data['summary']['dependencies_discovered'], 3)
+        self.assertEqual(data['summary']['dependencies_measured'], 1)
+        self.assertEqual(data['dependencies'][0]['used_version'], '1.0')
+        self.assertEqual([item['reason'] for item in data['unmeasurable']],
+                         ['lock_version_missing', 'lock_version_missing'])
+        self.assertEqual([call.args for call in registry.call_args_list], [('sample', '1.0')] * 4)
+        self.assertIn('Measured: 1 / 3', human[1])
+        self.assertIn('groups are not interpreted', human[1])
+        self.assertEqual(lock.read_bytes(), before)
+
+    def test_completed_no_source_empty_and_broken_source_reports_exit_zero(self):
+        (self.root / 'Gemfile').write_text('not executed')
+        cases = (None, 'empty_scope.lock', 'direct_scope.lock')
+        with patch('libyears.scan.RubyGemsAdapter.lookup', side_effect=AssertionError('no candidates')):
+            for fixture_name in cases:
+                with self.subTest(fixture=fixture_name):
+                    if fixture_name:
+                        fixture = Path(__file__).parent / 'fixtures' / 'rubygems' / fixture_name
+                        (self.root / 'Gemfile.lock').write_bytes(fixture.read_bytes())
+                    if fixture_name == 'direct_scope.lock':
+                        (self.root / 'Gemfile.lock').write_text('GEM\n  specs:\n\tbroken\n')
+                    code, output, errors = self.run_cli('--json')
+                    self.assertEqual((code, errors), (0, ''))
+                    data = json.loads(output)
+                    if fixture_name == 'direct_scope.lock':
+                        self.assertEqual(data['source_errors'][0]['reason'], 'invalid_lockfile')
+                        self.assertIsNone(data['summary']['dependencies_measured'])
+                    else:
+                        self.assertEqual(data['summary']['dependencies_measured'], 0)
+                        self.assertEqual(data['ecosystems'], ['rubygems'] if fixture_name else [])
+                        self.assertEqual(data['summary']['total_libyears'], 0.0)
+
+    def test_ruby_cli_ca_bundle_reaches_verified_adapter(self):
+        (self.root / 'Gemfile.lock').write_text(
+            'GEM\n  remote: https://rubygems.org\n  specs:\n'
+            '\nPLATFORMS\n  ruby\nDEPENDENCIES\n')
+        with patch('libyears.cli.ssl.create_default_context') as context, \
+             patch('libyears.scan.RubyGemsAdapter') as adapter:
+            adapter.return_value.tls_trust = 'explicit CA bundle'
+            code, human, errors = self.run_cli('--ca-bundle', 'approved.pem', '--verbose')
+        self.assertEqual((code, errors), (0, ''))
+        adapter.assert_called_once_with(ca_bundle='approved.pem')
+        context.assert_any_call(cafile='approved.pem')
+        self.assertIn('TLS trust: explicit CA bundle', human)
+
+
 if __name__ == "__main__":
     unittest.main()
