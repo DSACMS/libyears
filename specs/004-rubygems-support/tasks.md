@@ -2,9 +2,9 @@
 
 ## Status and authority
 
-**Feature 004: CONVERGED / COMPLETE.** T001–T020 are complete; T021 remains
-**Pending, unstarted**. Post-convergence retrospective is the only remaining
-lifecycle task; lifecycle closure is not yet claimed.
+**Feature 004: CONVERGED / COMPLETE.** T001–T021 are complete; the artifact
+lifecycle is closed. The [canonical retrospective](retrospective.md) records
+the post-convergence synthesis and evidence limits. No release or tag is implied.
 
 T018 completed at `ee79d35b79b82db6c8457cb14ba35bab39a43dc2`.
 The human-supplied completed Astra Medium T019 audit is authoritative; see
@@ -298,7 +298,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T021 — Write post-convergence retrospective
 
-- **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
+- **Status:** Complete; canonical synthesis fact-checked against repository artifacts and Git; chronology, local links and evidence qualifications checked; git diff --check passed. No deterministic rerun for prose only. See closure record below. **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** Create retrospective after convergence and completion reconciliation, including evidence about whether committed pre-review drafts improved durable reconstruction; distinguish observation from causal claims. Finish task bookkeeping and confirm clean tree after final authorized commit.
 - **Expected files:** specs/004-rubygems-support/retrospective.md; tasks.md.
 - **Acceptance criteria mapped:** Plan Documentation and Artifact Lifecycle.
@@ -696,5 +696,30 @@ The T019 record preserves the incomplete Low / completed Medium observation,
 repository-context sufficiency and distinct TLS inspection versus later Codex DNS
 history for T021. No causal claim about effort/model capability is established.
 Completion references and final diff checked; git diff --check passed.
-**T021 retrospective remains Pending, unstarted; no retrospective created.**
+**At T020, T021 remained Pending, unstarted; no retrospective had been created.**
 No live validation, external-root access, new review, release, tag or push.
+
+## T021 retrospective and lifecycle closure
+
+Created [retrospective.md](retrospective.md) after the completed T019/T020 gates.
+The canonical synthesis retains Candidate A's accessible Feature Story and
+concise narrative, and Candidate B's Feature 003 comparison, capability/access
+analysis and bounded Feature 005 experiments. Storytelling verdict: **MOSTLY**.
+Material Human Interventions distinguishes durable decisions from reconstructed
+triggers. T019 and the unblinded T021 comparison remain observational; the latter
+is n=1. Original selective TLS interception and later Codex native-resolution
+failure remain separate, with the exact resolver cause unresolved.
+
+Fact-checked counts, chronology, review transitions, successful-handoff limits,
+and local links against repository evidence. Reviewed the standalone Feature
+Story, concise intervention table and synthesis scope. Temporary candidates and
+reviews remain outside Git; no certificate material is tracked. Final diff
+inspected and git diff --check passed. T017's 289 tests / 52 acceptance witnesses
+and the accepted T018/T019 results remain historical evidence; no tests, live
+validation or convergence audit were rerun for prose-only T021.
+
+Current lifecycle references in ROADMAP, reviews and release-validation now link
+the completed retrospective; historical gate records remain intact. All 21 tasks
+are complete. The authorized local Conventional Commit is the final lifecycle
+change, followed by a clean-tree check. Feature 005, AGENT_ROUTING.md and the
+observation ledger remain future work; no release, tag or push.

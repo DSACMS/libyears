@@ -13,8 +13,9 @@ T019 subsequently completed: the authoritative Medium independent audit found
 this release evidence SUFFICIENT and returned CONVERGED. See
 [the convergence record](reviews.md#t019-independent-convergence) for completion
 and the separate TLS inspection and later native-resolver observations. T020 feature
-bookkeeping is complete; T021 retrospective remains pending, unstarted. Earlier
-stopping instructions below describe their historical task boundaries.
+bookkeeping and the [T021 retrospective](retrospective.md) are complete; the
+artifact lifecycle is closed. Earlier stopping instructions below describe their
+historical task boundaries.
 
 ## Successful manual release evidence
 

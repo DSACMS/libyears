@@ -1,7 +1,8 @@
 # Feature 004 Reviews
 
 **Feature status:** CONVERGED / COMPLETE; T020 bookkeeping complete.
-**Lifecycle:** T021 retrospective pending, unstarted.
+**Lifecycle:** T021 complete; [canonical retrospective](retrospective.md) recorded,
+artifact lifecycle closed.
 
 The completed T019 Medium review below is authoritative. Earlier approval,
 pending and next-gate statuses are historical; approved contracts are unchanged.
@@ -643,4 +644,5 @@ npm 10/10 and RubyGems 67/69 measurement, human/schema-v3 JSON agreement, Ruby
 provenance and target integrity; separate smoke REDUNDANT. The release record
 preserves the limit that Codex did not independently inspect the successful raw
 JSON. Medium judged that release evidence SUFFICIENT and repository context
-sufficient. T020 records feature completion; **T021 remains pending, unstarted**.
+sufficient. T020 recorded feature completion; **T021 was then pending, unstarted**.
+The subsequent [T021 retrospective](retrospective.md) closes the artifact lifecycle.

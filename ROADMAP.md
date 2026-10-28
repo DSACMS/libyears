@@ -213,12 +213,12 @@ new radar state.
 
 **Area:** RubyGems
 
-**Outcome:** Feature 004 is CONVERGED / COMPLETE through T020. Bounded direct
+**Outcome:** Feature 004 is CONVERGED / COMPLETE through T021. Bounded direct
 Gemfile.lock measurement is implemented without Ruby/Bundler execution.
 T018 accepted authorized dpc-admin human/JSON evidence (RubyGems 67/69;
 repository 77/79); T019 completed independent convergence with 52/52 acceptance
-criteria covered and no material findings. T021 retrospective remains pending,
-unstarted; full artifact lifecycle closure is not yet claimed.
+criteria covered and no material findings. T021's canonical retrospective is
+complete; the artifact lifecycle is closed.
 
 Interpreted Gemfile group/production scope remains the separate EXPLORE entry
 above and is not authorized by this completion. No release or tag is implied.
@@ -229,6 +229,7 @@ above and is not authorized by this completion. No release or tag is implied.
 - [Feature 004 completion](specs/004-rubygems-support/tasks.md#t020-completion-reconciliation)
 - [Independent convergence](specs/004-rubygems-support/reviews.md#t019-independent-convergence)
 - [Release validation](specs/004-rubygems-support/release-validation.md)
+- [Canonical retrospective](specs/004-rubygems-support/retrospective.md)
 
 ## How Opportunities Move
 
