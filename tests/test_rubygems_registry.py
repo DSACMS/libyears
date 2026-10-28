@@ -21,7 +21,7 @@ def artifact(**changes):
     return row
 
 
-class RegistryPopulationTests(unittest.TestCase):
+class RegistryTestCase(unittest.TestCase):
     def setUp(self):
         self.prohibit_live = patch('urllib.request.urlopen', side_effect=AssertionError('live HTTP'))
         self.prohibit_live.start()
@@ -39,6 +39,8 @@ class RegistryPopulationTests(unittest.TestCase):
         self.opener.open.side_effect = [BoundedResponse(identity), BoundedResponse(body)]
         return self.adapter.fetch_population('sample', '1.0')
 
+
+class RegistryPopulationTests(RegistryTestCase):
     def test_fixed_endpoint_order_case_identity_and_nameless_population(self):
         self.opener.open.side_effect = [
             BoundedResponse((FIXTURES / filename).read_bytes())
@@ -201,3 +203,147 @@ class RegistryPopulationTests(unittest.TestCase):
             [artifact(extra=True), artifact(extra=1)],
         ):
             self.assertEqual(self.fetch(population).reason, 'invalid_registry_response')
+
+
+class PublicationTests(RegistryTestCase):
+    def lookup(self, population, version='1.0'):
+        self.opener.open.side_effect = [
+            BoundedResponse(b'{"name":"sample"}'),
+            BoundedResponse(json.dumps(population).encode()),
+        ]
+        return self.adapter.lookup('sample', version)
+
+    def test_earliest_across_platforms_retains_every_admissible_contributor(self):
+        rows = [artifact(platform='java', created_at='2021-01-01T00:00:00Z'),
+                artifact(created_at='2020-01-01T02:00:00.123456+02:00'),
+                artifact(platform='x86_64-linux', created_at='invalid'),
+                artifact(number='2.0', created_at='2022-01-01T00:00:00Z')]
+        original = self.lookup(rows)
+        self.assertEqual(original.used_release_time.isoformat(), '2020-01-01T00:00:00.123456+00:00')
+        self.assertEqual(original.latest_stable_version, '2.0')
+        self.assertEqual([a.platform for a in original.rubygems_evidence.used_publication_artifacts],
+                         ['java', 'ruby'])
+        self.assertEqual(original, self.lookup(list(reversed(rows))))
+
+    def test_invalid_missing_naive_and_import_day_are_individually_excluded(self):
+        for value in (None, '', 'invalid', 123, '2024-01-01T00:00:00',
+                      '2009-07-25T00:00:00Z', '2009-07-25T23:59:59.999999Z',
+                      '2009-07-24T22:00:00-02:00', '2009-07-26T01:59:59+02:00'):
+            with self.subTest(value=value):
+                row = artifact(created_at=value, built_at='2024-01-01T00:00:00Z')
+                self.assertEqual(self.lookup([row]).reason, 'release_date_missing')
+                result = self.lookup([row, artifact(platform='java')])
+                self.assertEqual(len(result.rubygems_evidence.used_publication_artifacts), 1)
+        row = artifact()
+        del row['created_at']
+        self.assertEqual(self.lookup([row]).reason, 'release_date_missing')
+        for value in ('2009-07-25T00:00:00+00:01', '2009-07-25T23:59:59-00:01'):
+            self.assertNotIsInstance(self.lookup([artifact(created_at=value)]), RegistryFailure)
+
+    def test_authoritative_equivalent_times_and_contradictions(self):
+        for value in ('2020-01-01T00:00:00Z', '2020-01-01T01:00:00+01:00'):
+            self.assertNotIsInstance(self.lookup([artifact(version_created_at=value)]), RegistryFailure)
+        row = artifact(version_created_at='2021-01-01T00:00:00Z')
+        self.assertEqual(self.lookup([row]).reason, 'invalid_registry_response')
+        row = artifact(version_created_at='2020-01-01T00:00:00Z')
+        del row['created_at']
+        self.assertNotIsInstance(self.lookup([row]), RegistryFailure)
+        for value in ('invalid', None, '2020-01-01T00:00:00'):
+            self.assertEqual(self.lookup([artifact(version_created_at=value)]).reason,
+                             'invalid_registry_response')
+
+    def test_registry_validation_precedes_used_absence_date_and_stable_absence(self):
+        cases = [
+            ([artifact(number='2.0', prerelease=None)], 'invalid_registry_response'),
+            ([artifact(number='2.0')], 'version_not_found'),
+            ([artifact(created_at=None, prerelease=True)], 'release_date_missing'),
+            ([artifact(prerelease=True)], 'no_stable_release'),
+        ]
+        for rows, reason in cases:
+            self.assertEqual(self.lookup(rows).reason, reason)
+        rows = [artifact(number='9.0', prerelease=True),
+                artifact(number='9.0', platform='java', prerelease=False)]
+        for population in (rows, list(reversed(rows))):
+            self.assertEqual(self.lookup(population).reason, 'invalid_registry_response')
+        self.assertEqual(self.lookup([]).reason, 'version_not_found')
+        self.assertEqual(self.lookup([artifact(ruby_abi='3.2')]).reason, 'version_not_found')
+
+    def test_latest_uses_dates_then_exact_lexical_ties_and_ignores_labels(self):
+        rows = [artifact(), artifact(number='10', created_at='2022-01-01T00:00:00Z'),
+                artifact(number='2', created_at='2022-01-01T00:00:00Z'),
+                artifact(number='99', created_at='2021-01-01T00:00:00Z'),
+                artifact(number='3', created_at='2023-01-01T00:00:00Z', prerelease=True),
+                artifact(number='4', created_at='invalid'),
+                artifact(number='5', created_at='2024-01-01T00:00:00Z', ruby_abi='3.2')]
+        for population in (rows, list(reversed(rows))):
+            self.assertEqual(self.lookup(population).latest_stable_version, '10')
+        rows[-1] = artifact(number='5', created_at='2024-01-01T00:00:00Z')
+        self.assertEqual(self.lookup(rows).latest_stable_version, '5')
+
+    def test_prerelease_used_and_failure_keeps_safely_established_contributors(self):
+        rows = [artifact(number='1.0.pre', prerelease=True), artifact(number='2.0')]
+        result = self.lookup(rows, '1.0.pre')
+        self.assertEqual(result.latest_stable_version, '2.0')
+        failure = self.lookup(rows[:1], '1.0.pre')
+        self.assertEqual(failure.reason, 'no_stable_release')
+        self.assertEqual(len(failure.rubygems_evidence.used_publication_artifacts), 1)
+        self.assertIsNone(failure.rubygems_evidence.latest_publication_artifacts)
+
+    def test_normalized_yanked_evidence_contributes_but_cannot_be_latest(self):
+        from datetime import datetime, timezone
+        from libyears.rubygems_registry import RubyArtifactRecord, _resolve_population
+
+        def record(version, platform, year, available, yanked):
+            return RubyArtifactRecord(version, platform, datetime(year, 1, 1, tzinfo=timezone.utc),
+                                      False, available, yanked)
+
+        rows = (record('1.0', 'ruby', 2020, True, None),
+                record('1.0', 'java', 2019, False, True),
+                record('2.0', 'ruby', 2022, False, True))
+        result = _resolve_population('sample', '2.0', rows)
+        self.assertEqual(result.latest_stable_version, '1.0')
+        self.assertEqual(result.latest_stable_release_time.year, 2019)
+        self.assertTrue(result.rubygems_evidence.used_publication_artifacts[0].yanked)
+        self.assertEqual(len(result.rubygems_evidence.latest_publication_artifacts), 2)
+        self.assertEqual(_resolve_population('sample', '2.0', rows[-1:]).reason, 'no_stable_release')
+
+    def test_same_version_zero_and_existing_metric_arithmetic(self):
+        from libyears.metric import measure_dependency
+        from libyears.model import Dependency
+
+        def measure(result):
+            return measure_dependency(Dependency(
+                'rubygems', result.name, result.used_version, result.used_release_time,
+                result.latest_stable_version, result.latest_stable_release_time,
+                'gemfile_lock', result.rubygems_evidence,
+            ))
+
+        same = self.lookup([artifact(), artifact(platform='java', created_at='2021-01-01T00:00:00Z')])
+        self.assertIs(same.rubygems_evidence.used_publication_artifacts,
+                      same.rubygems_evidence.latest_publication_artifacts)
+        self.assertEqual(measure(same).libyears, 0.0)
+        self.assertFalse(measure(same).timestamp_anomaly)
+        negative = self.lookup([artifact(prerelease=True, created_at='2024-01-01T00:00:00Z'),
+                                artifact(number='2.0')])
+        self.assertEqual(measure(negative).libyears, 0.0)
+        self.assertTrue(measure(negative).timestamp_anomaly)
+        positive = self.lookup([artifact(), artifact(number='2.0', created_at='2021-01-01T00:00:00Z')])
+        self.assertAlmostEqual(measure(positive).libyears, 366 / 365.25)
+        self.assertFalse(measure(positive).timestamp_anomaly)
+
+    def test_canonical_helper_excludes_naive_and_import_dates_and_sorts_evidence(self):
+        from datetime import datetime, timezone
+        from libyears.rubygems_registry import RubyArtifactRecord, canonical_publication
+
+        records = tuple(RubyArtifactRecord('1.0', platform, timestamp, False, True)
+                        for platform, timestamp in (
+                            ('ruby', datetime(2020, 1, 1, tzinfo=timezone.utc)),
+                            ('java', datetime(2019, 1, 1, tzinfo=timezone.utc)),
+                            ('linux', datetime(2009, 7, 25, tzinfo=timezone.utc)),
+                            ('other', datetime(2018, 1, 1)),
+                        ))
+        publication = canonical_publication(records)
+        self.assertEqual(publication.publication_time.year, 2019)
+        self.assertEqual([a.platform for a in publication.artifacts], ['java', 'ruby'])
+        self.assertEqual(publication, canonical_publication(tuple(reversed(records))))
+        self.assertIsNone(canonical_publication(records[2:]))

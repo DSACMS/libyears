@@ -196,7 +196,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T012 — Canonicalize publication and select stable evidence
 
-- **Status:** Pending; **Phase:** 4; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_rubygems_registry tests.test_metric` (34 tests passed); **Phase:** 4; **Parallelizable:** No.
 - **Objective and approved scope:** Implement canonical_publication and shared per-version canonical results only over T011 evidence that has passed Ruby transport enforcement and population validation. Retain every admissible contributor; apply UTC precision/import-day exclusion, supported observable artifact rules, latest eligibility/ties and registry failure precedence. Use existing metric calls for zero/anomaly arithmetic.
 - **Expected files:** libyears/rubygems_registry.py; tests/test_rubygems_registry.py; publication fixtures.
 - **Acceptance criteria mapped:** 21–29, 51 (publication semantics), 50 (registry precedence).

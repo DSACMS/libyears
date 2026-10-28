@@ -1,12 +1,12 @@
 """Bounded public RubyGems metadata; no repository or resolver access."""
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 import json
 import re
 from urllib.parse import quote
 
-from .model import RegistryFailure
+from .model import RegistryFailure, RegistryResult, RubyGemsEvidence, RubyPublicationArtifact
 from .registry import TransportFailure, VerifiedJSONTransport
 
 
@@ -123,6 +123,78 @@ def _population(payload, name):
     return tuple(records)
 
 
+@dataclass(frozen=True, slots=True)
+class CanonicalPublication:
+    """One version date and every admissible supported contributor."""
+
+    publication_time: datetime
+    artifacts: tuple[RubyPublicationArtifact, ...]
+
+
+def canonical_publication(records: tuple[RubyArtifactRecord, ...]) -> CanonicalPublication | None:
+    """Use earliest admissible observable creation, including known yanked rows."""
+    artifacts = []
+    for record in records:
+        timestamp = record.publication_time
+        if timestamp is None or timestamp.tzinfo is None or timestamp.utcoffset() is None:
+            continue
+        timestamp = timestamp.astimezone(timezone.utc)
+        if timestamp.date() == date(2009, 7, 25):
+            continue
+        artifacts.append(RubyPublicationArtifact(
+            record.version, record.platform, timestamp, record.yanked,
+        ))
+    if not artifacts:
+        return None
+    artifacts.sort(key=lambda artifact: (
+        artifact.version, artifact.platform, artifact.publication_time,
+    ))
+    return CanonicalPublication(
+        min(artifact.publication_time for artifact in artifacts), tuple(artifacts),
+    )
+
+
+def _resolve_population(name, used_version, records):
+    """Select package versions using one shared canonical result per version."""
+    versions = {}
+    for record in records:
+        versions.setdefault(record.version, []).append(record)
+    # Classification is a version property even across distinct platforms.
+    for group in versions.values():
+        if len({record.prerelease for record in group}) != 1:
+            return RegistryFailure(name, used_version, 'invalid_registry_response',
+                                   'contradictory prerelease classification')
+    if used_version not in versions:
+        return RegistryFailure(name, used_version, 'version_not_found',
+                               'used version not publicly observable in supported artifacts')
+    publications = {
+        version: canonical_publication(tuple(group)) for version, group in versions.items()
+    }
+    used = publications[used_version]
+    if used is None:
+        return RegistryFailure(name, used_version, 'release_date_missing',
+                               'no admissible observable used publication date')
+    evidence = RubyGemsEvidence((), used.artifacts)
+    eligible = []
+    for version, group in versions.items():
+        publication = publications[version]
+        if publication is not None and any(
+            record.available and not record.prerelease and record.yanked is not True
+            for record in group
+        ):
+            eligible.append(version)
+    if not eligible:
+        return RegistryFailure(name, used_version, 'no_stable_release',
+                               'no supported available stable publication', evidence)
+    # Sort lexical ties first; max() retains that first version on equal dates.
+    latest_version = max(sorted(eligible), key=lambda version: publications[version].publication_time)
+    latest = publications[latest_version]
+    return RegistryResult(
+        name, used_version, used.publication_time, latest_version, latest.publication_time,
+        RubyGemsEvidence((), used.artifacts, latest.artifacts),
+    )
+
+
 class RubyGemsAdapter:
     """Fetch independent identity then complete bounded public population."""
 
@@ -170,3 +242,10 @@ class RubyGemsAdapter:
                     return _population(payload, registry_name)
             except (ValueError, TypeError, UnicodeError, RecursionError):
                 return failure('invalid_registry_response', 'invalid registry metadata')
+
+    def lookup(self, name: str, used_version: str) -> RegistryResult | RegistryFailure:
+        """Resolve used/latest timestamps solely from admitted public evidence."""
+        records = self.fetch_population(name, used_version)
+        if isinstance(records, RegistryFailure):
+            return records
+        return _resolve_population(name, used_version, records)
