@@ -59,28 +59,55 @@ def _row(text: str, *, spec: bool = False) -> tuple[str, str | None, bool]:
     return name, value, bool(pin)
 
 
+_METADATA_KEYS = {
+    'GEM': {'remote'},
+    'PATH': {'remote'},
+    'GIT': {'remote', 'revision', 'branch', 'ref', 'tag', 'submodules', 'glob'},
+}
+
+
+def _parse_source(section, rows, heading_line, source_index):
+    metadata = []
+    keys = set()
+    specs = []
+    in_specs = False
+    for number, text in rows:
+        if text == '  specs:':
+            if in_specs:
+                raise ValueError('repeated specs field')
+            in_specs = True
+        elif text.startswith('  ') and not text.startswith('   '):
+            if in_specs:
+                raise ValueError('metadata after specs')
+            key, separator, value = text[2:].partition(': ')
+            if not separator or not value.strip():
+                raise ValueError('invalid metadata framing')
+            if key not in _METADATA_KEYS[section]:
+                raise ValueError('unsupported source field')
+            if key in keys and not (section == 'GEM' and key == 'remote'):
+                raise ValueError('duplicate source field')
+            keys.add(key)
+            metadata.append((key, value))
+        elif text.startswith('    ') and not text.startswith('     ') and in_specs:
+            name, selection, _ = _row(text[4:], spec=True)
+            specs.append(LockSpec(name, selection, source_index, number))
+        elif text.startswith('      ') and not text.startswith('       ') and in_specs:
+            if not specs:
+                raise ValueError('orphan nested row')
+            _, _, pin = _row(text[6:])
+            if pin:
+                raise ValueError('nested source pin')
+        else:
+            raise ValueError('invalid source framing')
+    if not in_specs:
+        raise ValueError('missing specs field')
+    return LockSource(section, tuple(metadata), tuple(specs), heading_line)
+
+
 def _parse_section(section, rows, heading_line, source_index):
     """Validate a complete section before exposing any of its records."""
-    if section == 'GEM':
-        metadata = []
-        specs = []
-        in_specs = False
-        for number, text in rows:
-            if text == '  specs:' and not in_specs:
-                in_specs = True
-            elif text.startswith('  remote: ') and not in_specs:
-                value = text[len('  remote: '):]
-                if not value.strip():
-                    raise ValueError('empty metadata')
-                metadata.append(('remote', value))
-            elif text.startswith('    ') and not text.startswith('     ') and in_specs:
-                name, selection, _ = _row(text[4:], spec=True)
-                specs.append(LockSpec(name, selection, source_index, number))
-            else:
-                raise ValueError('invalid source framing')
-        if not in_specs:
-            raise ValueError('missing specs field')
-        return LockSource(section, tuple(metadata), tuple(specs), heading_line)
+    if section in ('GEM', 'GIT', 'PATH'):
+        return _parse_source(section, rows, heading_line, source_index)
     if section == 'DEPENDENCIES':
         dependencies = []
         names = set()
@@ -141,11 +168,11 @@ def parse_lockfile(text: str) -> ParsedGemfileLock | LockParseFailure:
     seen = set()
     for section, rows, number in sections:
         try:
-            if section != 'GEM' and section in seen:
+            if section not in _METADATA_KEYS and section in seen:
                 raise ValueError('repeated singleton section')
             seen.add(section)
             result = _parse_section(section, rows, number, len(sources))
-            if section == 'GEM':
+            if section in _METADATA_KEYS:
                 sources.append(result)
             elif section == 'DEPENDENCIES':
                 dependencies = result

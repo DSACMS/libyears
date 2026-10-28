@@ -86,7 +86,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T002 — Isolate source envelopes and nested rows
 
-- **Status:** Pending; **Phase:** 1; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_gemfile_lock` (8 tests passed); **Phase:** 1; **Parallelizable:** No.
 - **Objective and approved scope:** Extend syntax handling for repeated GEM and allowed GIT/PATH envelopes, exact indentation and nested ownership. Preserve multiple GEM remotes and unsupported isolated selection tokens. Validate nested framing without evaluating safely delimited requirements.
 - **Expected files:** libyears/gemfile_lock.py; tests/test_gemfile_lock.py; parser fixtures.
 - **Acceptance criteria mapped:** 04, 49.

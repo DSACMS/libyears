@@ -52,3 +52,51 @@ class StructureTests(unittest.TestCase):
             with self.subTest(suffix=suffix):
                 self.assertIsInstance(parse_lockfile(EMPTY + suffix), LockParseFailure)
         self.assertIsInstance(parse_lockfile(EMPTY + '  rack\n  rack\n'), LockParseFailure)
+
+
+class SourceEnvelopeTests(unittest.TestCase):
+    def test_repeated_sources_preserve_metadata_and_duplicate_specs(self):
+        source = ('GEM\n  remote: https://rubygems.org\n  remote: private-value\n'
+                  '  specs:\n    rack (unsupported+selection)\n'
+                  '      child (arbitrary || requirement)\n      bare\n')
+        result = parse_lockfile(source + EMPTY)
+        self.assertIsInstance(result, ParsedGemfileLock)
+        self.assertEqual(len(result.sources), 2)
+        self.assertEqual(result.sources[0].metadata,
+                         (('remote', 'https://rubygems.org'), ('remote', 'private-value')))
+        self.assertEqual(result.sources[0].specs[0].raw_selection, 'unsupported+selection')
+        self.assertEqual(result.sources[0].specs[0].source_index, 0)
+        self.assertEqual(result.dependencies, ())
+
+    def test_git_path_allowlists_and_ownership(self):
+        git = ('GIT\n  remote: inert-private\n  revision: abc\n  branch: main\n'
+               '  ref: ref\n  tag: tag\n  submodules: true\n  glob: *.gemspec\n'
+               '  specs:\n    rack (1)\n      child (~> 1)\n')
+        path = 'PATH\n  remote: ../inert\n  specs:\n    rack (2)\n'
+        result = parse_lockfile(EMPTY + git + path)
+        self.assertIsInstance(result, ParsedGemfileLock)
+        self.assertEqual([s.kind for s in result.sources], ['GEM', 'GIT', 'PATH'])
+        self.assertEqual([s.specs[0].source_index for s in result.sources[1:]], [1, 2])
+        for kind in ('GIT', 'PATH'):
+            text = f'{kind}\n  remote: one\n  remote: two\n  specs:\n'
+            self.assertIsInstance(parse_lockfile(EMPTY + text), LockParseFailure)
+
+    def test_unsafe_source_and_nested_framing(self):
+        for body in ('      orphan\n', '    rack (1)\n      child (>= 1\n',
+                     '    rack (1)\n      child ((1))\n',
+                     '    rack (1)\n      child (1) trailing\n',
+                     '    rack (1) trailing\n', '     rack (1)\n',
+                     '    rack (1)\n       child\n', '    rack (1)\n      child!\n',
+                     '  remote: misplaced\n', '  specs:\n', '\tchild\n'):
+            with self.subTest(body=body):
+                result = parse_lockfile(EMPTY + 'GEM\n  specs:\n' + body)
+                self.assertIsInstance(result, LockParseFailure)
+                self.assertEqual(result.reason, 'invalid_lockfile')
+
+    def test_nested_requirements_are_inert(self):
+        for requirement in ('>= 1', 'unsupported || syntax', '', '!= 1, < 2'):
+            text = EMPTY.replace('  specs:', '  specs:\n    rack (1)\n'
+                                 f'      child ({requirement})')
+            result = parse_lockfile(text)
+            self.assertIsInstance(result, ParsedGemfileLock)
+            self.assertEqual(result.dependencies, ())
