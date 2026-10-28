@@ -298,6 +298,48 @@ class RubyPublicCLITests(unittest.TestCase):
                         self.assertEqual(data['ecosystems'], ['rubygems'] if fixture_name else [])
                         self.assertEqual(data['summary']['total_libyears'], 0.0)
 
+    def test_population_budget_failures_never_become_cli_metrics_or_modify_target(self):
+        from http.client import IncompleteRead
+        from unittest.mock import Mock
+        from libyears.rubygems_registry import MAX_RESPONSE_BYTES, RubyGemsAdapter
+        from tests.test_registry import BoundedResponse
+        from tests.test_rubygems_registry import FakeClock, artifact
+        lock = self.root / 'Gemfile.lock'
+        lock.write_text('GEM\n  remote: https://rubygems.org\n  specs:\n'
+                        '    sample (1.0)\n\nPLATFORMS\n  ruby\nDEPENDENCIES\n  sample\n')
+        (self.root / 'Gemfile').write_text('raise "must not execute"\n')
+        before = {path.name: path.read_bytes() for path in self.root.iterdir()}
+        body = json.dumps([artifact()]).encode()
+        cases = (
+            BoundedResponse(body, {'Content-Length': str(MAX_RESPONSE_BYTES + 1)}),
+            BoundedResponse(body, {'Content-Length': str(len(body) + 1)}),
+            BoundedResponse(b'', read_error=IncompleteRead(body, 1)),
+        )
+        for response in cases:
+            with self.subTest(headers=response.headers, error=response.read_error):
+                opener = Mock()
+                opener.open.side_effect = [BoundedResponse(b'{"name":"sample"}'), response]
+                clock = FakeClock()
+                with patch('libyears.registry.request.build_opener', return_value=opener):
+                    adapter = RubyGemsAdapter(monotonic=clock.monotonic, sleep=clock.sleep)
+                with patch('libyears.scan.RubyGemsAdapter', return_value=adapter):
+                    code, output, errors = self.run_cli('--json')
+                self.assertEqual((code, errors), (0, ''))
+                data = json.loads(output)
+                self.assertEqual(data['dependencies'], [])
+                self.assertEqual(data['source_errors'], [])
+                failure = data['unmeasurable'][0]
+                self.assertEqual((failure['name'], failure['declared'], failure['reason']),
+                                 ('sample', 'sample', 'invalid_registry_response'))
+                self.assertEqual(failure['rubygems_evidence'], {'selected_artifacts': [
+                    {'version': '1.0', 'platform': 'ruby', 'source': 'https://rubygems.org'}]})
+                self.assertEqual(data['summary']['dependencies_discovered'], 1)
+                self.assertEqual(data['summary']['dependencies_measured'], 0)
+                self.assertEqual(data['summary']['coverage'], 0.0)
+                self.assertEqual(data['summary']['total_libyears'], 0.0)
+                self.assertEqual(opener.open.call_count, 2)
+                self.assertEqual({path.name: path.read_bytes() for path in self.root.iterdir()}, before)
+
     def test_ruby_cli_ca_bundle_reaches_verified_adapter(self):
         (self.root / 'Gemfile.lock').write_text(
             'GEM\n  remote: https://rubygems.org\n  specs:\n'

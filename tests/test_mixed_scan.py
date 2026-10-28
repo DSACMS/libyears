@@ -793,6 +793,92 @@ class RubyPublicScanTests(unittest.TestCase):
                 self.assertEqual(adapter.transport.get.call_count, 1)
             self.assertEqual(outcomes[0], outcomes[1])
 
+    def test_composed_precedence_rejects_structure_before_local_and_registry(self):
+        from libyears.rubygems_registry import RubyGemsAdapter
+        from tests.test_rubygems_registry import FakeClock
+        clock = FakeClock()
+        adapter = RubyGemsAdapter(monotonic=clock.monotonic, sleep=clock.sleep)
+        adapter.transport = Mock()
+        # The valid direct reaches registry validation; the other fails locally.
+        base = self.write_lock(specs=('alpha (1.0)',), directs=('alpha', 'missing (*)!'))
+        for suffix, reason in (('CHECKSUMS\n  ignored\n', 'unsupported_lockfile_format'),
+                               ('CHECKSUMS\n  ignored\n<<<<<<< conflict\n', 'invalid_lockfile'),
+                               ('<<<<<<< conflict\nCHECKSUMS\n  ignored\n', 'invalid_lockfile')):
+            with self.subTest(reason=reason, suffix=suffix):
+                (self.root / 'Gemfile.lock').write_text(base + suffix)
+                data = json.loads(format_json(self.scan(rubygems_adapter=adapter), '.'))
+                self.assertEqual(data['source_errors'], [
+                    {'ecosystem': 'rubygems', 'source': 'Gemfile.lock', 'reason': reason}])
+                self.assertEqual(data['unmeasurable'], [])
+                self.assertIsNone(data['summary']['dependencies_discovered'])
+                adapter.transport.get.assert_not_called()
+        (self.root / 'Gemfile.lock').write_text(base)
+        adapter.transport.get.side_effect = [b'{"name":"alpha"}', b'[{}]']
+        data = json.loads(format_json(self.scan(rubygems_adapter=adapter), '.'))
+        self.assertEqual(data['source_errors'], [])
+        self.assertEqual({row['name']: row['reason'] for row in data['unmeasurable']},
+                         {'missing': 'unsupported_requirement', 'alpha': 'invalid_registry_response'})
+        self.assertEqual(adapter.transport.get.call_count, 2)
+        self.assertEqual(data['summary']['dependencies_discovered'], 2)
+        self.assertEqual(data['summary']['coverage'], 0.0)
+
+    def test_public_namesakes_with_conflicting_authority_never_reach_http(self):
+        from libyears.rubygems_registry import RubyGemsAdapter
+        from tests.test_rubygems import source_block
+        public = source_block(specs=('alpha (1.0)',))
+        tail = '\nPLATFORMS\n  ruby\nDEPENDENCIES\n  alpha\n'
+        for rejected in (source_block(remotes=('https://user:secret@private.invalid',),
+                                      specs=('alpha (1.0)',)),
+                         source_block('GIT', specs=('alpha (1.0)',)),
+                         source_block('PATH', specs=('alpha (1.0)',)),
+                         source_block(remotes=('https://rubygems.org', 'https://private.invalid'),
+                                      specs=('alpha (1.0)',))):
+            for blocks in (public + rejected, rejected + public):
+                with self.subTest(blocks=blocks):
+                    (self.root / 'Gemfile.lock').write_text(blocks + tail)
+                    adapter = RubyGemsAdapter()
+                    adapter.transport = Mock()
+                    report = self.scan(rubygems_adapter=adapter)
+                    adapter.transport.get.assert_not_called()
+                    data = json.loads(format_json(report, '.'))
+                    self.assertEqual(data['dependencies'], [])
+                    self.assertEqual(data['unmeasurable'][0]['reason'], 'unsupported_dependency_source')
+                    self.assertEqual(data['summary']['dependencies_discovered'], 1)
+                    self.assertNotIn('secret', format_human(report, '.', verbose=True))
+
+    def test_canonical_population_contributors_survive_public_serialization(self):
+        from libyears.rubygems_registry import RubyGemsAdapter
+        from tests.test_rubygems_registry import FakeClock, artifact
+        self.write_lock(specs=('alpha (1.0-java)', 'alpha (1.0)'), directs=('alpha',))
+        rows = [artifact(platform='java', created_at='2021-01-01T00:00:00Z'),
+                artifact(created_at='2020-01-01T02:00:00.123456+02:00'),
+                artifact(platform='x86_64-linux', created_at='invalid'),
+                artifact(number='2.0', created_at='2022-01-01T00:00:00Z')]
+        outputs = []
+        for population in (rows, list(reversed(rows))):
+            clock = FakeClock()
+            adapter = RubyGemsAdapter(monotonic=clock.monotonic, sleep=clock.sleep)
+            adapter.transport = Mock()
+            adapter.transport.get.side_effect = [b'{"name":"Alpha"}', json.dumps(population).encode()]
+            outputs.append(json.loads(format_json(self.scan(rubygems_adapter=adapter), '.')))
+        self.assertEqual(outputs[0], outputs[1])
+        row = outputs[0]['dependencies'][0]
+        self.assertEqual(row['used_release_time'], '2020-01-01T00:00:00.123456Z')
+        self.assertEqual(row['latest_stable_release_time'], '2022-01-01T00:00:00Z')
+        evidence = row['rubygems_evidence']
+        self.assertEqual(evidence['selected_artifacts'], [
+            {'version': '1.0', 'platform': platform, 'source': 'https://rubygems.org'}
+            for platform in ('java', 'ruby')])
+        self.assertEqual(evidence['used_publication_artifacts'], [
+            {'version': '1.0', 'platform': 'java', 'publication_time': '2021-01-01T00:00:00Z'},
+            {'version': '1.0', 'platform': 'ruby', 'publication_time': '2020-01-01T00:00:00.123456Z'}])
+        self.assertEqual(evidence['latest_publication_artifacts'], [
+            {'version': '2.0', 'platform': 'ruby', 'publication_time': '2022-01-01T00:00:00Z'}])
+        elapsed = (datetime(2022, 1, 1, tzinfo=timezone.utc)
+                   - datetime(2020, 1, 1, microsecond=123456, tzinfo=timezone.utc)).total_seconds()
+        self.assertAlmostEqual(row['libyears'], elapsed / (86400 * 365.25))
+        self.assertEqual(outputs[0]['summary']['total_libyears'], row['libyears'])
+
     def test_ruby_adapter_receives_ca_and_reports_active_trust(self):
         self.write_lock()
         with patch('libyears.scan.RubyGemsAdapter') as factory:

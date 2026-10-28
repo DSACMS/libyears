@@ -240,7 +240,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T016 — Close unique end-to-end verification gaps
 
-- **Status:** Pending; **Phase:** 6; **Parallelizable:** No.
+- **Status:** Complete; verification: four added methods (4 tests passed), then `python -m unittest tests.test_mixed_scan tests.test_output tests.test_cli` (66 tests passed); **Phase:** 6; **Parallelizable:** No.
 - **Objective and approved scope:** Add only cross-boundary cases not already established by component and activation tests: combined structural/local/registry precedence, authority-to-no-HTTP guarantees, canonical contributors through serialization, artifact population failures through CLI and unchanged targets. Audit all AC ownership against actual test assertions; do not duplicate component tables or introduce behavior.
 - **Expected files:** tests/test_mixed_scan.py; tests/test_output.py; tests/test_cli.py; tests/fixtures/rubygems/; tasks.md.
 - **Acceptance criteria mapped:** 04, 13, 32, 38–39, 43–45, 50 (cross-boundary verification).
@@ -484,3 +484,24 @@ Existing internal and ecosystem policy behavior remains unchanged. Reused local
 Ruby fixtures; no new fixture files were needed. Approved spec/plan unchanged.
 `git diff --check` passed. No blockers or scope deviations.
 Phase 6 / T016 unstarted.
+
+
+## Phase 6 T016 execution evidence
+
+Four unique full-path cases added in tests/test_mixed_scan.py and tests/test_cli.py:
+structural/unsupported/local/registry precedence; private/GIT/PATH/multiple-remote
+public namesakes blocked before transport in both source orders; canonical
+contributors, UTC precision and arithmetic through public serialization under
+population permutations; and real bounded transport oversize/short-body/
+IncompleteRead failures through CLI with no partial metric or publication arrays.
+CLI fixture files and directory membership remain unchanged. Existing public
+cooldown permutation assertions cover fixed valid/missing Retry-After outcomes;
+those cases were reused rather than duplicated. No runtime behavior changed.
+
+Focused verification: the four added methods passed (4 tests), then
+`python -m unittest tests.test_mixed_scan tests.test_output tests.test_cli`
+passed (66 tests), including existing cooldown and serialization assertions.
+All checks were offline with live HTTP/process guards, local responses and fake
+clocks. Diff inspected; `git diff --check` passed. No product/architecture gaps
+or scope deviations. AC ownership remains as mapped above; T017 records the
+complete assertion-level audit and final deterministic gate. T017 unstarted.
