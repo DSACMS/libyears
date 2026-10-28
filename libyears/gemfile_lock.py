@@ -66,7 +66,7 @@ _METADATA_KEYS = {
 }
 
 
-def _parse_source(section, rows, heading_line, source_index):
+def _parse_source(section, rows, heading_line, source_index, unsupported):
     metadata = []
     keys = set()
     specs = []
@@ -83,7 +83,8 @@ def _parse_source(section, rows, heading_line, source_index):
             if not separator or not value.strip():
                 raise ValueError('invalid metadata framing')
             if key not in _METADATA_KEYS[section]:
-                raise ValueError('unsupported source field')
+                unsupported.append(LockParseFailure(
+                    'unsupported_lockfile_format', section, number, 'unknown source field'))
             if key in keys and not (section == 'GEM' and key == 'remote'):
                 raise ValueError('duplicate source field')
             keys.add(key)
@@ -104,10 +105,10 @@ def _parse_source(section, rows, heading_line, source_index):
     return LockSource(section, tuple(metadata), tuple(specs), heading_line)
 
 
-def _parse_section(section, rows, heading_line, source_index):
+def _parse_section(section, rows, heading_line, source_index, unsupported):
     """Validate a complete section before exposing any of its records."""
     if section in ('GEM', 'GIT', 'PATH'):
-        return _parse_source(section, rows, heading_line, source_index)
+        return _parse_source(section, rows, heading_line, source_index, unsupported)
     if section == 'DEPENDENCIES':
         dependencies = []
         names = set()
@@ -143,21 +144,53 @@ def _parse_section(section, rows, heading_line, source_index):
     raise ValueError('unsupported section')
 
 
+_SUPPORTED_SECTIONS = set(_METADATA_KEYS) | {
+    'DEPENDENCIES', 'PLATFORMS', 'BUNDLED WITH', 'RUBY VERSION',
+}
+_HEADING = re.compile(r'[A-Z]+(?: [A-Z]+)*\Z')
+
+
 def parse_lockfile(text: str) -> ParsedGemfileLock | LockParseFailure:
-    """Parse decoded text, returning no partial scope on rejection."""
+    """Consume all supported framing before choosing a whole-source failure.
+
+    Unsupported sections are opaque, but cannot hide later malformed supported
+    sections. Diagnostics contain categories and known headings, never raw text.
+    """
     sections = []
     section = None
     rows = []
     heading_line = 0
+    malformed = []
+    unsupported = []
     for number, line in enumerate(text.replace('\r\n', '\n').split('\n'), 1):
+        safe_section = section if section in _SUPPORTED_SECTIONS else None
+        if any(ord(c) < 32 or ord(c) == 127 for c in line):
+            malformed.append(LockParseFailure(
+                'invalid_lockfile', safe_section, number, 'control character'))
+            continue
+        if line.lstrip(' ').startswith(('<<<<<<<', '=======', '>>>>>>>', '|||||||')):
+            malformed.append(LockParseFailure(
+                'invalid_lockfile', safe_section, number, 'conflict marker'))
+            continue
         if not line.strip():
             continue
-        if any(ord(c) < 32 for c in line):
-            return LockParseFailure('invalid_lockfile', section, number, 'control character')
         if not line.startswith(' '):
-            if section is not None:
-                sections.append((section, rows, heading_line))
-            section, rows, heading_line = line, [], number
+            if _HEADING.fullmatch(line):
+                if section is not None:
+                    sections.append((section, rows, heading_line))
+                section, rows, heading_line = line, [], number
+                if section not in _SUPPORTED_SECTIONS:
+                    unsupported.append(LockParseFailure(
+                        'unsupported_lockfile_format', None, number, 'unknown section'))
+            elif section in _SUPPORTED_SECTIONS:
+                malformed.append(LockParseFailure(
+                    'invalid_lockfile', safe_section, number, 'unframed row'))
+            else:
+                unsupported.append(LockParseFailure(
+                    'unsupported_lockfile_format', None, number, 'unclassified content'))
+        elif section is None:
+            unsupported.append(LockParseFailure(
+                'unsupported_lockfile_format', None, number, 'unclassified content'))
         else:
             rows.append((number, line))
     if section is not None:
@@ -167,11 +200,13 @@ def parse_lockfile(text: str) -> ParsedGemfileLock | LockParseFailure:
     platforms = ()
     seen = set()
     for section, rows, number in sections:
+        if section not in _SUPPORTED_SECTIONS:
+            continue
         try:
             if section not in _METADATA_KEYS and section in seen:
                 raise ValueError('repeated singleton section')
             seen.add(section)
-            result = _parse_section(section, rows, number, len(sources))
+            result = _parse_section(section, rows, number, len(sources), unsupported)
             if section in _METADATA_KEYS:
                 sources.append(result)
             elif section == 'DEPENDENCIES':
@@ -179,7 +214,15 @@ def parse_lockfile(text: str) -> ParsedGemfileLock | LockParseFailure:
             elif section == 'PLATFORMS':
                 platforms = result
         except ValueError as error:
-            return LockParseFailure('invalid_lockfile', section, number, str(error))
-    if not sources or not {'DEPENDENCIES', 'PLATFORMS'} <= seen:
-        return LockParseFailure('invalid_lockfile', None, None, 'missing required section')
+            malformed.append(LockParseFailure('invalid_lockfile', section, number, str(error)))
+    if seen and (not sources or not {'DEPENDENCIES', 'PLATFORMS'} <= seen):
+        malformed.append(LockParseFailure(
+            'invalid_lockfile', None, None, 'missing required section'))
+    if malformed:
+        return malformed[0]
+    if unsupported:
+        return unsupported[0]
+    if not seen:
+        return LockParseFailure(
+            'unsupported_lockfile_format', None, None, 'unclassified content')
     return ParsedGemfileLock(tuple(sources), dependencies, platforms)

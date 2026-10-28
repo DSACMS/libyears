@@ -97,7 +97,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T003 — Classify whole-lock rejection deterministically
 
-- **Status:** Pending; **Phase:** 1; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_gemfile_lock` (14 tests passed); **Phase:** 1; **Parallelizable:** No.
 - **Objective and approved scope:** Complete positive recognition and malformed versus unsupported classification, collecting findings so malformed supported structure wins. Cover arbitrary/empty content, unknown fields/sections, recognized unsupported sections, conflict markers and trailing syntax.
 - **Expected files:** libyears/gemfile_lock.py; tests/test_gemfile_lock.py; parser fixtures.
 - **Acceptance criteria mapped:** 05, 50 (structural precedence).
@@ -412,3 +412,12 @@ reviewable shared transport and complete artifact lifecycle. No product or
 architecture gap identified by these corrections. The initial independent
 task-graph verdict was REVISE; narrow verification is pending. Implementation
 remains NOT APPROVED.
+
+## Phase 1 execution evidence
+
+T001–T003 complete. Phase gate: `python -m unittest tests.test_gemfile_lock`
+passed (14 tests). Boundary regression: `python -m unittest discover -s tests`
+passed (201 tests), covering the existing Python, PyPI, npm/package-lock/Yarn,
+registry, metric, mixed-scan, output and CLI suites. All verification was offline.
+`git diff --check` passed before each task commit. Public scan and output files
+remain unchanged. No blockers or scope deviations. Phase 2 / T004 unstarted.

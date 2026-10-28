@@ -100,3 +100,70 @@ class SourceEnvelopeTests(unittest.TestCase):
             result = parse_lockfile(text)
             self.assertIsInstance(result, ParsedGemfileLock)
             self.assertEqual(result.dependencies, ())
+
+
+class RejectionTests(unittest.TestCase):
+    def assert_rejected(self, text, reason):
+        result = parse_lockfile(text)
+        self.assertIsInstance(result, LockParseFailure)
+        self.assertEqual(result.reason, reason)
+        self.assertFalse(hasattr(result, 'dependencies'))
+        self.assertFalse(hasattr(result, 'sources'))
+        return result
+
+    def test_unclassifiable_and_unsupported_sections(self):
+        for text in ('', ' \n', 'arbitrary text', '  arbitrary text',
+                     'UNKNOWN\n  value\n'):
+            with self.subTest(text=text):
+                self.assert_rejected(text, 'unsupported_lockfile_format')
+        for heading in ('CHECKSUMS', 'CONTENT ADDRESSES', 'PLUGIN SOURCE', 'UNKNOWN'):
+            for text in (heading + '\n  opaque\n' + EMPTY, EMPTY + heading + '\n  opaque\n'):
+                self.assert_rejected(text, 'unsupported_lockfile_format')
+
+    def test_unknown_source_fields_are_unsupported(self):
+        for kind in ('GEM', 'GIT', 'PATH'):
+            text = EMPTY + f'{kind}\n  future: private-secret\n  specs:\n'
+            result = self.assert_rejected(text, 'unsupported_lockfile_format')
+            self.assertNotIn('private-secret', repr(result))
+        self.assert_rejected(EMPTY + 'PATH\n  branch: main\n  specs:\n',
+                             'unsupported_lockfile_format')
+
+    def test_malformed_wins_over_unsupported_in_both_orders(self):
+        unsupported = ('CHECKSUMS\n  opaque\n',
+                       'GEM\n  future: secret\n  specs:\n')
+        malformed = ('DEPENDENCIES\n  rack\n  rack\n',
+                     'GEM\n  specs:\n      orphan\n',
+                     'GEM\n  specs:\n    rack (1\n',
+                     'PLATFORMS\n', 'BUNDLED WITH\n',
+                     '<<<<<<< secret\n', '\t\n')
+        for extra in unsupported:
+            for broken in malformed:
+                for text in (EMPTY + extra + broken, EMPTY + broken + extra):
+                    with self.subTest(extra=extra, broken=broken):
+                        self.assert_rejected(text, 'invalid_lockfile')
+        self.assert_rejected(EMPTY + 'GEM\n  future: secret\n  specs:\n      orphan\n',
+                             'invalid_lockfile')
+
+    def test_missing_required_structure_and_unsafe_identity(self):
+        for text in ('GEM\n  specs:\n', 'DEPENDENCIES\n', 'PLATFORMS\n  ruby\n',
+                     EMPTY + '  two names\n', EMPTY + '  (>= 1)\n',
+                     EMPTY + '  rack (1) trailing\n', EMPTY + 'trailing syntax\n',
+                     EMPTY + '=======\n', EMPTY + '>>>>>>> secret\n',
+                     EMPTY + '  rack\r\n  bad\rtext\n'):
+            with self.subTest(text=text):
+                self.assert_rejected(text, 'invalid_lockfile')
+
+    def test_failure_context_cannot_disclose_unknown_headings_or_values(self):
+        for text in (EMPTY + 'PRIVATE SECRET\n  token\n',
+                     EMPTY + 'GEM\n  specs:\n    secret (1) trailing\n'):
+            result = parse_lockfile(text)
+            self.assertNotIn('secret', repr(result).lower())
+            self.assertTrue(result.section is None or result.section == 'GEM')
+
+    def test_isolated_unsupported_identities_remain_for_matching(self):
+        text = EMPTY.replace('  specs:', '  specs:\n    Odd/Name (1+unsupported)')
+        result = parse_lockfile(text + '  Odd/Name (unsupported || expression)\n')
+        self.assertIsInstance(result, ParsedGemfileLock)
+        self.assertEqual(result.dependencies[0].name, 'Odd/Name')
+        self.assertEqual(result.dependencies[0].requirement_text, 'unsupported || expression')
+        self.assertEqual(result.sources[0].specs[0].raw_selection, '1+unsupported')
