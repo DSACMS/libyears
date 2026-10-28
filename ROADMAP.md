@@ -56,39 +56,11 @@ An evidence-backed problem or learning opportunity is required.
 
 | Opportunity | State | Area | Contributor fit |
 |---|---|---|---|
-| [Bounded RubyGems lock-snapshot support](#1-bounded-rubygems-lock-snapshot-support) | SELECTED | RubyGems | Feature implementation after approved SDD |
 | [Interpreted Gemfile group/production scope](#2-interpreted-gemfile-groupproduction-scope) | EXPLORE | RubyGems | Advanced rotation / research task |
 | [Project-root discovery/listing](#3-project-root-discoverylisting) | WATCH | CLI / repository discovery | Rotation / product-discovery candidate |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
-
-### 1. Bounded RubyGems lock-snapshot support
-
-**State:** SELECTED
-
-**Area:** RubyGems
-
-**Contributor fit:** Feature implementation after approved SDD
-
-**Opportunity:** Measure direct RubyGems dependencies from committed Gemfile.lock
-evidence without executing Ruby or Bundler.
-
-**Evidence:** Feature 004 discovery and feasibility review.
-
-**Why this state:** Human product decision selected it for specification.
-Implementation is not approved.
-
-**Success signal:** A conservative static contract can measure useful direct lock
-evidence while failing closed on ambiguous/unsupported cases.
-
-**Stop condition:** Specification demonstrates that useful behavior requires
-Gemfile evaluation, dependency resolution, or unsafe platform/source inference.
-
-**References:**
-
-- [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
-- [Feature 004 reviews](specs/004-rubygems-support/reviews.md)
 
 ### 2. Interpreted Gemfile group/production scope
 
@@ -230,6 +202,33 @@ aggregation semantics remain unclear.
 
 - [Feature 003 discovery](specs/003-yarn-lock-evidence/discovery.md)
 - [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
+
+## Selected Work Moved into SDD
+
+### 1. Bounded RubyGems lock-snapshot support
+
+**Selection state:** SELECTED; moved into Feature 004 under the existing SDD
+lifecycle. This is a completion reference, not an active radar opportunity or a
+new radar state.
+
+**Area:** RubyGems
+
+**Outcome:** Feature 004 is CONVERGED / COMPLETE through T020. Bounded direct
+Gemfile.lock measurement is implemented without Ruby/Bundler execution.
+T018 accepted authorized dpc-admin human/JSON evidence (RubyGems 67/69;
+repository 77/79); T019 completed independent convergence with 52/52 acceptance
+criteria covered and no material findings. T021 retrospective remains pending,
+unstarted; full artifact lifecycle closure is not yet claimed.
+
+Interpreted Gemfile group/production scope remains the separate EXPLORE entry
+above and is not authorized by this completion. No release or tag is implied.
+
+**References:**
+
+- [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
+- [Feature 004 completion](specs/004-rubygems-support/tasks.md#t020-completion-reconciliation)
+- [Independent convergence](specs/004-rubygems-support/reviews.md#t019-independent-convergence)
+- [Release validation](specs/004-rubygems-support/release-validation.md)
 
 ## How Opportunities Move
 

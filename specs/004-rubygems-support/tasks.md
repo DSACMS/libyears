@@ -1,14 +1,17 @@
-# Feature 004: Draft task graph
+# Feature 004: Task graph and completion record
 
 ## Status and authority
 
-**Ready for narrow task-graph verification**
+**Feature 004: CONVERGED / COMPLETE.** T001–T020 are complete; T021 remains
+**Pending, unstarted**. Post-convergence retrospective is the only remaining
+lifecycle task; lifecycle closure is not yet claimed.
 
-**Implementation remains NOT APPROVED.** All tasks below are pending. This
-artifact is task decomposition only. The independent task-graph review returned
-REVISE; the two material findings are corrected below and recorded in reviews.md.
-The next gate is narrow task-graph verification, followed by explicit implementation
-approval. Do not begin a phase on the authority of this draft.
+T018 completed at `ee79d35b79b82db6c8457cb14ba35bab39a43dc2`.
+The human-supplied completed Astra Medium T019 audit is authoritative; see
+[reviews.md](reviews.md#t019-independent-convergence). Earlier pending,
+not-approved and stopping statuses below and in spec/plan/discovery are historical
+phase records, superseded by the approval and completion records in reviews.md.
+Approved product and architecture contracts remain unchanged.
 
 Authority: approved spec.md, plan.md (8b4bf8fb6535bad524fc02bdfdcc5e1beea79a92), approval records in reviews.md,
 and repository AGENTS.md. Historical pending status in the plan is superseded by
@@ -262,7 +265,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T018 — Validate an authorized real Ruby root
 
-- **Status:** Complete; accepted human-supplied normal-environment human/JSON validation using explicitly authorized `<authorized-ca-bundle>`: Ruby 67/69, repository 77/79 measured, publication provenance and documented-precision agreement confirmed. Target integrity records and human no-change attestation retained. Separate smoke REDUNDANT; environmental history preserved in [release-validation.md](release-validation.md). T019 remains pending. **Phase:** 7; **Parallelizable:** No.
+- **Status:** Complete; accepted human-supplied normal-environment human/JSON validation using explicitly authorized `<authorized-ca-bundle>`: Ruby 67/69, repository 77/79 measured, publication provenance and documented-precision agreement confirmed. Target integrity records and human no-change attestation retained. Separate smoke REDUNDANT; environmental history preserved in [release-validation.md](release-validation.md). T019 is complete; see reviews.md. **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** Use one explicitly authorized real root, inspecting only necessary root evidence; discovery paths grant no permission. Run normal verified human/JSON CLI without tooling execution; compare scope/counts/reasons/arithmetic/provenance/disclosures and record environment/limits. Verify target unchanged. Record discrepancies without remediation inside validation. In the same release-validation record assign separate live-smoke disposition: PERFORMED when a separate smoke supplied nonredundant evidence; REDUNDANT when authorized dogfood already exercised the same live path; UNAVAILABLE when useful smoke evidence could not be obtained; or DEFERRED when explicitly postponed with rationale. Run a separate bounded verified smoke only when useful; record its rationale/outcome without requiring it to permit convergence. Authorized real-root dogfood remains required; smoke disposition does not waive it.
 - **Expected files:** specs/004-rubygems-support/release-validation.md; tasks.md.
 - **Acceptance criteria mapped:** Release validation of approved contract; no exclusive AC ownership.
@@ -273,7 +276,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T019 — Obtain independent convergence review
 
-- **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
+- **Status:** Complete; authoritative completed Astra Medium audit: CONVERGED, 52/52 covered, no unmet/ambiguous criteria or material findings; 289 deterministic regressions PASS, release evidence SUFFICIENT. Recorded from the human-supplied result in [reviews.md](reviews.md#t019-independent-convergence); **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** Obtain fresh-context independent read-only convergence against approved spec/plan/tasks, implementation, tests, docs and release evidence. Record findings and verdict separately; do not silently remediate or mark completion while material findings remain.
 - **Expected files:** specs/004-rubygems-support/reviews.md; tasks.md.
 - **Acceptance criteria mapped:** Plan Release Validation and artifact lifecycle; review all ACs without replacing deterministic ownership.
@@ -284,7 +287,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T020 — Complete feature bookkeeping and radar reconciliation
 
-- **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
+- **Status:** Complete; completion references, gate outcomes and ROADMAP lifecycle/scope cross-checked; git diff --check passed; no test rerun for bookkeeping alone; **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** After satisfactory convergence, finalize task statuses and completion references; reconcile ROADMAP's SELECTED entry using its existing lifecycle conventions and preserve separate interpreted-Gemfile EXPLORE scope. Do not invent a delivered radar state, tag, release or push.
 - **Expected files:** specs/004-rubygems-support/tasks.md; ROADMAP.md; reviews.md or release-validation.md only for completion references.
 - **Acceptance criteria mapped:** Plan Documentation and Artifact Lifecycle; no new product behavior.
@@ -675,3 +678,23 @@ accepted human evidence. T017's offline gate remains applicable; no runtime/test
 change requires a new suite. Final diff reviewed and git diff --check passed before
 the authorized local T018 commit. T019 remains independent, pending and unstarted;
 stop at that gate. No push, tag, certificate commit or target modification.
+
+## T020 completion reconciliation
+
+Recorded the completed independent T019 result without rerunning the review.
+T017's assertion-level audit and T019 confirm **52/52 acceptance criteria
+satisfied**, none unmet or ambiguous; no implementation or test changes.
+T018 evidence remains accepted and unchanged in meaning: dpc-admin repository
+77/79 (97.5%), npm 10/10, RubyGems 67/69 (97.1%); bundler and tzinfo-data remain
+lock_version_missing. Human/schema-v3 JSON agreement, Ruby provenance and target
+integrity pass; separate smoke REDUNDANT. The accepted human-executed handoff and
+its inspection limits remain in release-validation.md.
+
+ROADMAP now links the completed feature under selected work moved into SDD,
+without a new radar state; interpreted-Gemfile scope remains separately EXPLORE.
+The T019 record preserves the incomplete Low / completed Medium observation,
+repository-context sufficiency and distinct TLS inspection versus later Codex DNS
+history for T021. No causal claim about effort/model capability is established.
+Completion references and final diff checked; git diff --check passed.
+**T021 retrospective remains Pending, unstarted; no retrospective created.**
+No live validation, external-root access, new review, release, tag or push.

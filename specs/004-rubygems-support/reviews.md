@@ -1,8 +1,10 @@
 # Feature 004 Reviews
 
-**Discovery review status:** APPROVED FOR SPECIFICATION
+**Feature status:** CONVERGED / COMPLETE; T020 bookkeeping complete.
+**Lifecycle:** T021 retrospective pending, unstarted.
 
-Implementation is not approved. Earlier review statuses below are historical.
+The completed T019 Medium review below is authoritative. Earlier approval,
+pending and next-gate statuses are historical; approved contracts are unchanged.
 
 ## Initial Discovery Review
 
@@ -598,3 +600,47 @@ and the unchanged task graph. No implementation has begun.
 
 **Next gate:** Phase 1 execution, beginning with T001, under a separate execution
 instruction.
+
+## T019 independent convergence
+
+Recorded during T020 from the human-supplied completed independent reviews;
+this bookkeeping does not rerun T019. T018 baseline:
+`ee79d35b79b82db6c8457cb14ba35bab39a43dc2`, with accepted
+[release evidence](release-validation.md#successful-manual-release-evidence).
+
+| Fresh review | Completion and verdict | Disposition |
+|---|---|---|
+| Astra Low | Required audit incomplete; NOT CONVERGED | No implementation defect established; process observation only. |
+| Astra Medium | Required independent audit complete; CONVERGED | Authoritative T019 result; satisfactory convergence unblocks T020. |
+
+Completed Medium findings: **52/52 acceptance criteria covered; unmet: none;
+ambiguous: none; material findings: none.** Deterministic regressions PASS
+(289 tests); architecture conformance PASS; human readability PASS;
+documentation/artifact coherence PASS; release validation SUFFICIENT.
+Repository context: **YES — REPOSITORY CONTEXT SUFFICIENT**.
+No remediation is outstanding. These are recorded review results, not new T020
+test executions. T017's detailed deterministic witnesses remain in tasks.md.
+
+The same broad convergence assignment produced different completion outcomes.
+Incomplete review does not establish product failure. Effort level or model
+capability alone is not proven causal. Preserve for T021 the access concern:
+higher-capability model access should not silently become a prerequisite for an
+open-source quality gate. T021 should consider smaller independently verifiable
+reviews that let accessible models establish equivalent evidence without weaker
+standards; detailed interpretation remains deferred.
+
+### Environmental chronology retained for T021
+
+The human supplied these follow-up findings; no investigation was rerun in T020.
+During original live validation DNS worked: npm succeeded in the same environment
+and process while RubyGems failed TLS verification with OpenSSL code 20.
+Subsequent host inspection found ordinary public PKI for pypi.org and registry.npmjs.org, and destination-specific managed TLS inspection for rubygems.org. Python's certifi roots lacked the required organizational CA. The human identified and explicitly authorized combining that CA with existing public roots in a temporary bundle. Verified OpenSSL and Python HTTPS succeeded; existing --ca-bundle then enabled the successful human T018 scans. Certificate and hostname verification stayed enabled; no Feature 004 change or committed certificate material was required. Trust authority came explicitly from the human.
+
+Separately, later observations established an agent execution-environment DNS limitation: native resolution failed while normal host resolution and alternative DNS/TCP checks succeeded. A fresh agent session reproduced the failure, substantially weakening stale shared-session state as the explanation; the exact cause remained unresolved. This later DNS issue did not cause the original RubyGems TLS failure and does not invalidate successful human T018 evidence. It remains a methodology/harness concern, with no Feature 004 product defect established.
+
+The accepted human-executed evidence handoff established repository 77/79,
+npm 10/10 and RubyGems 67/69 measurement, human/schema-v3 JSON agreement, Ruby
+provenance and target integrity; separate smoke REDUNDANT. The release record
+preserves the limit that Codex did not independently inspect the successful raw
+JSON. Medium judged that release evidence SUFFICIENT and repository context
+sufficient. T020 records feature completion; **T021 remains pending, unstarted**.

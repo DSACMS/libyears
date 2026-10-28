@@ -8,7 +8,13 @@ environment after Codex DNS prevented live validation. The existing CLI used
 `--ca-bundle <authorized-ca-bundle>` for the already authorized dpc-admin
 root. This completion accepts the human-supplied evidence below; Codex did not
 rerun live requests or independently inspect the preserved successful raw JSON.
-T019 remains pending and requires independent convergence in a fresh context.
+T018 completion is committed at `ee79d35b79b82db6c8457cb14ba35bab39a43dc2`.
+T019 subsequently completed: the authoritative Medium independent audit found
+this release evidence SUFFICIENT and returned CONVERGED. See
+[the convergence record](reviews.md#t019-independent-convergence) for completion
+and the separate TLS inspection and later native-resolver observations. T020 feature
+bookkeeping is complete; T021 retrospective remains pending, unstarted. Earlier
+stopping instructions below describe their historical task boundaries.
 
 ## Successful manual release evidence
 
