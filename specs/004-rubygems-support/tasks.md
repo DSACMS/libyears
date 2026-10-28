@@ -174,7 +174,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T010 — Expose safe rate-limit failure metadata and integration gate
 
-- **Status:** Pending; **Phase:** 3; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_registry tests.test_pypi tests.test_npm_registry tests.test_yarn tests.test_mixed_scan` (91 tests passed); full deterministic phase gate (242 tests passed); **Phase:** 3; **Parallelizable:** No.
 - **Objective and approved scope:** Add defaulted optional Retry-After failure metadata and preserve ordinary error classifications and existing consumers. Finish shared-transport/model integration regressions before the Ruby adapter depends on them.
 - **Expected files:** libyears/registry.py; tests/test_registry.py.
 - **Acceptance criteria mapped:** 45 (transport metadata), 37 (shared regression).
@@ -435,3 +435,18 @@ mixed-scan, output and CLI suites. All correctness checks were offline.
 and serializer implementation remain unchanged; an explicit test confirms that
 a root Ruby lock remains publicly unactivated. No blockers or scope deviations.
 Phase 3 / T008 unstarted.
+
+
+## Phase 3 execution evidence
+
+T008–T010 complete. Focused verification: T008 transport/PyPI/npm (41 tests),
+T009 bounded transport/PyPI/npm (50 tests), and T010 transport/PyPI/npm/Yarn/
+mixed-scan regressions (91 tests), all passed using the commands recorded on
+those tasks. Phase gate: `python -m unittest discover -s tests` passed
+(242 tests), including existing Python declarations/snapshot/constraints/scan,
+PyPI/npm registry, package-lock/Yarn, metric, mixed-scan, output and CLI suites.
+All correctness checks were offline, using local responses and injected failures;
+no live registry resources were used. `git diff --check` passed before each task
+commit. Default urlopen/no-argument read and injected get(url) paths remain
+compatible. Restricted transport is opt-in; Ruby scan and adapter activation
+remain unstarted. No blockers or scope deviations. Phase 4 / T011 unstarted.

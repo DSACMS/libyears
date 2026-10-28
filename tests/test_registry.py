@@ -237,3 +237,71 @@ class BoundedTransportTests(unittest.TestCase):
         for authority in ("", "https://rubygems.org", "user@rubygems.org", "rubygems.org/path", "rubygems.org?q=1"):
             with self.subTest(authority=authority), self.assertRaises(ValueError):
                 VerifiedJSONTransport(allowed_authority=authority)
+
+
+class RateLimitMetadataTests(unittest.TestCase):
+    def fetch_failure(self, *, restricted, status=429, headers=None):
+        error = HTTPError("https://rubygems.org/data", status, "private error text", headers, None)
+        if restricted:
+            with patch("libyears.registry.request.build_opener") as build_opener:
+                transport = VerifiedJSONTransport(max_response_bytes=4, allowed_authority="rubygems.org")
+            build_opener.return_value.open.side_effect = error
+            result = transport.get("https://rubygems.org/data")
+            build_opener.return_value.open.assert_called_once()
+            return result
+        transport = VerifiedJSONTransport()
+        with patch("libyears.registry.request.urlopen", side_effect=error) as open_url:
+            result = transport.get("https://rubygems.org/data")
+        open_url.assert_called_once()
+        return result
+
+    def test_seconds_and_http_date_are_retained_without_retry_or_diagnostic_leak(self):
+        for restricted in (False, True):
+            for value in ("12", "Wed, 28 Oct 2026 12:00:00 GMT", "0"):
+                with self.subTest(restricted=restricted, value=value):
+                    result = self.fetch_failure(restricted=restricted, headers={"Retry-After": value})
+                    self.assertEqual(result.status, 429)
+                    self.assertEqual(result.diagnostic, "HTTP error (status 429)")
+                    self.assertEqual(result.retry_after, value)
+                    self.assertIsNone(result.bounded_failure)
+
+    def test_missing_or_unsafe_metadata_is_unavailable(self):
+        for restricted in (False, True):
+            for headers in (
+                None, {}, {"Retry-After": ""}, {"Retry-After": "1\r\nPrivate: secret"},
+                {"Retry-After": "1\t2"}, {"Retry-After": "é"},
+                {"Retry-After": "1" * 129}, {"Retry-After": 12},
+            ):
+                with self.subTest(restricted=restricted, headers=headers):
+                    result = self.fetch_failure(restricted=restricted, headers=headers)
+                    self.assertEqual(result, TransportFailure(429, "HTTP error (status 429)"))
+
+    def test_printable_invalid_value_is_left_for_adapter_policy(self):
+        result = self.fetch_failure(restricted=True, headers={"Retry-After": "tomorrow"})
+        self.assertEqual(result.retry_after, "tomorrow")
+
+    def test_other_http_errors_do_not_acquire_rate_limit_metadata(self):
+        for status in (404, 503):
+            for restricted in (False, True):
+                with self.subTest(status=status, restricted=restricted):
+                    result = self.fetch_failure(
+                        restricted=restricted, status=status, headers={"Retry-After": "12"}
+                    )
+                    self.assertEqual(result, TransportFailure(status, f"HTTP error (status {status})"))
+
+    def test_existing_consumers_ignore_added_metadata(self):
+        for adapter_class in (PyPIAdapter, NpmAdapter):
+            with self.subTest(adapter=adapter_class.__name__):
+                adapter = adapter_class()
+                adapter.transport = LegacyTransport(
+                    TransportFailure(429, "HTTP error (status 429)", retry_after="12")
+                )
+                result = adapter.lookup("example", "1.0")
+                self.assertEqual(result.reason, "registry_error")
+                self.assertEqual(result.diagnostic, "HTTP error (status 429)")
+                self.assertEqual(len(adapter.transport.urls), 1)
+
+    def test_failure_metadata_defaults_preserve_existing_constructor(self):
+        result = TransportFailure(None, "network timeout")
+        self.assertIsNone(result.retry_after)
+        self.assertIsNone(result.bounded_failure)

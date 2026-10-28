@@ -23,6 +23,20 @@ class TransportFailure:
     status: Any
     diagnostic: str
     bounded_failure: str | None = None
+    retry_after: str | None = None
+
+
+def _retry_after(error: Exception) -> str | None:
+    if not isinstance(error, urlerror.HTTPError) or error.code != 429 or error.headers is None:
+        return None
+    value = error.headers.get("Retry-After")
+    # Retain only a short printable header value, never arbitrary header objects
+    # or control text. Interpreting seconds/HTTP dates belongs to the adapter.
+    if not isinstance(value, str) or not value or len(value) > 128:
+        return None
+    if any(character < " " or character > "~" for character in value):
+        return None
+    return value
 
 
 class _RejectRedirects(request.HTTPRedirectHandler):
@@ -186,7 +200,9 @@ class VerifiedJSONTransport:
             with request.urlopen(http_request, **kwargs) as response:
                 return response.read()
         except Exception as error:
-            return TransportFailure(getattr(error, "code", None), diagnostic(error))
+            return TransportFailure(
+                getattr(error, "code", None), diagnostic(error), retry_after=_retry_after(error)
+            )
 
     def _get_restricted(self, url: str) -> bytes | TransportFailure:
         destination = urlsplit(url)
