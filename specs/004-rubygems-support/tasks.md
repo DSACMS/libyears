@@ -163,7 +163,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T009 — Add opt-in verified bounded responses
 
-- **Status:** Pending; **Phase:** 3; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_registry tests.test_pypi tests.test_npm_registry` (50 tests passed); **Phase:** 3; **Parallelizable:** No.
 - **Objective and approved scope:** Add optional max_response_bytes/allowed_authority with a separate verified opener rejecting redirects. Keep default path untouched. Detect oversize using limit+1/declared length and truncation including IncompleteRead/short EOF; return typed bounded failures without partial bytes.
 - **Expected files:** libyears/registry.py; tests/test_registry.py.
 - **Acceptance criteria mapped:** 18–19 (transport), 44 (bounded transport).

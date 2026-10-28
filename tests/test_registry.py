@@ -1,6 +1,8 @@
 import ssl
 import unittest
-from unittest.mock import patch
+from http.client import IncompleteRead
+from unittest.mock import Mock, patch
+from urllib import request
 from urllib.error import HTTPError, URLError
 
 from libyears.npm import NpmAdapter
@@ -73,3 +75,165 @@ class TransportCompatibilityTests(unittest.TestCase):
             with self.subTest(message=message):
                 with patch("libyears.registry.request.urlopen", side_effect=error):
                     self.assertEqual(transport.get("https://example.org"), TransportFailure(status, message))
+
+
+class BoundedResponse(LegacyResponse):
+    def __init__(self, body, headers=None, read_error=None):
+        self.body = body
+        self.headers = headers or {}
+        self.read_error = read_error
+        self.read_sizes = []
+
+    def read(self, size):
+        self.read_sizes.append(size)
+        if self.read_error is not None:
+            raise self.read_error
+        return self.body[:size]
+
+
+class BoundedTransportTests(unittest.TestCase):
+    def fetch(self, response):
+        opener = Mock()
+        opener.open.return_value = response
+        with patch("libyears.registry.request.build_opener", return_value=opener), patch(
+            "libyears.registry.request.urlopen", side_effect=AssertionError("default path used")
+        ):
+            transport = VerifiedJSONTransport(max_response_bytes=4, allowed_authority="rubygems.org")
+            result = transport.get("https://rubygems.org/data")
+        opener.open.assert_called_once()
+        return result
+
+    def test_exact_limit_and_smaller_bodies_are_complete(self):
+        for body, headers in (
+            (b"1234", {}), (b"1234", {"Content-Length": "4"}),
+            (b"12", {"Content-Length": "2"}), (b"", {"Content-Length": "0"}),
+            (b"1234", {"Content-Length": "invalid"}),
+        ):
+            with self.subTest(body=body, headers=headers):
+                response = BoundedResponse(body, headers)
+                self.assertEqual(self.fetch(response), body)
+                self.assertEqual(response.read_sizes, [5])
+
+    def test_oversize_never_returns_a_prefix(self):
+        for headers in ({}, {"Content-Length": "5"}, {"Content-Length": "3"}):
+            with self.subTest(headers=headers):
+                response = BoundedResponse(b"123456789", headers)
+                result = self.fetch(response)
+                self.assertEqual(result, TransportFailure(None, "response exceeds byte limit", "response_too_large"))
+                expected_reads = [] if headers.get("Content-Length") == "5" else [5]
+                self.assertEqual(response.read_sizes, expected_reads)
+
+    def test_truncation_discards_partial_bytes(self):
+        for response in (
+            BoundedResponse(b"12", {"Content-Length": "4"}),
+            BoundedResponse(b"", read_error=IncompleteRead(b"12", 2)),
+        ):
+            with self.subTest(response=response):
+                self.assertEqual(self.fetch(response), TransportFailure(None, "incomplete response", "incomplete_response"))
+
+    def test_restricted_opener_reuses_selected_context_timeout_and_user_agent(self):
+        context = ssl.create_default_context()
+        with patch("libyears.registry.select_tls_context", return_value=(context, "explicit trust")), patch(
+            "libyears.registry.request.build_opener"
+        ) as build_opener:
+            transport = VerifiedJSONTransport(
+                max_response_bytes=4, allowed_authority="rubygems.org",
+                timeout=1.5, user_agent="bounded-test", ca_bundle="approved.pem",
+            )
+        https_handler, redirect_handler = build_opener.call_args.args
+        self.assertIsInstance(https_handler, request.HTTPSHandler)
+        self.assertIs(https_handler._context, context)
+        self.assertIsInstance(redirect_handler, request.HTTPRedirectHandler)
+        self.assertTrue(context.check_hostname)
+        self.assertEqual(context.verify_mode, ssl.CERT_REQUIRED)
+        self.assertEqual(transport.tls_trust, "explicit trust")
+        opener = build_opener.return_value
+        opener.open.return_value = BoundedResponse(b"1234")
+        self.assertEqual(transport.get("https://rubygems.org/data"), b"1234")
+        args, kwargs = opener.open.call_args
+        self.assertEqual(args[0].get_header("User-agent"), "bounded-test")
+        self.assertEqual(kwargs, {"timeout": 1.5})
+
+    def test_rejected_destinations_never_reach_opener(self):
+        with patch("libyears.registry.request.build_opener") as build_opener:
+            transport = VerifiedJSONTransport(allowed_authority="rubygems.org")
+        for url in (
+            "http://rubygems.org/data", "https://private.example/data",
+            "https://rubygems.org.private.example/data", "https://user:secret@rubygems.org/data",
+            "https://rubygems.org:444/data", "file:///data",
+        ):
+            with self.subTest(url=url):
+                result = transport.get(url)
+                self.assertEqual(result, TransportFailure(None, "unsupported request authority"))
+        build_opener.return_value.open.assert_not_called()
+
+    def test_each_control_can_be_enabled_independently(self):
+        for controls, response in (
+            ({"max_response_bytes": 4}, BoundedResponse(b"1234")),
+            ({"allowed_authority": "rubygems.org"}, LegacyResponse()),
+        ):
+            with self.subTest(controls=controls):
+                with patch("libyears.registry.request.build_opener") as build_opener:
+                    transport = VerifiedJSONTransport(**controls)
+                build_opener.return_value.open.return_value = response
+                self.assertIsInstance(transport.get("https://rubygems.org/data"), bytes)
+
+    def test_all_redirect_statuses_are_rejected_without_a_second_request(self):
+        # Use the actual opener dispatch with an offline HTTPS handler so this
+        # checks redirect enforcement, rather than just inspecting handler types.
+        class RedirectResponse(LegacyResponse):
+            code = 302
+            msg = "redirect"
+            url = "https://rubygems.org/data"
+
+            def __init__(self, code, location):
+                self.code = code
+                self.headers = {"Location": location}
+
+            def info(self):
+                return self.headers
+
+            def close(self):
+                pass
+
+        class OfflineHTTPS(request.HTTPSHandler):
+            def https_open(self, req):
+                self.urls.append(req.full_url)
+                return self.response
+
+        for code in (301, 302, 303, 307, 308):
+            for location in ("https://private.example/secret", "https://rubygems.org/other", "/relative"):
+                with self.subTest(code=code, location=location):
+                    transport = VerifiedJSONTransport(max_response_bytes=4)
+                    offline = OfflineHTTPS()
+                    offline.urls = []
+                    offline.response = RedirectResponse(code, location)
+                    redirect_handler = next(
+                        handler for handler in transport._restricted_opener.handlers
+                        if isinstance(handler, request.HTTPRedirectHandler)
+                    )
+                    transport._restricted_opener = request.build_opener(offline, redirect_handler)
+                    with patch("libyears.registry.request.urlopen", side_effect=AssertionError("live request")):
+                        result = transport.get("https://rubygems.org/data")
+                    self.assertEqual(result, TransportFailure(code, f"HTTP error (status {code})"))
+                    self.assertEqual(offline.urls, ["https://rubygems.org/data"])
+
+    def test_ordinary_restricted_errors_keep_existing_classification(self):
+        for error, message in (
+            (TimeoutError("private"), "network timeout"),
+            (ssl.SSLCertVerificationError("private"), "TLS certificate verification failure"),
+            (URLError("private"), "network connection failure"),
+        ):
+            with self.subTest(message=message):
+                with patch("libyears.registry.request.build_opener") as build_opener:
+                    transport = VerifiedJSONTransport(max_response_bytes=4)
+                build_opener.return_value.open.side_effect = error
+                self.assertEqual(transport.get("https://rubygems.org/data"), TransportFailure(None, message))
+
+    def test_invalid_controls_fail_at_construction(self):
+        for limit in (0, -1, True, 1.5, float("inf")):
+            with self.subTest(limit=limit), self.assertRaises(ValueError):
+                VerifiedJSONTransport(max_response_bytes=limit)
+        for authority in ("", "https://rubygems.org", "user@rubygems.org", "rubygems.org/path", "rubygems.org?q=1"):
+            with self.subTest(authority=authority), self.assertRaises(ValueError):
+                VerifiedJSONTransport(allowed_authority=authority)
