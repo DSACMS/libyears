@@ -130,7 +130,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T006 — Match direct identities and selected artifacts
 
-- **Status:** Pending; **Phase:** 2; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_rubygems` (13 tests passed); **Phase:** 2; **Parallelizable:** No.
 - **Objective and approved scope:** Implement exact lock matching, bounded names and direct requirements, version/platform interpretation, missing specs, agreeing variants, duplicate/differing ambiguity and local failure precedence. Preserve material selected evidence, direct text and special-dependency counting; never evaluate requirements or select host variants.
 - **Expected files:** libyears/rubygems.py; tests/test_rubygems.py; matching fixtures.
 - **Acceptance criteria mapped:** 08 (lock identity), 09–12, 14–17, 46, 50 (local precedence).
