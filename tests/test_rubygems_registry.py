@@ -21,6 +21,22 @@ def artifact(**changes):
     return row
 
 
+class FakeClock:
+    def __init__(self):
+        self.now = 0.0
+        self.sleeps = []
+
+    def monotonic(self):
+        return self.now
+
+    def sleep(self, delay):
+        self.sleeps.append(delay)
+        self.now += delay
+
+    def wall_clock(self):
+        return 1704067200.0 + self.now  # 2024-01-01 UTC
+
+
 class RegistryTestCase(unittest.TestCase):
     def setUp(self):
         self.prohibit_live = patch('urllib.request.urlopen', side_effect=AssertionError('live HTTP'))
@@ -30,7 +46,12 @@ class RegistryTestCase(unittest.TestCase):
         opener_patch = patch('libyears.registry.request.build_opener', return_value=self.opener)
         opener_patch.start()
         self.addCleanup(opener_patch.stop)
-        self.adapter = RubyGemsAdapter()
+        self.clock = FakeClock()
+        self.adapter = self.new_adapter()
+
+    def new_adapter(self):
+        return RubyGemsAdapter(monotonic=self.clock.monotonic, sleep=self.clock.sleep,
+                               wall_clock=self.clock.wall_clock)
 
     def fetch(self, population=None, identity=None):
         identity = b'{"name":"Sample"}' if identity is None else identity
@@ -133,6 +154,7 @@ class RegistryPopulationTests(RegistryTestCase):
         ]
         for response, reason in failures:
             for at_population in (False, True):
+                self.adapter = self.new_adapter()
                 self.adapter.transport = Mock()
                 self.adapter.transport.get.side_effect = ([b'{"name":"sample"}', response]
                                                           if at_population else [response])
@@ -347,3 +369,96 @@ class PublicationTests(RegistryTestCase):
         self.assertEqual([a.platform for a in publication.artifacts], ['java', 'ruby'])
         self.assertEqual(publication, canonical_publication(tuple(reversed(records))))
         self.assertIsNone(canonical_publication(records[2:]))
+
+
+class RateLimitTests(RegistryTestCase):
+    def install_responses(self, responses):
+        self.starts = []
+        responses = iter(responses)
+
+        def get(url):
+            self.starts.append((url, self.clock.now))
+            return next(responses)
+
+        self.adapter.transport = Mock()
+        self.adapter.transport.get.side_effect = get
+
+    def test_request_starts_are_paced_across_candidates_and_slow_requests(self):
+        self.install_responses([b'{"name":"sample"}', b'[]'] * 3)
+        for _ in range(2):
+            self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'version_not_found')
+        self.clock.now += 1.0
+        self.adapter.lookup('sample', '1.0')
+        times = [start for url, start in self.starts]
+        for before, after in zip(times, times[1:]):
+            self.assertGreaterEqual(after - before + 1e-12, 0.11)
+        self.assertEqual(len(self.clock.sleeps), 4)
+        self.assertTrue(all(delay <= 0.11 for delay in self.clock.sleeps))
+
+    def test_seconds_cooldown_suppresses_without_sleep_and_recovers_at_deadline(self):
+        self.install_responses([TransportFailure(429, 'HTTP 429', retry_after='10'),
+                                b'{"name":"sample"}', b'[]'])
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+        self.clock.now = 9.99
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+        self.assertEqual(len(self.starts), 1)
+        self.assertEqual(self.clock.sleeps, [])
+        self.clock.now = 10.0
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'version_not_found')
+        self.assertEqual(len(self.starts), 3)
+
+    def test_http_date_uses_wall_clock_for_deadline_and_monotonic_for_elapsed(self):
+        self.install_responses([TransportFailure(
+            429, 'HTTP 429', retry_after='Mon, 01 Jan 2024 00:00:05 GMT'),
+            b'{"name":"sample"}', b'[]'])
+        self.adapter.lookup('sample', '1.0')
+        self.clock.now = 4.99
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+        self.assertEqual(len(self.starts), 1)
+        self.clock.now = 5.0
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'version_not_found')
+        self.assertTrue(all(delay <= 0.11 for delay in self.clock.sleeps))
+
+    def test_invalid_or_missing_retry_after_closes_only_that_scan(self):
+        for header in (None, '', 'nonsense', '-1', '1.5', 'NaN',
+                       'Mon, 01 Jan 2024 00:00:05', '999999999999-01-01'):
+            self.adapter = self.new_adapter()
+            self.install_responses([TransportFailure(429, 'HTTP 429', retry_after=header)])
+            self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+            self.clock.now += 100000
+            self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+            self.assertEqual(len(self.starts), 1)
+        self.assertEqual(self.clock.sleeps, [])
+        self.adapter = self.new_adapter()
+        self.install_responses([b'{"name":"sample"}', b'[]'])
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'version_not_found')
+
+    def test_zero_and_past_deadlines_allow_next_lookup_but_never_retry_current(self):
+        for header in ('0', 'Sun, 31 Dec 2023 23:59:00 GMT'):
+            self.adapter = self.new_adapter()
+            self.install_responses([TransportFailure(429, 'HTTP 429', retry_after=header),
+                                    b'{"name":"sample"}', b'[]'])
+            self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+            self.assertEqual(len(self.starts), 1)
+            self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'version_not_found')
+            self.assertEqual(len(self.starts), 3)
+
+    def test_population_429_discards_partial_evidence_and_blocks_next_candidate(self):
+        self.install_responses([b'{"name":"sample"}',
+                                TransportFailure(429, 'HTTP 429', retry_after='3600')])
+        result = self.adapter.lookup('sample', '1.0')
+        self.assertEqual(result.reason, 'registry_error')
+        self.assertIsNone(result.rubygems_evidence)
+        self.assertEqual(self.adapter.lookup('other', '1.0').reason, 'registry_error')
+        self.assertEqual(len(self.starts), 2)
+        self.assertEqual(self.clock.sleeps, [0.11])
+
+    def test_restricted_http_429_preserves_header_for_scan_cooldown(self):
+        self.opener.open.side_effect = HTTPError(
+            'https://rubygems.org', 429, 'limited', {'Retry-After': '30'}, None,
+        )
+        self.assertEqual(self.adapter.lookup('sample', '1.0').reason, 'registry_error')
+        self.assertEqual(self.adapter.lookup('other', '1.0').reason, 'registry_error')
+        self.assertEqual(self.opener.open.call_count, 1)
+        self.assertEqual(self.clock.sleeps, [])

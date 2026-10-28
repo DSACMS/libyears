@@ -2,8 +2,10 @@
 
 from dataclasses import dataclass
 from datetime import date, datetime, timezone
+from email.utils import parsedate_to_datetime
 import json
 import re
+import time
 from urllib.parse import quote
 
 from .model import RegistryFailure, RegistryResult, RubyGemsEvidence, RubyPublicationArtifact
@@ -198,7 +200,8 @@ def _resolve_population(name, used_version, records):
 class RubyGemsAdapter:
     """Fetch independent identity then complete bounded public population."""
 
-    def __init__(self, *, timeout=10.0, user_agent='libyears/0.1', ca_bundle=None):
+    def __init__(self, *, timeout=10.0, user_agent='libyears/0.1', ca_bundle=None,
+                 monotonic=time.monotonic, sleep=time.sleep, wall_clock=time.time):
         self.transport = VerifiedJSONTransport(
             timeout=timeout, user_agent=user_agent, ca_bundle=ca_bundle,
             max_response_bytes=MAX_RESPONSE_BYTES, allowed_authority='rubygems.org',
@@ -207,6 +210,43 @@ class RubyGemsAdapter:
         self.user_agent = self.transport.user_agent
         self.ssl_context = self.transport.ssl_context
         self.tls_trust = self.transport.tls_trust
+        self._monotonic = monotonic
+        self._sleep = sleep
+        self._wall_clock = wall_clock
+        self._last_request_start = None
+        self._cooldown_until = None
+        self._requests_closed = False
+
+    def _record_cooldown(self, retry_after):
+        """Keep server cooldown separate from the short request pacing sleep."""
+        if isinstance(retry_after, str):
+            value = retry_after.strip()
+            if value and value.isascii() and value.isdecimal():
+                self._cooldown_until = self._monotonic() + int(value)
+                return
+            try:
+                deadline = parsedate_to_datetime(value)
+                if deadline.tzinfo is not None and deadline.utcoffset() is not None:
+                    delay = max(0.0, deadline.timestamp() - self._wall_clock())
+                    self._cooldown_until = self._monotonic() + delay
+                    return
+            except (ValueError, TypeError, OverflowError):
+                pass
+        self._requests_closed = True
+
+    def _get(self, url):
+        now = self._monotonic()
+        if self._requests_closed or (self._cooldown_until is not None and now < self._cooldown_until):
+            return TransportFailure(None, 'RubyGems requests suppressed by scan-local rate limit')
+        if self._last_request_start is not None:
+            delay = 0.11 - (now - self._last_request_start)
+            if delay > 0:
+                self._sleep(delay)
+        self._last_request_start = self._monotonic()
+        response = self.transport.get(url)
+        if isinstance(response, TransportFailure) and response.status == 429:
+            self._record_cooldown(response.retry_after)
+        return response
 
     def fetch_population(self, name, used_version):
         """Admit only complete validated evidence, or return a safe failure."""
@@ -220,7 +260,7 @@ class RubyGemsAdapter:
         total_bytes = 0
         for endpoint in ('gems', 'versions'):
             url = f'https://rubygems.org/api/v1/{endpoint}/{quote(registry_name, safe="")}.json'
-            body = self.transport.get(url)
+            body = self._get(url)
             if isinstance(body, TransportFailure):
                 if body.bounded_failure in ('response_too_large', 'incomplete_response'):
                     return failure('invalid_registry_response', 'incomplete or oversized metadata')

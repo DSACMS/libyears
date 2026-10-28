@@ -207,7 +207,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T013 — Add scan-local pacing and cooldown
 
-- **Status:** Pending; **Phase:** 4; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_rubygems_registry tests.test_registry` (46 tests passed); **Phase:** 4; **Parallelizable:** No.
 - **Objective and approved scope:** Retain T011’s enforced transport/budgets and add per-scan sequential 0.11-second request-start pacing and 429 cooldown, seconds/date Retry-After, missing/invalid header closure, no retry or long cooldown sleep.
 - **Expected files:** libyears/rubygems_registry.py; tests/test_rubygems_registry.py.
 - **Acceptance criteria mapped:** 45 (scan-local pacing/cooldown).
