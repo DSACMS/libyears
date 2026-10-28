@@ -120,6 +120,9 @@ class OutputTests(unittest.TestCase):
                 if include_format:
                     expected["format"] = evidence_format
                 self.assertEqual(data["version_evidence"], {ecosystem: expected})
+                self.assertNotIn("rubygems_evidence", data["dependencies"][0])
+                self.assertNotIn("scope", data["version_evidence"][ecosystem])
+                self.assertNotIn("publication_basis", data["version_evidence"][ecosystem])
                 self.assertEqual(data["schema_version"], 3)
                 self.assertEqual(data["dependencies"][0]["version_source"], version_source)
                 if version_source == "yarn_lock":

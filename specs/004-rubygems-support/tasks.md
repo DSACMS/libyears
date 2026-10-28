@@ -108,7 +108,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T004 — Add defaulted typed Ruby evidence
 
-- **Status:** Pending; **Phase:** 2; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_rubygems tests.test_output` (16 tests passed); **Phase:** 2; **Parallelizable:** No.
 - **Objective and approved scope:** Add the three output-facing Ruby records and optional evidence fields to candidate/dependency/failure/registry outcomes; add optional source scope/publication basis. Preserve positional constructors and old serialization; do not serialize Ruby publicly yet.
 - **Expected files:** libyears/model.py; tests/test_rubygems.py; tests/test_output.py.
 - **Acceptance criteria mapped:** 38 (domain preparation), 37 (model compatibility).

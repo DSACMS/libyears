@@ -15,6 +15,37 @@ def _utc(timestamp: datetime) -> datetime:
 
 
 @dataclass(frozen=True, slots=True)
+class SelectedRubyArtifact:
+    """One supported artifact selected by the lock snapshot."""
+
+    version: str
+    platform: str
+    source: str
+
+
+@dataclass(frozen=True, slots=True)
+class RubyPublicationArtifact:
+    """One admissible observable publication contributing to a version date."""
+
+    version: str
+    platform: str
+    publication_time: datetime
+    yanked: bool | None = None
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "publication_time", _utc(self.publication_time))
+
+
+@dataclass(frozen=True, slots=True)
+class RubyGemsEvidence:
+    """Selected artifacts and safely established publication provenance."""
+
+    selected_artifacts: tuple[SelectedRubyArtifact, ...]
+    used_publication_artifacts: tuple[RubyPublicationArtifact, ...] | None = None
+    latest_publication_artifacts: tuple[RubyPublicationArtifact, ...] | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class Dependency:
     """A dependency with both release timestamps resolved by an adapter."""
 
@@ -25,6 +56,7 @@ class Dependency:
     latest_stable_version: str
     latest_stable_release_time: datetime
     version_source: str = "requirements_exact"
+    rubygems_evidence: RubyGemsEvidence | None = None
 
     def __post_init__(self) -> None:
         if not self.ecosystem or not self.name or not self.used_version:
@@ -44,6 +76,7 @@ class RegistryResult:
     used_release_time: datetime
     latest_stable_version: str
     latest_stable_release_time: datetime
+    rubygems_evidence: RubyGemsEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -54,6 +87,7 @@ class RegistryFailure:
     used_version: str
     reason: str
     diagnostic: str | None = None
+    rubygems_evidence: RubyGemsEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -66,6 +100,7 @@ class DependencyCandidate:
     declared: str
     used_version: str
     version_source: str
+    rubygems_evidence: RubyGemsEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -76,6 +111,7 @@ class UnmeasurableDependency:
     name: str
     declared: str
     reason: str
+    rubygems_evidence: RubyGemsEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -96,6 +132,8 @@ class SourceEvidence:
     format: str | None = None
     # Existing evidence omits format; rejected Yarn evidence explicitly uses null.
     include_format: bool = False
+    scope: str | None = None
+    publication_basis: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
