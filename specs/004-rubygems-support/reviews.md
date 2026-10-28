@@ -574,3 +574,27 @@ implementation. Only tasks.md and reviews.md changed; git diff --check passed.
 
 **Next gate:** Independent narrow task-graph verification, then explicit
 implementation approval.
+
+## Final Task-Graph Verification and Approval
+
+**Verified task graph:** `c34600d1fdcdd4efeb9cae3eaf990d7c9c0fae8a`
+**Independent verdict:** READY FOR EXECUTION
+**Task graph:** APPROVED FOR EXECUTION
+**Implementation:** APPROVED TO BEGIN
+
+The independent narrow verification resolved both review findings: transport
+sequencing and optional smoke lifecycle. Graph invariants PASS; all 52/52
+acceptance criteria are mapped, with no weak or missing mappings. The dependency
+graph and safe boundaries are SOUND; coherent public activation at T015 is SOUND.
+Verification efficiency is GOOD, artifact lifecycle is SOUND, and human
+readability PASS. Blocking issues: NONE.
+
+**Repository context:** YES — REPOSITORY CONTEXT SUFFICIENT.
+This is another observation that repository artifacts plus the narrow instruction
+were sufficient, not causal proof or a general process conclusion.
+
+This approval supersedes earlier pending or not-approved statuses in this record
+and the unchanged task graph. No implementation has begun.
+
+**Next gate:** Phase 1 execution, beginning with T001, under a separate execution
+instruction.
