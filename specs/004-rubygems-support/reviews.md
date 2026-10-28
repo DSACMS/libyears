@@ -495,3 +495,32 @@ remain deferred as in the plan.
 **Implementation status:** NOT APPROVED
 
 **Next gate:** Independent narrow architecture verification.
+
+## Narrow Architecture Verification
+
+**Verified plan commit:** `8b4bf8fb6535bad524fc02bdfdcc5e1beea79a92`
+**Independent verdict:** APPROVE
+
+- Fixed upstream evidence: RESOLVED.
+- Bounded transport failures: RESOLVED.
+- Cooldown order independence: RESOLVED.
+- Architecture invariants: PASS; no material regressions.
+- Spec conformance: 52/52 acceptance criteria architecturally covered; no weak
+  mappings, missing mappings, or contradictions.
+- Blocking technical questions: NONE BLOCKING.
+- Human readability: PASS.
+
+Second repository-context result: **YES — REPOSITORY CONTEXT SUFFICIENT**.
+The narrow verification used repository artifacts and the focused task instruction
+without restating the approved product contract. This repeats the prior review's
+context-sufficiency observation; it does not establish causal proof or a general
+process rule.
+
+**Architecture status:** APPROVED FOR TASK DECOMPOSITION
+
+This record supersedes the pending architecture status above; `plan.md` remains
+unchanged from `8b4bf8fb6535bad524fc02bdfdcc5e1beea79a92`.
+
+**Implementation status:** NOT APPROVED
+
+**Next gate:** Task decomposition, followed by independent task-graph review.
