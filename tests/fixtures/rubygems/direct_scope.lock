@@ -1,0 +1,18 @@
+GEM
+  remote: https://rubygems.org
+  specs:
+    sample (1.0)
+      transitive (inert unsupported text)
+    transitive (2.0)
+
+PLATFORMS
+  ruby
+  java
+
+DEPENDENCIES
+  sample (>= 9)
+  bundler
+  tzinfo-data
+
+BUNDLED WITH
+   2.5.0

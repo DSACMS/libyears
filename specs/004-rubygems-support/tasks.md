@@ -141,7 +141,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T007 — Build internal root source results
 
-- **Status:** Pending; **Phase:** 2; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_gemfile_lock tests.test_rubygems tests.test_output` (51 tests passed); **Phase:** 2; **Parallelizable:** No.
 - **Objective and approved scope:** Read only root Gemfile.lock, distinguish absence from present broken-link/nonregular/unreadable/invalid-text artifacts, and return SourceResult availability/evidence/diagnostics. Gemfile and nested/alternate artifacts are never inspected. Whole rejection returns no candidates or synthetic dependency rows.
 - **Expected files:** libyears/rubygems.py; tests/test_rubygems.py; source fixtures.
 - **Acceptance criteria mapped:** 01–02 (internal discovery), 04 (reader), 06–07, 32 (source result), 43 (local boundary).
@@ -421,3 +421,17 @@ passed (201 tests), covering the existing Python, PyPI, npm/package-lock/Yarn,
 registry, metric, mixed-scan, output and CLI suites. All verification was offline.
 `git diff --check` passed before each task commit. Public scan and output files
 remain unchanged. No blockers or scope deviations. Phase 2 / T004 unstarted.
+
+
+## Phase 2 execution evidence
+
+T004–T007 complete. Focused verification: T004 model/output (16 tests),
+T005 authority (5 tests), T006 matching (13 tests), and T007 parser/source/output
+phase gate (51 tests), all passed using the commands recorded on each task.
+Boundary regression: `python -m unittest discover -s tests` passed (224 tests),
+including unchanged Python/PyPI, npm/package-lock/Yarn, transport, metric,
+mixed-scan, output and CLI suites. All correctness checks were offline.
+`git diff --check` passed before every task commit. Public scan source pairs
+and serializer implementation remain unchanged; an explicit test confirms that
+a root Ruby lock remains publicly unactivated. No blockers or scope deviations.
+Phase 3 / T008 unstarted.

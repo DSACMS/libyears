@@ -1,9 +1,12 @@
 import unittest
+import os
+import tempfile
+from pathlib import Path
 from datetime import datetime, timedelta, timezone
 from unittest.mock import patch
 
 from libyears.gemfile_lock import ParsedGemfileLock, parse_lockfile
-from libyears.rubygems import authorize_public_selection, match_lock_dependencies
+from libyears.rubygems import authorize_public_selection, match_lock_dependencies, ruby_source_result
 
 from libyears.model import (
     Dependency, DependencyCandidate, RegistryFailure, RegistryResult,
@@ -202,3 +205,149 @@ class DirectMatchingTests(unittest.TestCase):
         candidates, failures = match_lock_dependencies(lock)
         self.assertEqual([item.used_version for item in candidates], ['1.0', '2'])
         self.assertEqual(failures, ())
+
+
+FIXTURES = Path(__file__).parent / 'fixtures' / 'rubygems'
+
+
+class RootSourceTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        self.root = Path(self.temp.name)
+        self.http = patch('urllib.request.urlopen', side_effect=AssertionError('HTTP prohibited'))
+        self.request = self.http.start()
+        self.addCleanup(self.http.stop)
+        self.addCleanup(self.request.assert_not_called)
+
+    def write_fixture(self, name='direct_scope.lock'):
+        data = (FIXTURES / name).read_bytes()
+        (self.root / 'Gemfile.lock').write_bytes(data)
+        return data
+
+    def assert_rejected(self, result, reason='invalid_lockfile'):
+        self.assertTrue(result.source_present)
+        self.assertFalse(result.measurement_available)
+        self.assertIsNone(result.dependencies_discovered)
+        self.assertEqual(result.candidates, ())
+        self.assertEqual(result.unmeasurable, ())
+        self.assertEqual(result.source_errors[0].reason, reason)
+        self.assertEqual(result.source_errors[0].source, 'Gemfile.lock')
+        self.assertIsNone(result.evidence.format)
+
+    def test_absent_gemfile_only_nested_alternate_and_direct_file_are_ignored(self):
+        self.assertFalse(ruby_source_result(None).source_present)
+        self.assertFalse(ruby_source_result(self.root).source_present)
+        (self.root / 'Gemfile').mkdir()  # Unreadable as text; never inspected.
+        nested = self.root / 'nested'
+        nested.mkdir()
+        (nested / 'Gemfile.lock').write_bytes((FIXTURES / 'direct_scope.lock').read_bytes())
+        (self.root / 'gems.locked').write_text('ignored')
+        (self.root / 'sample.gemspec').write_text('ignored')
+        self.assertFalse(ruby_source_result(self.root).source_present)
+        self.write_fixture()
+        self.assertFalse(ruby_source_result(self.root / 'Gemfile.lock').source_present)
+        self.assertTrue(ruby_source_result(self.root).source_present)
+
+    def test_lock_only_and_gemfile_presence_have_identical_unchanged_results(self):
+        before = self.write_fixture()
+        result = ruby_source_result(self.root)
+        (self.root / 'Gemfile').write_bytes(b'not Ruby\xff')
+        self.assertEqual(ruby_source_result(self.root), result)
+        self.assertEqual((self.root / 'Gemfile.lock').read_bytes(), before)
+        self.assertEqual((self.root / 'Gemfile').read_bytes(), b'not Ruby\xff')
+        self.assertEqual(result.dependencies_discovered, 3)
+        self.assertTrue(result.measurement_available)
+        self.assertEqual([item.name for item in result.candidates], ['sample'])
+        self.assertEqual([item.name for item in result.unmeasurable], ['bundler', 'tzinfo-data'])
+        self.assertEqual(result.evidence, SourceEvidence(
+            'Gemfile.lock', 'Gemfile.lock', 'gemfile_lock', True,
+            'all_direct_locked', 'earliest_admissible_supported_observable',
+        ))
+
+    def test_empty_scope_is_available_zero(self):
+        self.write_fixture('empty_scope.lock')
+        result = ruby_source_result(self.root)
+        self.assertEqual(result.dependencies_discovered, 0)
+        self.assertTrue(result.measurement_available)
+        self.assertTrue(result.source_present)
+        self.assertEqual((result.candidates, result.unmeasurable, result.source_errors), ((), (), ()))
+
+    def test_nonregular_broken_link_and_invalid_text_are_present_failures(self):
+        path = self.root / 'Gemfile.lock'
+        path.mkdir()
+        self.assert_rejected(ruby_source_result(self.root))
+        path.rmdir()
+        path.symlink_to(self.root / 'missing')
+        self.assert_rejected(ruby_source_result(self.root))
+        path.unlink()
+        os.mkfifo(path)
+        self.assert_rejected(ruby_source_result(self.root))
+        path.unlink()
+        path.write_bytes(b'\xff')
+        self.assert_rejected(ruby_source_result(self.root))
+
+    def test_unreadable_or_uninspectable_artifact_is_not_absent(self):
+        self.write_fixture()
+        with patch.object(Path, 'read_text', side_effect=PermissionError('private secret')):
+            result = ruby_source_result(self.root)
+            self.assert_rejected(result)
+            self.assertNotIn('secret', repr(result))
+        with patch.object(Path, 'lstat', side_effect=PermissionError('private secret')):
+            self.assert_rejected(ruby_source_result(self.root))
+
+    def test_whole_rejection_never_salvages_scope_and_diagnostics_are_safe(self):
+        for text, reason in (
+            ('arbitrary secret\n', 'unsupported_lockfile_format'),
+            ('GEM\n  remote: https://private.invalid/secret\n  specs:\n'
+             '    sample (1)\nDEPENDENCIES\n  sample\n', 'invalid_lockfile'),
+            ((FIXTURES / 'direct_scope.lock').read_text() + '\nCHECKSUMS\n  secret\n',
+             'unsupported_lockfile_format'),
+        ):
+            (self.root / 'Gemfile.lock').write_text(text)
+            result = ruby_source_result(self.root)
+            self.assert_rejected(result, reason)
+            self.assertNotIn('secret', repr(result))
+
+    def test_only_root_lock_is_read(self):
+        self.write_fixture()
+        original = Path.read_text
+        reads = []
+
+        def read_text(path, *args, **kwargs):
+            reads.append(path)
+            return original(path, *args, **kwargs)
+
+        with patch.object(Path, 'read_text', read_text):
+            result = ruby_source_result(self.root)
+        self.assertEqual(reads, [self.root / 'Gemfile.lock'])
+        self.assertEqual(result.dependencies_discovered, 3)
+
+    def test_local_failure_retains_count_and_safe_authority_diagnostic(self):
+        text = source_block(remotes=('https://private.invalid/secret',))
+        text += 'PLATFORMS\n  ruby\nDEPENDENCIES\n  sample\n'
+        (self.root / 'Gemfile.lock').write_text(text)
+        result = ruby_source_result(self.root)
+        self.assertEqual(result.dependencies_discovered, 1)
+        self.assertTrue(result.measurement_available)
+        self.assertEqual(result.candidates, ())
+        self.assertEqual(result.unmeasurable[0].reason, 'unsupported_dependency_source')
+        self.assertIn('no public namesake substitution', result.diagnostics[0][1])
+        self.assertNotIn('secret', repr(result))
+
+    def test_public_scan_remains_unactivated(self):
+        from libyears.scan import scan_mixed_repository
+
+        self.write_fixture()
+        report = scan_mixed_repository(self.root)
+        self.assertEqual([source.ecosystem for source in report.source_results], ['pypi', 'npm'])
+        self.assertFalse(any(source.source_present for source in report.source_results))
+        self.assertEqual(report.measurements, ())
+        self.assertEqual(report.summary.dependencies_discovered, 0)
+
+    def test_platform_metadata_never_selects_internal_candidates(self):
+        self.write_fixture()
+        original = ruby_source_result(self.root)
+        path = self.root / 'Gemfile.lock'
+        path.write_text(path.read_text().replace('  ruby\n  java', '  x86_64-linux'))
+        self.assertEqual(ruby_source_result(self.root), original)
