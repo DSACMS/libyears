@@ -2,11 +2,12 @@
 
 ## Status
 
-Draft — committed before independent architecture review
+Ready for narrow architecture verification
 
-This is the first technical-plan draft, not architecture approval or permission
-to implement. Task decomposition follows independent architecture approval.
-No independent architecture review has occurred in producing this document.
+The independent architecture review of draft `223032e2b537d11a9dcbbf0eb49248d571373b1e` returned APPROVE WITH
+CHANGES (PLAN CLARIFICATION REQUIRED). The three findings are clarified below;
+architecture approval and implementation permission are not yet granted.
+Task decomposition follows independent architecture approval.
 
 ## Approved Product Contract
 
@@ -199,16 +200,34 @@ Byte-equivalent duplicate metadata can collapse; conflicting same-full-identity
 records fail. Recognizable nonnull ruby_abi classes are excluded; malformed or
 unclassifiable identity cannot be silently treated as generic.
 
-Extend `VerifiedJSONTransport` with optional `max_response_bytes` and
-`allowed_authority` controls, defaulting to current behavior for existing callers.
-Use a verified opener with a redirect handler that rejects all redirects for
-Ruby (simpler than maintaining an allowlist chain). Reuse the same selected SSL
-context and CA policy. Read at most limit+1 bytes; check declared length and
-incomplete reads. Add a typed internal oversize failure so Ruby maps it to
-invalid_registry_response, not registry_error. Do not expose this internal
-category as a new stable reason. Default timeout remains 10 seconds. Set Ruby
-limit to 16 MiB per response, two requests and 32 MiB total per candidate.
-Reject truncated/oversize populations rather than measuring a prefix.
+Extend `VerifiedJSONTransport` with opt-in `max_response_bytes` and
+`allowed_authority` controls. With neither enabled, preserve the existing
+`request.urlopen` path, timeout/context/User-Agent arguments, no-argument
+`response.read()`, redirect behavior and injected `transport.get(url)` contract.
+Do not replace the default path globally or require existing injected transports
+and response doubles to accept new arguments or expose headers/sized reads.
+Existing PyPI/npm/Yarn transport semantics remain unchanged.
+
+Ruby opts into a verified opener with a redirect handler rejecting all redirects
+(simpler than maintaining an allowlist chain), reusing selected SSL context and
+CA policy. Read at most limit+1 bytes and check declared length and incomplete
+reads. Extend `TransportFailure` with defaulted optional typed bounded-failure
+metadata: `response_too_large` for detected oversize; `incomplete_response` for
+detected truncation, including `http.client.IncompleteRead` or EOF short of a
+valid declared Content-Length. Classify these before generic exception handling;
+never reuse partial bytes. Ruby maps both to `invalid_registry_response`, never
+`registry_error`; these internal categories are not new public reasons. Ordinary
+transport/TLS/timeout failures retain `registry_error`. Undetectable truncation
+is not claimed detectable; malformed JSON still fails registry validation.
+Default timeout remains 10 seconds. Set Ruby limit to 16 MiB per response, two
+requests and 32 MiB total per candidate. Reject truncated/oversize populations
+rather than measuring a prefix.
+
+Before registry measurement, schedule all locally accepted Ruby candidates in
+ascending lexical order of `(exact lock name, exact used version)`, using the
+preserved ASCII text without case normalization. Direct names are unique; this
+stable key does not depend on lockfile row/source order. Use that order for
+sequential lookups and the existing fixed identity-then-population request order.
 
 One adapter instance per scan paces sequential Ruby request starts at least
 0.11 seconds apart using monotonic time, injected clock/sleep in tests. On 429
@@ -218,6 +237,12 @@ subsequent candidates during cooldown fail without requests. An invalid/missing
 header on 429 closes Ruby requests for that scan. TransportFailure gains optional
 Retry-After metadata without changing existing consumers. No sleeps waiting for
 long server cooldowns, alternate host, hidden retry or partial response reuse.
+Cooldown state is scan-local and may suppress later scheduled requests under
+this finite-request policy. Equivalent candidate sets in different lock orders
+must yield the same observable results, requests and failure isolation with the
+same deterministic per-request responses and injected time. This does not imply
+identical results when upstream responses themselves change. No concurrency is
+introduced.
 
 ## Registry Endpoint Strategy
 
@@ -234,17 +259,43 @@ documents name in package metadata and version-array fields `number`, `platform`
 `ruby_abi`, `prerelease`, `created_at`. A version-specific v2 response would not
 supply the cross-version/platform population, so it is unnecessary here.
 
-The [versions controller](https://raw.githubusercontent.com/rubygems/rubygems.org/master/app/controllers/api/v1/versions_controller.rb)
-returns `public_versions` as an array without pagination. This supports two
-bounded requests rather than per-artifact fan-out. The
-[package model](https://raw.githubusercontent.com/rubygems/rubygems.org/master/app/models/rubygem.rb)
-associates that population with published versions and supplies package identity.
-The [version model](https://raw.githubusercontent.com/rubygems/rubygems.org/master/app/models/version.rb)
-defines published as indexed, and its payload includes creation, platform, ABI
-and prerelease fields. Thus availability is established by endpoint membership,
-not invented from an absent yank field. Current responses do not supply yanked
-history. Research inspected official docs/source on 2026-10-28, not live gems;
-master source is evidence of current behavior, not a timeless API guarantee.
+### Immutable implementation evidence
+
+Pin RubyGems.org revision `9d5892f97d320b8d5ca8446f7119743afeb97183` for reproducible
+fixture documentation. Inspected official source on 2026-10-28; no live package
+lookups were performed. All links below use that same immutable revision:
+
+- [Versions controller](https://raw.githubusercontent.com/rubygems/rubygems.org/9d5892f97d320b8d5ca8446f7119743afeb97183/app/controllers/api/v1/versions_controller.rb):
+  `show` renders the full `public_versions.includes(:gem_download)` relation as
+  JSON without pagination or a limit, and returns 404 for an empty relation.
+- [Package model](https://raw.githubusercontent.com/rubygems/rubygems.org/9d5892f97d320b8d5ca8446f7119743afeb97183/app/models/rubygem.rb):
+  `public_versions` applies `by_position.published`; `payload` includes `name`
+  and `as_json` delegates to it, supporting the independent identity response.
+- [Package controller](https://raw.githubusercontent.com/rubygems/rubygems.org/9d5892f97d320b8d5ca8446f7119743afeb97183/app/controllers/api/v1/rubygems_controller.rb):
+  public `show` renders the package only when hosted with indexed public
+  versions; otherwise it returns 404.
+- [Version model](https://raw.githubusercontent.com/rubygems/rubygems.org/9d5892f97d320b8d5ca8446f7119743afeb97183/app/models/version.rb):
+  `published` applies `indexed.by_created_at`, and `indexed` filters
+  `indexed: true`. `payload` and delegated `as_json` expose `number`, `platform`,
+  `ruby_abi`, `prerelease`, and `created_at` (separately from `built_at`).
+  ABI validation allows null or a major.minor string; uniqueness checks include
+  ABI alongside number/platform. Thus version/platform alone is insufficient
+  identity for all upstream artifacts. Nonnull recognizable ABI classes remain
+  excluded under the approved spec, without ABI resolution.
+
+This source chain demonstrates a two-response strategy that supplies package
+identity and the complete observable published artifact population at this
+revision, including required classification and serialization. Published/indexed
+membership establishes current availability; the population payload has no yank
+history field and filters out unindexed records. Do not infer absence is yanking.
+The package payload's selected-version fields do not define that population.
+
+The approved spec, rather than this implementation snapshot, requires supported
+full identity, authoritative creation times, stable/availability classification,
+and no silent population truncation. The pin demonstrates endpoint feasibility
+and anchors fixtures; it does not prove deployed behavior forever or guarantee
+complete historical publication knowledge. Deployed metadata must still pass
+strict validation; drift cannot justify weakening the approved wire requirements.
 
 Require the documented fields/classification; null ruby_abi denotes ordinary
 identity. Do not infer ABI absence from a missing required field. If future
@@ -262,10 +313,9 @@ otherwise no eligible stable version gives no_stable_release. Other HTTP/TLS
 failures give registry_error; malformed/contradictory metadata gives
 invalid_registry_response. No absence implies known yanked or never existed.
 
-Before architecture approval, corroborate the field-presence and publication
-population assumptions against a fixed upstream source revision suitable for
-fixture documentation. If the deployed documented contract cannot establish
-these facts, stop adapter approval; do not weaken identity or availability.
+Use the pinned source chain above in fixture documentation. If endpoint drift
+prevents establishing required identity or availability, fail closed and report
+the gap; do not weaken the approved contract.
 
 ## Canonicalization
 
@@ -443,6 +493,13 @@ map all AC-01–52 to concrete cases; these are test families, not tasks.
   byte/request limits, truncation, redirects, pacing and Retry-After cooldown.
   Include normalized observable yanked records to test canonicalization without
   claiming current endpoints expose them; reject contradictory wire assertions.
+  Assert separately that typed oversize and typed incomplete-response failures
+  map to invalid_registry_response with no partial metric, while ordinary
+  TLS/timeout/transport failures remain registry_error.
+  Permute equivalent Gemfile.lock dependency orders with fixed per-request
+  responses (including 429 and missing/valid Retry-After) and injected time;
+  assert identical scheduled requests, cooldown suppression, rows, reasons,
+  evidence and summaries.
 - Canonical helper tests: earliest admissible, earlier yanked contributor, one
   inadmissible plus one valid, all inadmissible, UTC import-day offsets,
   fractional precision, deterministic ties, same-version exact zero. Exercise
@@ -477,6 +534,10 @@ Each belongs to offline verification, never exclusively future dogfood.
 | tests.test_output | human output and stable schema-v3 serialization |
 | tests.test_cli | CLI flags, CA validation, snapshots and exit categories |
 
+Explicit default-path regression: existing urlopen patches and injected
+`transport.get(url)` doubles must keep working unchanged, including no-argument
+`read()` responses and original timeout/context/User-Agent and failure behavior.
+Run existing PyPI/npm registry tests and Yarn/mixed regressions unchanged.
 Add `tests.test_registry` for opt-in transport bounds/redirects and failure
 metadata. Run focused module commands per phase, not the whole suite per small
 edit. Run `python -m unittest discover -s tests` at transport/model integration,
@@ -539,7 +600,7 @@ Tests should read as examples of accepted evidence and each failure boundary.
 | DEFINITELY NEEDED | README.md; SPEC.md; CHANGELOG.md; AGENTS.md | coherent activation documentation checkpoint |
 | DEFINITELY NEEDED | specs/004-rubygems-support/release-validation.md; reviews.md; retrospective.md; tasks.md | later approved lifecycle, not this draft task |
 | LIKELY NEEDED | ROADMAP.md | completion references under existing lifecycle convention |
-| POSSIBLY NEEDED | tests/test_pypi.py; tests/test_npm_registry.py | adjustments only if transport test doubles need optional read/opener support; retain behavioral assertions |
+| POSSIBLY NEEDED | tests/test_pypi.py; tests/test_npm_registry.py | default injection compatibility assertions; existing doubles must not require sized reads or opener support |
 | SHOULD REMAIN UNCHANGED | libyears/metric.py; libyears/pypi.py; libyears/npm.py; libyears/yarn.py | existing arithmetic and ecosystem policies |
 | SHOULD REMAIN UNCHANGED | libyears/requirements.py; snapshot.py; constraints.py; cli.py; __main__.py; __init__.py | no new flags, Python behavior or runtime setup |
 | SHOULD REMAIN UNCHANGED | tests/test_metric.py; test_requirements.py; test_snapshot.py; test_constraints.py; test_scan.py; test_npm.py; test_yarn.py | existing regression assertions suffice |
@@ -584,24 +645,18 @@ around by changing observable behavior.
 
 ## Technical Questions
 
-### MUST RESOLVE BEFORE ARCHITECTURE REVIEW CAN APPROVE
+### Clarified for narrow architecture verification
 
-- Corroborate the two-endpoint population/required ruby_abi field/availability
-  assumptions at a fixed authoritative upstream revision for reproducible
-  fixtures. Current docs/source support the design, but deployed API drift must
-  not silently alter supported identity or history scope.
-- Confirm opt-in bounded verified-opener behavior and typed oversize failure
-  preserve existing transport callers/test injection while enforcing Ruby's
-  redirect boundary. This is a concrete shared-transport review point.
+- Fixed upstream evidence: immutable controller/model chain recorded above.
+- Bounded transport: opt-in only, distinct typed oversize/incomplete failures,
+  Ruby invalid-response mapping and unchanged default injection specified.
+- Cooldown order independence: stable pre-measurement candidate scheduling and
+  deterministic permutation regression specified; cooldown remains scan-local.
+- Independent review justified the three module boundaries and found no product
+  escalation; seven phases and coherent phase-5 activation remain unchanged.
 
-### MAY RESOLVE DURING ARCHITECTURE REVIEW
-
-- Confirm the three proposed module boundaries and defaulted typed evidence
-  additions are the smallest readable arrangement; review failure-evidence
-  retention without serializing adapter/parser internals.
-- Confirm proposed 16 MiB/response, two-request and 0.11-second pacing limits,
-  including fail-without-wait cooldown semantics, against approved finite-bound
-  requirements. Product scope and historical policies remain settled.
+No unresolved material technical questions remain from the three findings;
+these clarifications await independent narrow verification, not self-approval.
 
 ### SAFE TO DEFER TO TASK/IMPLEMENTATION
 
@@ -609,5 +664,5 @@ around by changing observable behavior.
 - Exact safe diagnostic wording and phase-to-task decomposition, preserving
   the precedence, offline gates and phase-5 public activation boundary above.
 
-Resolved product questions remain NONE. No architecture review verdict is
-claimed here; independent review must examine the committed draft next.
+Resolved product questions remain NONE. Next gate: independent narrow
+architecture verification of these clarifications.

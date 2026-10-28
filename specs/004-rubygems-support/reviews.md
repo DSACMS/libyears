@@ -439,3 +439,59 @@ proof of the broader process hypothesis.
 **Implementation status:** NOT APPROVED
 
 **Next gate:** Draft technical plan, commit it before independent architecture review.
+
+
+## Architecture Review
+
+Reviewed first technical-plan draft `223032e2b537d11a9dcbbf0eb49248d571373b1e` against the approved specification
+and repository implementation/tests. Initial verdict: **APPROVE WITH CHANGES**.
+Initial final-plan status: **PLAN CLARIFICATION REQUIRED**.
+
+Three material findings:
+
+1. Replace moving upstream evidence with an immutable RubyGems.org source chain
+   covering population, serialization, public filtering and ABI identity.
+2. Preserve default/injected transport behavior through opt-in bounds; distinguish
+   typed oversize and incomplete-response failures and map both to Ruby's
+   invalid_registry_response, preserving ordinary registry_error behavior.
+3. Schedule Ruby candidates deterministically before measurement so scan-local
+   cooldown cannot make equivalent fixed-response results depend on lock order.
+
+Review coverage: **52/52 ACs architecturally covered**. No product/spec
+escalation. Module boundaries justified: gemfile_lock.py owns syntax, rubygems.py
+owns source authority/matching, rubygems_registry.py owns registry evidence.
+Source-authority boundary PASS; parser SOUND; canonicalization SOUND;
+schema/evidence SOUND; availability/aggregation SOUND; public activation SOUND;
+readability PASS. Existing SourceResult availability, diagnostics, schema v3,
+metric arithmetic with metric.py unchanged, seven phases and public activation
+in phase 5 are retained.
+
+Repository-context experiment: **YES — REPOSITORY CONTEXT SUFFICIENT**.
+The compact review prompt successfully relied on repository artifacts for
+product and architecture context. This observation does not prove a general
+process rule.
+
+Clarification disposition: plan now pins RubyGems.org
+`9d5892f97d320b8d5ca8446f7119743afeb97183` with immutable controller/model links;
+specifies opt-in bounds, distinct typed failures and default-injection/oversize/
+truncation regressions; and specifies ascending exact `(lock name, used version)`
+scheduling with fixed-response/injected-time permutation tests. Upstream source
+is implementation evidence, not a perpetual deployment guarantee. No live package
+lookups, product changes, implementation or task decomposition performed.
+
+Compared plan against `223032e2b537d11a9dcbbf0eb49248d571373b1e`: changes limited to the three findings and review
+bookkeeping. No product behavior changed. metric.py remains unchanged; seven
+phases and phase-5 public activation remain. Only plan.md and reviews.md changed;
+`git diff --check` passed.
+
+Remaining material technical questions: NONE from these findings; narrow
+verification remains required. Helper/fixture naming and task decomposition
+remain deferred as in the plan.
+
+**Plan status:** Ready for narrow architecture verification
+
+**Architecture approval:** NOT YET GRANTED
+
+**Implementation status:** NOT APPROVED
+
+**Next gate:** Independent narrow architecture verification.
