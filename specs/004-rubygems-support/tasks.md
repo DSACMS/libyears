@@ -262,7 +262,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T018 — Validate an authorized real Ruby root
 
-- **Status:** Blocked; authorized dpc-admin human/JSON runs agree on available evidence, but all 67 Ruby lookups failed verified TLS; required Ruby publication dogfood incomplete. Partial evidence and UNAVAILABLE smoke disposition: [release-validation.md](release-validation.md). **Phase:** 7; **Parallelizable:** No.
+- **Status:** Complete; accepted human-supplied normal-environment human/JSON validation using explicitly authorized `<authorized-ca-bundle>`: Ruby 67/69, repository 77/79 measured, publication provenance and documented-precision agreement confirmed. Target integrity records and human no-change attestation retained. Separate smoke REDUNDANT; environmental history preserved in [release-validation.md](release-validation.md). T019 remains pending. **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** Use one explicitly authorized real root, inspecting only necessary root evidence; discovery paths grant no permission. Run normal verified human/JSON CLI without tooling execution; compare scope/counts/reasons/arithmetic/provenance/disclosures and record environment/limits. Verify target unchanged. Record discrepancies without remediation inside validation. In the same release-validation record assign separate live-smoke disposition: PERFORMED when a separate smoke supplied nonredundant evidence; REDUNDANT when authorized dogfood already exercised the same live path; UNAVAILABLE when useful smoke evidence could not be obtained; or DEFERRED when explicitly postponed with rationale. Run a separate bounded verified smoke only when useful; record its rationale/outcome without requiring it to permit convergence. Authorized real-root dogfood remains required; smoke disposition does not waive it.
 - **Expected files:** specs/004-rubygems-support/release-validation.md; tasks.md.
 - **Acceptance criteria mapped:** Release validation of approved contract; no exclusive AC ownership.
@@ -601,12 +601,16 @@ T018 remains unstarted; no real-root validation, smoke, convergence review,
 completion/radar reconciliation or retrospective has begun.
 
 
-## Phase 7 T018 partial release-validation evidence
+## Phase 7 T018 historical partial release-validation evidence
+
+The blocked statuses below describe earlier attempts, superseded by the manual
+completion record at the end of this file and current T018 status above.
 
 T018 **blocked, not complete**. The user explicitly authorized read-only dpc-admin
 validation at `<authorized-checkout>/dpc-app/dpc-admin`, then separately
 authorized the npm registry requests needed by normal mixed CLI runs. Human and
-JSON live runs each exited 0: 10/79 measured, all ten npm dependencies measured,
+JSON live runs each exited 0: raw output showed 10/79 measured (not meaningful
+dependency coverage because Ruby registry measurement was environment-blocked), all ten npm dependencies measured,
 67 Ruby registry_error results from TLS certificate verification failure, and
 bundler/tzinfo-data lock_version_missing without lookup. Human/JSON counts,
 rows/reasons, arithmetic for available measurements, selected provenance, absent
@@ -628,3 +632,46 @@ deterministic suite is required for this record. Diff inspected;
 Approved spec/plan and runtime behavior unchanged. T018 must resume before T019;
 independent convergence, completion/radar reconciliation and retrospective remain
 unstarted. No other external root accessed; no push, tag or history rewrite.
+
+### T018 authorized CA-bundle retry, 2026-10-28
+
+The human established managed TLS inspection, identified the organizational CA, and explicitly authorized the combined temporary public/organizational CA bundle through existing --ca-bundle. Human-reported verified connectivity succeeded; no trust special case, system/Python modification or certificate copy into the repository was made. See release-validation.md for the authorization and history, including certifi-only TLS code 20, later agent execution-environment DNS limitations and manual user-environment reproduction/resolution.
+
+Resumed human scans (sandbox and escalated retry) loaded the bundle with
+CERT_REQUIRED and hostname verification enabled but failed all registry requests
+at DNS. Exact Ruby failure: URLError wrapping gaierror, [Errno 8] nodename nor
+servname provided, or not known. Ruby 0/69 and repository 0/79 output are
+environment-blocked, not meaningful coverage. JSON retry was not run; no new
+human/JSON agreement or publication evidence is claimed. Target manifests matched
+before/after both attempts (281 entries including root, 218 regular files);
+root evidence hashes match historical validation. Smoke remains UNAVAILABLE.
+T018 remains BLOCKED on Codex DNS; stop before T019. T017's deterministic gate
+remains applicable; no runtime changes or new deterministic tests.
+
+### T018 completed with authorized human-supplied live evidence
+
+The human completed both required existing CLI scans in the normal user execution
+environment with --ca-bundle <authorized-ca-bundle> after Codex DNS
+prevented validation. Ruby 67/69 measured (0.9710144927536232); npm 10/10;
+repository 77/79 (0.9746835443037974), total 257.15223751425964 libyears.
+Human repository total/mean/median/max are 257.15/3.34/4.20/7.34; Ruby values are
+236.15/3.52/4.20/7.34. Human reports documented-precision human/JSON agreement,
+schema 3, source_errors [], and only bundler/tzinfo-data lock_version_missing.
+Ruby selected/publication artifacts, including multi-platform publications, and
+all_direct_locked/earliest_admissible_supported_observable provenance are confirmed
+by the human. The supplied counts, fractions and repository total/mean rounding
+are directly consistent; full successful raw JSON was not independently audited
+by Codex. No live requests were rerun during reconciliation.
+
+Certificate and hostname verification stayed enabled; the existing explicit CA
+interface used the authorized temporary combined bundle. No temporary certificate
+material is tracked or copied into the repository. Earlier certifi-only TLS code
+20 and subsequent Codex DNS failures remain environmental history, not meaningful
+dependency coverage or a libyears/RubyGems failure. Existing before/after target
+integrity evidence and the human's successful-run no-change attestation are
+retained. Separate smoke is REDUNDANT because successful real-root dogfood
+exercised the same approved verified path. T018 completion conditions pass on the
+accepted human evidence. T017's offline gate remains applicable; no runtime/test
+change requires a new suite. Final diff reviewed and git diff --check passed before
+the authorized local T018 commit. T019 remains independent, pending and unstarted;
+stop at that gate. No push, tag, certificate commit or target modification.

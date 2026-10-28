@@ -2,8 +2,148 @@
 
 ## Disposition
 
+**COMPLETE — authorized human-supplied live validation succeeded.** The human
+performed the required human-readable and JSON scans in the normal user execution
+environment after Codex DNS prevented live validation. The existing CLI used
+`--ca-bundle <authorized-ca-bundle>` for the already authorized dpc-admin
+root. This completion accepts the human-supplied evidence below; Codex did not
+rerun live requests or independently inspect the preserved successful raw JSON.
+T019 remains pending and requires independent convergence in a fresh context.
+
+## Successful manual release evidence
+
+The human reports these existing CLI invocations, using the authorized temporary
+bundle without changing code or trust configuration:
+
+```text
+python -m libyears <authorized-checkout>/dpc-app/dpc-admin --verbose --ca-bundle <authorized-ca-bundle>
+python -m libyears <authorized-checkout>/dpc-app/dpc-admin --json --ca-bundle <authorized-ca-bundle>
+```
+
+| Scope | Discovered | Measured | JSON coverage | Human coverage |
+|---|---:|---:|---:|---:|
+| Repository | 79 | 77 | 0.9746835443037974 | 97.5% |
+| npm | 10 | 10 | 1.0 | 100.0% |
+| RubyGems | 69 | 67 | 0.9710144927536232 | 97.1% |
+
+Repository JSON total_libyears is 257.15223751425964. Human values are total
+257.15, mean 3.34, median 4.20 and maximum 7.34. Ruby human values are total
+236.15, mean 3.52, median 4.20 and maximum 7.34. Reported human/JSON agreement is
+at documented display precision, including individual results and provenance.
+Counts, coverage fractions, repository total rounding and repository mean
+rounding are also checked directly from the supplied numeric summary. No exact
+Ruby aggregate or individual publication timestamp is invented from rounded data.
+
+The preserved JSON reports schema_version 3, ecosystems npm and rubygems,
+source_errors [], and only two unmeasurable rows: bundler and tzinfo-data, both
+lock_version_missing (human: exact selected spec unavailable). There are no Ruby
+registry/transport failures. Ruby evidence reports declaration_source and
+snapshot_source Gemfile.lock, format gemfile_lock, scope all_direct_locked and
+publication_basis earliest_admissible_supported_observable. The human confirms
+selected-artifact and used/latest publication-artifact provenance in the JSON,
+including real multi-platform publication evidence. This is live validation
+evidence supplied by the human, not an independent convergence verdict or a new
+claim that Codex audited every timestamp against a registry response.
+
+TLS trust reported by the successful CLI is
+`explicit CA bundle: <authorized-ca-bundle>`. Certificate and hostname
+verification remained enabled. The human reports no changes to repository code,
+target files, system/Python trust configuration or certificate material during
+validation. Existing target-integrity evidence below remains intact: before/after
+manifests matched during earlier runs and both Codex retries; the human attests
+the successful manual validation left target files unchanged. No new manual
+manifest digest or transport trace was supplied, and none is implied.
+
+Current separate smoke disposition: **REDUNDANT**. Successful authorized real-root
+human/JSON dogfood exercised the approved verified RubyGems metadata and
+publication path; a separate libyears live smoke would add no necessary evidence.
+Earlier UNAVAILABLE dispositions are historical. OpenSSL and Python HTTP 200
+checks establish human-reported trust-boundary context, not substitute dogfood.
+
+T018 completion conditions are satisfied using the explicitly accepted human
+evidence, existing integrity records and no-change attestation. No runtime or
+test code changed. T017's 289 offline tests and 52/52 AC audit remain the
+deterministic gate; no new suite or live request was run for this reconciliation.
+Only release-validation.md and tasks.md are changed. Repository checks found no
+tracked or copied CA bundle/certificate material. Final diff reviewed and
+git diff --check passed before the authorized T018 commit. Stop before T019.
+
+## Historical environmental attempts
+
+All blocked statuses, smoke dispositions and unsuccessful CLI captures below
+describe earlier attempts, superseded by the successful manual evidence above.
+Codex DNS failures are execution-environment failures, not libyears or RubyGems
+failures. Neither failed Ruby 0/69 nor initial 10/79 output is meaningful
+dependency coverage or a repository freshness result.
+
+## Authorized trust-boundary resolution and resumed attempt
+
+Historical environmental sequence, distinguished from deterministic correctness:
+
+1. The original certifi-only request failed with URLError wrapping
+   SSLCertVerificationError, CERTIFICATE_VERIFY_FAILED: unable to get local issuer
+   certificate, OpenSSL verification code 20, before HTTP. The prior read-only
+   investigation found identical failure through restricted and shared default
+   verified paths, no redirect involvement and no demonstrated Feature 004 defect.
+2. Later, Codex requests encountered an agent execution-environment DNS limitation, including escalated attempts. The user reported successful host and normal Python DNS.
+3. The user manually reproduced the TLS failure in their normal environment and identified managed TLS inspection of rubygems.org and the organizational CA required for verified connectivity.
+ 4. Human-established provenance: a read-only export of the explicitly authorized organizational CA was combined with the existing public CA bundle in  `<authorized-ca-bundle>`. The user reported successful verified OpenSSL connectivity using the exported root, successful Python context loading using the combined bundle and verified urllib HTTP 200 from https://rubygems.org/. These are user-supplied results, not Codex observations.
+5. The user explicitly authorized this temporary bundle through the existing
+   `--ca-bundle` interface for T018. No certificate material was copied into this
+   repository or committed. No system/Python trust configuration was changed.
+
+Resumed production entry point arguments:
+
+```text
+python -B -m libyears <authorized-checkout>/dpc-app/dpc-admin --verbose --ca-bundle <authorized-ca-bundle>
+```
+
+The entry point ran via runpy with those arguments. Passive profile observers
+captured original transport returns and the scan report; an exception trace
+captured restricted-path errors without replacing requests, trust or scan logic.
+Temporary output and integrity records were stored outside both repositories.
+Human starts: 2026-10-28 19:33:20.567449 UTC (sandbox) and
+19:33:42.942581 UTC (escalated retry). Both exited 0, but all 77 registry requests
+failed DNS: ten npm requests and 67 Ruby identity requests. All 67 Ruby errors in
+the escalated retry were URLError wrapping gaierror:
+`[Errno 8] nodename nor servname provided, or not known`. No verification code,
+HTTP status, Ruby population, publication date or metric was obtained.
+Two Ruby declarations, bundler and tzinfo-data, retained lock_version_missing.
+
+The authorized bundle loaded successfully. Observed transport settings were
+CERT_REQUIRED, hostname checking enabled, explicit trust path
+`<authorized-ca-bundle>`, timeout 10 seconds and User-Agent libyears/0.1;
+Ruby retained rubygems.org authority and the 16,777,216-byte cap.
+Python 3.11.0, macOS 26.7.2 arm64 and OpenSSL 1.1.1q were unchanged.
+This attempt cannot test whether TLS code 20 is resolved inside Codex: DNS failed
+before TLS. It does not contradict the user's successful verified connectivity.
+
+Observed output: Ruby 0/69 and repository 0/79 measured, serialized totals 0.0
+and null mean/median/maximum. These are environment-blocked results, not meaningful
+dependency coverage or freshness measurements. No new JSON CLI scan or human/JSON
+comparison was performed. The captured internal report is not JSON CLI evidence.
+Selected lock provenance remains available; publication provenance is unverified.
+
+Before/after manifests were identical for each attempt and across both attempts:
+281 entries including the root, 218 regular files, preserving relative paths,
+types, permissions, mtime_ns, file sizes/hashes and symlink text without following
+links. Canonical SHA-256 (json.dumps with sort_keys=True):
+`c0e924be546286042e4d20b3ab76b5c6a5b3c3be72d745a15fc46d1b14cec68c`.
+The three root evidence hashes match the historical table below. The historical
+record reports 280 entries; this retry's count includes the root. No claim of
+full-manifest identity across sessions is made; integrity passed within this retry.
+
+At this earlier attempt, smoke disposition was **UNAVAILABLE** in Codex because
+DNS prevented useful verified transport evidence. The user's connectivity check supplies trust-boundary
+context but does not complete required real-root publication/metric validation.
+Remaining blocker: Codex DNS. Stop before JSON and independent convergence.
+T017's 289 offline tests and 52/52 AC audit remain the deterministic gate; no
+runtime change or new deterministic suite is required for this evidence update.
+
+## Historical initial validation disposition
+
 **BLOCKED — T018 incomplete.** The authorized real-root human and JSON runs
-completed and agree on partial coverage, but verified RubyGems TLS failed for
+completed and agree on available output, but verified RubyGems TLS failed for
 every eligible Ruby candidate. No Ruby publication population, canonical date,
 latest selection, publication provenance or libyears value was established live.
 Required Ruby dogfood evidence remains incomplete; do not advance to T019.
@@ -53,6 +193,10 @@ to read this record. This is execution evidence, not independent convergence.
   body or HTTP status was obtained. The certificate-chain cause was not diagnosed.
 
 ## Human/JSON comparison and provenance
+
+The following historical values are preserved as raw output evidence. The 10/79
+result is not meaningful dependency coverage: Ruby registry measurement was
+blocked by the environment. It cannot establish repository freshness.
 
 | Scope | Discovered | Measured | Coverage | Total | Mean | Median | Maximum |
 |---|---:|---:|---:|---:|---:|---:|---:|
