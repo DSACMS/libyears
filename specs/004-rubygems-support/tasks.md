@@ -2,11 +2,12 @@
 
 ## Status and authority
 
-**Draft — committed before independent task-graph review**
+**Ready for narrow task-graph verification**
 
 **Implementation remains NOT APPROVED.** All tasks below are pending. This
-artifact is task decomposition only; no independent task-graph review has occurred.
-The next gate is independent task-graph review, followed by explicit implementation
+artifact is task decomposition only. The independent task-graph review returned
+REVISE; the two material findings are corrected below and recorded in reviews.md.
+The next gate is narrow task-graph verification, followed by explicit implementation
 approval. Do not begin a phase on the authority of this draft.
 
 Authority: approved spec.md, plan.md (8b4bf8fb6535bad524fc02bdfdcc5e1beea79a92), approval records in reviews.md,
@@ -60,7 +61,7 @@ as specified by the plan. Stop and report any genuine product/architecture gap.
 | 4 | Registry and canonicalization | T011–T014 | Adapter/source/parser suites at T014; no activation |
 | 5 | Coherent public activation | T015 | Mixed/output/CLI then full deterministic suite |
 | 6 | Deterministic convergence preparation | T016–T017 | Unique end-to-end cases then full deterministic suite at T017 |
-| 7 | Authorized dogfood and independent convergence | T018–T022 | Release evidence, independent review, completion and retrospective |
+| 7 | Authorized dogfood and independent convergence | T018–T021 | Release evidence, independent review, completion and retrospective |
 
 Full deterministic command at T010, T015 and T017 is
 `python -m unittest discover -s tests`. These are transport/model integration,
@@ -182,21 +183,21 @@ output and CLI. No deterministic tests are run merely to create this draft.
 - **Safe stopping condition:** Shared transport is independently reviewable and compatible; no Ruby scan or adapter coupling.
 - **Suggested commit:** `feat(registry): retain safe rate-limit response metadata`.
 
-### T011 — Validate fixed-authority registry population
+### T011 — Enforce Ruby transport and validate registry population
 
 - **Status:** Pending; **Phase:** 4; **Parallelizable:** No.
-- **Objective and approved scope:** Build internal RubyGemsAdapter identity-then-population requests, defensively validated identity/quoting, ASCII case-only returned identity checks and strict JSON/required field/ABI/full-artifact validation. Use the pinned upstream source chain to document fixtures. Handle equivalent versus contradictory duplicates and public absence without inventing history.
+- **Objective and approved scope:** Build internal RubyGemsAdapter identity-then-population requests only through T009’s opt-in verified transport, with fixed supported HTTPS authority rubygems.org, all redirects rejected, 16 MiB per response, two requests/32 MiB per candidate and default positive 10-second timeout. Consume shared controls without duplicating their implementation; preserve CA precedence and User-Agent. Map typed response_too_large/incomplete_response to invalid_registry_response without partial evidence; ordinary transport/TLS/timeout failures remain registry_error. Defensively validate identity/quoting and establish endpoint-independent ASCII case-only identity even when population records omit names; reject punctuation/Unicode substitutions. Apply strict JSON/required field/ABI/full-artifact validation. Use the pinned upstream source chain to document fixtures. Handle equivalent versus contradictory duplicates and public absence without inventing history.
 - **Expected files:** libyears/rubygems_registry.py; tests/test_rubygems_registry.py; registry fixtures and fixture documentation.
-- **Acceptance criteria mapped:** 08 (registry identity), 18 (adapter URLs), 20, 27 (absence).
+- **Acceptance criteria mapped:** 08 (endpoint-independent registry identity), 18–19 (Ruby transport enforcement), 20, 27 (absence), 44 (Ruby budgets and bounded-failure mapping).
 - **Dependencies:** T010.
-- **Focused deterministic verification:** tests.test_rubygems_registry: fixed two endpoints/order, input injection, returned names/punctuation/Unicode, required types/classification, ABI excluded vs unclassifiable, duplicate keys/records, 404 and empty populations; mock transport only.
-- **Safe stopping condition:** Internal adapter validates entire observable population before selection; no public activation.
+- **Focused deterministic verification:** tests.test_rubygems_registry: fixed two endpoints/order and supported authority, input/link/credential injection, redirect rejection, exact/excess byte and request limits, typed oversize/incomplete mapping versus ordinary registry_error, no partial evidence, verified TLS/CA/timeout/User-Agent; identity endpoint case-only agreement followed by nameless population, punctuation/Unicode mismatch rejection; required types/classification, ABI excluded vs unclassifiable, duplicate keys/records, 404 and empty populations. Use mocked HTTP through the restricted transport as well as injected typed failures; no live requests.
+- **Safe stopping condition:** Every executable Ruby request uses the approved transport boundary from its introduction; only complete validated population evidence may reach T012. No public activation.
 - **Suggested commit:** `feat(rubygems): validate public registry identity and artifacts`.
 
 ### T012 — Canonicalize publication and select stable evidence
 
 - **Status:** Pending; **Phase:** 4; **Parallelizable:** No.
-- **Objective and approved scope:** Implement canonical_publication and shared per-version canonical results. Retain every admissible contributor; apply UTC precision/import-day exclusion, supported observable artifact rules, latest eligibility/ties and registry failure precedence. Use existing metric calls for zero/anomaly arithmetic.
+- **Objective and approved scope:** Implement canonical_publication and shared per-version canonical results only over T011 evidence that has passed Ruby transport enforcement and population validation. Retain every admissible contributor; apply UTC precision/import-day exclusion, supported observable artifact rules, latest eligibility/ties and registry failure precedence. Use existing metric calls for zero/anomaly arithmetic.
 - **Expected files:** libyears/rubygems_registry.py; tests/test_rubygems_registry.py; publication fixtures.
 - **Acceptance criteria mapped:** 21–29, 51 (publication semantics), 50 (registry precedence).
 - **Dependencies:** T011.
@@ -204,16 +205,16 @@ output and CLI. No deterministic tests are run merely to create this draft.
 - **Safe stopping condition:** Used/latest share one canonical policy and typed contributor evidence; metric.py unchanged.
 - **Suggested commit:** `feat(rubygems): canonicalize observable publication evidence`.
 
-### T013 — Enforce adapter budgets pacing and cooldown
+### T013 — Add scan-local pacing and cooldown
 
 - **Status:** Pending; **Phase:** 4; **Parallelizable:** No.
-- **Objective and approved scope:** Opt Ruby into 16 MiB response bounds, two requests/32 MiB per candidate, verified default 10-second timeout and redirect rejection. Add per-scan sequential 0.11-second request-start pacing and 429 cooldown, seconds/date Retry-After, missing/invalid header closure, no retry or long cooldown sleep. Map typed oversize/incomplete to invalid_registry_response separately from ordinary registry_error.
+- **Objective and approved scope:** Retain T011’s enforced transport/budgets and add per-scan sequential 0.11-second request-start pacing and 429 cooldown, seconds/date Retry-After, missing/invalid header closure, no retry or long cooldown sleep.
 - **Expected files:** libyears/rubygems_registry.py; tests/test_rubygems_registry.py.
-- **Acceptance criteria mapped:** 19 (adapter trust), 44–45 (adapter controls).
+- **Acceptance criteria mapped:** 45 (scan-local pacing/cooldown).
 - **Dependencies:** T012.
-- **Focused deterministic verification:** tests.test_rubygems_registry tests.test_registry: injected time/sleep and HTTP responses; assert bytes/request ceilings, no prefix metric, typed failure mapping, TLS/timeout, cooldown suppression and no retries/alternate hosts.
+- **Focused deterministic verification:** tests.test_rubygems_registry tests.test_registry: injected time/sleep and HTTP responses; assert request-start spacing, seconds/date Retry-After, missing/invalid header closure, cooldown suppression and no retries/alternate hosts; retain T011’s transport enforcement while adding scan-local state.
 - **Safe stopping condition:** Finite internal adapter preserves safe failure evidence; no public discovery.
-- **Suggested commit:** `feat(rubygems): bound and pace registry metadata requests`.
+- **Suggested commit:** `feat(rubygems): pace registry requests and enforce cooldown`.
 
 ### T014 — Prepare deterministic candidate scheduling
 
@@ -262,54 +263,43 @@ output and CLI. No deterministic tests are run merely to create this draft.
 ### T018 — Validate an authorized real Ruby root
 
 - **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
-- **Objective and approved scope:** Use one explicitly authorized real root, inspecting only necessary root evidence; discovery paths grant no permission. Run normal verified human/JSON CLI without tooling execution; compare scope/counts/reasons/arithmetic/provenance/disclosures and record environment/limits. Verify target unchanged. Record discrepancies without remediation inside validation.
+- **Objective and approved scope:** Use one explicitly authorized real root, inspecting only necessary root evidence; discovery paths grant no permission. Run normal verified human/JSON CLI without tooling execution; compare scope/counts/reasons/arithmetic/provenance/disclosures and record environment/limits. Verify target unchanged. Record discrepancies without remediation inside validation. In the same release-validation record assign separate live-smoke disposition: PERFORMED when a separate smoke supplied nonredundant evidence; REDUNDANT when authorized dogfood already exercised the same live path; UNAVAILABLE when useful smoke evidence could not be obtained; or DEFERRED when explicitly postponed with rationale. Run a separate bounded verified smoke only when useful; record its rationale/outcome without requiring it to permit convergence. Authorized real-root dogfood remains required; smoke disposition does not waive it.
 - **Expected files:** specs/004-rubygems-support/release-validation.md; tasks.md.
 - **Acceptance criteria mapped:** Release validation of approved contract; no exclusive AC ownership.
 - **Dependencies:** T017; explicit authorization of the specific external root if outside workspace.
-- **Focused deterministic verification:** No new deterministic suite: cite T017. Compare human/JSON real-root results and target before/after; keep environmental/network failures distinct from correctness.
-- **Safe stopping condition:** Dogfood evidence or an explicit blocker is recorded; no invented success or unauthorized external inspection.
+- **Focused deterministic verification:** No new deterministic suite: cite T017. Compare human/JSON real-root results and target before/after; keep environmental/network failures distinct from correctness. Check that the release-validation record includes one justified smoke disposition and any available smoke evidence.
+- **Safe stopping condition:** Required dogfood evidence and smoke disposition are recorded; if dogfood is blocked, record the blocker and do not complete this task. No invented success or unauthorized external inspection; a separate smoke is never required to complete the record.
 - **Suggested commit:** `docs(rubygems): record authorized repository validation`.
 
-### T019 — Resolve optional live-smoke disposition
-
-- **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
-- **Objective and approved scope:** Run a separate verified live smoke only if dogfood did not establish the same adapter path and it adds evidence. Otherwise record a redundant-smoke skip. Keep environmental failures separate from deterministic correctness; no new endpoint or behavior.
-- **Expected files:** specs/004-rubygems-support/release-validation.md; tasks.md.
-- **Acceptance criteria mapped:** Plan Release Validation; no exclusive AC ownership.
-- **Dependencies:** T018.
-- **Focused deterministic verification:** No deterministic rerun. Record nonredundancy rationale and bounded smoke outcome, or explicit redundant skip.
-- **Safe stopping condition:** Live validation disposition is documented; no claim that it replaces fixtures/tests.
-- **Suggested commit:** `docs(rubygems): record live smoke disposition`.
-
-### T020 — Obtain independent convergence review
+### T019 — Obtain independent convergence review
 
 - **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** Obtain fresh-context independent read-only convergence against approved spec/plan/tasks, implementation, tests, docs and release evidence. Record findings and verdict separately; do not silently remediate or mark completion while material findings remain.
 - **Expected files:** specs/004-rubygems-support/reviews.md; tasks.md.
 - **Acceptance criteria mapped:** Plan Release Validation and artifact lifecycle; review all ACs without replacing deterministic ownership.
-- **Dependencies:** T019.
-- **Focused deterministic verification:** Independent artifact/test-evidence audit; no routine full-suite repetition. Supply T017 deterministic evidence and T018–T019 release evidence. Any required remediation needs bounded approved follow-up and re-convergence before T021.
+- **Dependencies:** T018.
+- **Focused deterministic verification:** Independent artifact/test-evidence audit; no routine full-suite repetition. Supply T017 deterministic evidence and T018 release-validation record, including required dogfood, smoke disposition and available evidence. Evaluate whether that evidence is sufficient; a separate smoke is never a prerequisite for convergence. Any required remediation needs bounded approved follow-up and re-convergence before T020.
 - **Safe stopping condition:** Independent convergence verdict is recorded; only a satisfactory convergence with resolved material findings unblocks completion.
 - **Suggested commit:** `docs(rubygems): record independent convergence review`.
 
-### T021 — Complete feature bookkeeping and radar reconciliation
+### T020 — Complete feature bookkeeping and radar reconciliation
 
 - **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** After satisfactory convergence, finalize task statuses and completion references; reconcile ROADMAP's SELECTED entry using its existing lifecycle conventions and preserve separate interpreted-Gemfile EXPLORE scope. Do not invent a delivered radar state, tag, release or push.
 - **Expected files:** specs/004-rubygems-support/tasks.md; ROADMAP.md; reviews.md or release-validation.md only for completion references.
 - **Acceptance criteria mapped:** Plan Documentation and Artifact Lifecycle; no new product behavior.
-- **Dependencies:** T020 (satisfactory convergence).
+- **Dependencies:** T019 (satisfactory convergence).
 - **Focused deterministic verification:** Cross-check completion references, existing radar states/scope, recorded gate outcomes; git diff --check. No test rerun for bookkeeping alone.
 - **Safe stopping condition:** Completion is accurately recorded without changing approved spec/plan or inventing radar semantics.
 - **Suggested commit:** `docs(rubygems): reconcile feature completion records`.
 
-### T022 — Write post-convergence retrospective
+### T021 — Write post-convergence retrospective
 
 - **Status:** Pending; **Phase:** 7; **Parallelizable:** No.
 - **Objective and approved scope:** Create retrospective after convergence and completion reconciliation, including evidence about whether committed pre-review drafts improved durable reconstruction; distinguish observation from causal claims. Finish task bookkeeping and confirm clean tree after final authorized commit.
 - **Expected files:** specs/004-rubygems-support/retrospective.md; tasks.md.
 - **Acceptance criteria mapped:** Plan Documentation and Artifact Lifecycle.
-- **Dependencies:** T021.
+- **Dependencies:** T020.
 - **Focused deterministic verification:** Check chronology and links to draft/review/convergence evidence; git diff --check and clean-tree check after commit. No deterministic rerun for prose only.
 - **Safe stopping condition:** Retrospective exists after convergence; lifecycle complete, no release/tag/push.
 - **Suggested commit:** `docs(rubygems): record post-convergence retrospective`.
@@ -333,8 +323,8 @@ assertions for every row. Phase 7 owns release/process evidence only.
 | AC-09–12 | T006 |
 | AC-13 | T005 authority; T015 safe human authority explanation |
 | AC-14–17 | T006; T012 also verifies registry population ignores locked/host platform for AC-16 |
-| AC-18 | T009 transport restriction; T011 fixed safe adapter URLs |
-| AC-19 | T008 default compatibility; T009 bounded verified path; T013 Ruby opt-in trust |
+| AC-18 | T009 shared transport restriction; T011 Ruby fixed-authority/redirect enforcement and safe URLs |
+| AC-19 | T008 default compatibility; T009 bounded verified path; T011 Ruby opt-in trust |
 | AC-20 | T011 |
 | AC-21–29 | T012 |
 | AC-30–36 | T015 |
@@ -342,7 +332,7 @@ assertions for every row. Phase 7 owns release/process evidence only.
 | AC-38 | T004 typed preparation; T015 complete public serialization |
 | AC-39–42 | T015 |
 | AC-43 | T007 local static boundary; T014 authority before HTTP; T015 public no-execution/unchanged-target assertions |
-| AC-44 | T009 bounded failure production; T013 adapter budgets/mapping; T016 full-path no-partial-metric assertion |
+| AC-44 | T009 bounded failure production; T011 Ruby budgets/mapping before canonicalization; T016 full-path no-partial-metric assertion |
 | AC-45 | T010 rate metadata; T013 pacing/cooldown; T014 scheduling; T015 observable permutation invariance |
 | AC-46 | T006 |
 | AC-47 | T005 |
@@ -369,21 +359,29 @@ Every task traces back to a named approved phase and its plan boundary: T001–T
 parser; T004–T007 evidence/authority/matching/source results; T008–T010 shared
 transport; T011–T014 registry/canonicalization/scheduling; T015 public scan/output
 and documentation checkpoint; T016–T017 deterministic convergence preparation;
-T018–T022 release validation and artifact lifecycle. No task adds a product rule
+T018–T021 release validation and artifact lifecycle. No task adds a product rule
 or architecture beyond those boundaries.
 
 ## Dependency audit and activation invariant
 
 Explicit edges form the chain:
 
-`T001 → T002 → T003 → T004 → T005 → T006 → T007 → T008 → T009 → T010 → T011 → T012 → T013 → T014 → T015 → T016 → T017 → T018 → T019 → T020 → T021 → T022`.
+`T001 → T002 → T003 → T004 → T005 → T006 → T007 → T008 → T009 → T010 → T011 → T012 → T013 → T014 → T015 → T016 → T017 → T018 → T019 → T020 → T021`.
 
 All edges point to a larger ID: the graph is acyclic, with this chain as its
 topological order. Serial phase ordering is deliberate; Phase 4 cannot precede
 Phase 2 authority/model or Phase 3 transport. T015 requires all internal tasks
 and their gates. T018 additionally requires any necessary external-root permission;
-T021 additionally requires satisfactory independent convergence. These conditions
+T020 additionally requires satisfactory independent convergence. These conditions
 are gates, not presumed approvals or cycles. No tasks are parallelizable.
+
+T009 supplies shared restricted transport; T011 consumes and verifies it before
+introducing any Ruby requests. T012 only canonicalizes evidence admitted through
+that boundary. Scan-local pacing/cooldown stays in T013 and deterministic
+candidate scheduling in T014, both before public activation. T018 combines
+required dogfood and optional smoke disposition in one release record; T019
+consumes that record and judges evidence sufficiency without requiring a separate
+smoke task or smoke execution.
 
 **Public activation: T015 only.** Until that commit the released two-source scan
 and serializer behavior remain intact. Internal source tests may call Ruby
@@ -396,19 +394,21 @@ state is an allowed stopping point.
 
 - T015: documentation coherence and CHANGELOG Unreleased Added checkpoint.
 - T017: final offline integration/regression and actual AC traceability evidence.
-- T018: release-validation.md, authorized real-root human/JSON dogfood and
-  unchanged-target evidence; discovery's historical paths are not authorization.
-- T019: optional nonredundant live smoke or explicit redundant skip.
-- T020: independent fresh-context read-only convergence recorded in reviews.md;
+- T018: release-validation.md, required authorized real-root human/JSON dogfood,
+  unchanged-target evidence and PERFORMED/REDUNDANT/UNAVAILABLE/DEFERRED smoke
+  disposition with rationale; separate smoke cannot block convergence. Discovery’s
+  historical paths are not authorization.
+- T019: independent fresh-context read-only convergence recorded in reviews.md;
   findings are separate from remediation and block completion where material.
-- T021: final feature bookkeeping and ROADMAP reconciliation within existing
+- T020: final feature bookkeeping and ROADMAP reconciliation within existing
   lifecycle conventions, with no new radar state or interpreted-Gemfile scope.
-- T022: retrospective.md after convergence, including the committed-draft
+- T021: retrospective.md after convergence, including the committed-draft
   experiment; final authorized commit and clean-tree check. No push/tag/release.
 
-Draft self-checks (not independent task-graph review): 22 tasks, seven approved
+Revision self-checks (not independent narrow verification): 21 tasks, seven approved
 phases, 52/52 mapped identifiers, acyclic explicit graph, safe stopping condition
 for every task, offline correctness, phase-5-only public activation, independently
 reviewable shared transport and complete artifact lifecycle. No product or
-architecture gap identified during decomposition. Implementation and independent
-task-graph review remain unperformed and unapproved by this artifact.
+architecture gap identified by these corrections. The initial independent
+task-graph verdict was REVISE; narrow verification is pending. Implementation
+remains NOT APPROVED.

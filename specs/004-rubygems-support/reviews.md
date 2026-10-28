@@ -524,3 +524,53 @@ unchanged from `8b4bf8fb6535bad524fc02bdfdcc5e1beea79a92`.
 **Implementation status:** NOT APPROVED
 
 **Next gate:** Task decomposition, followed by independent task-graph review.
+
+
+## Task-Graph Review
+
+This records the completed independent review supplied in the thread and the
+resulting author corrections, not a new independent verification.
+
+**Initial verdict:** REVISE
+
+- Finding 1: registry requests preceded complete Ruby transport enforcement.
+  T011 now consumes T009’s shared opt-in transport immediately, with fixed
+  authority, redirect rejection, bounded complete responses, typed oversize/
+  incomplete mapping to invalid_registry_response and ordinary transport
+  failures preserved as registry_error. Endpoint-independent identity and
+  Ruby-specific enforcement tests belong to T011; T012 uses only admitted
+  evidence. AC-18/19/44 ownership reflects that boundary. Shared implementation
+  is not duplicated; pacing/cooldown and scheduling remain in T013/T014.
+- Finding 2: optional smoke had become a mandatory execution dependency.
+  Removed the separate smoke task; T018’s required release-validation/dogfood
+  record includes PERFORMED, REDUNDANT, UNAVAILABLE or DEFERRED smoke disposition
+  with rationale. Required authorized dogfood remains. Convergence consumes
+  that record and judges available evidence sufficiency; separate smoke never
+  gates convergence. Later tasks are renumbered cleanly.
+
+Review results retained:
+
+- Acceptance coverage: **52/52 ACs mapped**.
+- Supply-chain boundary: PASS.
+- Shared transport boundary: PASS.
+- Public activation: SOUND.
+- Verification efficiency: GOOD.
+- Human readability: PASS.
+- Repository context: **YES — REPOSITORY CONTEXT SUFFICIENT**.
+
+Revision audit: 22 → 21 tasks across the same seven approved phases; all 52
+primary AC mappings audited, dependency graph acyclic, every task has a safe
+stopping boundary. Source authority precedes lookup; Ruby transport enforcement
+precedes canonicalization/measurement. Public activation remains coherent at
+T015. Offline deterministic correctness and full-suite gates at T010/T015/T017
+are preserved. Release validation, independent convergence (now T019), completion
+reconciliation (T020) and post-convergence retrospective (T021) retain the
+artifact lifecycle. No forced parallelism, product/architecture changes or
+implementation. Only tasks.md and reviews.md changed; git diff --check passed.
+
+**Status:** Ready for narrow task-graph verification
+
+**Implementation status:** NOT APPROVED
+
+**Next gate:** Independent narrow task-graph verification, then explicit
+implementation approval.
