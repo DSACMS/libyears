@@ -251,7 +251,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T017 — Run final deterministic integration and traceability gate
 
-- **Status:** Pending; **Phase:** 6; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest discover -s tests` (289 tests passed), assertion/documentation audit below, `git diff --check` passed; **Phase:** 6; **Parallelizable:** No.
 - **Objective and approved scope:** Reconcile the bidirectional AC-to-test/task record and documentation coherence, verify unchanged regression boundaries, and record deterministic results separately from future release evidence. No new runtime behavior.
 - **Expected files:** tasks.md; test files only if a demonstrated deterministic coverage gap requires an approved case.
 - **Acceptance criteria mapped:** 01–52 (verification audit; primary ownership below).
@@ -505,3 +505,97 @@ All checks were offline with live HTTP/process guards, local responses and fake
 clocks. Diff inspected; `git diff --check` passed. No product/architecture gaps
 or scope deviations. AC ownership remains as mapped above; T017 records the
 complete assertion-level audit and final deterministic gate. T017 unstarted.
+
+
+## Phase 6 T017 final deterministic gate and acceptance audit
+
+Phase 6 complete: T016–T017. Final gate:
+`python -m unittest discover -s tests` passed (289 tests). This includes all
+required unchanged regression boundaries: requirements, snapshot, constraints,
+legacy scan, PyPI, npm registry, package-lock v2/v3, Yarn, shared transport,
+metric, mixed scan, output and CLI, plus all Ruby component/integration tests.
+No separate repeat was needed: the final gate executes those suites. All
+correctness evidence is offline, using fixtures/mocks, guarded scan/CLI HTTP
+and process boundaries, and injected request clocks. No live registry resource,
+package manager or external repository was used. No runtime behavior changed.
+
+### Assertion-level traceability
+
+Inspected assertions, not just method names or planned task mappings. The
+primary task ownership table above remains the reverse task-to-AC record;
+the following concrete passing test witnesses reconcile its AC-to-test side.
+Module abbreviations: G = tests.test_gemfile_lock; R = tests.test_rubygems;
+A = tests.test_rubygems_registry; M = tests.test_mixed_scan;
+O = tests.test_output; C = tests.test_cli. Method names below include their
+literal `test_` prefix; each is unique within its module. Grouped rows audit
+every listed criterion; supplementary transport, metric and compatibility
+witnesses are named explicitly where shared behavior supplies the boundary.
+
+| AC | Passing assertion witnesses and obligation checked |
+|---|---|
+| 01–02 | M.test_public_recognition_and_static_unchanged_target; R.test_lock_only_and_gemfile_presence_have_identical_unchanged_results; R.test_only_root_lock_is_read: root activation, direct/nested/alternate exclusions, untouched inert Gemfile and lock bytes, only lock read. |
+| 03 | G.test_empty_scope_line_endings_and_optional_metadata; R.test_lock_only_and_gemfile_presence_have_identical_unchanged_results: optional tool/runtime sections and accepted gemfile_lock evidence. |
+| 04 | G.test_malformed_tool_runtime_and_duplicate_directs; G.test_unsafe_source_and_nested_framing; G.test_missing_required_structure_and_unsafe_identity; R.test_nonregular_broken_link_and_invalid_text_are_present_failures; R.test_unreadable_or_uninspectable_artifact_is_not_absent; M.test_composed_precedence_rejects_structure_before_local_and_registry: malformed/unreadable source rejection without partial scope/lookup. |
+| 05 | G.test_unclassifiable_and_unsupported_sections; G.test_unknown_source_fields_are_unsupported; M.test_composed_precedence_rejects_structure_before_local_and_registry: unsupported whole-source reason, no salvaged rows. |
+| 06–07 | R.test_special_directs_missing_specs_and_transitives; R.test_lock_only_and_gemfile_presence_have_identical_unchanged_results; G.test_preserves_rows_without_promoting_specs_or_metadata_to_scope; C.test_lock_only_cli_json_verbosity_resolved_isolation_and_unchanged_target: direct scope/counts, metadata/transitive exclusions, only sample lookup. |
+| 08 | R.test_names_preserve_case_and_punctuation_without_lock_normalization; A.test_fixed_endpoint_order_case_identity_and_nameless_population; A.test_returned_identity_rejects_punctuation_unicode_and_missing_name: exact lock identity, independent registry case-only identity. |
+| 09 | R.test_names_preserve_case_and_punctuation_without_lock_normalization; G.test_missing_required_structure_and_unsafe_identity; R.test_rejected_source_and_direct_evidence_never_reaches_lookup: isolated invalid names versus unsafe structure, no lookup. |
+| 10 | R.test_ordinary_platform_and_agreeing_variants; M.test_canonical_population_contributors_survive_public_serialization: exact selected generic/platform version and retained artifacts. |
+| 11 | R.test_special_directs_missing_specs_and_transitives; C.test_lock_only_cli_json_verbosity_resolved_isolation_and_unchanged_target: missing specs remain counted without lookup or substitution. |
+| 12 | R.test_duplicate_and_differing_artifacts_are_ambiguous_across_blocks; R.test_ordinary_platform_and_agreeing_variants: distinct agreeing artifacts versus duplicate/conflicting selections. |
+| 13 | R.test_all_associations_and_pin_block_public_namesake_without_http; M.test_public_namesakes_with_conflicting_authority_never_reach_http; M.test_rejected_authority_and_source_never_reach_lookup: rejected authority/pins including public namesakes, safe human explanation. |
+| 14 | R.test_unsupported_selection_and_material_partial_evidence; G.test_unsafe_source_and_nested_framing: unsupported isolated identity versus broken framing, retained safe partial evidence. |
+| 15 | R.test_requirements_are_retained_without_evaluation: unconstrained/exact/range/compound/repeated/whitespace forms, disagreement accepted, unsupported framing rejected. |
+| 16 | R.test_platform_metadata_never_selects_internal_candidates; A.test_earliest_across_platforms_retains_every_admissible_contributor; M.test_canonical_population_contributors_survive_public_serialization: lock platforms do not select package artifacts or canonical contributors. Static root-only reader excludes build/runtime configuration. |
+| 17 | R.test_special_directs_missing_specs_and_transitives; C.test_lock_only_cli_json_verbosity_resolved_isolation_and_unchanged_target: bundler/tzinfo-data counted without tool or snapshot inference. |
+| 18 | A.test_input_identity_injection_makes_no_requests; A.test_fixed_endpoint_order_case_identity_and_nameless_population; A.test_redirect_handler_rejects_every_supported_redirect_status; tests.test_registry.test_rejected_destinations_never_reach_opener: fixed safely constructed authority and rejected redirects/destinations. |
+| 19 | A.test_fixed_endpoint_order_case_identity_and_nameless_population; A.test_explicit_ca_and_timeout_use_shared_policy; C.test_ruby_cli_ca_bundle_reaches_verified_adapter; C.test_missing_ca_bundle_is_filesystem_error; tests.test_pypi CA/default/environment/fallback assertions: verified context, hostname, finite timeout, User-Agent and unchanged trust precedence. |
+| 20 | A.test_required_fields_types_abi_and_availability; A.test_strict_json_structure_and_duplicates; A.test_duplicate_values_do_not_conflate_booleans_and_numbers: required identity/classification, ABI handling and conflicting duplicates. |
+| 21–22 | A.test_invalid_missing_naive_and_import_day_are_individually_excluded; A.test_authoritative_equivalent_times_and_contradictions; M.test_canonical_population_contributors_survive_public_serialization: aware authoritative dates only, UTC precision, no built_at fallback, individual exclusions and contradictory-field rejection. |
+| 23 | A.test_earliest_across_platforms_retains_every_admissible_contributor; A.test_required_fields_types_abi_and_availability; A.test_registry_validation_precedes_used_absence_date_and_stable_absence: earliest supported population, ABI exclusions, version absence. |
+| 24–25 | A.test_latest_uses_dates_then_exact_lexical_ties_and_ignores_labels; A.test_normalized_yanked_evidence_contributes_but_cannot_be_latest; A.test_required_fields_types_abi_and_availability: available stable eligibility, date ordering, exact lexical ties, classification failures and response permutations. |
+| 26–27 | A.test_prerelease_used_and_failure_keeps_safely_established_contributors; A.test_normalized_yanked_evidence_contributes_but_cannot_be_latest; A.test_typed_failures_absence_and_no_partial_evidence; O.test_ruby_failure_words_are_contextual_and_preserve_direct_text: no stable reason, used prerelease/yanked evidence, public absence reasons without never-existence claims. |
+| 28–29 | A.test_same_version_zero_and_existing_metric_arithmetic; tests.test_metric.test_one_dependency and test_timestamp_anomaly_is_clamped_and_flagged: UTC elapsed metric, shared canonical same-version exact zero, negative clamp and flag, nonnegative flag false. |
+| 30 | tests.test_metric.test_total, test_mean, test_median, test_maximum; M.test_repository_and_ecosystem_aggregates_use_each_source_denominator; M.test_three_same_names_remain_distinct_with_exact_prior_evidence: successful-row-only aggregates and shared Ruby arithmetic. |
+| 31 | M.test_availability_matrix_preserves_known_scope_and_sibling_success; M.test_composed_precedence_rejects_structure_before_local_and_registry: known local/outage denominators, available measured counts and sibling success. |
+| 32–35 | M.test_availability_matrix_preserves_known_scope_and_sibling_success; M.test_rejected_source_preserves_mixed_counts_and_numeric_aggregates; M.test_public_recognition_and_static_unchanged_target: unknown/known/empty/outage matrices, exact null Ruby summary, successful repository aggregates, unavailable versus zero measured counts. |
+| 36 | M.test_three_same_names_remain_distinct_with_exact_prior_evidence: separate three-ecosystem rows/provenance, counts and sums. |
+| 37 | M.test_three_same_names_remain_distinct_with_exact_prior_evidence; M.test_python_resolved_snapshot_evidence_is_preserved; tests.test_npm.test_package_lock_versions_and_failures_preserve_existing_results and test_both_locks_reject_source_without_reading_or_dispatching; tests.test_registry compatibility tests: unchanged prior evidence/selection/default transport. Existing PyPI/npm registry, Python and Yarn suites also pass. |
+| 38 | M.test_canonical_population_contributors_survive_public_serialization; M.test_failure_provenance_merges_selected_and_established_publications; O.test_explicit_artifact_serialization_preserves_precision_and_unknown_yank; C.test_population_budget_failures_never_become_cli_metrics_or_modify_target: additive v3 scope/basis/selected/contributing artifacts, unknown yank omitted, absent publication arrays on failures. |
+| 39 | M.test_composed_precedence_rejects_structure_before_local_and_registry; M.test_rejected_authority_and_source_never_reach_lookup; C.test_lock_only_cli_json_verbosity_resolved_isolation_and_unchanged_target; O.test_ruby_failure_words_are_contextual_and_preserve_direct_text: stable reasons, source/dependency separation, declared text and safe verbosity-invariant JSON. |
+| 40–41 | O.test_scope_and_history_disclosures_are_present_in_normal_and_verbose_output; O.test_ruby_failure_words_are_contextual_and_preserve_direct_text; M.test_availability_matrix_preserves_known_scope_and_sibling_success; M.test_rejected_authority_and_source_never_reach_lookup: normal scope/history disclosures, contextual failure words and source paths, safe diagnostics and numeric/null distinctions. |
+| 42 | C.test_lock_only_cli_json_verbosity_resolved_isolation_and_unchanged_target; C.test_completed_no_source_empty_and_broken_source_reports_exit_zero; C.test_population_budget_failures_never_become_cli_metrics_or_modify_target; C.test_filesystem_failure_returns_one, test_usage_error_returns_one and test_scan_failure_returns_systemic_error: flag-free activation, Python-only resolved input and exits 0/1/2. |
+| 43 | R.test_only_root_lock_is_read; M.test_public_namesakes_with_conflicting_authority_never_reach_http; C.test_population_budget_failures_never_become_cli_metrics_or_modify_target: only root evidence read, authority before transport, execution/HTTP guards, unchanged target bytes/membership. Inspected Ruby module imports and flow: standard library, no tooling/private/archive retrieval. |
+| 44 | A.test_both_responses_can_reach_the_total_budget_without_extra_requests; A.test_exact_limit_excess_and_truncation_through_restricted_transport; A.test_typed_failures_absence_and_no_partial_evidence; C.test_population_budget_failures_never_become_cli_metrics_or_modify_target: finite budgets, typed oversize/incomplete mapped through CLI to invalid_registry_response with no partial metric. |
+| 45 | A.test_request_starts_are_paced_across_candidates_and_slow_requests; A.test_seconds_cooldown_suppresses_without_sleep_and_recovers_at_deadline; A.test_http_date_uses_wall_clock_for_deadline_and_monotonic_for_elapsed; A.test_invalid_or_missing_retry_after_closes_only_that_scan; A.test_lock_permutations_have_identical_requests_outcomes_evidence_and_summary; M.test_public_fixed_response_cooldown_is_order_independent: pacing, finite no-retry cooldown and public order independence. |
+| 46 | R.test_repeated_disjoint_blocks_only_match_exact_directs; R.test_ordinary_platform_and_agreeing_variants; R.test_duplicate_and_differing_artifacts_are_ambiguous_across_blocks: repeated public blocks retain compatible evidence and reject ambiguity. |
+| 47 | R.test_all_associations_and_pin_block_public_namesake_without_http; G.test_unsafe_source_and_nested_framing; M.test_public_namesakes_with_conflicting_authority_never_reach_http: missing/different/multiple authority rejected locally, unsafe boundaries reject source. |
+| 48 | G.test_required_platform_and_singleton_boundaries; R.test_platform_metadata_never_selects_internal_candidates: required/nonempty/singleton ASCII platform framing, no runtime selection. |
+| 49 | G.test_nested_requirements_are_inert; G.test_unsafe_source_and_nested_framing; R.test_special_directs_missing_specs_and_transitives: nested unsupported text inert, malformed framing rejects, no expanded scope. |
+| 50 | G.test_malformed_wins_over_unsupported_in_both_orders; R.test_local_precedence_is_independent_of_occurrence_order; A.test_registry_validation_precedes_used_absence_date_and_stable_absence; M.test_composed_precedence_rejects_structure_before_local_and_registry: structural/local/registry and composed precedence. |
+| 51 | A.test_invalid_missing_naive_and_import_day_are_individually_excluded; A.test_typed_failures_absence_and_no_partial_evidence; A.test_registry_validation_precedes_used_absence_date_and_stable_absence; O.test_scope_and_history_disclosures_are_present_in_normal_and_verbose_output: admissibility versus history certainty, observable absence and record-disappearance disclosure. |
+| 52 | M.test_public_recognition_and_static_unchanged_target; C.test_completed_no_source_empty_and_broken_source_reports_exit_zero; tests.test_metric.test_zero_discovered_dependencies: no-source/Gemfile-only empty ecosystems/evidence and exact empty summary values. |
+
+Result: **52/52 ACs have inspected passing deterministic witnesses**. No new
+coverage gap required further test edits at T017. Normalized yanked-record tests
+exercise the approved canonical contract; they do not assert current endpoints
+expose yank history. Offline evidence does not establish deployed metadata or
+real-root fitness; that remains separate Phase 7 evidence.
+
+### Documentation coherence and boundary result
+
+Compared README RubyGems usage/limits, SPEC current ecosystem extensions,
+CHANGELOG Unreleased Added, and AGENTS ecosystem/security scope with approved
+Feature 004 and passing public output assertions. They agree on root-only
+all-direct lock scope, no Gemfile/group/runtime interpretation, authority before
+lookup, retained requirements/platform evidence, observable publication history,
+additive schema-v3 provenance, unavailable counts versus zero coverage,
+unchanged prior ecosystems, verified bounded transport and existing CLI exits.
+Historical MVP sections in SPEC are qualified by its current extensions; earlier
+pending approval wording in feature artifacts is superseded by reviews.md's
+Final Task-Graph Verification and Approval and the execution instruction.
+No approved specification/plan or user-facing documentation needed alteration.
+
+Diff inspected; `git diff --check` passed. No blockers or deviations. Phase 7 /
+T018 remains unstarted; no real-root validation, smoke, convergence review,
+completion/radar reconciliation or retrospective has begun.
