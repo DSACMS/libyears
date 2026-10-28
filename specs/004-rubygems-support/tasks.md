@@ -75,7 +75,7 @@ output and CLI. No deterministic tests are run merely to create this draft.
 
 ### T001 — Parse supported lock structure
 
-- **Status:** Pending; **Phase:** 1; **Parallelizable:** No.
+- **Status:** Complete; verification: `python -m unittest tests.test_gemfile_lock` (4 tests passed); **Phase:** 1; **Parallelizable:** No.
 - **Objective and approved scope:** Build the pure line-oriented parser and immutable lock records from the plan. Consume supported GEM, direct, platform and optional tool/runtime framing, LF/CRLF and blank separators; preserve raw selections, declarations, metadata order and duplicate spec occurrences. Do not perform matching or I/O.
 - **Expected files:** libyears/gemfile_lock.py; tests/test_gemfile_lock.py; parser fixtures.
 - **Acceptance criteria mapped:** 03, 07, 48.

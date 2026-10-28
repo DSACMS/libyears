@@ -1,0 +1,19 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    rack (3.0.0)
+    transitive (1.0)
+    rack (3.0.0)
+
+PLATFORMS
+  ruby
+  x86_64-linux
+
+DEPENDENCIES
+  rack (~> 3.0)!
+
+RUBY VERSION
+   ruby 3.2.0p0
+
+BUNDLED WITH
+   2.4.0
