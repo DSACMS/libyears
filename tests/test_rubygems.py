@@ -283,9 +283,12 @@ class RootSourceTests(unittest.TestCase):
         path.symlink_to(self.root / 'missing')
         self.assert_rejected(ruby_source_result(self.root))
         path.unlink()
-        os.mkfifo(path)
-        self.assert_rejected(ruby_source_result(self.root))
-        path.unlink()
+        # The directory above covers non-regular artifacts on every platform.
+        # Where available, also reject a FIFO before a read could block.
+        if hasattr(os, 'mkfifo'):
+            os.mkfifo(path)
+            self.assert_rejected(ruby_source_result(self.root))
+            path.unlink()
         path.write_bytes(b'\xff')
         self.assert_rejected(ruby_source_result(self.root))
 
