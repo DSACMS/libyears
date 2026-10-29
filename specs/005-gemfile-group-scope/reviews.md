@@ -434,3 +434,67 @@ or other feature artifacts were created. Temporary reports remain outside the
 repository. Ledger/hash/scope assertions and `git diff --check` pass. One local
 review-evidence commit is authorized; no push. Decomposition completed the audit
 but does not establish a causal model/resource comparison or general sufficiency.
+
+## Focused independent technical plan verification — 005-0011
+
+**Date:** 2026-10-29. **Completion:** COMPLETE. **Verdict:** APPROVE.
+**Plan approval:** APPROVED. **Next gate:** TASK DECOMPOSITION.
+No tasks or product implementation began.
+
+Only validated 005-0010 finding P1 and its regression/traceability consequences
+were corrected. The parent inspected the plan diff and passed `git diff --check`
+before freezing candidate SHA-256:
+`e588024ada3a9b59c20de94490e979b81b59e9826af880469b40f8352b58bb48`.
+One fresh native child, `/root/fifo_plan_verification`, was commissioned after
+freeze with `fork_turns="none"`, no model/effort overrides and no participation
+in authorship. Actual child model/effort telemetry is unavailable. It read the
+approved specification, current plan, relevant 005-0010 finding and correction
+diff directly, matched the frozen hash, and returned COMPLETE / APPROVE. Its
+temporary report is outside the repository and is not a separate ledger row.
+
+### Focused evidence and parent synthesis
+
+Both scoped inputs now require final-component `os.open` with
+`O_RDONLY | O_NOFOLLOW | O_NONBLOCK`, immediately followed by `os.fstat` and
+`stat.S_ISREG` before wrapping or consuming content. A replacement FIFO cannot
+wait for a writer at this open and is rejected before reading. Content is read
+only from the same validated descriptor. Existing containment, directory-relative
+no-follow traversal, descriptor cleanup, byte/line limits, strict decoding and
+source reasons remain intact. Missing safe-open capabilities fail closed through
+existing source failures; no blocking/unchecked fallback or new dependency is
+introduced. Ordinary all-direct Feature 004 access remains unchanged.
+
+Planned separate regressions begin with regular Gemfile and Gemfile.lock inputs,
+replace the selected path with a FIFO AFTER validation at the final-open hook,
+and call the real open without a writer. They assert flags, pre-read rejection,
+closure, prompt completion, correct unknown/known scope, source reasons and zero
+lookups. The lock case first establishes Gemfile scope. A bounded subprocess
+contains a potential hang; hook synchronization avoids nondeterministic races.
+Capability mocks cover fail-closed platforms even when real FIFO tests skip.
+These witnesses extend AC-11, AC-24 and AC-28; all 28 AC mappings remain intact.
+
+The parent read the complete child report and independently checked the diff,
+unchanged sections, failure/availability rules and traceability. A bounded offline
+synthetic experiment independently validated a regular file, replaced it with a
+FIFO, and confirmed nonblocking/no-follow open plus nonregular `fstat` rejection
+without content reads for EACH filename. The first harness attempt failed its
+temporary-root containment assertion because the root was not canonicalized;
+resolving the temporary root corrected the harness and both witnesses passed.
+This is a syscall-sequence witness, not a product implementation or feature test.
+No product suite, external checkout, Ruby/Bundler execution or network was used.
+
+No material collateral architecture or product changes were found. Parser,
+group semantics, F1/F2, authority, schema, aggregation, resource bounds and metric
+contracts are unchanged. The earlier 005-0009 INCOMPLETE and 005-0010 REVISE
+records, including their historical status, remain byte-preserved. This focused
+verification closes P1 against the prior whole-plan review; it does not claim
+passed implementation acceptance. Only plan approval/status text changed after
+candidate freeze. Final approved plan SHA-256:
+`6d6bb924b1c0ca3adc50b916f648ec0ffd237df24c9ab0b0d85ef9bce018c3be`.
+
+The ledger appends exactly 005-0010 from its JSON handoff plus authorized human
+status additions. Runs 005-0001 through 005-0010 occur once with 44 fields each;
+earlier bytes are unchanged, credits_before remains blank and no credit delta
+is derived. 005-0011 is handed off externally, not appended. Final verification
+covers narrow scope, 28/28 traceability, preserved history, no tasks/implementation
+artifacts and `git diff --check`. One local commit; no push.

@@ -2,10 +2,9 @@
 
 ## Status and authority
 
-**DRAFT / READY FOR INDEPENDENT REVIEW** — run `005-0008`, 2026-10-29.
-This plan is not approved and grants no implementation authority. Next gate:
-INDEPENDENT TECHNICAL PLAN REVIEW; task decomposition follows plan approval.
-No tasks or product implementation are created by this document.
+**APPROVED** — focused independent verification completed in run `005-0011`,
+2026-10-29. Next gate: TASK DECOMPOSITION. This plan grants no implementation
+authority. No tasks or product implementation are created by this document.
 
 The [approved specification](spec.md), including S1–S4 and AC-01–AC-28, governs
 all observable behavior. [Review history](reviews.md), especially the final
@@ -96,11 +95,20 @@ containment before opening; never open an outside-root target to test validity.
 
 To resist link replacement during access, open the validated resolved path by
 walking its root-relative components with directory file descriptors and
-no-follow flags; use `fstat` to confirm the opened file is regular. Do not fall
-back to an unchecked pathname open. Failure to establish safe access is a safe
-source failure. Close descriptors on all paths. This is a local helper for two
-Ruby files, not a filesystem framework. Tests must simulate replacement between
-validation and open and assert that outside-root content is never consumed.
+no-follow flags. For BOTH Gemfile and Gemfile.lock, open the final component
+with `os.open` using `O_RDONLY | O_NOFOLLOW | O_NONBLOCK`: a replacement FIFO
+must not block waiting for a writer before type validation. Immediately use
+`os.fstat` and `stat.S_ISREG` on that descriptor; reject any nonregular object
+before wrapping the descriptor or consuming content. Read only from that same
+validated descriptor. Keep directory-descriptor traversal and containment checks;
+nonblocking access does not replace symlink/root protections. Do not fall back
+to a blocking or unchecked pathname open. If the platform lacks the required
+flags or directory-relative/no-follow operations, fail closed through the existing
+safe source-failure mapping, without attempting an unsafe open. This uses only
+standard-library capabilities and does not require platform-specific substitutes.
+Close descriptors on all paths. This is a local helper for two Ruby files, not
+a filesystem framework. Tests must simulate replacement between validation and
+open and assert that outside-root content is never consumed.
 
 Use binary bounded reads, strict UTF-8 decoding and explicit CRLF handling.
 Planning limits for scoped input are 1 MiB Gemfile, 16 KiB per Gemfile physical
@@ -258,6 +266,22 @@ publication-history claims. Use injected registry results/local existing Ruby
 population fixtures; spy on lookup arguments/counts and forbidden reads. No
 network, package managers, target code or external checkouts are needed.
 
+For P1, add separate Gemfile and Gemfile.lock replacement-to-FIFO regressions.
+Start with valid regular root inputs, then interpose at the final `os.open`
+after metadata/containment validation to replace the selected path with a FIFO
+before invoking the real open with the production flags. For the lock case,
+first allow Gemfile recognition and selected-scope establishment to complete.
+Use no FIFO writer; assert the final flags include nonblocking/no-follow,
+`fstat` rejects the opened FIFO before any content read, descriptors close,
+and the source returns promptly with `invalid_gemfile` (unknown N, no lock read)
+or `invalid_lockfile` (known N, no rows), respectively, and zero registry lookups.
+Use a bounded subprocess guard so a regression fails instead of hanging the
+suite; synchronize replacement at the open hook, without sleeps or timing races.
+On platforms without FIFO/safe-open capabilities, skip only the real FIFO witness
+and deterministically test capability failure with mocks: existing safe source
+failure, no unsafe fallback or content read. Preserve ordinary all-direct no-read
+regressions. A pre-existing FIFO fixture alone does not exercise P1.
+
 | AC | Planned deterministic witness and owner |
 |---|---|
 | AC-01 | Existing RootSourceTests plus scoped regression: absent/valid/invalid Gemfile yields identical ordinary results and no Gemfile open. |
@@ -270,7 +294,7 @@ network, package managers, target code or external checkouts are needed.
 | AC-08 | Parser table for every positive S1 form and negative syntax family, including comments/quotes, interpolation, trailing tokens and unselected code; line/completion precedence and resource limits. |
 | AC-09 | Optional true/false same declared membership; no config reads; nested groups reject. |
 | AC-10 | Identical/conflicting/cross-group duplicates reject Gemfile; existing duplicate-direct lock rejection exercised through scoped path. |
-| AC-11 | Missing/unreadable/nonregular/dangling/invalid UTF-8/outside-root Gemfile yields correct source reason, null counts and zero lookups. |
+| AC-11 | Missing/unreadable/nonregular/dangling/invalid UTF-8/outside-root Gemfile yields correct source reason, null counts and zero lookups; P1 regular-to-FIFO replacement before final open. |
 | AC-12 | Missing lock with safe declaration pins yields N failures and no candidates; N=0 absent-lock exception. |
 | AC-13 | Public selected name absent direct row with matching transitive spec: one lock_dependency_missing, no lookup. |
 | AC-14 | Lock-only/unselected names excluded; mismatch table covers absent vs >=0, order/whitespace/operator differences and identical multiple literals, with safe provenance and no selected artifacts/lookup for mismatch. |
@@ -283,11 +307,11 @@ network, package managers, target code or external checkouts are needed.
 | AC-21 | Exact schema-v3 dictionaries and key-presence assertions for all S4 states, measured/local/registry failures, full membership arrays, artifacts and ordinary omission. |
 | AC-22 | Scoped human disclosures and JSON evidence labels assert supplied-file claim only; production treated as an ordinary exact group name. |
 | AC-23 | Root file before/after snapshots, forbidden subprocess/project-execution spies, read allowlist and zero credential/config/archive access. |
-| AC-24 | Root-only fixtures with parent/nested/alternate decoys, inside/outside/broken links and simulated link replacement; no outside target reads; direct-file scoped CLI error. |
+| AC-24 | Root-only fixtures with parent/nested/alternate decoys, inside/outside/broken links and simulated link replacement plus P1 regular-to-FIFO replacement for BOTH inputs; no outside target reads; direct-file scoped CLI error. |
 | AC-25 | Existing registry/TLS suite plus scoped adapter wiring checks for CA/trust, fixed authority, redirect rejection, pacing and transport limits. |
 | AC-26 | Mock canonical publications through scoped scan: platform artifacts, earliest admissible dates, latest stable, exact same-version zero and flagged negative-date clamping; existing metric/registry tests. |
 | AC-27 | CLI exit matrix: completed success/empty/partial/source errors 0; bad/missing/comma options, direct-file and path failures 1; unrelated systemic exception 2. |
-| AC-28 | Composed precedence table from Gemfile rejection through unknown group, unavailable lock, F1, absent direct, local validation, mismatch, selected-spec and registry failures. F1: nonpublic rack absent accepted lock direct scope yields unsupported_dependency_source/N=1/M=0/no lookup. F2: unsupported direct requirement yields unsupported_requirement/N retained/omitted lock_requirement/no unsafe text/safe declaration metadata/no lookup. Assert ordinary output unchanged. |
+| AC-28 | Composed precedence table from Gemfile rejection through unknown group, unavailable lock, F1, absent direct, local validation, mismatch, selected-spec and registry failures. F1: nonpublic rack absent accepted lock direct scope yields unsupported_dependency_source/N=1/M=0/no lookup. F2: unsupported direct requirement yields unsupported_requirement/N retained/omitted lock_requirement/no unsafe text/safe declaration metadata/no lookup. P1 safe-read failures for each input precede content consumption/lookup. Assert ordinary output unchanged. |
 
 Shared composed tests may cover AC-04/05, AC-06/12/17, AC-14/20/21 and
 AC-16/28 when each assertion names its obligation. Keep negative parser tables
