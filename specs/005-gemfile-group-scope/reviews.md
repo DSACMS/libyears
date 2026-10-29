@@ -298,3 +298,139 @@ Prior observation 005-0008 was appended from its machine handoff with only the
 authorized human metadata additions. Runs 005-0001 through 005-0008 each occur
 once with 44 fields; earlier ledger bytes and previous review history are
 preserved. No tasks, implementation, product tests, live validation or push.
+
+
+## Decomposed independent technical plan review — 005-0010
+
+**Date:** 2026-10-29. **Completion:** COMPLETE. **Verdict:** REVISE.
+**Plan approval:** NOT APPROVED. **Decomposition result:** SUFFICIENT to
+complete this review gate. **Next gate:** PLAN CORRECTION AND INDEPENDENT
+VERIFICATION. No task decomposition or implementation may begin on this verdict.
+
+Reviewed baseline: `591da218c1627d9ef79cfd38dc89001dff368e03`.
+Plan SHA-256: `03bb48ce5bbe1d18b4346b8adb08f7f5fadb1c61e74d3765bca73e224922ad79`.
+Plan bytes remain unchanged. The approved specification remains authoritative.
+The prior 005-0009 INCOMPLETE attempt established neither a finding nor approval;
+its record and all prior specification-review history remain unchanged.
+
+### Independent evidence and parent synthesis
+
+Three fresh native children used `fork_turns="none"`, with no explicit model or
+effort overrides. All three were observed running concurrently. Each read its
+repository evidence independently; no current reviewer conclusions were supplied
+to another reviewer. Each confirmed this barrier in its final report. Actual
+child model/effort telemetry is unavailable. Children are orchestration details
+of one human-launched observation, not ledger rows.
+
+| Child | Assigned slice | Completed result |
+|---|---|---|
+| `/root/review_a` | Architecture, closed parser, groups, root safety, bounds and foundation sequencing | MATERIAL FINDINGS: A-01 |
+| `/root/review_b` | Association, F1/F2 authority, provenance, compatibility, aggregation and integration sequencing | PASS |
+| `/root/review_c` | CLI/output, deterministic verification, regressions, whole-plan traceability and sequencing | PASS |
+
+Temporary reports are `review-a.md`, `review-b.md`, `review-c.md` under the
+external temporary directory `/tmp/libyears-005-plan-review/`; none is committed.
+After all three finished, the parent read all reports, reconciled their claims
+against the approved S1–S4 contract and candidate plan, and independently
+reproduced A-01 with a bounded offline synthetic FIFO experiment. This is not
+a majority vote: B/C's positive assessments do not close A's filesystem gap.
+
+Ownership otherwise fits existing source/model/scan/output boundaries. Pure
+closed recognition, complete-file rejection, group representation and sequencing
+are implementable using the standard library. The existing Ruby authorization
+prefix can be extracted without changing ordinary precedence. F1 is explicitly
+before missing direct identity after whole-lock acceptance; F2 omits unsafe
+requirements while retaining safe declaration metadata. Scope, version and
+publication evidence remain distinct. The source availability matrix preserves
+known N on rejected locks, sibling aggregates and ordinary behavior. CLI and
+explicit scoped serializer omission preserve schema v3. Parser/evidence → safe
+association → scan propagation → public activation → composed verification is
+a coherent dependency order. No approved product behavior needs revision.
+
+### Validated material finding P1 — blocking open before nonregular rejection
+
+**Location:** plan.md lines 97–103, “Filesystem safety and bounded work”; related
+bounds at 105–115 and reason mappings at 117–120. **Origin:** A-01.
+**Approved obligations:** S1 safe scoped inputs; S4 nonregular Gemfile/lock
+failure reporting; AC-11, AC-24 and AC-28.
+
+The plan prescribes directory-descriptor traversal and no-follow open followed
+by `fstat`, but does not require a nonblocking final open. After regular-file
+validation, replacement of the final component by a FIFO makes ordinary
+read-only open block waiting for a writer. No-follow prevents a symlink traversal,
+but cannot reject a FIFO before open returns. Neither `fstat` nor byte limits
+can run while open is blocked. Thus this concrete planned sequence can hang
+instead of returning `invalid_gemfile` or `invalid_lockfile`, delaying sibling
+reporting as well. This is a bounded-access defect, not a parser style preference.
+
+The parent independently created and validated a synthetic regular Gemfile in
+a temporary directory, replaced it with a FIFO and executed a read-only
+no-follow open in a separate Python process with a 0.5-second timeout. It timed
+out before `fstat`. Adding `O_NONBLOCK` allowed immediate nonregular detection
+without reading. The child separately reproduced the same result. No target
+code, Ruby, Bundler, package manager or network was executed.
+
+**Smallest correction:** explicitly require nonblocking plus no-follow final
+component access, then regular-file `fstat` before reading; fail closed if safe
+access is unsupported. Keep containment, descriptor cleanup, ordinary Feature
+004 behavior and reason mappings. Plan replacement-to-FIFO cases for both root
+inputs, asserting prompt source failure, zero content reads and no lookup.
+Correct the plan in a later run, then independently verify this correction and
+its collateral boundaries before task decomposition.
+
+### Whole-plan acceptance accounting
+
+**28/28 ACs accounted for.** This is review coverage and planned verification,
+not implementation acceptance or passed feature tests. The plan's named
+witnesses are sufficient except for P1's missing replacement-to-FIFO variant.
+The following parent reconciliation retains every criterion explicitly:
+
+| AC | Planned evidence / parent assessment |
+|---|---|
+| AC-01 | Ordinary Gemfile absent/valid/invalid no-read regression; adequate. |
+| AC-02 | CLI, exact direct identity, case-sensitive groups and mocked age; adequate. |
+| AC-03 | Explicit default selection and no production inference; adequate. |
+| AC-04 | Overlapping memberships count/lookup once; adequate. |
+| AC-05 | Repeated/multiple groups deduplicated union; adequate. |
+| AC-06 | Empty default/block with absent/accepted/rejected lock distinction; adequate. |
+| AC-07 | Unknown request prevents partial union and lock read; adequate. |
+| AC-08 | Positive subset and negative syntax/complete-file/bounds tables; adequate. |
+| AC-09 | Optional membership, no configuration, nested rejection; adequate. |
+| AC-10 | Declaration and direct-lock duplicate rejection; adequate. |
+| AC-11 | Safe input reason/count/no-lookup matrix; P1 requires FIFO replacement variant. |
+| AC-12 | Missing lock/pins and empty exception; adequate. |
+| AC-13 | Missing direct despite transitive spec; adequate. |
+| AC-14 | Excluded names and exact textual mismatch/provenance matrix; adequate. |
+| AC-15 | Rejected lock at zero/positive N; isolated selection failures; adequate. |
+| AC-16 | Private/pinned/GIT/PATH/multiple-remote/F1 authority matrix; adequate. |
+| AC-17 | Empty/unavailable/wholly unmeasurable aggregate matrix; adequate. |
+| AC-18 | Sibling success and repository availability matrix; adequate. |
+| AC-19 | PyPI/npm/Yarn/mixed and resolved-snapshot regressions; adequate. |
+| AC-20 | Paired safe human/JSON single/mixed/verbose cases including F2; adequate. |
+| AC-21 | Exact scoped dictionaries, omission/null and artifact checks; adequate. |
+| AC-22 | Supplied-file limitations and ordinary production group; adequate. |
+| AC-23 | Target snapshots, execution/read spies and allowlist; adequate. |
+| AC-24 | Root/link/decoy/replacement/direct-file tests; P1 extends replacement coverage. |
+| AC-25 | Registry/TLS and scoped wiring regression; adequate. |
+| AC-26 | Canonical publication/platform/zero/clamping composition; adequate. |
+| AC-27 | Reporting/usage/systemic exit matrix; adequate. |
+| AC-28 | Precedence/F1/F2 and safe provenance composition; P1 adds safe-read failure witness. |
+
+All S1–S4 families have planned offline verification. The required later authorized
+real-root population example remains separate from optional live registry smoke.
+No external target access is authorized by this review. No product suite or
+feature acceptance was run; only synthetic FIFO witnesses were executed.
+
+### Verification and observation
+
+The ledger appends only 005-0009 from its handoff plus the explicitly authorized
+human status metadata. Runs 005-0001 through 005-0009 occur exactly once, with
+44 fields each; earlier ledger bytes are unchanged. Credits_before stays blank;
+no credit delta is derived. 005-0010 is handed off externally, not appended.
+
+Plan/spec/discovery bytes and prior review history are preserved. Only this
+review artifact and the prior-run ledger row change. No tasks.md, implementation
+or other feature artifacts were created. Temporary reports remain outside the
+repository. Ledger/hash/scope assertions and `git diff --check` pass. One local
+review-evidence commit is authorized; no push. Decomposition completed the audit
+but does not establish a causal model/resource comparison or general sufficiency.
