@@ -498,3 +498,149 @@ earlier bytes are unchanged, credits_before remains blank and no credit delta
 is derived. 005-0011 is handed off externally, not appended. Final verification
 covers narrow scope, 28/28 traceability, preserved history, no tasks/implementation
 artifacts and `git diff --check`. One local commit; no push.
+
+## Independent task-graph review — 005-0013
+
+**Date:** 2026-10-29. **Completion:** COMPLETE. **Verdict:** APPROVE.
+**Task-graph approval:** APPROVED for implementation under a subsequent explicit
+execution instruction. **Next gate:** IMPLEMENTATION, NOT BEGUN.
+**Material findings:** 0. No task, external validation or network work is
+commissioned by this review. The unchanged tasks.md draft-status paragraphs
+describe its submission state; this later review records the approval.
+
+Reviewed repository baseline: `b87a88a1d6f5e1b8430857f71d05129b1c80e205`.
+Reviewed tasks.md SHA-256:
+`633821844a2a761693e3316e6d8ee093dd68b897af546f48656be766c73bace6`.
+The approved specification and approved technical plan remain authoritative;
+their earlier next-gate statements are historical. All five current Feature 005
+artifacts, repository instructions/routing, observation protocol and ledger were
+read. This fresh review independently reconciles task definitions with S1–S5,
+the plan's component responsibilities, source-flow ordering, availability matrix
+and deterministic witnesses. The task graph's own AC matrix is not the proof.
+No authorship context or child-agent review was used.
+
+### Dependency and task-boundary assessment
+
+All 13 identities T001–T013 are unique and stable, with explicit predecessors
+consistent between the graph table and individual definitions. The complete
+predecessor graph is:
+
+```text
+T001: none                 T002: none
+T003: T001                 T004: T001, T002, T003
+T005: T004                 T006: T005
+T007: T006                 T008: T007
+T009: T006, T007, T008      T010: T009
+T011: T010                 T012: T011 + later human target/evidence authorization
+T013: T010, T011, T012
+```
+
+Every edge points forward in numeric order, proving acyclicity. Transitive
+dependencies supply the parser, typed model and safe-reader foundations before
+association or scan integration. The T003/T004 split lets safe reads be tested
+before source-state composition. T004 explicitly defers accepted-lock rows to
+T005 and remains disconnected from scanning: its intermediate state does not
+expose an incomplete public path. T006 propagates completed source evidence;
+both output formats land before T009 activates the CLI. T002 is independently
+constructible using trailing defaults; it does not require parser records or
+serialization. No implementation prerequisite is assigned after its consumer.
+
+The decomposition is proportional. T001 owns the closed parser as one coherent
+contract, with table-driven tests and narrowly authorized validator extraction.
+T003 contains the coupled filesystem protections and descriptor lifecycle;
+splitting these could obscure the safety invariant. T005 keeps authority,
+association and safe provenance together where their ordering matters. T006
+owns scan propagation and the availability boundary. JSON, human output and CLI
+have separate reviewable changes. T010 supplements each task's behavioral tests
+with composed acceptance and regressions rather than postponing all verification.
+Documentation, conditional real evidence and read-only convergence are distinct.
+No task requires unrelated cleanup, a new ecosystem/framework, metric changes,
+Ruby execution, package management or new registry behavior.
+
+### Independent acceptance ownership — 28/28
+
+Each row below was derived from the approved AC observable and the actual task
+Change/Evidence clauses. The owners include both behavior and concrete planned
+verification. T010 additionally requires every plan-matrix witness and full
+offline regressions; T013 independently audits every AC at convergence. These
+are future obligations, not claims that implementation tests have passed.
+
+| AC | Behavior ownership and sufficient verification obligation |
+|---|---|
+| AC-01 | T006 retains exactly one ordinary Ruby path with no Gemfile read; T009 preserves absent-keyword scan calls. Their spies plus T010's ordinary no-read regression cover absent, valid and invalid Gemfiles. |
+| AC-02 | T005 builds authorized exact direct candidates; T006 measures injected canonical releases; T009 tests CLI→scan→registry age and Test/test selection. T012 later corroborates the real selected population. |
+| AC-03 | T001 assigns default only when implicit and establishes explicit memberships; T004 selects exact names; T009 validates explicit requests without automatic default. Parser/source/CLI tests cover these distinctions. |
+| AC-04 | T001 stores full sorted membership unions; T004 selects unique declarations; T006 verifies count and lookup multiplicity. Overlapping block/option memberships cannot duplicate a row. |
+| AC-05 | T004 selects the declaration union, T006 canonicalizes requests and T009 sorts/deduplicates CLI names. Source and CLI tests compare repeated/multiple requests and stable evidence. |
+| AC-06 | T001 establishes empty/default groups; T004 owns absent/accepted empty lock states and the rejected-lock exception; T006's availability tests assert zero counts, null coverage and the correct totals. |
+| AC-07 | T004 validates every requested group after full recognition, before lock reads. Its tests assert one source error, no partial union and no lock access or lookup. |
+| AC-08 | T001 consumes the entire closed subset and rejects every negative syntax family, including unselected code; T003 enforces byte/line limits. Positive/negative tables and boundary tests prohibit partial results. |
+| AC-09 | T001 recognizes optional flags without changing membership and rejects nesting. Its tests cover true/false; T010 adds forbidden configuration-read checks. |
+| AC-10 | T001 rejects duplicate names anywhere; T004 reuses whole-lock parsing and tests duplicate/malformed rejection. T010 composes these distinct source failures. |
+| AC-11 | T003 owns safe reads and reason mapping; T004 maps Gemfile failure to unknown scope with no later access/lookup. Both own regular-to-FIFO replacement witnesses and resource cleanup assertions. |
+| AC-12 | T004 builds missing-lock failures for known nonempty selection without pin fallback, with the empty exception. Its source tests explicitly cover counts and no candidates/registry calls. |
+| AC-13 | T005 indexes direct identities only and owns lock_dependency_missing. Its transitive-match counterexample verifies one unmeasurable row and no public lookup. |
+| AC-14 | T005 excludes unselected/lock-only names and compares supported requirement text before version association. Its mismatch tables test null/order/whitespace/operators, retained safe values, no selected artifacts/lookup; T007/T008 verify safe nonsemantic reporting. |
+| AC-15 | T004 rejects the entire malformed lock while retaining N, including zero; T005 keeps isolated selection failures as rows; T006 verifies unavailable versus dependency-failure aggregation. |
+| AC-16 | T005 preserves the existing authority prefix and checks nonpublic Gemfile authority first after lock acceptance. Private/pinned/GIT/PATH/multiple-remote and missing-direct F1 tests forbid public namesake lookups. |
+| AC-17 | T006 implements the availability matrix, including wholly unmeasurable 0%, empty and unavailable states. T008's paired report fixtures verify that human distinctions agree with JSON. |
+| AC-18 | T006 owns sibling preservation and repository known/unknown denominator rules. Its failure matrix covers successful Python/npm siblings and no siblings, including rejected lock at zero/positive N. |
+| AC-19 | T006 preserves existing adapters, identities and Python-only resolved evidence; T009 tests resolved forwarding and ordinary calls. T010 explicitly requires existing regressions and three-ecosystem same-name isolation, including the plan's Yarn witnesses. |
+| AC-20 | T007 serializes safe evidence; T008 renders groups/sources/requirements and limitations in single/mixed and normal/verbose branches; T011 documents the behavior. Paired fixtures and distinctive unsafe-marker tests cover F2 and count agreement. |
+| AC-21 | T002 distinguishes omitted/null/text requirements with compatible defaults; T005 constructs safe metadata; T006 carries it through success/registry failure; T007 tests exact schema-v3 keys, artifacts, formats and ordinary omissions, including F1/F2/mismatch. |
+| AC-22 | T007/T008 restrict evidence labels and explanations to supplied-file claims; T011 aligns examples and limitations. Report tests treat production as ordinary and reject deployment/runtime/history claims; T012 preserves real-evidence limitations. |
+| AC-23 | T001 is pure recognition; T003 bounds permitted reads; T004 uses only the accepted scoped pipeline. T010 explicitly owns before/after target integrity and forbidden execution/config/credential/archive-access assertions. |
+| AC-24 | T003 restricts exact root names, containment and safe descriptor access; T004 verifies source-level early stops; T009 rejects scoped file targets. Root/parent/nested/alternate decoys, link replacement and BOTH FIFO replacements have named witnesses. |
+| AC-25 | T006 reuses the existing isolated fixed-public adapter without transport changes. Its wiring checks and T010's full plan-matrix obligation retain existing TLS/trust/redirect/pacing/limit regression coverage. |
+| AC-26 | T006 reuses measurement/publication behavior and tests canonical dates/platform artifacts, expected age, exact used=latest zero and flagged clamping. T010 requires corresponding metric/registry regression witnesses. |
+| AC-27 | T009 implements the dedicated request-error mapping and existing reporting/systemic exit categories. Its CLI matrix covers missing/malformed/comma values, invalid/file paths and all exit classes. |
+| AC-28 | T003/T004 own safe source reasons/early termination; T005 owns F1/F2/local/mismatch precedence and safe declaration-derived failures; T006 propagates registry failures; T007/T008 test safe provenance in both reports. T010 composes the complete precedence chain and ordinary regression. |
+
+No missing or circular AC ownership was found. No verification-only obligation
+lacks a behavior owner; preserved registry/metric behavior appropriately uses
+existing implementation plus wiring/regression ownership. No owner is too late
+to shape dependent implementation: each code task requires tests before
+completion, with composed verification before documentation and convergence.
+The reverse check covers every planned component and S1–S4 contract, resource
+limits, stable source/dependency reasons and S5 validation obligations.
+
+### Safety, checkpoints and authorization boundary
+
+T003 explicitly owns nonblocking/no-follow final opens for BOTH files, immediate
+regular-file fstat, descriptor-only bounded reads, strict decoding, cleanup and
+capability failure without fallback. Its two FIFO tests replace validated regular
+inputs at the final-open hook, invoke real production flags without a writer,
+and use bounded subprocess guards with no sleeps. T004 adds source-state and
+no-lookup assertions: Gemfile failure leaves unknown N and prevents lock access;
+lock failure follows established scope and retains N without rows. T010 requires
+the composed P1 evidence. Pre-existing FIFO fixtures alone cannot satisfy them.
+
+T005 owns F1's nonpublic-source-before-missing-direct ordering after whole-lock
+acceptance and F2's unsupported_requirement, safe omission, denominator and
+no-lookup policy. T007/T008 verify both public representations. These preserve
+the approved product/architecture decisions and ordinary authorization ordering.
+
+Checkpoints after T005 and T010 inspect useful completed contracts: safe scoped
+evidence before integration, then public behavior and all deterministic witnesses.
+T013 is a separate read-only convergence gate after documentation and required
+real-root evidence. T012 requires later explicit human authorization naming the
+target or permitted supplied evidence; no external access occurs in this review.
+Unavailable authorization leaves T012 pending and T013 gated. Optional live smoke
+has no mandatory successor, needs separate authority and cannot substitute for
+offline correctness or independently established real-root selected population.
+
+### Observation and verification
+
+Only prior run 005-0012 is appended. Its machine handoff is preserved except for
+the authorized human /status metadata and explicit context reconciliation:
+context=continued because the observed session matches 005-0011 despite the
+fresh-context request. Its context_note retains repository grounding and approved
+specification/plan. This is observational provenance, not a product finding;
+005-0011 is not changed. Credits_before remains blank and no delta is derived.
+
+Verification confirms 005-0001–005-0012 exactly once, 44 fields per record,
+earlier ledger bytes unchanged, tasks.md byte-unchanged, 13 stable acyclic tasks,
+all 28 independently traced ACs, and earlier review history preserved as a byte
+prefix. Only the ledger and this appended review record change. No product code,
+implementation, feature tests, external target access, network or push occurred.
+`git diff --check` passes. One local review-evidence commit is authorized.
