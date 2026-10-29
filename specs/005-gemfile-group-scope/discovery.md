@@ -1,4 +1,12 @@
-# Feature 005 Discovery: Product Direction Pending
+# Feature 005 Discovery: Bounded Static Gemfile Group Scope
+
+**Current status: SELECTED FOR SPECIFICATION. Specification readiness: YES.**
+
+The subsequent [human product decision](#human-product-decision) resolves H1–H3.
+The original discovery record below preserves run `005-0001`'s Product Direction
+Pending finding and HUMAN DECISION REQUIRED conclusion as historical evidence.
+
+## Historical discovery status — 005-0001
 
 **Status: HUMAN DECISION REQUIRED. Specification readiness: NO.**
 
@@ -264,3 +272,54 @@ handoff. H1–H3 remain unanswered; specification readiness is NO. The next auth
 can conduct product clarification from this artifact without temporary research
 files. No product slug, specification, architecture or implementation approval
 is implied by preserving discovery durably.
+
+## Human Product Decision
+
+**Decision date:** 2026-10-29. Human product authority supplied H1–H3 before
+selection-recording run `005-0002`, following discovery run `005-0001`.
+
+**Decision:** SELECTED FOR SPECIFICATION
+
+**Feature 005:** Bounded static Gemfile group scope
+
+- **H1 — SELECT bounded static Gemfile group scope as Feature 005.** This is
+  deliberate human product approval, independent of roadmap order, EXPLORE
+  status, or agent preference.
+- **H2 — Dependency-age measurement for an explicitly selected set of statically
+  declared Gemfile groups.** Supported static Gemfile evidence may establish
+  dependencies belonging to selected declared groups, associated with existing
+  supported exact Gemfile.lock evidence for measurement. The claim is bounded
+  to the supplied declaration/lock evidence. Group names are project-supplied
+  declarations; users explicitly select the groups to measure. There is no
+  implicit production scope and no claim about deployed, installed, or
+  runtime-loaded dependencies or a reconstructed Bundler environment.
+- **H3 — ACCEPT the maintenance/rejection tradeoff of a conservative static
+  Gemfile subset.** A deliberately bounded set of statically interpretable forms
+  may be supported. Transparent incompleteness is preferable to opaque inference.
+
+Existing ordinary Ruby scanning preserves the approved all-direct Gemfile.lock
+behavior as the default unless scoped group behavior is explicitly requested.
+Gemfile Ruby must never be executed, and Bundler must never be invoked for
+interpretation, installation, or resolution. Partially understood Gemfiles must
+never silently establish complete scope; unsupported or ambiguous constructs
+that prevent establishment of requested scope fail closed.
+
+Independent lock-source/public-source authorization remains mandatory; private
+or unauthorized evidence must never be replaced by a public namesake. Associating
+Gemfile names with Gemfile.lock selections establishes no historical-coherence
+claim and no deployment-state claim. The discovery exclusions remain unchanged.
+
+**Specification readiness: YES — READY to begin.** This subsequent human decision
+resolves the historical H1–H3 gate; it does not change what was known or selected
+when `005-0001` stopped at HUMAN DECISION REQUIRED. The normal directory rename
+from `specs/005-discovery/` to `specs/005-gemfile-group-scope/` records the selected
+direction without rewriting discovery history.
+
+S1–S5 remain specification work: inputs/completeness, group semantics, evidence
+association/failures, public behavior, and acceptance evidence. CLI spelling and
+exact public syntax remain for specification. New consequential product questions
+still require human clarification. Parser architecture, internal representation,
+module ownership, resource bounds beyond existing policy, fixture organization,
+implementation order, and detailed validation execution remain planning concerns.
+No specification, plan, task graph, or product implementation is begun by this
+selection record.
