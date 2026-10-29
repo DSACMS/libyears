@@ -81,6 +81,10 @@ Disclose AI assistance and its scope in the pull request template. Add the
 `AI-assisted` label when a pull request contains AI-generated code. Contributors
 remain responsible for understanding and verifying submitted changes.
 
+See [AGENT_ROUTING.md](AGENT_ROUTING.md) for a provisional working strategy on
+agent capability, context, and review structure; existing quality gates remain
+unchanged.
+
 ## Policies
 
 ### Open Source Policy
