@@ -221,3 +221,54 @@ unchanged specification bytes/hash (3,815 words); all 28 AC entries; separate
 incomplete history; temporary reports outside the repository; and absence of
 planning, implementation or unrelated changes. `git diff --check` passed.
 The final diff was inspected before the local commit.
+
+## Focused independent specification verification — 005-0007
+
+**Date:** 2026-10-29. **Completion:** COMPLETE. **Verdict:** APPROVE.
+**Specification approval:** APPROVED. **Next gate:** TECHNICAL PLANNING.
+No planning, tasks or implementation began.
+
+The parent corrected only validated F1/F2 and their acceptance evidence, then
+inspected the diff and passed `git diff --check` before freezing the candidate:
+`13ec1e8853a4013b40c6023aa8760a2144f95c0416657d2136b625e82bf094d1`.
+The earlier INCOMPLETE and REVISE records above remain unchanged historically.
+
+One native independent child, `/root/focused_verification`, was commissioned
+only after candidate freeze with `fork_turns="none"`, no explicit model or effort
+overrides, and no author reasoning beyond the authoritative findings and
+corrected repository state. Actual child model/effort telemetry was unavailable.
+It read AGENTS.md, Feature 005 discovery/spec/reviews, the full correction diff,
+and relevant Feature 004 requirement/source/failure/coverage contracts directly.
+Its report was stored outside the repository. This child is orchestration detail
+within observed run 005-0007, not a separate ledger observation.
+
+### Focused evidence and parent synthesis
+
+- **F1 resolved; AC-28 auditable.** After whole-lock acceptance, a selected
+  nonpublic-source `rack` absent from direct identities in a lock containing only
+  `rake` yields `unsupported_dependency_source`, N=1, M=0, 0% coverage and no
+  lookup. S3 and S4 qualify missing-direct identity consistently. Human output
+  safely explains unsupported nonpublic authority. Missing/rejected-lock
+  precedence remains ahead of this decision and unchanged.
+- **F2 resolved; AC-20/AC-21/AC-28 auditable.** A matching direct row with
+  unsupported safe requirement framing retains `unsupported_requirement`, known
+  denominator and no lookup. Scoped JSON omits `lock_requirement`; null remains
+  known absence. Neither scoped JSON nor human output may echo unsupported lock
+  text. Safely reportable declaration metadata remains available, including safe
+  declaration-derived `declared`. The isolated failure cannot reject the whole
+  lock merely for serialization. Ordinary all-direct output remains unchanged.
+- **No material collateral changes found.** The reviewed diff preserves Q1's
+  static envelope, group/default/union semantics, repeatable group option,
+  all-direct compatibility, coverage arithmetic, unrelated failure ordering,
+  Python/npm/Yarn behavior, security/no-execution boundaries and all AC identifiers.
+
+The parent inspected the child's complete report and rechecked its conclusions
+against the corrected diff and inherited Feature 004 framing/failure contract.
+The evidence supports APPROVE. The original 28/28 review coverage is retained;
+this verification closes only F1/F2 and the collateral boundary, without claiming
+another full audit or passed implementation tests. Only approval/status text
+changed after candidate review; the reviewed behavioral contract stayed frozen.
+
+No product suite, live registry smoke or application scan was run for this
+specification-only correction. The witnesses are contract analyses; future
+acceptance evidence remains required. No external checkout was inspected.

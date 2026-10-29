@@ -2,7 +2,8 @@
 
 ## Status
 
-DRAFT — READY FOR INDEPENDENT REVIEW. Not APPROVED.
+APPROVED — focused independent verification completed in run `005-0007`.
+Next gate: TECHNICAL PLANNING.
 
 Drafted in run `005-0003` (parent `005-0002`); reconciled in run `005-0004`
 (parent `005-0003`) on 2026-10-29 after human product authority resolved Q1–Q3.
@@ -10,7 +11,8 @@ The original draft required those decisions; this revision incorporates them,
 including Q2's material change from qualified textual disagreement to refusal
 to associate an exact version. H1–H3 in
 [discovery.md](discovery.md#human-product-decision) remain settled and preserved.
-No independent approval, plan, task graph, or implementation is implied.
+Independent approval is recorded in [reviews.md](reviews.md) for run `005-0007`.
+No plan, task graph, or implementation has begun.
 
 ## Problem and user outcome
 
@@ -178,7 +180,7 @@ The approved association policy is:
 | Evidence | Result |
 |---|---|
 | Selected declaration, matching direct lock row, identical requirement evidence and authorized selection | Measure exact lock version with retained provenance. |
-| Selected declaration absent from DEPENDENCIES | Count once, unmeasurable; no transitive spec or declaration pin fallback. |
+| Selected declaration with public Gemfile source absent from DEPENDENCIES | Count once, unmeasurable; no transitive spec or declaration pin fallback. |
 | Matching direct row lacks selected spec | Existing lock_version_missing. |
 | Lock-only name or declaration outside selected groups | No scoped row, count, or lookup. Still validate entire lock structure. |
 | Different declaration/lock requirement text | Count once as unmeasurable with declaration_lock_requirement_mismatch; do not associate the exact lock version or perform registry lookup. Retain both safe requirement values; infer no equivalence or semantic incompatibility. |
@@ -192,7 +194,11 @@ version, not runtime compatibility. Publication and arithmetic remain Feature
 for used=latest and flagged clamping for timestamp anomalies.
 
 Failure precedence is: unavailable Gemfile scope, then unknown requested
-group, then unavailable lock, then existing lock-local validation precedence.
+group, then unavailable lock. After whole-lock acceptance, nonpublic Gemfile
+source authority precedes missing direct lock identity: report
+`unsupported_dependency_source`, retain the known selected denominator and make
+no lookup, even when the selected name has no direct lock row. Otherwise existing
+lock-local validation precedence applies.
 Once both requirement values
 have supported framing and public source authority is established, textual
 mismatch precedes selected-spec/version and registry failures. Missing direct
@@ -238,8 +244,14 @@ Each scoped row in `dependencies` or `unmeasurable` adds a `gemfile_evidence`
 object with `declared_groups` (sorted unique full memberships, including any
 unselected memberships) and `declaration_requirements` (ordered array of the
 bounded literal requirement string contents). `lock_requirement` is included
-in that same object only for a matching direct row in an accepted lock; it is
-its bounded requirement text, or null when that row has no explicit requirement.
+in that same object only for a matching direct row in an accepted lock with
+supported safe requirement framing; it is its bounded requirement text, or null
+when that row has no explicit requirement. An existing direct requirement that
+fails supported safe framing retains dependency-level `unsupported_requirement`,
+the known denominator and no-lookup behavior; omit `lock_requirement` and never
+copy or echo the unsupported text into scoped JSON or human output. Preserve
+safely reportable declaration metadata. Do not reject the whole lock for this
+isolated failure. Null remains reserved for known absence.
 No requirements yields `declaration_requirements: []`, which means known absence,
 not unavailable evidence. Missing lock/direct row omits `lock_requirement`.
 Rejected lock produces no rows and thus no salvaged requirement evidence.
@@ -274,14 +286,17 @@ Stable new failure identifiers and locations are:
 | Duplicate gem declarations | source_errors, source `Gemfile`, `duplicate_gemfile_declaration` |
 | Any unknown requested group | source_errors, source `Gemfile`, `unknown_ruby_group` |
 | Missing lock, nonempty known scope | unmeasurable, each selected name, `lockfile_missing` |
-| Selected name absent from accepted direct lock scope | unmeasurable, `lock_dependency_missing` |
+| Selected name with public Gemfile source absent from accepted direct lock scope | unmeasurable, `lock_dependency_missing` |
 | Differing supported requirement evidence | unmeasurable, `declaration_lock_requirement_mismatch` |
 
 Rejected/unreadable/nonregular/unsafe lock uses existing Feature 004 source
 reasons (`invalid_lockfile` for unsafe access), source `Gemfile.lock`. Other
 lock-local and registry reasons remain unchanged. Nonpublic Gemfile source
-produces `unsupported_dependency_source` for each selected identity, without
-public lookups. Whole-file recognition errors precede unknown group; for
+produces `unsupported_dependency_source` for each selected identity after
+whole-lock acceptance, including when its direct lock identity is missing,
+without public lookups. Human output explains that the Gemfile source is
+nonpublic and unsupported without exposing its value. Unavailable-lock
+precedence remains unchanged. Whole-file recognition errors precede unknown group; for
 multiple recognition defects the first physical-line defect wins, with
 whole-file completion defects reported after line defects. Unknown group yields
 one source error irrespective of how many requested names are unknown. Later
@@ -350,15 +365,15 @@ All criteria describe approved observable behavior; none await Q1–Q3 decisions
 - [ ] **AC-17:** Known wholly unmeasurable selected scope reports 0% coverage; empty and unavailable reports remain observably distinct.
 - [ ] **AC-18:** A failing scoped Ruby source preserves successful Python/npm rows and applies existing repository unknown-denominator rules.
 - [ ] **AC-19:** Ordinary PyPI, package-lock, Yarn Classic conflict/evidence, and mixed identity behavior remain unchanged.
-- [ ] **AC-20:** Human output names selected groups, evidence sources and limitations, explains safe failures, and agrees with JSON counts and values.
-- [ ] **AC-21:** Schema v3 distinguishes Gemfile membership from lock version evidence, retains publication artifacts, obeys every scoped field presence/omission rule in S4 (including missing/rejected inputs), retains both mismatch values, leaves ordinary JSON unchanged and adds no verbose human diagnostics.
+- [ ] **AC-20:** Human output names selected groups, evidence sources and limitations, explains safe failures without echoing unsupported direct requirement text, preserves safe declaration metadata, and agrees with JSON counts and values.
+- [ ] **AC-21:** Schema v3 distinguishes Gemfile membership from lock version evidence, retains publication artifacts, obeys every scoped field presence/omission rule in S4 (including missing/rejected inputs and omission of `lock_requirement` for unsupported safe framing, with null reserved for known absence), retains both safe mismatch values, leaves ordinary JSON unchanged and adds no verbose human diagnostics.
 - [ ] **AC-22:** No report labels production as deployed state or claims supplied-file historical coherence, installation, or runtime compatibility.
 - [ ] **AC-23:** Scans execute no Ruby/Bundler/project code, install/resolve nothing, read no credentials, and leave targets unchanged.
 - [ ] **AC-24:** Only root supplied files participate; nested/parent files, includes, gemspecs and out-of-root symlink targets are not read; direct-file arguments do not activate Ruby.
 - [ ] **AC-25:** Existing TLS verification, trust precedence, public authority, redirect and transport limits remain enforced.
 - [ ] **AC-26:** Scoped ages preserve Feature 004 dates, latest selection, arithmetic, same-version zero and flagged anomaly rules.
 - [ ] **AC-27:** Completed empty/partial/source-error reports exit 0; missing/malformed option values, comma lists, direct-file scoped targets and path errors exit 1 and systemic failures exit 2.
-- [ ] **AC-28:** Source failures and dependency failures use distinct machine-readable records with safely known provenance and deterministic precedence.
+- [ ] **AC-28:** Source failures and dependency failures use distinct machine-readable records with safely known provenance and deterministic precedence. Evidence includes an accepted lock missing a selected nonpublic-source declaration’s direct identity (`unsupported_dependency_source`, known denominator, no lookup), and an accepted lock with a matching direct requirement failing safe framing (`unsupported_requirement`, known denominator, no lookup, omitted `lock_requirement`, no unsupported text in scoped JSON/human output, safe declaration metadata retained). Unavailable-lock precedence and ordinary all-direct output remain unchanged.
 
 Before convergence, acceptance evidence must include deterministic offline cases
 for every criterion and an explicitly authorized real-root supplied-file example
@@ -390,7 +405,8 @@ proposal markers without changing the historical discovery record.
   omission/null rules, reasons and unavailable-input provenance under that authority.
 
 Remaining consequential product questions: none identified.
-Specification readiness: **READY FOR INDEPENDENT REVIEW**, not APPROVED.
+Specification readiness: **APPROVED** after focused independent verification
+in run `005-0007`; next gate **TECHNICAL PLANNING**.
 
 ### IMPLEMENTATION / PLANNING QUESTION
 
