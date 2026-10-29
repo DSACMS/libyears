@@ -272,3 +272,29 @@ changed after candidate review; the reviewed behavioral contract stayed frozen.
 No product suite, live registry smoke or application scan was run for this
 specification-only correction. The witnesses are contract analyses; future
 acceptance evidence remains required. No external checkout was inspected.
+
+## Independent technical plan review — 005-0009
+
+**Date:** 2026-10-29. **Completion:** INCOMPLETE. **Verdict:** INCOMPLETE.
+**Plan approval:** NOT GRANTED. **Next gate:** complete independent technical plan review.
+
+Reviewed candidate SHA-256: `03bb48ce5bbe1d18b4346b8adb08f7f5fadb1c61e74d3765bca73e224922ad79`. Plan bytes unchanged.
+
+The attempted review inspected the plan and its proposed 28-criterion verification
+matrix, but did not complete independent reconciliation of all current discovery,
+specification and review history with the existing implementation. Initial bulk
+reads were truncated; the missing evidence was not fully recovered and audited.
+Consequently no acceptance criterion is claimed independently verified (0/28).
+AC-01 through AC-28 remain pending independent technical review.
+
+Architecture/ownership, complete static recognition and filesystem safety, F1/F2
+association, mixed integration, public output, implementation sequencing and scope
+discipline remain unaudited as a complete gate. The plan's proposed test mappings
+are not independent acceptance evidence. No material technical defect is
+established; incompleteness is a review outcome, not a product finding. Approved
+product decisions and prior specification approval remain intact.
+
+Prior observation 005-0008 was appended from its machine handoff with only the
+authorized human metadata additions. Runs 005-0001 through 005-0008 each occur
+once with 44 fields; earlier ledger bytes and previous review history are
+preserved. No tasks, implementation, product tests, live validation or push.
