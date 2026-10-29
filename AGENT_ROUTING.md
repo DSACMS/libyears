@@ -253,10 +253,10 @@ strengths. Preserve raw observations in an appropriately authorized location,
 respecting privacy; distinguish outcome from causal explanation. Treat n=1
 comparisons as hypothesis-generating.
 
-Feature 005 should log these observations prospectively rather than reconstructing
-them afterward. Record unknowns honestly, including interruptions and uncertainty
-about active runtime. This strategy does not define the full Feature 005 ledger
-or authorize its implementation.
+Use the [prospective agent observation ledger](observations/README.md) beginning
+with Feature 005; record unknowns honestly, including interruptions and uncertainty
+about active runtime. This methodology infrastructure does not authorize Feature
+005 discovery, specification, planning, or implementation.
 
 ## Stop/escalate checklist
 
