@@ -1,18 +1,42 @@
 # Libyears
 
+## About the Project
+
 Libyears is a local Python CLI that measures the age of direct Python, npm, and RubyGems
 dependencies using release timestamps from their public registries.
 It uses only the Python standard library at runtime.
 
 Project website: https://dsacms.github.io/libyears
 
-## CMS Open Source Program Office Mission
+## Agency Mission
+
+CMS is working to modernize the nation's digital health ecosystem, including
+through public infrastructure, improved data sharing and interoperability, and
+collaboration that empowers people and improves care.
+
+See the [CMS Health Technology Ecosystem overview](https://www.cms.gov/initiatives/health-technology-ecosystem/overview).
+
+## Team Mission
 
 The function of the CMS Open Source Program Office is to:
 
 > Establish and maintain guidance, policies, practices, and talent pipelines
 > that advance access, build trust, and amplify impact across CMS, HHS, and
 > Federal Open Source Ecosystems by working and sharing openly.
+
+## Project Mission
+
+Measure the age of direct dependencies using release timestamps from their
+public registries through a small local CLI.
+
+## Project Vision
+
+Keep dependency freshness measurement simple, transparent, reproducible, and
+maintainable, with human-readable evidence rather than guessed versions or dates.
+
+## Core Team
+
+See [Project Members](COMMUNITY.md#project-members) for project contacts and roles.
 
 ## What libyears measures
 
@@ -277,6 +301,10 @@ No archives or private source content are fetched. See the approved
 
 ## Development
 
+### Local Development
+
+See [Getting Started](CONTRIBUTING.md#getting-started) for development setup.
+
 Run the offline test suite with:
 
 ```bash
@@ -285,6 +313,28 @@ python3 -m unittest discover -s tests -v
 
 See [SPEC.md](SPEC.md) for the full behavioral specification and [AGENTS.md](AGENTS.md)
 for repository engineering rules.
+
+### Coding Style and Linters
+
+See [Coding Style and Linters](CONTRIBUTING.md#coding-style-and-linters) for
+repository coding guidance and configured checks.
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution instructions.
+
+## Codeowners
+
+Repository ownership is recorded in [.github/CODEOWNERS](.github/CODEOWNERS).
+
+## Community
+
+See [COMMUNITY.md](COMMUNITY.md) for community principles and roles.
+
+### Community Guidelines
+
+Read the [Community Guidelines](COMMUNITY.md#community-guidelines) and
+[Code of Conduct](CODE_OF_CONDUCT.md) before participating.
 
 ## Policies
 
