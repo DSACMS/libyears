@@ -314,7 +314,8 @@ tests.test_mixed_scan tests.test_cli` — 87 passed (30 output tests);
 
 ### T009 — Public CLI activation
 
-- [x] Complete. **Predecessors:** T006, T007, T008.
+- [ ] Complete. **Reopened after post-T010 review:** C-01 requires correction;
+  the implementation/test execution below is historical candidate evidence. **Predecessors:** T006, T007, T008.
 - **Authority:** spec S1/S4; plan CLI validation and compatibility. AC-01/02/03/05/19/24/27.
 - **Change:** Add repeatable --ruby-group GROUP with the exact ASCII name
   validation, sort/deduplication, no implicit default and directory-only target
@@ -551,3 +552,23 @@ The candidate implementation/tests freeze at the T010 local commit for fresh
 independent review. No checkpoint remediation is authorized in this run.
 T011 documentation/real-root preparation, T012 real-root evidence and T013
 convergence remain unstarted. No external/network validation or push occurred.
+
+### Post-T010 checkpoint outcome — 005-0015
+
+**COMPLETE review / REVISE; one validated material finding C-01.** All work
+through T010 was executed and frozen at `efc231d`; the 388-test suite passed.
+Three fresh reviewers independently audited scan/aggregation, reporting, and
+CLI/composed acceptance. All 28 ACs have indexed deterministic evidence and
+were independently accounted for, but passing those tests did not establish
+S1's additional sole-option/no-alias obligation. Argparse accepts `--ruby-g`
+and `--ruby` as scoped activation. The parent independently reproduced both.
+See [review record](reviews.md#independent-post-t010-implementation-checkpoint--005-0015).
+
+T006–T008 remain complete. T009 acceptance is **reopened / REVISE**, so its
+completion checkbox is cleared; the original completion evidence above remains
+historical. T010 candidate verification is complete, with the missing spelling
+regression recorded under C-01 for subsequent correction/reverification.
+The candidate is **not approved as the integrated Feature 005 foundation**.
+The approved T001–T005 foundation remains intact. No product or test repair was
+made after freeze. T011–T013 remain unstarted. **Next gate: correction of
+validated finding C-01**, followed by independent verification; no T011 begins.

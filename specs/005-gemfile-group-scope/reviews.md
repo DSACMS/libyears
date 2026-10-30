@@ -749,3 +749,145 @@ only its temporary 44-field handoff, not a ledger row.
 
 **Next gate:** Later human continuation may authorize T006 after this APPROVE.
 This run stops here regardless of approval; no T006 work is begun.
+
+
+## Independent post-T010 implementation checkpoint — 005-0015
+
+**Date:** 2026-10-30. **Completion:** COMPLETE. **Verdict:** REVISE.
+**Executed candidate boundary:** T001–T010. **Material findings:** 1 (C-01).
+**Integrated foundation status:** NOT APPROVED pending correction and independent
+verification. The previously approved T001–T005 foundation remains intact.
+**Next gate:** correction of validated finding C-01. T011–T013 remain unstarted.
+
+Starting approved checkpoint: `cb69795`. Frozen candidate:
+`efc231d549fbe754bc51895c4f17c5a3aeb49158`.
+Task commits: `a0dbf23` (T006), `e3c4f72` (T007), `7c1d58a` (T008),
+`ca6613a` (T009), `efc231d` (T010). Product implementation and tests froze
+before reviewers were commissioned. Only review/lifecycle records change after
+freeze; no finding was repaired. Approved spec, plan, discovery, prior review
+history and T001–T005 product files remain unchanged.
+
+### Reviewer structure and independence
+
+Three fresh native children used `fork_turns="none"`, no model/effort overrides,
+and ran concurrently after freeze. None authored implementation. Each read
+repository authority and actual code/tests independently; none received sibling
+conclusions or communicated across slices. The parent synthesized after all
+three completed. Actual child model/effort/resource telemetry is unavailable.
+Children are orchestration details of this one human-launched observed run.
+
+| Reviewer | Assigned slice | Completion / verdict |
+|---|---|---|
+| `/root/checkpoint_scan` | T006 propagation, aggregation, mixed availability/coverage, ordinary compatibility and preserved foundation/wiring | COMPLETE / APPROVE |
+| `/root/checkpoint_output` | T007/T008 JSON/human reporting, provenance, safe omission/null, normal/verbose single/mixed branches | COMPLETE / APPROVE |
+| `/root/checkpoint_acceptance` | T009/T010 CLI, composed acceptance, independent 28/28 AC reconciliation and scope/regression boundaries | COMPLETE / REVISE, C-01 |
+
+Approval was not decided by majority vote. The parent independently inspected
+the implementation/tests and acceptance index, checked unchanged foundation and
+contracts, ran the ordered verification below, and reproduced the retained
+finding directly against the frozen candidate.
+
+### Validated material finding C-01 — abbreviated scoped option spellings
+
+**Location:** `libyears/cli.py:22` (parser construction), option at line 25;
+`tests/test_cli.py:423` (malformed-value tests).
+**Authority:** spec S1, lines 61–65: sole `--ruby-group GROUP` option and no alias;
+the execution prompt also prohibits unapproved aliases/convenience behavior.
+**Owner:** T009; associated activation/usage verification boundary AC-27.
+
+Argparse option abbreviation remains enabled. The reviewer reproduced:
+`main([".", "--ruby-g", "test"], scan=Mock(return_value=empty_report()))`
+returns **0** and calls `scan(".", ruby_groups=("test",))`.
+The parent independently reproduced both `--ruby-g` and `--ruby`, each returning
+0 and activating scoped scanning; the canonical `--ruby-group` control did too.
+The witness uses an injected empty report and reads no target inputs or registry.
+These undocumented spellings violate the approved sole-option/no-alias boundary.
+
+Existing CLI tests reject malformed values, missing values, comma lists, files
+and invalid paths, but do not reject abbreviated option spellings. Thus the
+passing deterministic suite cannot establish this S1 obligation. This is a
+bounded public activation/test defect, not a missing product or architecture
+decision and not an authorization to alter ordinary CLI semantics.
+
+**Required subsequent correction:** reject abbreviated scoped-option spellings,
+add exit-1/no-scan witnesses, preserve canonical activation and ordinary CLI
+behavior, and independently verify the correction. No remediation is performed
+in this run. T009's completion checkbox is reopened; its original candidate
+execution evidence remains historical. T010 verification remains recorded with
+this discovered coverage limitation; the integrated candidate is not approved.
+
+### Acceptance and whole-gate synthesis
+
+**28/28 ACs independently audited; 28/28 have deterministic test evidence.**
+The explicit per-AC assertion index is in
+`tests/fixtures/ruby_groups/README.md`. Test/module references were validated
+against actual repository definitions, including corrected index spellings
+before freeze. This is neither full S1 acceptance nor final convergence:
+C-01 remains an additional S1 activation obligation adjacent to AC-27.
+
+- AC-01–05: ordinary no-Gemfile-read compatibility, exact public CLI age and
+  case, explicit default/production, unique overlapping/multiple/repeated unions.
+- AC-06–10: empty versus unknown scope, complete closed-language positive and
+  separate negative tables, unsupported unselected code, optional membership,
+  duplicates/nesting and whole-lock rejection.
+- AC-11–16: safe/missing inputs, both P1 input replacements, no pin/transitive
+  fallback, exact textual mismatch, whole-source versus isolated failures,
+  private/pinned/GIT/PATH/multiple-remotes and F1 authority ordering.
+- AC-17–19: known wholly-unmeasurable 0%, empty/unavailable distinctions,
+  sibling numerical survival/count availability, Python-only snapshots,
+  three-ecosystem identity and existing PyPI/npm/Yarn/all-direct Ruby regressions.
+- AC-20–22: exact scoped schema-v3 dictionaries and omission/null behavior,
+  full/requested groups, safe declaration/lock distinction, retained selected/
+  publication artifacts, F2 redaction, paired human branches/verbosity/counts,
+  supplied-file and observable-publication limitations.
+- AC-23–26: guarded reads/execution/archive access, root/decoy/link/containment
+  tests, target integrity, four bounded real FIFO witnesses with no writer,
+  fixed verified public transport/trust/limits/pacing, canonical platform dates,
+  latest stable/arithmetic, exact zero and flagged clamping.
+- AC-27–28: tested exit categories and full composed precedence from recognition
+  through registry, F1/F2 safe provenance and no-lookup, sibling survival and
+  ordinary omissions. C-01 exposes the additional no-abbreviation test gap.
+
+Scan and reporting reviewers found no material defects in their assigned slices.
+The parent validated the unavailable known-N and unknown-N summaries, sibling
+preservation, explicit scoped serialization, F2 safe omission and ordinary
+branches against code and tests. These positive results do not close C-01.
+
+### Deterministic verification and limitations
+
+Parent verification ran focused composed acceptance first, affected ecosystem
+regressions second, then the full deterministic suite:
+
+| Exact command | Result |
+|---|---|
+| `python -m unittest tests.test_ruby_group_acceptance` | 3 passed |
+| `python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry tests.test_yarn tests.test_rubygems tests.test_rubygems_registry tests.test_registry tests.test_metric tests.test_mixed_scan tests.test_scan` | 215 passed |
+| `python -m unittest discover -s tests` | 388 passed, no skips |
+| `git diff --check` | Passed |
+
+The T010 author independently ran focused acceptance (3), affected feature/
+ecosystem tests (352), and full suite (388, no skips), all passing.
+Reviewer A ran `python -m unittest tests.test_scoped_scan tests.test_mixed_scan
+tests.test_ruby_group_acceptance tests.test_ruby_groups tests.test_gemfile_evidence
+tests.test_rubygems tests.test_rubygems_registry tests.test_registry tests.test_metric`
+— 166 passed. Reviewer B ran `python -m unittest tests.test_output
+tests.test_scoped_scan tests.test_mixed_scan tests.test_ruby_group_acceptance`
+— 70 passed. Reviewer C ran the full suite — 388 passed/no skips — and
+`python -m unittest tests.test_cli tests.test_ruby_group_acceptance
+tests.test_scoped_scan` — 38 passed. Every reviewer passed `git diff --check`
+and observed a clean frozen tree. Passing tests are distinguished from the
+negative C-01 read-only witness.
+
+No network/live smoke, external/real-root validation, Ruby/Bundler/package
+manager/target-code execution, credential/config/archive content access,
+release, tag or push occurred. Only synthetic temporary inputs and mocked
+registry responses were used. Documentation, required authorized real-root
+corroboration and final convergence remain T011–T013; none began. No child
+telemetry or resource outcome is inferred from completion/verdicts.
+
+Prior observation 005-0014 was appended in the first coherent implementation
+commit from its JSON handoff plus authorized human status additions. Runs
+005-0001–005-0014 occur exactly once with 44 fields; preceding bytes are preserved,
+credits_before remains blank and no credit delta is derived. Current run has
+only its temporary handoff and no ledger row. The candidate remains frozen;
+**REVISE** means correction of C-01 is the next gate, with no T011 authorization.
