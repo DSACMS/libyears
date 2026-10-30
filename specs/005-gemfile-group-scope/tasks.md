@@ -2,10 +2,11 @@
 
 ## Status and authority
 
-**DRAFT / READY FOR INDEPENDENT TASK-GRAPH REVIEW** — run `005-0012`,
-2026-10-29. **Implementation: NOT AUTHORIZED.** All tasks below are unstarted.
-Creating this graph does not approve implementation or commission its reviews.
-Next gate: INDEPENDENT TASK-GRAPH REVIEW, followed by explicit execution authority.
+**APPROVED task graph** — independent review `005-0013`; explicit human
+execution authority in observed run `005-0014` (2026-10-30) covers T001–T005
+and the post-T005 independent checkpoint only. T006–T013 remain unstarted.
+No external target or network work is authorized. Historical submission/gate
+text below is superseded by this execution record and the review history.
 
 The [approved specification](spec.md) and [approved technical plan](plan.md)
 govern. [Reviews](reviews.md) record specification approval in 005-0007 and plan
@@ -18,7 +19,7 @@ it neither revises their contracts nor authorizes an external target or network.
 There are 13 tasks, including verification, documentation and convergence.
 Every predecessor listed below must be complete; table order alone grants no
 readiness. The graph is acyclic. Execute sequentially unless a later prompt
-explicitly authorizes parallel execution. No task is currently executable.
+explicitly authorizes parallel execution. Only dependency-ready T001–T005 are authorized in run 005-0014.
 
 | Task | Work unit | Predecessors | Phase |
 |---|---|---|---|
@@ -51,7 +52,7 @@ the approved static subset, source authority, schema or platform design.
 
 ### T001 — Closed Gemfile parser and declaration records
 
-- [ ] Complete. **Predecessors:** None.
+- [x] Complete. **Predecessors:** None.
 - **Authority:** spec S1/S2 and security; plan “Static recognition and declaration
   records” and Gemfile physical-line bound. AC-03/04/08/09/10/23.
 - **Change:** Add pure `libyears/gemfile.py` recognition with the approved
@@ -70,6 +71,18 @@ the approved static subset, source authority, schema or platform design.
   evaluator, filesystem or registry access. Existing Ruby source/authorization
   regressions pass after validator extraction. Start small annotated fixtures
   under `tests/fixtures/ruby_groups/` with expected populations/rejection reasons.
+
+**Run 005-0014 completion evidence:** Pure parser and immutable records in
+`libyears/gemfile.py`; exhaustive tables in `tests/test_gemfile.py` and annotated
+`tests/fixtures/ruby_groups/`. Shared framing validators preserve ordinary
+name/requirement/source ordering. AC-03/04/08/09/10/23 at this parser boundary
+are covered; no filesystem/source integration. Commands:
+`python -m unittest discover -s tests -p 'test_gemfile.py'` — 26 passed;
+`python -m unittest discover -s tests -p 'test_rubygems*.py'` — 53 passed;
+`python -m unittest discover -s tests -p 'test_gemfile_lock.py'` — 14 passed;
+`git diff --check` — passed. Prior observation 005-0013 was already recorded in
+starting commit `7099669`; exact handoff/status match and 13 unique 44-field rows
+verified before implementation, with preceding ledger bytes unchanged.
 
 ### T002 — Typed scoped evidence
 
@@ -292,7 +305,7 @@ the approved static subset, source authority, schema or platform design.
 
 Implementation/behavior owners below build the observable; T010 verifies the
 composed result and T013 audits every criterion. Multiple owners reflect actual
-boundaries rather than extra tasks. All evidence remains planned, not passed.
+boundaries rather than extra tasks. Completion evidence below covers only completed task boundaries; later integration acceptance remains planned.
 
 | AC | Implementation / behavior owners | Verification owners |
 |---|---|---|

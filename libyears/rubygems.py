@@ -4,6 +4,7 @@ import re
 import stat
 from pathlib import Path
 
+from .gemfile import supported_name, supported_requirement
 from .gemfile_lock import LockDependency, LockParseFailure, ParsedGemfileLock, parse_lockfile
 from .model import (
     DependencyCandidate, RubyGemsEvidence, SelectedRubyArtifact,
@@ -26,19 +27,8 @@ def _has_public_authority(lock: ParsedGemfileLock, direct: LockDependency) -> bo
     return True
 
 
-_NAME = re.compile(r'[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?\Z')
 _VERSION = r'[0-9]+(?:\.[A-Za-z0-9]+)*'
 _SELECTION = re.compile(r'(' + _VERSION + r')(?:-([A-Za-z0-9_.-]+))?\Z')
-_REQUIREMENT_TERM = re.compile(r'(?:!=|>=|<=|~>|=|>|<)?\s*' + _VERSION + r'\Z')
-
-
-def _supported_requirement(requirement: str | None) -> bool:
-    if requirement is None:
-        return True
-    for term in requirement.split(','):
-        if not _REQUIREMENT_TERM.fullmatch(term.strip()):
-            return False
-    return True
 
 
 def _failure(direct, reason, artifacts=()):
@@ -58,9 +48,9 @@ def authorize_public_selection(
     when a public occurrence coexists with a private or pinned namesake.
     Requirements delimit evidence; they never select or validate a version.
     """
-    if not _NAME.fullmatch(direct.name) or not re.search(r'[A-Za-z]', direct.name):
+    if not supported_name(direct.name):
         return _failure(direct, 'unsupported_dependency_name')
-    if not _supported_requirement(direct.requirement_text):
+    if not supported_requirement(direct.requirement_text):
         return _failure(direct, 'unsupported_requirement')
     if not _has_public_authority(lock, direct):
         return _failure(direct, 'unsupported_dependency_source')
