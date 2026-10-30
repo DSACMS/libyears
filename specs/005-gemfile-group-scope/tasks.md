@@ -186,7 +186,7 @@ Commands: `python -m unittest discover -s tests -p 'test_ruby_groups.py'` —
 
 ### T005 — Authorized lock association and safe row evidence
 
-- [ ] Complete. **Predecessors:** T004.
+- [x] Complete. **Predecessors:** T004.
 - **Authority:** spec S3/S4; plan source-flow steps 5–9 and evidence construction;
   approved F1/F2. AC-02/13/14/15/16/21/28.
 - **Change:** Finish accepted-lock rows using an exact direct-name index, with
@@ -206,6 +206,22 @@ Commands: `python -m unittest discover -s tests -p 'test_ruby_groups.py'` —
   unsupported-lock-requirement witnesses assert known N, no candidate/lookup,
   safe declaration metadata and required omission. Ordinary Ruby authorization
   regressions pass after shared helper extraction. No semantic requirement check.
+
+**Run 005-0014 completion evidence:** Exact direct-name indexing and shared
+name/requirement/source prefix preserve ordinary order in `libyears/rubygems.py`.
+`ScopedLockAssociationTests` covers T005's AC-02/13/14/15/16/21/28 portions:
+authorized candidates/full membership; absent direct despite transitive match;
+excluded names; exact null/order/spacing/operator mismatch and equal multiple
+literals; no semantic satisfaction inference; isolated artifact failures;
+private/pinned/GIT/PATH/multiple-remotes; F1 before missing direct after whole
+acceptance; F2 safe declaration text, omitted unsupported lock requirement,
+known denominator and no artifacts/candidates/HTTP. Unavailable-lock precedence
+is preserved. No scan/CLI/output integration or serialization is implemented.
+Commands: `python -m unittest discover -s tests -p 'test_ruby_groups.py'` —
+35 passed; `python -m unittest discover -s tests -p 'test_rubygems*.py'` — 53 passed;
+`python -m unittest discover -s tests -p 'test_gemfile*.py'` — 47 passed;
+`python -m unittest discover -s tests -p 'test_mixed_scan.py'` — 29 passed;
+`git diff --check` — passed.
 
 ### T006 — Mixed scan propagation and aggregation
 

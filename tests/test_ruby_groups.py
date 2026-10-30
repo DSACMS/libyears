@@ -534,3 +534,164 @@ class ScopedSourceAvailabilityTests(unittest.TestCase):
             self.fail(name + ' source replacement blocked')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.strip(), 'ok')
+
+
+@unittest.skipUnless(SAFE_OPEN, 'safe descriptor access unavailable')
+class ScopedLockAssociationTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.network = patch('urllib.request.urlopen', side_effect=AssertionError('network'))
+        self.lookup = self.network.start()
+        self.addCleanup(self.network.stop)
+        self.addCleanup(self.lookup.assert_not_called)
+
+    def source(self, declaration='gem "rack"', direct='rack', specs=('rack (1)',),
+               remote='https://rubygems.org', kind='GEM', source=SOURCE, extra=''):
+        text = kind + '\n  remote: ' + remote + '\n  specs:\n'
+        text += ''.join('    ' + spec + '\n' for spec in specs)
+        text += extra + 'PLATFORMS\n  ruby\nDEPENDENCIES\n'
+        text += ''.join('  ' + row + '\n' for row in direct.split('\n') if row)
+        (self.root / 'Gemfile').write_text(source + declaration)
+        (self.root / 'Gemfile.lock').write_text(text)
+        return rubygems.scoped_ruby_source_result(self.root, ('default',))
+
+    def assert_failure(self, result, reason):
+        self.assertEqual(result.dependencies_discovered, 1)
+        self.assertTrue(result.measurement_available)
+        self.assertEqual(result.source_errors, ())
+        self.assertEqual(result.candidates, ())
+        self.assertEqual(len(result.unmeasurable), 1)
+        row = result.unmeasurable[0]
+        self.assertEqual(row.reason, reason)
+        self.assertEqual(result.evidence.format, 'gemfile_lock')
+        return row
+
+    def test_exact_direct_candidate_and_full_safe_memberships(self):
+        result = self.source('gem "rack", ">= 1", "< 3", groups: [:default, :test]',
+                             'rack (>= 1, < 3)', ('rack (1)', 'rack (1-java)'))
+        self.assertEqual(result.dependencies_discovered, 1)
+        self.assertEqual(result.unmeasurable, ())
+        candidate = result.candidates[0]
+        self.assertEqual((candidate.name, candidate.registry_name, candidate.used_version,
+                          candidate.version_source), ('rack', 'rack', '1', 'gemfile_lock'))
+        self.assertEqual(candidate.declared, 'rack (>= 1, < 3)')
+        self.assertEqual(candidate.gemfile_evidence.declared_groups, ('default', 'test'))
+        self.assertEqual(candidate.gemfile_evidence.declaration_requirements, ('>= 1', '< 3'))
+        self.assertEqual(candidate.gemfile_evidence.lock_requirement, '>= 1, < 3')
+        self.assertTrue(candidate.gemfile_evidence.include_lock_requirement)
+        self.assertEqual(len(candidate.rubygems_evidence.selected_artifacts), 2)
+
+    def test_no_requirement_has_present_null_and_no_semantic_satisfaction_check(self):
+        candidate = self.source().candidates[0]
+        self.assertTrue(candidate.gemfile_evidence.include_lock_requirement)
+        self.assertIsNone(candidate.gemfile_evidence.lock_requirement)
+        # Textual identity alone associates even an apparently unsatisfied requirement.
+        result = self.source('gem "rack", ">= 9"', 'rack (>= 9)', ('rack (1)',))
+        self.assertEqual(result.candidates[0].used_version, '1')
+
+    def test_missing_direct_identity_cannot_use_transitive_spec_or_pin(self):
+        for direct in ('rake', 'Rack', ''):
+            row = self.assert_failure(self.source('gem "rack", "= 1"', direct),
+                                      'lock_dependency_missing')
+            self.assertEqual(row.declared, 'rack (= 1)')
+            self.assertFalse(row.gemfile_evidence.include_lock_requirement)
+            self.assertIsNone(row.rubygems_evidence)
+
+    def test_excluded_and_lock_only_identities_never_become_candidates(self):
+        result = self.source('gem "rack"\ngem "debug", group: :test',
+                             'rack\ndebug\nlock_only',
+                             ('rack (1)', 'debug (2)', 'lock_only (3)'))
+        self.assertEqual(result.dependencies_discovered, 1)
+        self.assertEqual([row.name for row in result.candidates], ['rack'])
+        self.assertEqual(result.unmeasurable, ())
+
+    def test_f1_nonpublic_gemfile_precedes_missing_direct_after_lock_acceptance(self):
+        for direct in ('rake', 'rack'):
+            row = self.assert_failure(self.source(direct=direct,
+                                      source='source "https://PRIVATE_MARKER.invalid"\n'),
+                                      'unsupported_dependency_source')
+            self.assertIsNone(row.rubygems_evidence)
+            self.assertEqual(row.gemfile_evidence.declared_groups, ('default',))
+            self.assertEqual(row.gemfile_evidence.include_lock_requirement, direct == 'rack')
+            self.assertNotIn('PRIVATE_MARKER', repr(row))
+
+    def test_f2_unsupported_requirement_omits_unsafe_text_and_artifacts(self):
+        for direct in ('rack (https://UNSAFE_MARKER.invalid)', 'rack (*)!'):
+            row = self.assert_failure(self.source('gem "rack", ">= 1"', direct),
+                                      'unsupported_requirement')
+            self.assertEqual(row.declared, 'rack (>= 1)')
+            self.assertEqual(row.gemfile_evidence.declaration_requirements, ('>= 1',))
+            self.assertFalse(row.gemfile_evidence.include_lock_requirement)
+            self.assertIsNone(row.gemfile_evidence.lock_requirement)
+            self.assertIsNone(row.rubygems_evidence)
+            self.assertNotIn('UNSAFE_MARKER', repr(row))
+
+    def test_textual_mismatch_table_preserves_both_safe_values_without_artifacts(self):
+        cases = (
+            ('', '>= 0', ()),
+            (', ">= 0"', None, ('>= 0',)),
+            (', ">=1"', '>= 1', ('>=1',)),
+            (', " >= 1 "', '>= 1', (' >= 1 ',)),
+            (', ">= 1", "< 3"', '< 3, >= 1', ('>= 1', '< 3')),
+            (', "= 1"', '1', ('= 1',)),
+        )
+        for suffix, lock_requirement, expected in cases:
+            with self.subTest(suffix=suffix, lock=lock_requirement):
+                direct = 'rack' if lock_requirement is None else 'rack (' + lock_requirement + ')'
+                # No selected spec: mismatch must precede missing-version failure.
+                result = self.source('gem "rack"' + suffix, direct, ())
+                row = self.assert_failure(result, 'declaration_lock_requirement_mismatch')
+                self.assertEqual(row.gemfile_evidence.declaration_requirements, expected)
+                self.assertTrue(row.gemfile_evidence.include_lock_requirement)
+                self.assertEqual(row.gemfile_evidence.lock_requirement, lock_requirement)
+                self.assertIsNone(row.rubygems_evidence)
+                self.assertIn('equivalence not inferred', result.diagnostics[0][1])
+
+    def test_lock_authority_prefix_precedes_mismatch_and_selected_evidence(self):
+        for parameters in (
+            {'remote': 'https://PRIVATE_MARKER.invalid'},
+            {'remote': 'http://rubygems.org'},
+            {'remote': 'https://rubygems.org\n  remote: https://rubygems.org'},
+            {'kind': 'GIT'}, {'kind': 'PATH'}, {'direct': 'rack!'},
+        ):
+            with self.subTest(parameters=parameters):
+                row = self.assert_failure(self.source('gem "rack", ">= 1"', **parameters),
+                                          'unsupported_dependency_source')
+                self.assertIsNone(row.rubygems_evidence)
+                self.assertTrue(row.gemfile_evidence.include_lock_requirement)
+                self.assertNotIn('PRIVATE_MARKER', repr(row))
+        for kind in ('GIT', 'PATH', 'GEM'):
+            extra = (kind + '\n  remote: https://PRIVATE_MARKER.invalid\n'
+                     '  specs:\n    rack (1)\n')
+            row = self.assert_failure(self.source(extra=extra), 'unsupported_dependency_source')
+            self.assertIsNone(row.rubygems_evidence)
+
+    def test_existing_isolated_selection_failures_keep_scope_and_artifact_rules(self):
+        for specs, reason, artifact_count in (
+            ((), 'lock_version_missing', 0),
+            (('rack (unknown)',), 'unsupported_lock_evidence', 0),
+            (('rack (1)', 'rack (unknown)'), 'unsupported_lock_evidence', 1),
+            (('rack (1)', 'rack (2-java)'), 'ambiguous_lock_evidence', 2),
+            (('rack (1)', 'rack (1)'), 'ambiguous_lock_evidence', 2),
+        ):
+            with self.subTest(specs=specs):
+                row = self.assert_failure(self.source(specs=specs), reason)
+                self.assertTrue(row.gemfile_evidence.include_lock_requirement)
+                if artifact_count:
+                    self.assertEqual(len(row.rubygems_evidence.selected_artifacts), artifact_count)
+                else:
+                    self.assertIsNone(row.rubygems_evidence)
+
+    def test_nonpublic_gemfile_does_not_override_unavailable_lock_precedence(self):
+        private = 'source "https://PRIVATE_MARKER.invalid"\ngem "rack"'
+        (self.root / 'Gemfile').write_text(private)
+        absent = rubygems.scoped_ruby_source_result(self.root, ('default',))
+        self.assertEqual(absent.unmeasurable[0].reason, 'lockfile_missing')
+        (self.root / 'Gemfile.lock').write_text('rejected')
+        rejected = rubygems.scoped_ruby_source_result(self.root, ('default',))
+        self.assertFalse(rejected.measurement_available)
+        self.assertEqual(rejected.dependencies_discovered, 1)
+        self.assertEqual(rejected.unmeasurable, ())
+        self.assertEqual(rejected.source_errors[0].source, 'Gemfile.lock')

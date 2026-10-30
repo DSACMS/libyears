@@ -3,7 +3,7 @@
 import os
 import re
 import stat
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from .gemfile import GemfileParseFailure, parse_gemfile, supported_name, supported_requirement
@@ -138,23 +138,33 @@ def _failure(direct, reason, artifacts=()):
     )
 
 
-def authorize_public_selection(
+def _public_authorization_failure(
     lock: ParsedGemfileLock,
     direct: LockDependency,
-) -> DependencyCandidate | UnmeasurableDependency:
-    """Validate local evidence before the sole Ruby candidate construction.
-
-    Every exact-name source association must authorize public identity, even
-    when a public occurrence coexists with a private or pinned namesake.
-    Requirements delimit evidence; they never select or validate a version.
-    """
+) -> UnmeasurableDependency | None:
+    """Preserve ordinary name, requirement, then source failure precedence."""
     if not supported_name(direct.name):
         return _failure(direct, 'unsupported_dependency_name')
     if not supported_requirement(direct.requirement_text):
         return _failure(direct, 'unsupported_requirement')
     if not _has_public_authority(lock, direct):
         return _failure(direct, 'unsupported_dependency_source')
+    return None
 
+
+def authorize_public_selection(
+    lock: ParsedGemfileLock,
+    direct: LockDependency,
+) -> DependencyCandidate | UnmeasurableDependency:
+    """Validate all exact-name source associations before public selection."""
+    failure = _public_authorization_failure(lock, direct)
+    if failure is not None:
+        return failure
+    return _authorized_lock_selection(lock, direct)
+
+
+def _authorized_lock_selection(lock, direct):
+    """Select artifacts only after the caller has established public authority."""
     occurrences = [
         spec for source in lock.sources for spec in source.specs
         if spec.name == direct.name
@@ -229,6 +239,9 @@ def _local_diagnostic(reason: str) -> str:
         'lock_version_missing': 'No ordinary selected lock spec.',
         'ambiguous_lock_evidence': 'Differing versions or duplicate selected artifacts.',
         'unsupported_lock_evidence': 'Unsupported selected version or artifact identity.',
+        'lock_dependency_missing': 'Selected declaration has no direct lock identity.',
+        'declaration_lock_requirement_mismatch':
+            'Textual requirement evidence differs; equivalence not inferred.',
     }
     return messages[reason]
 
@@ -303,6 +316,40 @@ def _declaration_failure(declaration, reason):
     )
 
 
+def _associate_scoped_declarations(gemfile, selected, lock):
+    """Associate only direct identities, keeping membership separate from versions."""
+    directs = {direct.name: direct for direct in lock.dependencies}
+    candidates = []
+    failures = []
+    for declaration in selected:
+        direct = directs.get(declaration.name)
+        row = _declaration_failure(declaration, 'lock_dependency_missing')
+        evidence = row.gemfile_evidence
+        if direct is not None and supported_requirement(direct.requirement_text):
+            evidence = replace(
+                evidence, lock_requirement=direct.requirement_text, include_lock_requirement=True,
+            )
+        if not gemfile.public_source_authorized:
+            result = replace(row, reason='unsupported_dependency_source')
+        elif direct is None:
+            result = row
+        else:
+            result = _public_authorization_failure(lock, direct)
+            if result is None:
+                requirement = ', '.join(declaration.requirements) if declaration.requirements else None
+                if requirement != direct.requirement_text:
+                    result = replace(row, reason='declaration_lock_requirement_mismatch')
+                else:
+                    result = _authorized_lock_selection(lock, direct)
+        # Even inherited failures must use safe Gemfile framing, never raw lock text.
+        result = replace(result, declared=row.declared, gemfile_evidence=evidence)
+        if isinstance(result, DependencyCandidate):
+            candidates.append(result)
+        else:
+            failures.append(result)
+    return tuple(candidates), tuple(failures)
+
+
 def scoped_ruby_source_result(root: Path, requested_groups: tuple[str, ...]) -> SourceResult:
     """Establish complete declared scope before inspecting the bounded lock."""
     requested = tuple(sorted(set(requested_groups)))
@@ -331,7 +378,8 @@ def scoped_ruby_source_result(root: Path, requested_groups: tuple[str, ...]) -> 
     lock = parse_lockfile(text)
     if isinstance(lock, LockParseFailure):
         return _scoped_source_failure(evidence, 'Gemfile.lock', lock, count)
-    # T005 supplies accepted-lock association; this path remains internal until T006.
+    candidates, failures = _associate_scoped_declarations(gemfile, selected, lock)
     return SourceResult(
-        'rubygems', (), (), (), _scoped_source_evidence(requested, True), count, True,
+        'rubygems', candidates, failures, (), _scoped_source_evidence(requested, True), count, True,
+        diagnostics=tuple((item.name, _local_diagnostic(item.reason)) for item in failures),
     )
