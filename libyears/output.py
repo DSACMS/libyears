@@ -277,6 +277,9 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
         source.evidence.snapshot_source == "yarn.lock"
         for source in report.source_results
     )
+    scoped_ruby = next((source for source in report.source_results
+                        if source.ecosystem == "rubygems"
+                        and source.evidence.requested_groups is not None), None)
     ruby_disclosure = []
     if "rubygems" in ecosystems:
         ruby_disclosure = [
@@ -286,6 +289,8 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
             "Missing public records prove neither yanking nor never-existence; record disappearance may change future measurements.",
             "Null counts and coverage mean unavailable.",
         ]
+    if scoped_ruby is not None:
+        ruby_disclosure = _scoped_ruby_disclosure(scoped_ruby, report.by_ecosystem["rubygems"])
     if len(ecosystems) == 1 and not report.source_errors:
         ecosystem = ecosystems[0]
         lines = [f"Libyears: {path}", f"Ecosystem: {ecosystem}", ""]
@@ -300,6 +305,7 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
                     f"{dependency.name:<16} {dependency.used_version:<10} "
                     f"{dependency.latest_stable_version:<12} {measurement.libyears:.2f}"
                 )
+                lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
         lines.extend([
             "", f"Measured: {summary.dependencies_measured} / {summary.dependencies_discovered} dependencies",
             f"Coverage: {_coverage(summary.coverage)}",
@@ -315,7 +321,10 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
                 if yarn_evidence:
                     declaration = f"{item.name} ({item.declared})"
                 reason = _dependency_reason_text(item.reason, yarn_evidence, item.ecosystem)
+                if item.gemfile_evidence is not None:
+                    reason = _scoped_dependency_reason(item.reason)
                 lines.append(f"  {declaration}    {reason}")
+                lines.extend(_gemfile_detail_lines(item.gemfile_evidence))
         if verbose and report.tls_trust:
             lines.extend(["", f"TLS trust: {report.tls_trust}"])
         if verbose and report.diagnostics:
@@ -347,12 +356,15 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
                 f"{dependency.used_version:<10} {dependency.latest_stable_version:<12} "
                 f"{measurement.libyears:.2f}  {_source_text(dependency.version_source)}"
             )
+            lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
     if report.unmeasurable:
         lines.extend(["", "Unmeasurable:"])
-        lines.extend(
-            f"  {item.ecosystem}: {item.name} ({item.declared})    {_dependency_reason_text(item.reason, yarn_evidence and item.ecosystem == 'npm', item.ecosystem)}"
-            for item in report.unmeasurable
-        )
+        for item in report.unmeasurable:
+            reason = _dependency_reason_text(item.reason, yarn_evidence and item.ecosystem == 'npm', item.ecosystem)
+            if item.gemfile_evidence is not None:
+                reason = _scoped_dependency_reason(item.reason)
+            lines.append(f"  {item.ecosystem}: {item.name} ({item.declared})    {reason}")
+            lines.extend(_gemfile_detail_lines(item.gemfile_evidence))
     if report.source_errors:
         lines.extend(["", "Source errors:"])
         for error in report.source_errors:
@@ -370,6 +382,49 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
         if report.diagnostics:
             lines.extend(["Registry diagnostics:", *(f"  {name}: {message}" for name, message in report.diagnostics)])
     return "\n".join(lines) + "\n"
+
+
+def _scoped_ruby_disclosure(source, summary) -> list[str]:
+    groups = ", ".join(source.evidence.requested_groups)
+    lines = [
+        f"RubyGems selected declared groups: {groups}.",
+        "Supplied declaration source: Gemfile; supplied version snapshot: Gemfile.lock.",
+        "Declaration membership does not establish installed/deployed/runtime scope or historical coherence.",
+        "Publication dates are earliest admissible supported observable evidence, not complete historical knowledge.",
+        "Missing public records prove neither yanking nor never-existence; record disappearance may change future measurements.",
+    ]
+    if source.dependencies_discovered is None:
+        lines.append("Requested declaration scope unavailable; lock recognition unavailable.")
+    else:
+        lock_state = "accepted" if source.evidence.format == "gemfile_lock" else "unavailable"
+        lines.append(f"Requested declaration scope recognized; Gemfile.lock recognition: {lock_state}.")
+        if not source.measurement_available:
+            lines.append(f"Ruby measurement unavailable; known selected population: {summary.dependencies_discovered}.")
+        elif summary.dependencies_discovered == 0:
+            lines.append("Selected declared scope is empty (0 / 0 measured; null coverage).")
+        elif summary.dependencies_measured == 0:
+            lines.append(f"Selected declared scope is wholly unmeasurable (0 / {summary.dependencies_discovered} measured; 0.0% coverage).")
+    return lines
+
+
+def _gemfile_detail_lines(evidence: GemfileEvidence | None) -> list[str]:
+    if evidence is None:
+        return []
+    # JSON string framing makes literal requirement whitespace visible to readers.
+    requirements = json.dumps(list(evidence.declaration_requirements))
+    lines = [f"    Gemfile declared groups: {', '.join(evidence.declared_groups)}; declaration requirements: {requirements}"]
+    if evidence.include_lock_requirement:
+        lines.append(f"    Gemfile.lock requirement: {json.dumps(evidence.lock_requirement)}")
+    else:
+        lines.append("    Gemfile.lock requirement: unavailable")
+    return lines
+
+
+def _scoped_dependency_reason(reason: str) -> str:
+    if reason == "unsupported_dependency_source":
+        return ("public source authority not established; nonpublic Gemfile sources are unsupported; "
+                "lock authority is checked independently; no public namesake is substituted")
+    return _ruby_reason_text(reason)
 
 
 def _diagnostic_lines(report: ScanReport) -> list[str]:
@@ -409,6 +464,15 @@ def _ruby_reason_text(reason: str) -> str:
         "unsupported_dependency_source": "supported public RubyGems authority not established; no public namesake is substituted",
         "unsupported_lock_evidence": "unsupported selected version or artifact identity in Gemfile.lock",
         "ambiguous_lock_evidence": "differing versions or duplicate selected artifacts in Gemfile.lock",
+        "gemfile_missing": "Gemfile unavailable: supplied declaration file is missing",
+        "invalid_gemfile": "Gemfile unavailable: unreadable, nonregular or malformed declaration evidence",
+        "unsafe_gemfile": "Gemfile unavailable: declaration target is outside the supplied root",
+        "unsupported_gemfile_syntax": "Gemfile scope unavailable: unsupported static declaration syntax",
+        "duplicate_gemfile_declaration": "Gemfile scope unavailable: duplicate gem declarations",
+        "unknown_ruby_group": "requested Ruby group is not established; entire requested scope unavailable",
+        "lockfile_missing": "Gemfile.lock unavailable: exact version evidence is missing",
+        "lock_dependency_missing": "selected declaration is absent from direct Gemfile.lock dependencies",
+        "declaration_lock_requirement_mismatch": "textual requirement evidence differs; equivalence not inferred",
         "invalid_lockfile": "unreadable or malformed Gemfile.lock",
         "unsupported_lockfile_format": "unsupported or unclassifiable Gemfile.lock format",
     }.get(reason, _reason_text(reason))

@@ -349,17 +349,21 @@ class ScopedRubyJsonTests(unittest.TestCase):
             'PLATFORMS\n  ruby\nDEPENDENCIES\n  rack\n')
     date = datetime(2024, 1, 1, 2, 0, 0, 123456, tzinfo=timezone.utc)
 
-    def scan(self, gemfile, lock, *, groups=('default',), outcome=None):
+    def scan(self, gemfile, lock, *, groups=('default',), outcome=None, siblings=False):
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
         root = Path(directory.name)
         for name, text in (('Gemfile', gemfile), ('Gemfile.lock', lock)):
             if text is not None:
                 (root / name).write_text(text, encoding='utf-8')
+        if siblings:
+            (root / 'requirements.txt').write_text('sibling==1\n')
         lookup = Mock(return_value=outcome or RegistryResult(
             'rack', '1', self.date, '1', self.date))
         report = scan_mixed_repository(root, ruby_groups=groups,
-                                      rubygems_lookup=lookup)
+                                      rubygems_lookup=lookup,
+                                      pypi_lookup=lambda name, version: RegistryResult(
+                                          name, version, self.date, version, self.date))
         return report, lookup
 
     def evidence(self, groups, accepted):
@@ -570,6 +574,103 @@ class ScopedRubyJsonTests(unittest.TestCase):
                         'declaration_requirements': expected, 'lock_requirement': requirement},
                 }])
                 lookup.assert_not_called()
+
+    def test_human_measured_scope_and_evidence_match_json_in_both_branches(self):
+        for siblings in (False, True):
+            report, _ = self.scan(
+                self.source + 'gem "rack", ">= 1", "< 3", groups: [:production, :test]\n',
+                self.lock.replace('  rack\n', '  rack (>= 1, < 3)\n'),
+                groups=('production',), siblings=siblings)
+            before = format_json(report, '.')
+            for verbose in (False, True):
+                human = format_human(report, '.', verbose=verbose)
+                for text in ('selected declared groups: production',
+                             'supplied version snapshot: Gemfile.lock',
+                             'Supplied declaration source: Gemfile',
+                             'Gemfile.lock recognition: accepted',
+                             'declared groups: production, test',
+                             'declaration requirements: [">= 1", "< 3"]',
+                             'Gemfile.lock requirement: ">= 1, < 3"',
+                             'does not establish installed/deployed/runtime scope or historical coherence',
+                             'not complete historical knowledge', 'record disappearance', '100.0%'):
+                    self.assertIn(text, human)
+                self.assertNotIn('groups are not interpreted', human)
+                self.assertNotIn('All direct dependencies recorded', human)
+            self.assertEqual(before, format_json(report, '.'))
+
+    def test_human_empty_unavailable_and_wholly_unmeasurable_remain_distinct(self):
+        cases = (
+            (self.source, None, 'scope is empty', '0 / 0', None),
+            (None, self.lock, 'scope unavailable', 'None / None', None),
+            (self.source + 'gem "rack"\n', 'BAD\n', 'measurement unavailable', 'None / 1', None),
+            (self.source + 'gem "rack"\n', None, 'wholly unmeasurable', '0 / 1', 0.0),
+        )
+        for gemfile, lock, text, counts, coverage in cases:
+            for siblings in (False, True):
+                with self.subTest(text=text, siblings=siblings):
+                    report, _ = self.scan(gemfile, lock, siblings=siblings)
+                    data = report_to_dict(report, '.')
+                    self.assertEqual(data['summary']['by_ecosystem']['rubygems']['coverage'], coverage)
+                    for verbose in (False, True):
+                        human = format_human(report, '.', verbose=verbose)
+                        self.assertIn(text, human)
+                        self.assertIn(counts, human)
+                        if lock is None:
+                            self.assertIn('Gemfile.lock recognition: unavailable', human)
+
+    def test_human_failures_retain_safe_metadata_and_omit_unsupported_text(self):
+        cases = (
+            ('source "https://PRIVATE_MARKER.invalid"\ngem "rack"\n',
+             self.lock.replace('  rack\n', '  other\n'), None,
+             'nonpublic Gemfile sources are unsupported', 'unavailable'),
+            (self.source + 'gem "rack", ">= 1"\n',
+             self.lock.replace('  rack\n', '  rack (https://UNSAFE_MARKER.invalid)\n'),
+             None, 'unsupported requirement format', 'unavailable'),
+            (self.source + 'gem "rack", ">= 1"\n', self.lock, None,
+             'textual requirement evidence differs; equivalence not inferred', 'null'),
+            (self.source + 'gem "rack"\n', self.lock.replace('  rack\n', '  other\n'),
+             None, 'absent from direct Gemfile.lock dependencies', 'unavailable'),
+            (self.source + 'gem "rack"\n', self.lock,
+             RegistryFailure('rack', '1', 'registry_error', 'safe registry diagnostic'),
+             'registry or transport error', 'null'),
+        )
+        for gemfile, lock, outcome, reason, lock_text in cases:
+            for siblings in (False, True):
+                with self.subTest(reason=reason, siblings=siblings):
+                    report, _ = self.scan(gemfile, lock, outcome=outcome, siblings=siblings)
+                    data = report_to_dict(report, '.')
+                    self.assertEqual(data['summary']['by_ecosystem']['rubygems']['coverage'], 0.0)
+                    for verbose in (False, True):
+                        human = format_human(report, '.', verbose=verbose)
+                        for text in (reason, 'declared groups: default',
+                                     'Gemfile.lock requirement: ' + lock_text, '0.0%'):
+                            self.assertIn(text, human)
+                        for marker in ('UNSAFE_MARKER', 'PRIVATE_MARKER'):
+                            self.assertNotIn(marker, human)
+                            self.assertNotIn(marker, format_json(report, '.'))
+                        if verbose and outcome:
+                            self.assertIn('safe registry diagnostic', human)
+                        elif outcome:
+                            self.assertNotIn('safe registry diagnostic', human)
+                    if reason.startswith('unsupported requirement'):
+                        self.assertIn('declaration requirements: [">= 1"]', human)
+                        self.assertNotIn('lock_requirement', data['unmeasurable'][0]['gemfile_evidence'])
+
+    def test_human_source_reasons_are_contextual_and_safe(self):
+        cases = (
+            (None, 'Gemfile unavailable'),
+            ('end\n', 'malformed declaration evidence'),
+            (self.source + 'eval_gemfile "UNSAFE_MARKER"\n', 'unsupported static declaration syntax'),
+            (self.source + 'gem "rack"\ngem "rack"\n', 'duplicate gem declarations'),
+            (self.source, 'group is not established'),
+        )
+        for gemfile, reason in cases:
+            report, lookup = self.scan(gemfile, self.lock, groups=('test',))
+            lookup.assert_not_called()
+            for verbose in (False, True):
+                human = format_human(report, '.', verbose=verbose)
+                self.assertIn(reason, human)
+                self.assertNotIn('UNSAFE_MARKER', human)
 
     def test_ordinary_ruby_shape_is_unchanged_and_scoped_serializer_is_explicit(self):
         ordinary = RubyPublicOutputTests().ruby_report()

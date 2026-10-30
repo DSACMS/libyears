@@ -274,7 +274,7 @@ previous ledger bytes unchanged. No network/external target or execution.
   supplied-file evidence only. Extend test_output.py alongside these changes.
 
 **Run 005-0015 completion evidence:** Explicit scoped JSON serialization in
-`libyears/output.py`; 8 new `ScopedRubyJsonTests` methods in `tests/test_output.py`
+`libyears/output.py`; 9 new `ScopedRubyJsonTests` methods in `tests/test_output.py`
 cover exact source/row dictionaries, requested/full groups, ordered requirements,
 format null/accepted, omitted/null/text lock requirement, empty/missing/rejected
 inputs, missing direct identity, F1/F2, mismatch, local/registry failures and
@@ -285,7 +285,7 @@ unsafe markers and diagnostics are absent from JSON. Schema remains 3.
 
 ### T008 — Scoped human reporting
 
-- [ ] Complete. **Predecessors:** T007.
+- [x] Complete. **Predecessors:** T007.
 - **Authority:** spec S4; plan human-output paragraphs. AC-17/20/22/28.
 - **Change:** Render scoped sources, requested/full declared groups, safely
   available requirements, safe reasons and recognition availability in both
@@ -296,6 +296,21 @@ unsafe markers and diagnostics are absent from JSON. Schema remains 3.
   empty, unavailable and wholly unmeasurable cases assert matching counts and
   evidence in normal/verbose output. F2/raw private values never echo. A group
   named production remains an ordinary name; no deployment/runtime/history claim.
+
+**Run 005-0015 completion evidence:** Scoped human reporting in
+`libyears/output.py` identifies supplied files, requested/full groups, declaration
+requirements and available/null/unavailable lock requirements in single/mixed
+branches. It distinguishes empty/unavailable/wholly-unmeasurable scope, preserves
+observable-publication limitations, states the supplied-file limitation, explains
+nonpublic authority safely and uses the approved textual mismatch wording.
+Four paired human/JSON tests in `tests/test_output.py` exercise both branches
+and normal/verbose output, source/local/registry failures, F1/F2 redaction and
+JSON-consistent counts. Ordinary output tests remain green. Final T007 child
+verification was 26 output tests (9 new JSON methods); parent T007's 62-test
+command preceded the final added retained-failure-artifact witness. Integrated
+command `python -m unittest tests.test_output tests.test_scoped_scan
+tests.test_mixed_scan tests.test_cli` — 87 passed (30 output tests);
+`git diff --check` — passed. CLI activation remains pending T009.
 
 ### T009 — Public CLI activation
 
