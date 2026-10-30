@@ -891,3 +891,79 @@ commit from its JSON handoff plus authorized human status additions. Runs
 credits_before remains blank and no credit delta is derived. Current run has
 only its temporary handoff and no ledger row. The candidate remains frozen;
 **REVISE** means correction of C-01 is the next gate, with no T011 authorization.
+
+
+## Focused independent post-T010 C-01 verification — 005-0016
+
+**Date:** 2026-10-30. **Completion:** COMPLETE. **Verdict:** APPROVE.
+**Post-T010 implementation checkpoint:** APPROVED. **Material findings:** 0.
+C-01 is closed; T009 completion/acceptance is restored and T010 acceptance is
+complete for the corrected candidate. The prior 005-0015 REVISE checkpoint and
+all earlier review history remain byte-preserved above. This is focused
+correction verification, not T013 convergence or real-root validation.
+**Next gate:** T011 under later execution authority. T011–T013 remain unstarted.
+
+### Frozen correction and independence
+
+The parent corrected only C-01 in the existing CLI parser subclass and added
+two deterministic CLI regression methods plus narrow task evidence. Exact
+option matching is unchanged; abbreviation candidates involving `--ruby-group`
+are rejected. Ordinary option abbreviations remain compatible, and `--r` stays
+a usage error. No aliases, new parsing framework or unrelated behavior changes
+were introduced. The complete correction diff was inspected and
+`git diff --check` passed before the local freeze commit:
+`ecc492407e1e6fd6a3947142b72f9e50ecca423b` (baseline `99dcaf4`).
+
+One fresh native child, `/root/c01_verification`, was commissioned after freeze
+with `fork_turns="none"`, no explicit model/effort overrides, and no authorship
+participation. It independently read repository authority, approved spec/plan/
+tasks, relevant post-T005/post-T010 history, the complete correction diff,
+CLI/tests, integration/acceptance witnesses and the 28-criterion assertion index.
+It made no edits, repairs or commits and spawned no children. Actual child
+model/effort/resource telemetry is unavailable. It is orchestration within this
+observed run, not a separate ledger observation.
+
+### Focused evidence and parent synthesis
+
+The child returned COMPLETE / APPROVE, with no material findings. Every proper
+long-option prefix from `--r` to `--ruby-grou`, including `--ruby` and `--ruby-g`,
+is exercised with separate and equals values and alongside a canonical request:
+exit 1, no stdout and no scan. Exact canonical activation, repeated requests,
+case sensitivity, sorted deduplication, direct-file rejection and malformed
+values remain passing. Its independent canonical equals/repeated control passed;
+restoring the former abbreviation hook only in memory made the new regression
+fail on 27 alias subtests, demonstrating detection of the original defect.
+
+The parent independently inspected the frozen code/diff, forbidden-prefix
+assertions and canonical/repeated controls, reconciled the child result with
+S1 and the prior checkpoint, and compared 32 ordinary exact/prefix parser
+invocations against baseline `99dcaf4`: identical parsed results/exit codes.
+The implementation diff is solely CLI abbreviation handling. Scoped scan
+semantics, JSON, human output, source authority, coverage, transport and metric
+code are unchanged. The reviewer confirmed T001–T005 implementation/foundation
+tests match approved `09be9fb`; parent scope checks confirm no foundation-file
+changes. T006–T010 acceptance evidence remains credible with the C-01 gap closed.
+Approval rests on these witnesses and unchanged boundaries, not just the verdict.
+No new finding was repaired.
+
+Both parent (before freeze) and child independently ran, in order:
+
+| Exact command | Result for each |
+|---|---|
+| `python -m unittest tests.test_cli tests.test_ruby_group_acceptance` | 32 passed |
+| `python -m unittest tests.test_scoped_scan tests.test_mixed_scan tests.test_scan tests.test_output tests.test_ruby_groups tests.test_gemfile tests.test_gemfile_evidence tests.test_gemfile_lock tests.test_pypi tests.test_npm tests.test_npm_registry tests.test_yarn tests.test_rubygems tests.test_rubygems_registry tests.test_registry tests.test_metric` | 335 passed |
+| `python -m unittest discover -s tests` | 390 passed, no skips |
+| `git diff --check` | Passed |
+
+The child also passed `git diff --check ecc4924^ ecc4924`. Product/tests stayed
+frozen throughout review and parent synthesis; only lifecycle/review records
+changed afterward. No network services, external validation targets, real-root
+scans, Ruby/Bundler/package managers, credentials or target code were accessed.
+No T011 documentation/preparation, T012 evidence or T013 convergence began.
+No push occurred.
+
+Prior observation 005-0015 is appended exactly once from its JSON handoff plus
+only the authorized human /status additions. Runs 005-0001–005-0015 each occur
+once with 44 fields; earlier ledger bytes remain unchanged. Credits_before is
+blank and no credit delta is derived. Current run 005-0016 is handed off as
+44-field temporary JSON and is not appended to the ledger.

@@ -314,8 +314,9 @@ tests.test_mixed_scan tests.test_cli` — 87 passed (30 output tests);
 
 ### T009 — Public CLI activation
 
-- [ ] Complete. **Reopened after post-T010 review:** C-01 requires correction;
-  the implementation/test execution below is historical candidate evidence. **Predecessors:** T006, T007, T008.
+- [x] Complete. **Acceptance restored in 005-0016** after C-01 correction and
+  focused independent APPROVE; original candidate evidence below is historical.
+  **Predecessors:** T006, T007, T008.
 - **Authority:** spec S1/S4; plan CLI validation and compatibility. AC-01/02/03/05/19/24/27.
 - **Change:** Add repeatable --ruby-group GROUP with the exact ASCII name
   validation, sort/deduplication, no implicit default and directory-only target
@@ -610,3 +611,24 @@ to reject any abbreviation candidate set containing the Ruby option, then all
 three commands above passed in order. No new review finding was repaired.
 The complete correction diff and `git diff --check` are checked before freezing
 this candidate for the fresh reviewer. No network/external validation occurred.
+
+
+### Focused post-T010 checkpoint outcome — 005-0016
+
+**COMPLETE / APPROVE; corrected integrated checkpoint APPROVED.** Candidate
+implementation/tests and correction evidence froze at
+`ecc492407e1e6fd6a3947142b72f9e50ecca423b` before commissioning one fresh
+non-author reviewer, `/root/c01_verification` (`fork_turns="none"`, no explicit
+model/effort overrides). It independently passed the same 32 focused, 335
+regression and 390 full-suite tests (no skips), checked forbidden prefixes and
+canonical/repeated controls, and found no material collateral regression.
+Parent reconciliation and a 32-invocation baseline comparison confirm ordinary
+option compatibility. See the appended [focused review record](reviews.md).
+
+T009 completion/acceptance is restored; T010 verification and acceptance are
+complete for this corrected candidate. Historical 005-0015 REVISE evidence above
+remains intact. T001–T005 foundation remains unchanged; T006–T010 evidence is
+credible with C-01's spelling gap now covered. Only lifecycle/review evidence
+changes after freeze. **Next gate: T011 under later execution authority.**
+T011, T012 and T013 remain unchecked and unstarted. No external/network work,
+real-root validation, documentation-phase work or push occurred.
