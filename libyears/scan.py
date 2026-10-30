@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import re
 from typing import Callable
 
 from .constraints import (
@@ -34,7 +35,7 @@ from .requirements import (
     discover_requirements,
     normalize_name,
 )
-from .rubygems import ruby_source_result, schedule_ruby_candidates
+from .rubygems import ruby_source_result, schedule_ruby_candidates, scoped_ruby_source_result
 from .rubygems_registry import RubyGemsAdapter
 from .snapshot import SNAPSHOT_VERSION_CONFLICT, Snapshot
 
@@ -372,6 +373,7 @@ def _available_summary(
     measurement_available: bool,
     coverage_available: bool,
     discovery_failed: bool = False,
+    unavailable_numeric: bool = False,
 ) -> MetricSummary:
     """Combine scan-derived availability with the existing numeric aggregates."""
     numeric = calculate_summary(
@@ -385,11 +387,27 @@ def _available_summary(
             numeric.dependencies_measured if measurement_available else None
         ),
         coverage=numeric.coverage if coverage_available else None,
-        total_libyears=numeric.total_libyears,
-        mean_libyears=numeric.mean_libyears,
-        median_libyears=numeric.median_libyears,
-        max_libyears=numeric.max_libyears,
+        total_libyears=None if unavailable_numeric else numeric.total_libyears,
+        mean_libyears=None if unavailable_numeric else numeric.mean_libyears,
+        median_libyears=None if unavailable_numeric else numeric.median_libyears,
+        max_libyears=None if unavailable_numeric else numeric.max_libyears,
     )
+
+
+class RubyGroupRequestError(ValueError):
+    """An invalid scoped Ruby request, before any dependency source is read."""
+
+
+def validate_ruby_groups(path: str | Path, groups: tuple[str, ...]) -> tuple[str, ...]:
+    """Validate a scoped request and return its canonical group names."""
+    if not isinstance(groups, (tuple, list)) or not groups:
+        raise RubyGroupRequestError("Ruby groups must be a nonempty sequence of names")
+    for group in groups:
+        if not isinstance(group, str) or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", group):
+            raise RubyGroupRequestError("Invalid Ruby group name")
+    if not Path(path).is_dir():
+        raise RubyGroupRequestError("Ruby group selection requires a directory")
+    return tuple(sorted(set(groups)))
 
 
 def scan_mixed_repository(
@@ -403,13 +421,19 @@ def scan_mixed_repository(
     rubygems_lookup: Callable[[str, str], RegistryResult | RegistryFailure] | None = None,
     snapshot: Snapshot | None = None,
     ca_bundle: str | None = None,
+    ruby_groups: tuple[str, ...] | None = None,
 ) -> MixedScanReport:
     """Discover and measure the three explicit supported ecosystems."""
+    if ruby_groups is not None:
+        ruby_groups = validate_ruby_groups(path, ruby_groups)
     python_result = _python_source_result(path, snapshot)
     root = Path(path)
     npm_root = root if root.is_dir() else None
     npm_result = _npm_source_result(npm_root)
-    ruby_result = ruby_source_result(npm_root)
+    if ruby_groups is None:
+        ruby_result = ruby_source_result(npm_root)
+    else:
+        ruby_result = scoped_ruby_source_result(root, ruby_groups)
 
     pypi_adapter = adapter or (
         None if pypi_lookup is not None else PyPIAdapter(ca_bundle=ca_bundle)
@@ -472,6 +496,7 @@ def scan_mixed_repository(
                         candidate.declared,
                         result.reason,
                         ruby_evidence,
+                        candidate.gemfile_evidence,
                     )
                 )
                 continue
@@ -484,6 +509,7 @@ def scan_mixed_repository(
                 result.latest_stable_release_time,
                 candidate.version_source,
                 ruby_evidence,
+                candidate.gemfile_evidence,
             )
             measurements.append(measure_dependency(dependency))
 
@@ -522,6 +548,10 @@ def scan_mixed_repository(
             measurement_available=source.measurement_available,
             coverage_available=source.measurement_available,
             discovery_failed=source.dependencies_discovered is None,
+            unavailable_numeric=(
+                source.evidence.requested_groups is not None
+                and not source.measurement_available
+            ),
         )
         for source in sorted(detected_sources, key=lambda item: item.ecosystem)
     }
@@ -550,8 +580,10 @@ def scan_mixed_repository(
 __all__ = [
     "MixedScanReport",
     "ScanReport",
+    "RubyGroupRequestError",
     "result_to_dependency",
     "scan",
     "scan_mixed_repository",
     "scan_repository",
+    "validate_ruby_groups",
 ]

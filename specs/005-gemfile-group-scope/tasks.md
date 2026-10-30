@@ -4,7 +4,9 @@
 
 **APPROVED task graph** — independent review `005-0013`; explicit human
 execution authority in observed run `005-0014` (2026-10-30) covers T001–T005
-and the post-T005 independent checkpoint only. T006–T013 remain unstarted.
+and the post-T005 independent checkpoint only. Run `005-0015` explicitly
+authorizes continuation through T006–T010 and the post-T010 checkpoint.
+T011–T013 remain unstarted and are a hard stop for this run.
 No external target or network work is authorized. Historical submission/gate
 text below is superseded by this execution record and the review history.
 
@@ -19,7 +21,8 @@ it neither revises their contracts nor authorizes an external target or network.
 There are 13 tasks, including verification, documentation and convergence.
 Every predecessor listed below must be complete; table order alone grants no
 readiness. The graph is acyclic. Execute sequentially unless a later prompt
-explicitly authorizes parallel execution. Only dependency-ready T001–T005 are authorized in run 005-0014.
+explicitly authorizes parallel execution. Run 005-0015 authorizes only dependency-ready T006–T010 after the approved
+post-T005 checkpoint; it prohibits T011–T013, external targets and live validation.
 
 | Task | Work unit | Predecessors | Phase |
 |---|---|---|---|
@@ -225,7 +228,7 @@ Commands: `python -m unittest discover -s tests -p 'test_ruby_groups.py'` —
 
 ### T006 — Mixed scan propagation and aggregation
 
-- [ ] Complete. **Predecessors:** T005.
+- [x] Complete. **Predecessors:** T005.
 - **Authority:** spec baseline/S1/S3/S4; plan “CLI, mixed scanning and aggregation”
   and evidence propagation. AC-01/02/04/05/06/15/17/18/19/21/25/26/28.
 - **Change:** Accept optional validated ruby_groups, dedicated scoped-request
@@ -242,6 +245,19 @@ Commands: `python -m unittest discover -s tests -p 'test_ruby_groups.py'` —
   age, platform/date provenance, exact same-version zero and flagged clamping.
   Spies confirm one source path and authorized lookup counts; existing transport/
   TLS and ecosystem regressions protect unchanged adapter wiring and identity.
+
+**Run 005-0015 completion evidence:** `libyears/scan.py` validates/canonicalizes
+requests before discovery, selects exactly one Ruby path, and carries safe Gemfile
+evidence through registry success/failure. Scoped unavailable ecosystem aggregates
+are null; known N and repository sibling measurements survive. No public output
+or CLI activation changed. `tests/test_scoped_scan.py` has 8 tests, including a
+20-case availability matrix (with/without Python/npm siblings), ordinary no-read,
+union/case, artifact merging, ages/zero/clamping, same-name ecosystem isolation,
+Python-only snapshots and default adapter CA/trust wiring. Parent command:
+`python -m unittest tests.test_scoped_scan tests.test_mixed_scan` — 37 passed;
+`git diff --check` — passed. Prior observation 005-0014 appended from its JSON
+plus authorized human metadata; 005-0001–005-0014 exactly once, 44 fields each,
+previous ledger bytes unchanged. No network/external target or execution.
 
 ### T007 — Additive scoped JSON serialization
 
