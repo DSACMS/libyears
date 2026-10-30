@@ -20,13 +20,17 @@ SAFE_OPEN = all(getattr(os, name, 0) for name in (
 )) and rubygems._DIRECTORY_OPEN in os.supports_dir_fd
 
 
-def _fifo_replacement_witness(name):
+def _fifo_replacement_witness(name, scoped=False):
     """Run in a bounded child: replacement at the hook needs no timing race."""
     check = unittest.TestCase()
     with tempfile.TemporaryDirectory() as directory:
         root = Path(directory).resolve()
         target = root / name
-        target.write_text('regular validated input', encoding='utf-8')
+        if scoped:
+            (root / 'Gemfile').write_text('source "https://rubygems.org"\ngem "rack"\n')
+            (root / 'Gemfile.lock').write_text(LOCK)
+        else:
+            target.write_text('regular validated input', encoding='utf-8')
         reader = _ScopedRubyReader(root)
         real_open = os.open
         real_stat = Path.stat
@@ -57,16 +61,38 @@ def _fifo_replacement_witness(name):
             events.append(('fstat', descriptor))
             return real_fstat(descriptor)
 
+        real_read = os.read
+        def read_regular(descriptor, count):
+            check.assertTrue(stat.S_ISREG(real_fstat(descriptor).st_mode), 'FIFO content read')
+            return real_read(descriptor, count)
+
         with patch.object(Path, 'stat', inspect), \
                 patch.object(os, 'open', replace_then_open), \
                 patch.object(os, 'fstat', inspect_descriptor), \
-                patch.object(os, 'read', side_effect=AssertionError('FIFO content read')) as read:
-            result = reader.read(name)
-        check.assertIsInstance(result, _ScopedReadFailure)
+                patch.object(os, 'read', side_effect=read_regular) as read,                 patch('urllib.request.urlopen', side_effect=AssertionError('network')) as lookup:
+            if scoped:
+                result = rubygems.scoped_ruby_source_result(root, ('default',))
+            else:
+                result = reader.read(name)
         expected = 'invalid_gemfile' if name == 'Gemfile' else 'invalid_lockfile'
-        check.assertEqual(result.reason, expected)
-        check.assertEqual(result.safe_category, 'Scoped input is not regular.')
-        read.assert_not_called()
+        if scoped:
+            check.assertEqual(result.source_errors[0].reason, expected)
+            check.assertEqual(result.source_errors[0].source, name)
+            check.assertEqual(result.dependencies_discovered, None if name == 'Gemfile' else 1)
+            check.assertFalse(result.measurement_available)
+            check.assertEqual((result.candidates, result.unmeasurable), ((), ()))
+            check.assertIsNone(result.evidence.format)
+            if name == 'Gemfile':
+                check.assertEqual(len(opened), 2, 'must not open lock after Gemfile failure')
+                read.assert_not_called()
+            else:
+                check.assertGreater(read.call_count, 0, 'Gemfile must be consumed before lock')
+        else:
+            check.assertIsInstance(result, _ScopedReadFailure)
+            check.assertEqual(result.reason, expected)
+            check.assertEqual(result.safe_category, 'Scoped input is not regular.')
+            read.assert_not_called()
+        lookup.assert_not_called()
         check.assertEqual(events[-2:], [('open', opened[-1]), ('fstat', opened[-1])])
         check.assertTrue(stat.S_ISFIFO(target.stat().st_mode))
         for descriptor in opened:
@@ -366,5 +392,145 @@ class ScopedRubyReadTests(unittest.TestCase):
             )
         except subprocess.TimeoutExpired:
             self.fail(name + ' replacement blocked waiting for a FIFO writer')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.strip(), 'ok')
+
+
+SOURCE = 'source "https://rubygems.org"\n'
+LOCK = ('GEM\n  remote: https://rubygems.org\n  specs:\n    rack (1)\n'
+        'PLATFORMS\n  ruby\nDEPENDENCIES\n  rack\n')
+
+
+@unittest.skipUnless(SAFE_OPEN, 'safe descriptor access unavailable')
+class ScopedSourceAvailabilityTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.network = patch('urllib.request.urlopen', side_effect=AssertionError('network'))
+        self.lookup = self.network.start()
+        self.addCleanup(self.network.stop)
+        self.addCleanup(self.lookup.assert_not_called)
+
+    def source(self, gemfile=SOURCE + 'gem "rack"', lock=None, groups=('default',)):
+        (self.root / 'Gemfile').write_text(gemfile)
+        if lock is not None:
+            (self.root / 'Gemfile.lock').write_text(lock)
+        return rubygems.scoped_ruby_source_result(self.root, groups)
+
+    def test_union_deduplicates_and_retains_full_memberships_without_default(self):
+        gemfile = SOURCE + ('gem "rack"\ngroup :test, :development, optional: true do\n'
+                            'gem "rake", group: :extra\nend\ngem "debug", group: :Test\n')
+        result = self.source(gemfile, groups=('test', 'development', 'test'))
+        self.assertEqual(result.dependencies_discovered, 1)
+        self.assertEqual(result.evidence.requested_groups, ('development', 'test'))
+        row = result.unmeasurable[0]
+        self.assertEqual(row.name, 'rake')
+        self.assertEqual(row.gemfile_evidence.declared_groups, ('development', 'extra', 'test'))
+        self.assertEqual(self.source(gemfile, groups=('Test',)).unmeasurable[0].name, 'debug')
+        self.assertEqual(self.source(gemfile).unmeasurable[0].name, 'rack')
+
+    def test_known_empty_absent_and_accepted_lock_and_rejected_lock(self):
+        for groups in (('default',), ('bench',)):
+            gemfile = SOURCE + 'group :bench do\nend'
+            absent = self.source(gemfile, groups=groups)
+            self.assertEqual(absent.dependencies_discovered, 0)
+            self.assertTrue(absent.measurement_available)
+            self.assertIsNone(absent.evidence.format)
+            accepted = self.source(gemfile, LOCK, groups)
+            self.assertEqual(accepted.dependencies_discovered, 0)
+            self.assertTrue(accepted.measurement_available)
+            self.assertEqual(accepted.evidence.format, 'gemfile_lock')
+            rejected = self.source(gemfile, 'arbitrary', groups)
+            self.assertEqual(rejected.dependencies_discovered, 0)
+            self.assertFalse(rejected.measurement_available)
+            self.assertEqual((rejected.candidates, rejected.unmeasurable), ((), ()))
+            (self.root / 'Gemfile.lock').unlink()
+
+    def test_missing_lock_keeps_pins_as_unmeasurable_safe_declarations(self):
+        result = self.source(SOURCE + 'gem "rack", "= 1"\ngem "rake"')
+        self.assertEqual(result.dependencies_discovered, 2)
+        self.assertTrue(result.measurement_available)
+        self.assertEqual(result.candidates, ())
+        self.assertEqual([row.reason for row in result.unmeasurable], ['lockfile_missing'] * 2)
+        self.assertEqual(result.unmeasurable[0].declared, 'rack (= 1)')
+        self.assertFalse(result.unmeasurable[0].gemfile_evidence.include_lock_requirement)
+
+    def test_complete_recognition_then_unknown_group_prevents_lock_read(self):
+        real_read = _ScopedRubyReader.read
+        for gemfile, groups, reason in (
+            (SOURCE + 'gem "rack"\nputs "bad"', ('unknown',), 'unsupported_gemfile_syntax'),
+            (SOURCE + 'gem "rack"\ngem "rack"', ('default',), 'duplicate_gemfile_declaration'),
+            (SOURCE + 'gem "rack"', ('default', 'missing', 'other'), 'unknown_ruby_group'),
+            (SOURCE + 'gem "rack", group: :Test', ('test',), 'unknown_ruby_group'),
+            ('gem\n' + '#' * (16 * 1024 + 1), ('default',), 'invalid_gemfile'),
+        ):
+            reads = []
+            def read(reader, name):
+                reads.append(name)
+                return real_read(reader, name)
+            with self.subTest(reason=reason), patch.object(_ScopedRubyReader, 'read', read):
+                result = self.source(gemfile, 'bad lock', groups)
+            self.assertEqual(reads, ['Gemfile'])
+            self.assertEqual(len(result.source_errors), 1)
+            self.assertEqual(result.source_errors[0].reason, reason)
+            self.assertIsNone(result.dependencies_discovered)
+            self.assertFalse(result.measurement_available)
+            self.assertIsNone(result.evidence.format)
+
+    def test_safe_read_reasons_map_to_source_without_salvage(self):
+        for name, reasons in (
+            ('Gemfile', ('gemfile_missing', 'invalid_gemfile', 'unsafe_gemfile',
+                         'unsupported_gemfile_syntax')),
+            ('Gemfile.lock', ('invalid_lockfile',)),
+        ):
+            for reason in reasons:
+                calls = []
+                def read(reader, input_name):
+                    calls.append(input_name)
+                    if input_name == name:
+                        return _ScopedReadFailure(reason, 'Safe category.')
+                    return SOURCE + 'gem "rack"'
+                with self.subTest(reason=reason), patch.object(_ScopedRubyReader, 'read', read):
+                    result = rubygems.scoped_ruby_source_result(self.root, ('default',))
+                self.assertEqual(result.source_errors[0].reason, reason)
+                self.assertEqual(result.source_errors[0].source, name)
+                self.assertEqual(result.dependencies_discovered, None if name == 'Gemfile' else 1)
+                self.assertFalse(result.measurement_available)
+                self.assertEqual((result.candidates, result.unmeasurable), ((), ()))
+                self.assertEqual(calls, ['Gemfile'] if name == 'Gemfile' else ['Gemfile', 'Gemfile.lock'])
+                self.assertEqual(result.evidence.declaration_source, 'Gemfile')
+                self.assertEqual(result.evidence.snapshot_source, 'Gemfile.lock')
+                self.assertEqual(result.evidence.scope, 'selected_declared_groups')
+                self.assertTrue(result.source_present)
+
+    def test_rejected_entire_lock_preserves_known_scope_even_for_excluded_rows(self):
+        for lock in ('bad', LOCK + 'CHECKSUMS\n',
+                     LOCK.replace('  rack\n', '  rack\n  rack\n'),
+                     LOCK + '  broken direct (\n'):
+            with self.subTest(lock=lock):
+                result = self.source(lock=lock)
+                self.assertEqual(result.dependencies_discovered, 1)
+                self.assertFalse(result.measurement_available)
+                self.assertEqual((result.candidates, result.unmeasurable), ((), ()))
+                self.assertEqual(result.source_errors[0].source, 'Gemfile.lock')
+                self.assertIsNone(result.evidence.format)
+
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
+    def test_gemfile_fifo_replacement_composes_unknown_scope_and_no_lock_read(self):
+        self.run_source_fifo('Gemfile')
+
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
+    def test_lock_fifo_replacement_composes_known_scope_and_no_rows(self):
+        self.run_source_fifo('Gemfile.lock')
+
+    def run_source_fifo(self, name):
+        script = ('import runpy, sys; module=runpy.run_path(sys.argv[1]); '
+                  'module["_fifo_replacement_witness"](sys.argv[2], scoped=True); print("ok")')
+        try:
+            result = subprocess.run([sys.executable, '-c', script, str(Path(__file__).resolve()), name],
+                                    capture_output=True, text=True, timeout=5, check=False)
+        except subprocess.TimeoutExpired:
+            self.fail(name + ' source replacement blocked')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertEqual(result.stdout.strip(), 'ok')

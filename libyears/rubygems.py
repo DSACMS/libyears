@@ -6,10 +6,10 @@ import stat
 from dataclasses import dataclass
 from pathlib import Path
 
-from .gemfile import supported_name, supported_requirement
+from .gemfile import GemfileParseFailure, parse_gemfile, supported_name, supported_requirement
 from .gemfile_lock import LockDependency, LockParseFailure, ParsedGemfileLock, parse_lockfile
 from .model import (
-    DependencyCandidate, RubyGemsEvidence, SelectedRubyArtifact,
+    DependencyCandidate, GemfileEvidence, RubyGemsEvidence, SelectedRubyArtifact,
     SourceError, SourceEvidence, SourceResult, UnmeasurableDependency,
 )
 
@@ -268,4 +268,70 @@ def ruby_source_result(root: Path | None) -> SourceResult:
         'rubygems', candidates, failures, (), _source_evidence(True),
         len(lock.dependencies), True,
         diagnostics=tuple((item.name, _local_diagnostic(item.reason)) for item in failures),
+    )
+
+
+def _scoped_source_evidence(requested_groups, accepted=False):
+    return SourceEvidence(
+        'Gemfile', 'Gemfile.lock', 'gemfile_lock' if accepted else None, True,
+        'selected_declared_groups', 'earliest_admissible_supported_observable',
+        requested_groups,
+    )
+
+
+def _scoped_source_failure(evidence, source, failure, count=None):
+    diagnostic = failure.safe_category
+    line = getattr(failure, 'line', None)
+    if line is not None:
+        diagnostic += '; line ' + str(line)
+    return SourceResult(
+        'rubygems', (), (), (SourceError('rubygems', source, failure.reason),),
+        evidence, count, False, diagnostics=((source, diagnostic),),
+    )
+
+
+def _declaration_failure(declaration, reason):
+    requirement = ', '.join(declaration.requirements)
+    declared = declaration.name
+    if declaration.requirements:
+        declared += ' (' + requirement + ')'
+    return UnmeasurableDependency(
+        'rubygems', declaration.name, declared, reason,
+        gemfile_evidence=GemfileEvidence(
+            declaration.declared_groups, declaration.requirements,
+        ),
+    )
+
+
+def scoped_ruby_source_result(root: Path, requested_groups: tuple[str, ...]) -> SourceResult:
+    """Establish complete declared scope before inspecting the bounded lock."""
+    requested = tuple(sorted(set(requested_groups)))
+    evidence = _scoped_source_evidence(requested)
+    reader = _ScopedRubyReader(root)
+    text = reader.read('Gemfile')
+    if isinstance(text, _ScopedReadFailure):
+        return _scoped_source_failure(evidence, 'Gemfile', text)
+    gemfile = parse_gemfile(text)
+    if isinstance(gemfile, GemfileParseFailure):
+        return _scoped_source_failure(evidence, 'Gemfile', gemfile)
+    if not set(requested).issubset(gemfile.established_groups):
+        failure = _ScopedReadFailure('unknown_ruby_group', 'Requested group is not established.')
+        return _scoped_source_failure(evidence, 'Gemfile', failure)
+    selected = tuple(
+        declaration for declaration in gemfile.declarations
+        if set(requested).intersection(declaration.declared_groups)
+    )
+    count = len(selected)
+    text = reader.read('Gemfile.lock')
+    if isinstance(text, _ScopedReadFailure):
+        if text.reason == 'lockfile_missing':
+            failures = tuple(_declaration_failure(item, 'lockfile_missing') for item in selected)
+            return SourceResult('rubygems', (), failures, (), evidence, count, True)
+        return _scoped_source_failure(evidence, 'Gemfile.lock', text, count)
+    lock = parse_lockfile(text)
+    if isinstance(lock, LockParseFailure):
+        return _scoped_source_failure(evidence, 'Gemfile.lock', lock, count)
+    # T005 supplies accepted-lock association; this path remains internal until T006.
+    return SourceResult(
+        'rubygems', (), (), (), _scoped_source_evidence(requested, True), count, True,
     )

@@ -147,7 +147,7 @@ T004 still owns composed source-state witnesses.
 
 ### T004 — Scoped selection and source availability
 
-- [ ] Complete. **Predecessors:** T001, T002, T003.
+- [x] Complete. **Predecessors:** T001, T002, T003.
 - **Authority:** spec S1–S4; plan source-flow steps 1–4 and availability matrix.
   AC-03/04/05/06/07/10/11/12/15/23/24/28.
 - **Change:** Add scoped_ruby_source_result with always-present scoped source
@@ -167,6 +167,22 @@ T004 still owns composed source-state witnesses.
   after Gemfile establishes scope and gives invalid_lockfile/known N/no rows.
   Both return promptly, close descriptors, consume no FIFO content and lookup
   nothing. Ordinary all-direct no-Gemfile-read tests remain unchanged.
+
+**Run 005-0014 completion evidence:** `scoped_ruby_source_result` and
+`ScopedSourceAvailabilityTests` in `tests/test_ruby_groups.py` establish complete
+membership before exact group validation and lock access. Tests cover union,
+full membership, case/default/empty/unknown, safe read failures, missing-lock pins,
+whole-lock rejection and known/unknown N (AC-03/04/05/06/07/10/11/12/15/23/24/28
+at this source boundary). Both replacement FIFOs compose through the source in
+5-second bounded subprocesses: Gemfile failure has unknown N/no lock open;
+lock failure follows consumed Gemfile and retains N=1/no rows. Both assert
+pre-read rejection, descriptor closure and zero HTTP. Accepted-lock row
+association deliberately remains for T005; no scan/CLI/output integration.
+Commands: `python -m unittest discover -s tests -p 'test_ruby_groups.py'` —
+25 passed; `python -m unittest discover -s tests -p 'test_gemfile*.py'` — 47 passed;
+`python -m unittest discover -s tests -p 'test_rubygems*.py'` — 53 passed;
+`python -m unittest discover -s tests -p 'test_mixed_scan.py'` — 29 passed;
+`git diff --check` — passed.
 
 ### T005 — Authorized lock association and safe row evidence
 
