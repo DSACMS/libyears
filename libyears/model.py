@@ -46,6 +46,17 @@ class RubyGemsEvidence:
 
 
 @dataclass(frozen=True, slots=True)
+class GemfileEvidence:
+    """Safe declaration membership and separately established lock requirements."""
+
+    declared_groups: tuple[str, ...]
+    declaration_requirements: tuple[str, ...]
+    lock_requirement: str | None = None
+    # False omits unknown or unsafe evidence; True with None means known absence.
+    include_lock_requirement: bool = False
+
+
+@dataclass(frozen=True, slots=True)
 class Dependency:
     """A dependency with both release timestamps resolved by an adapter."""
 
@@ -57,6 +68,7 @@ class Dependency:
     latest_stable_release_time: datetime
     version_source: str = "requirements_exact"
     rubygems_evidence: RubyGemsEvidence | None = None
+    gemfile_evidence: GemfileEvidence | None = None
 
     def __post_init__(self) -> None:
         if not self.ecosystem or not self.name or not self.used_version:
@@ -101,6 +113,7 @@ class DependencyCandidate:
     used_version: str
     version_source: str
     rubygems_evidence: RubyGemsEvidence | None = None
+    gemfile_evidence: GemfileEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -112,6 +125,7 @@ class UnmeasurableDependency:
     declared: str
     reason: str
     rubygems_evidence: RubyGemsEvidence | None = None
+    gemfile_evidence: GemfileEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -134,6 +148,7 @@ class SourceEvidence:
     include_format: bool = False
     scope: str | None = None
     publication_basis: str | None = None
+    requested_groups: tuple[str, ...] | None = None
 
 
 @dataclass(frozen=True, slots=True)

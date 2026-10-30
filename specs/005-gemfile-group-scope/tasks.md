@@ -86,7 +86,7 @@ verified before implementation, with preceding ledger bytes unchanged.
 
 ### T002 — Typed scoped evidence
 
-- [ ] Complete. **Predecessors:** None.
+- [x] Complete. **Predecessors:** None.
 - **Authority:** spec S4; plan “Evidence propagation and safe output”. AC-21.
 - **Change:** Add GemfileEvidence and optional trailing row fields to candidate,
   measured and unmeasurable models, plus optional requested_groups in source
@@ -98,9 +98,18 @@ verified before implementation, with preceding ledger bytes unchanged.
   Existing model consumers and ordinary output tests pass; scoped serialization
   is deliberately owned by T007, not assumed from these model checks.
 
+**Run 005-0014 completion evidence:** Typed trailing defaults in `libyears/model.py` and compatibility/construction
+cases in `tests/test_gemfile_evidence.py` cover T002's AC-21 portion, including
+omitted/present-null/text requirement states. No serializer changes.
+`python -m unittest discover -s tests -p 'test_gemfile_evidence.py'` — 7 passed
+(child); joint `python -m unittest discover -s tests -p 'test_gemfile*.py'` —
+47 passed. Consumer regressions: `python -m unittest discover -s tests -p
+ 'test_metric.py'` — 13; `test_scan.py` — 10; `test_mixed_scan.py` — 29;
+`test_output.py` — 17 (same discover command with each named pattern), all passed.
+
 ### T003 — Bounded safe reads and replacement regressions
 
-- [ ] Complete. **Predecessors:** T001.
+- [x] Complete. **Predecessors:** T001.
 - **Authority:** spec S1/S4/security; plan “Filesystem safety and bounded work”
   and P1 verification paragraph; review 005-0011. AC-08/11/23/24/28.
 - **Change:** Add the private scoped Ruby root reader in rubygems.py. Resolve
@@ -123,6 +132,18 @@ verified before implementation, with preceding ledger bytes unchanged.
   FIFO alone is insufficient. Skip only real FIFO witnesses on incapable
   platforms; mocks still prove safe capability failure/no fallback. T004 adds
   composed source-state/no-lookup assertions to these same replacement cases.
+
+**Run 005-0014 completion evidence:** Private `_ScopedRubyReader` in `libyears/rubygems.py` and
+`tests/test_ruby_groups.py` cover bounded reads, links/replacements, capabilities,
+UTF-8, exact/one-over byte and line limits, cleanup and target integrity
+(AC-08/11/23/24/28 at this read boundary). Physical-line bounds stay in T001's
+parser, exercised through reader→parser, preserving first-line failure order.
+`python -m unittest discover -s tests -p 'test_ruby_groups.py'` — 17 passed,
+including separate real Gemfile and lock regular-to-FIFO replacement subprocesses
+with 5-second guards, no writer, pre-read fstat rejection and descriptor closure.
+`python -m unittest discover -s tests -p 'test_rubygems*.py'` — 53 passed;
+joint `test_gemfile*.py` — 47 passed. `git diff --check` — passed.
+T004 still owns composed source-state witnesses.
 
 ### T004 — Scoped selection and source availability
 

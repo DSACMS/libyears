@@ -1,7 +1,9 @@
 """Static Ruby lock evidence and public-source authorization; no HTTP."""
 
+import os
 import re
 import stat
+from dataclasses import dataclass
 from pathlib import Path
 
 from .gemfile import supported_name, supported_requirement
@@ -13,6 +15,104 @@ from .model import (
 
 
 PUBLIC_SOURCE = 'https://rubygems.org'
+
+_MAX_GEMFILE_BYTES = 1024 * 1024
+_MAX_SCOPED_LOCK_BYTES = 16 * 1024 * 1024
+# Keep the capability identity stable when tests interpose at the final open.
+_DIRECTORY_OPEN = os.open
+
+
+@dataclass(frozen=True)
+class _ScopedReadFailure:
+    reason: str
+    safe_category: str
+
+
+class _ScopedRubyReader:
+    """Read the two scoped inputs within one resolved containment boundary."""
+
+    def __init__(self, root: Path):
+        try:
+            self.root = root.resolve(strict=True)
+        except (OSError, RuntimeError):
+            self.root = None
+
+    def read(self, name: str) -> str | _ScopedReadFailure:
+        if name not in ('Gemfile', 'Gemfile.lock'):
+            raise ValueError('Only scoped Ruby root input names are supported.')
+        invalid = 'invalid_gemfile' if name == 'Gemfile' else 'invalid_lockfile'
+        missing = 'gemfile_missing' if name == 'Gemfile' else 'lockfile_missing'
+        if self.root is None:
+            return _ScopedReadFailure(invalid, 'Cannot establish scoped root.')
+        required_flags = ('O_DIRECTORY', 'O_NOFOLLOW', 'O_NONBLOCK')
+        if (any(not getattr(os, flag, 0) for flag in required_flags)
+                or _DIRECTORY_OPEN not in getattr(os, 'supports_dir_fd', ())):
+            return _ScopedReadFailure(invalid, 'Safe scoped access is unavailable.')
+
+        path = self.root / name
+        try:
+            path.lstat()
+        except FileNotFoundError:
+            return _ScopedReadFailure(missing, 'Scoped input is missing.')
+        except OSError:
+            return _ScopedReadFailure(invalid, 'Cannot inspect scoped input.')
+
+        try:
+            resolved = path.resolve(strict=True)
+            try:
+                relative = resolved.relative_to(self.root)
+            except ValueError:
+                unsafe = 'unsafe_gemfile' if name == 'Gemfile' else invalid
+                return _ScopedReadFailure(unsafe, 'Scoped target is outside root.')
+            if not stat.S_ISREG(resolved.stat().st_mode):
+                return _ScopedReadFailure(invalid, 'Scoped input is not regular.')
+        except (OSError, RuntimeError):
+            return _ScopedReadFailure(invalid, 'Cannot validate scoped target.')
+
+        limit = _MAX_GEMFILE_BYTES if name == 'Gemfile' else _MAX_SCOPED_LOCK_BYTES
+        descriptors = []
+        try:
+            directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+            directory = os.open(self.root, directory_flags)
+            descriptors.append(directory)
+            for component in relative.parts[:-1]:
+                directory = os.open(component, directory_flags, dir_fd=directory)
+                descriptors.append(directory)
+            descriptor = os.open(
+                relative.parts[-1], os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                dir_fd=directory,
+            )
+            descriptors.append(descriptor)
+            # Replacement FIFOs must be rejected before even the first read.
+            if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+                return _ScopedReadFailure(invalid, 'Scoped input is not regular.')
+            chunks = []
+            remaining = limit + 1
+            while remaining:
+                chunk = os.read(descriptor, min(remaining, 64 * 1024))
+                if not chunk:
+                    break
+                chunks.append(chunk)
+                remaining -= len(chunk)
+            content = b''.join(chunks)
+        except (OSError, NotImplementedError):
+            return _ScopedReadFailure(invalid, 'Cannot safely read scoped input.')
+        finally:
+            for descriptor in reversed(descriptors):
+                os.close(descriptor)
+
+        excess = 'unsupported_gemfile_syntax' if name == 'Gemfile' else invalid
+        if len(content) > limit:
+            return _ScopedReadFailure(excess, 'Scoped input byte limit exceeded.')
+        try:
+            text = content.decode('utf-8', errors='strict')
+        except UnicodeError:
+            return _ScopedReadFailure(invalid, 'Scoped input is not UTF-8.')
+        # Only LF/CRLF are physical line endings; leave other framing to parsers.
+        text = text.replace('\r\n', '\n')
+        # The Gemfile parser enforces its line cap in physical-line order, so
+        # a later oversized line cannot hide an earlier recognition defect.
+        return text
 
 
 def _has_public_authority(lock: ParsedGemfileLock, direct: LockDependency) -> bool:
