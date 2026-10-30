@@ -572,3 +572,41 @@ The candidate is **not approved as the integrated Feature 005 foundation**.
 The approved T001–T005 foundation remains intact. No product or test repair was
 made after freeze. T011–T013 remain unstarted. **Next gate: correction of
 validated finding C-01**, followed by independent verification; no T011 begins.
+
+
+## Run 005-0016 — C-01 corrected candidate freeze
+
+Authority is limited to the validated post-T010 C-01 correction and one fresh
+independent verification. T011–T013 remain unstarted and unauthorized.
+T009 acceptance remains reopened pending that review; T010's original evidence
+and the 005-0015 REVISE checkpoint above are preserved historically.
+
+The correction in `libyears/cli.py` uses the existing parser subclass's
+abbreviation hook to reject abbreviation candidates for `--ruby-group`.
+Exact spelling still uses argparse's normal exact-match path. Other ordinary
+option abbreviations retain their existing behavior; `--r` remains a usage
+error rather than becoming a newly accepted abbreviation for `--resolved`.
+No scan, output, model, parser-foundation, authority or coverage logic changes.
+
+`tests/test_cli.py` adds two regression methods. Every proper long-option
+prefix (`--r` through `--ruby-grou`, including `--ruby` and `--ruby-g`) is
+exercised with separate and equals values and alongside a canonical request;
+all return exit 1 with no scan or stdout. Ordinary exact/abbreviated JSON and
+verbose options still forward an ordinary scan call. Existing exact/repeated
+requests, sorted deduplication, case, expected ages, direct-file/malformed
+values, output and acceptance witnesses remain passing.
+
+Ordered parent verification:
+
+| Exact command | Result |
+|---|---|
+| `python -m unittest tests.test_cli tests.test_ruby_group_acceptance` | 32 passed |
+| `python -m unittest tests.test_scoped_scan tests.test_mixed_scan tests.test_scan tests.test_output tests.test_ruby_groups tests.test_gemfile tests.test_gemfile_evidence tests.test_gemfile_lock tests.test_pypi tests.test_npm tests.test_npm_registry tests.test_yarn tests.test_rubygems tests.test_rubygems_registry tests.test_registry tests.test_metric` | 335 passed |
+| `python -m unittest discover -s tests` | 390 passed, no skips |
+
+The first focused run caught an intermediate-fix regression for `--r`: removing
+only the Ruby match let it activate `--resolved`. The candidate was corrected
+to reject any abbreviation candidate set containing the Ruby option, then all
+three commands above passed in order. No new review finding was repaired.
+The complete correction diff and `git diff --check` are checked before freezing
+this candidate for the fresh reviewer. No network/external validation occurred.

@@ -434,6 +434,30 @@ class ScopedRubyCLITests(unittest.TestCase):
                 self.assertTrue(errors)
                 scan.assert_not_called()
 
+    def test_abbreviated_group_options_are_usage_errors_before_scan(self):
+        from unittest.mock import Mock
+        scan = Mock(return_value=empty_report())
+        option = '--ruby-group'
+        for length in range(3, len(option)):
+            prefix = option[:length]
+            for options in ((prefix, 'test'), (prefix + '=test',),
+                            ('--ruby-group', 'default', prefix, 'test')):
+                with self.subTest(options=options):
+                    code, output, errors = self.invoke(*options, scan=scan)
+                    self.assertEqual((code, output), (1, ''))
+                    self.assertIn('unrecognized arguments:', errors)
+                    scan.assert_not_called()
+
+    def test_ordinary_option_spellings_and_abbreviations_remain_compatible(self):
+        from unittest.mock import Mock
+        for options in (('--json', '--verbose'), ('--j', '--v')):
+            with self.subTest(options=options):
+                scan = Mock(return_value=empty_report())
+                code, output, errors = self.invoke(*options, scan=scan)
+                self.assertEqual((code, errors), (0, ''))
+                self.assertEqual(json.loads(output)['schema_version'], 3)
+                scan.assert_called_once_with(str(self.root))
+
     def test_scoped_direct_file_and_invalid_paths_are_usage_errors(self):
         from unittest.mock import Mock
         scan = Mock(return_value=empty_report())

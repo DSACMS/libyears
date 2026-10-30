@@ -13,6 +13,14 @@ from .snapshot import parse_snapshot
 
 
 class _ArgumentParser(argparse.ArgumentParser):
+    def _get_option_tuples(self, option_string):
+        # Exact options bypass this abbreviation hook. Keep ordinary option
+        # abbreviations compatible while requiring the sole scoped spelling.
+        matches = super()._get_option_tuples(option_string)
+        if any(match[1] == "--ruby-group" for match in matches):
+            return []
+        return matches
+
     def error(self, message: str) -> None:
         self.print_usage(sys.stderr)
         self.exit(1, f"{self.prog}: error: {message}\n")
