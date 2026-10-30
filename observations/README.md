@@ -29,6 +29,20 @@ reconstruct, or fabricate metadata merely because a column exists. Unknown or
 unobserved data should remain blank unless a controlled vocabulary explicitly
 provides an `unknown` state for an observed classification.
 
+The agent's machine handoff is not expected to observe every harness/UI field.
+Human-observed post-run `/status` may supply directly displayed session ID,
+model, provider, effort, agent version, reported runtime and account credit
+reading. Post-run `/status` is recommended, not mandatory; pre-run `/status`
+is not routinely required. When the running agent cannot reliably introspect
+model or effort, use directly observed harness evidence. Missing fields remain
+preferable to invented values.
+
+`credits_before` may come from a directly observed pre-run account reading or
+the immediately preceding human-observed post-run account reading when the
+human explicitly confirms no intervening credit-consuming activity. These are
+account-level continuity observations, not exact per-run billing receipts.
+Do not derive or store a credit delta in the canonical ledger.
+
 The canonical ledger stores observations, not derived analytics. Derive elapsed
 wall-clock duration, credit delta, cost per run, words per second, or findings per
 credit separately if useful. Do not add canonical columns for those values or
