@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import json
 from typing import Any
 
-from .model import RubyGemsEvidence
+from .model import GemfileEvidence, RubyGemsEvidence
 from .scan import MixedScanReport, ScanReport
 from .snapshot import SNAPSHOT_FORMAT
 
@@ -64,6 +64,8 @@ def _report_parts(report: ScanReport | MixedScanReport) -> tuple[Any, dict[str, 
                 evidence[source.ecosystem]["scope"] = source.evidence.scope
             if source.evidence.publication_basis is not None:
                 evidence[source.ecosystem]["publication_basis"] = source.evidence.publication_basis
+            if source.evidence.requested_groups is not None:
+                evidence[source.ecosystem]["requested_groups"] = sorted(set(source.evidence.requested_groups))
         ecosystems = sorted(set(evidence) | {error.ecosystem for error in report.source_errors})
         summaries = {key: _summary_dict(value) for key, value in report.by_ecosystem.items()}
         return report.summary, evidence, ecosystems, list(report.measurements), list(report.unmeasurable), list(report.source_errors), summaries
@@ -103,6 +105,17 @@ def _ruby_evidence_dict(evidence: RubyGemsEvidence) -> dict[str, Any]:
     return result
 
 
+def _gemfile_evidence_dict(evidence: GemfileEvidence) -> dict[str, Any]:
+    """Keep safe membership evidence distinct from established lock text."""
+    result = {
+        "declared_groups": sorted(set(evidence.declared_groups)),
+        "declaration_requirements": list(evidence.declaration_requirements),
+    }
+    if evidence.include_lock_requirement:
+        result["lock_requirement"] = evidence.lock_requirement
+    return result
+
+
 def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str, Any]:
     """Convert a scan report to the stable schema-v3 JSON data shape."""
     summary, version_evidence, ecosystems, measurements, unmeasurable, source_errors, by_ecosystem = _report_parts(report)
@@ -124,12 +137,16 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
         )
         if dependency.rubygems_evidence is not None:
             dependencies[-1]["rubygems_evidence"] = _ruby_evidence_dict(dependency.rubygems_evidence)
+        if dependency.gemfile_evidence is not None:
+            dependencies[-1]["gemfile_evidence"] = _gemfile_evidence_dict(dependency.gemfile_evidence)
     failures = []
     for item in unmeasurable:
         row = {"ecosystem": item.ecosystem, "name": item.name,
                "declared": item.declared, "reason": item.reason}
         if getattr(item, "rubygems_evidence", None) is not None:
             row["rubygems_evidence"] = _ruby_evidence_dict(item.rubygems_evidence)
+        if getattr(item, "gemfile_evidence", None) is not None:
+            row["gemfile_evidence"] = _gemfile_evidence_dict(item.gemfile_evidence)
         failures.append(row)
     return {
         "schema_version": 3,

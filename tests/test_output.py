@@ -2,12 +2,16 @@ import json
 import unittest
 from dataclasses import replace
 from datetime import datetime, timezone
+from pathlib import Path
+import tempfile
+from unittest.mock import Mock
 
-from libyears.model import (Dependency, DependencyMeasurement, MetricSummary,
-                            SourceEvidence, SourceError, SourceResult)
+from libyears.model import (Dependency, DependencyMeasurement, GemfileEvidence, MetricSummary,
+                            RegistryFailure, RegistryResult, RubyGemsEvidence,
+                            RubyPublicationArtifact, SourceEvidence, SourceError, SourceResult)
 from libyears.requirements import UnmeasurableRequirement
 from libyears.output import format_human, format_json, report_to_dict
-from libyears.scan import MixedScanReport, ScanReport
+from libyears.scan import MixedScanReport, ScanReport, scan_mixed_repository
 
 
 def report_with_data():
@@ -337,6 +341,266 @@ class RubyPublicOutputTests(unittest.TestCase):
                 self.assertIn('Coverage: 0.0%', human)
                 for wrong in ('PyPI', 'package-lock.json', 'yarn.lock'):
                     self.assertNotIn(wrong, human)
+
+
+class ScopedRubyJsonTests(unittest.TestCase):
+    source = 'source "https://rubygems.org"\n'
+    lock = ('GEM\n  remote: https://rubygems.org\n  specs:\n    rack (1)\n'
+            'PLATFORMS\n  ruby\nDEPENDENCIES\n  rack\n')
+    date = datetime(2024, 1, 1, 2, 0, 0, 123456, tzinfo=timezone.utc)
+
+    def scan(self, gemfile, lock, *, groups=('default',), outcome=None):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        root = Path(directory.name)
+        for name, text in (('Gemfile', gemfile), ('Gemfile.lock', lock)):
+            if text is not None:
+                (root / name).write_text(text, encoding='utf-8')
+        lookup = Mock(return_value=outcome or RegistryResult(
+            'rack', '1', self.date, '1', self.date))
+        report = scan_mixed_repository(root, ruby_groups=groups,
+                                      rubygems_lookup=lookup)
+        return report, lookup
+
+    def evidence(self, groups, accepted):
+        return {
+            'declaration_source': 'Gemfile', 'snapshot_source': 'Gemfile.lock',
+            'scope': 'selected_declared_groups', 'requested_groups': list(groups),
+            'format': 'gemfile_lock' if accepted else None,
+            'publication_basis': 'earliest_admissible_supported_observable',
+        }
+
+    def test_source_evidence_presence_and_null_format_across_unavailable_states(self):
+        cases = (
+            (None, self.lock, ('default',), 'gemfile_missing', None),
+            ('end\n', self.lock, ('default',), 'invalid_gemfile', None),
+            (self.source, self.lock, ('test',), 'unknown_ruby_group', None),
+            (self.source + 'gem "rack"\n', 'BAD\n', ('default',),
+             'unsupported_lockfile_format', 1),
+            (self.source, 'BAD\n', ('default',), 'unsupported_lockfile_format', 0),
+        )
+        for gemfile, lock, groups, reason, count in cases:
+            with self.subTest(reason=reason, count=count):
+                report, lookup = self.scan(gemfile, lock, groups=groups)
+                data = json.loads(format_json(report, '.'))
+                self.assertEqual(data['schema_version'], 3)
+                self.assertEqual(data['version_evidence'], {
+                    'rubygems': self.evidence(groups, False)})
+                self.assertEqual(data['ecosystems'], ['rubygems'])
+                self.assertEqual(set(data['summary']['by_ecosystem']), {'rubygems'})
+                self.assertEqual(data['source_errors'], [{
+                    'ecosystem': 'rubygems',
+                    'source': 'Gemfile.lock' if reason == 'unsupported_lockfile_format' else 'Gemfile',
+                    'reason': reason,
+                }])
+                self.assertEqual(data['summary']['dependencies_discovered'], count)
+                self.assertIsNone(data['summary']['coverage'])
+                self.assertEqual(data['dependencies'], [])
+                self.assertEqual(data['unmeasurable'], [])
+                lookup.assert_not_called()
+
+    def test_empty_scopes_keep_requested_inputs_and_recognition_state(self):
+        for lock in (None, self.lock):
+            with self.subTest(lock=lock):
+                report, lookup = self.scan(self.source, lock)
+                data = report_to_dict(report, '.')
+                self.assertEqual(data['version_evidence'], {
+                    'rubygems': self.evidence(('default',), lock is not None)})
+                self.assertEqual(data['summary']['dependencies_discovered'], 0)
+                self.assertEqual(data['summary']['dependencies_measured'], 0)
+                self.assertIsNone(data['summary']['coverage'])
+                self.assertEqual(data['unmeasurable'], [])
+                self.assertEqual(data['source_errors'], [])
+                lookup.assert_not_called()
+
+    def test_missing_lock_and_missing_direct_omit_unknown_requirement(self):
+        for lock, reason in ((None, 'lockfile_missing'),
+                             (self.lock.replace('  rack\n', '  other\n'),
+                              'lock_dependency_missing')):
+            with self.subTest(reason=reason):
+                report, lookup = self.scan(self.source + 'gem "rack", "= 1"\n', lock)
+                data = report_to_dict(report, '.')
+                self.assertEqual(data['unmeasurable'], [{
+                    'ecosystem': 'rubygems', 'name': 'rack', 'declared': 'rack (= 1)',
+                    'reason': reason, 'gemfile_evidence': {
+                        'declared_groups': ['default'], 'declaration_requirements': ['= 1'],
+                    },
+                }])
+                self.assertEqual(data['version_evidence']['rubygems'],
+                                 self.evidence(('default',), lock is not None))
+                self.assertEqual(data['summary']['coverage'], 0.0)
+                lookup.assert_not_called()
+
+    def test_measured_evidence_keeps_full_memberships_requirement_order_and_artifacts(self):
+        publications = RubyGemsEvidence((),
+            (RubyPublicationArtifact('1', 'ruby', self.date),),
+            (RubyPublicationArtifact('1', 'ruby', self.date, False),))
+        report, lookup = self.scan(
+            self.source + 'gem "rack", ">= 1", "< 3", groups: [:test, :production, :Test]\n',
+            self.lock.replace('  rack\n', '  rack (>= 1, < 3)\n'),
+            groups=('production', 'Test', 'production'),
+            outcome=RegistryResult('rack', '1', self.date, '1', self.date, publications))
+        data = json.loads(format_json(report, '.'))
+        self.assertEqual(data['version_evidence'], {
+            'rubygems': self.evidence(('Test', 'production'), True)})
+        self.assertEqual(data['dependencies'], [{
+            'ecosystem': 'rubygems', 'name': 'rack', 'used_version': '1',
+            'used_release_time': '2024-01-01T02:00:00.123456Z',
+            'latest_stable_version': '1',
+            'latest_stable_release_time': '2024-01-01T02:00:00.123456Z',
+            'libyears': 0.0, 'timestamp_anomaly': False, 'version_source': 'gemfile_lock',
+            'gemfile_evidence': {
+                'declared_groups': ['Test', 'production', 'test'],
+                'declaration_requirements': ['>= 1', '< 3'], 'lock_requirement': '>= 1, < 3',
+            },
+            'rubygems_evidence': {
+                'selected_artifacts': [{'version': '1', 'platform': 'ruby',
+                                        'source': 'https://rubygems.org'}],
+                'used_publication_artifacts': [{'version': '1', 'platform': 'ruby',
+                    'publication_time': '2024-01-01T02:00:00.123456Z'}],
+                'latest_publication_artifacts': [{'version': '1', 'platform': 'ruby',
+                    'publication_time': '2024-01-01T02:00:00.123456Z', 'yanked': False}],
+            },
+        }])
+        lookup.assert_called_once_with('rack', '1')
+        self.assertEqual(data['schema_version'], 3)
+
+    def test_known_absent_requirement_is_null_on_success_local_and_registry_failure(self):
+        cases = (
+            (self.lock, None, None),
+            (self.lock.replace('    rack (1)\n', ''), None, 'lock_version_missing'),
+            (self.lock, RegistryFailure('rack', '1', 'registry_error', 'safe diagnostic'),
+             'registry_error'),
+        )
+        for lock, outcome, reason in cases:
+            with self.subTest(reason=reason):
+                report, lookup = self.scan(self.source + 'gem "rack"\n', lock, outcome=outcome)
+                data = report_to_dict(report, '.')
+                row = data['unmeasurable'][0] if reason else data['dependencies'][0]
+                self.assertEqual(row['gemfile_evidence'], {
+                    'declared_groups': ['default'], 'declaration_requirements': [],
+                    'lock_requirement': None,
+                })
+                if reason:
+                    self.assertEqual(row['reason'], reason)
+                    self.assertEqual(row['declared'], 'rack')
+                if reason == 'registry_error':
+                    self.assertEqual(row['rubygems_evidence'], {'selected_artifacts': [{
+                        'version': '1', 'platform': 'ruby', 'source': 'https://rubygems.org'}]})
+                if reason == 'lock_version_missing':
+                    self.assertNotIn('rubygems_evidence', row)
+                    lookup.assert_not_called()
+                else:
+                    lookup.assert_called_once_with('rack', '1')
+                self.assertEqual(format_json(report, '.'), format_json(
+                    replace(report, diagnostics=(('rack', 'HUMAN_ONLY_DIAGNOSTIC'),)), '.'))
+                self.assertNotIn('HUMAN_ONLY_DIAGNOSTIC', format_json(report, '.'))
+
+    def test_f1_and_f2_preserve_safe_evidence_and_never_echo_unsafe_text(self):
+        cases = (
+            ('source "https://PRIVATE_MARKER.invalid"\n', 'other',
+             'unsupported_dependency_source', []),
+            (self.source, 'rack (https://UNSAFE_MARKER.invalid)',
+             'unsupported_requirement', ['>= 1']),
+        )
+        for source, direct, reason, requirements in cases:
+            with self.subTest(reason=reason):
+                declaration = 'gem "rack"' + (', ">= 1"' if requirements else '') + '\n'
+                report, lookup = self.scan(source + declaration,
+                                          self.lock.replace('  rack\n', '  ' + direct + '\n'))
+                data = report_to_dict(report, '.')
+                self.assertEqual(data['unmeasurable'], [{
+                    'ecosystem': 'rubygems', 'name': 'rack',
+                    'declared': 'rack (>= 1)' if requirements else 'rack', 'reason': reason,
+                    'gemfile_evidence': {'declared_groups': ['default'],
+                                         'declaration_requirements': requirements},
+                }])
+                self.assertEqual(data['summary']['dependencies_discovered'], 1)
+                self.assertEqual(data['summary']['coverage'], 0.0)
+                for marker in ('PRIVATE_MARKER', 'UNSAFE_MARKER'):
+                    self.assertNotIn(marker, format_json(report, '.'))
+                lookup.assert_not_called()
+
+    def test_scoped_failures_retain_only_established_artifact_populations(self):
+        publication = RubyGemsEvidence((),
+            (RubyPublicationArtifact('1', 'ruby', self.date),), ())
+        cases = (
+            (self.lock.replace('    rack (1)\n', '    rack (1)\n    rack (unknown)\n'),
+             None, 'unsupported_lock_evidence'),
+            (self.lock, RegistryFailure('rack', '1', 'release_date_missing',
+                                       'safe diagnostic', publication), 'release_date_missing'),
+        )
+        for lock, outcome, reason in cases:
+            with self.subTest(reason=reason):
+                report, lookup = self.scan(self.source + 'gem "rack"\n', lock, outcome=outcome)
+                row = report_to_dict(report, '.')['unmeasurable'][0]
+                expected = {'selected_artifacts': [{
+                    'version': '1', 'platform': 'ruby', 'source': 'https://rubygems.org'}]}
+                if outcome is not None:
+                    expected['used_publication_artifacts'] = [{
+                        'version': '1', 'platform': 'ruby',
+                        'publication_time': '2024-01-01T02:00:00.123456Z'}]
+                    expected['latest_publication_artifacts'] = []
+                    lookup.assert_called_once_with('rack', '1')
+                else:
+                    lookup.assert_not_called()
+                self.assertEqual(row['reason'], reason)
+                self.assertEqual(row['rubygems_evidence'], expected)
+                self.assertEqual(row['gemfile_evidence'], {
+                    'declared_groups': ['default'], 'declaration_requirements': [],
+                    'lock_requirement': None,
+                })
+
+    def test_mismatch_preserves_both_literal_values_without_version_artifacts(self):
+        cases = (
+            ('gem "rack"\n', '>= 0', []),
+            ('gem "rack", ">= 0"\n', None, ['>= 0']),
+            ('gem "rack", " >= 1 ", "< 3"\n', '< 3, >= 1', [' >= 1 ', '< 3']),
+        )
+        for declaration, requirement, expected in cases:
+            with self.subTest(requirement=requirement):
+                direct = 'rack' if requirement is None else 'rack (' + requirement + ')'
+                report, lookup = self.scan(self.source + declaration,
+                                          self.lock.replace('  rack\n', '  ' + direct + '\n'))
+                self.assertEqual(report_to_dict(report, '.')['unmeasurable'], [{
+                    'ecosystem': 'rubygems', 'name': 'rack',
+                    'declared': 'rack' + (' (' + ', '.join(expected) + ')' if expected else ''),
+                    'reason': 'declaration_lock_requirement_mismatch',
+                    'gemfile_evidence': {'declared_groups': ['default'],
+                        'declaration_requirements': expected, 'lock_requirement': requirement},
+                }])
+                lookup.assert_not_called()
+
+    def test_ordinary_ruby_shape_is_unchanged_and_scoped_serializer_is_explicit(self):
+        ordinary = RubyPublicOutputTests().ruby_report()
+        data = report_to_dict(ordinary, '.')
+        self.assertEqual(data['version_evidence'], {'rubygems': {
+            'declaration_source': 'Gemfile.lock', 'snapshot_source': 'Gemfile.lock',
+            'format': 'gemfile_lock', 'scope': 'all_direct_locked',
+            'publication_basis': 'earliest_admissible_supported_observable',
+        }})
+        self.assertEqual(set(data['dependencies'][0]), {
+            'ecosystem', 'name', 'used_version', 'used_release_time', 'latest_stable_version',
+            'latest_stable_release_time', 'libyears', 'timestamp_anomaly', 'version_source',
+            'rubygems_evidence',
+        })
+        self.assertNotIn('gemfile_evidence', report_to_dict(
+            RubyPublicOutputTests().ruby_report('registry_error'), '.')['unmeasurable'][0])
+        dependency = replace(ordinary.measurements[0].dependency,
+            gemfile_evidence=GemfileEvidence(('test', 'Test', 'test'), ('< 3', '>= 1'),
+                                            'UNAVAILABLE_MARKER', False))
+        source = replace(ordinary.source_results[0], evidence=replace(
+            ordinary.source_results[0].evidence, requested_groups=('test', 'Test', 'test')))
+        scoped = replace(ordinary, measurements=(DependencyMeasurement(dependency, 0.0),),
+                         source_results=(source,))
+        serialized = report_to_dict(scoped, '.')
+        self.assertEqual(serialized['dependencies'][0]['gemfile_evidence'], {
+            'declared_groups': ['Test', 'test'], 'declaration_requirements': ['< 3', '>= 1'],
+        })
+        self.assertEqual(serialized['version_evidence']['rubygems']['requested_groups'],
+                         ['Test', 'test'])
+        self.assertNotIn('UNAVAILABLE_MARKER', format_json(scoped, '.'))
+        self.assertNotIn('include_lock_requirement', format_json(scoped, '.'))
 
 
 if __name__ == "__main__":

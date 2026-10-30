@@ -261,7 +261,7 @@ previous ledger bytes unchanged. No network/external target or execution.
 
 ### T007 — Additive scoped JSON serialization
 
-- [ ] Complete. **Predecessors:** T006.
+- [x] Complete. **Predecessors:** T006.
 - **Authority:** spec S4; plan “Evidence propagation and safe output”. AC-20/21/22/28.
 - **Change:** Explicitly serialize scoped source and measured/unmeasurable
   Gemfile evidence in output.py, schema_version=3. Preserve ordinary keys,
@@ -272,6 +272,16 @@ previous ledger bytes unchanged. No network/external target or execution.
   retained artifacts and ordinary omission. Distinct synthetic unsafe markers
   never appear; verbose mode adds no human diagnostics to JSON. Labels assert
   supplied-file evidence only. Extend test_output.py alongside these changes.
+
+**Run 005-0015 completion evidence:** Explicit scoped JSON serialization in
+`libyears/output.py`; 8 new `ScopedRubyJsonTests` methods in `tests/test_output.py`
+cover exact source/row dictionaries, requested/full groups, ordered requirements,
+format null/accepted, omitted/null/text lock requirement, empty/missing/rejected
+inputs, missing direct identity, F1/F2, mismatch, local/registry failures and
+retained publication artifacts. Ordinary row/source key sets remain unchanged;
+unsafe markers and diagnostics are absent from JSON. Schema remains 3.
+`python -m unittest tests.test_output tests.test_scoped_scan tests.test_mixed_scan`
+— 62 passed; `git diff --check` — passed. T008 human output remains pending.
 
 ### T008 — Scoped human reporting
 
