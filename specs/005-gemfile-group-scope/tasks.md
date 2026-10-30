@@ -342,7 +342,7 @@ tests.test_mixed_scan` — 94 passed; `git diff --check` — passed.
 
 ### T010 — Composed acceptance and regression verification
 
-- [ ] Complete. **Predecessors:** T009.
+- [x] Complete. **Predecessors:** T009.
 - **Authority:** spec S5/security; plan full deterministic matrix and compatibility.
   Verification owner for AC-01 through AC-28, supplementing earlier task tests.
 - **Change:** Complete composed witnesses across parser→source→scan→CLI/output,
@@ -358,6 +358,35 @@ tests.test_mixed_scan` — 94 passed; `git diff --check` — passed.
   reasons without application-coverage claims. Run focused affected modules then
   `python -m unittest discover -s tests` and `git diff --check`; record results.
   Product correctness remains offline, using mocks/fixtures only.
+
+**Run 005-0015 completion evidence:** Three composed acceptance methods in
+`tests/test_ruby_group_acceptance.py` supplement existing parser/source/scan/
+output/CLI tests: 11 precedence stages × with/without siblings × JSON/verbose
+JSON/human/verbose human; real restricted adapter with mocked HTTP populations
+through scoped CLI/platform publication dates/expected age; root read allowlist,
+execution/archive guards, config/credential/include/gemspec/nested decoys,
+all-target byte/name integrity and explicit test/default/production exclusion.
+No product corrections were needed. `tests/fixtures/ruby_groups/README.md`
+contains the explicit **28/28 AC-to-test assertion index**, including the four
+bounded P1 FIFO witnesses and F1/F2. Every indexed test/module reference exists;
+negative parser tables remain separate from composed precedence. This is offline
+acceptance only; no real-root or optional live evidence is claimed.
+
+Parent verification ran in this order:
+
+1. `python -m unittest tests.test_ruby_group_acceptance` — **3 passed**.
+2. `python -m unittest tests.test_pypi tests.test_npm tests.test_npm_registry
+   tests.test_yarn tests.test_rubygems tests.test_rubygems_registry
+   tests.test_registry tests.test_metric tests.test_mixed_scan tests.test_scan`
+   — **215 passed**.
+3. `python -m unittest discover -s tests` — **388 passed, no skips**.
+4. `git diff --check` — passed.
+
+T001–T005 approved foundation is unchanged. Ordinary Python/npm/Yarn/all-direct
+Ruby and transport/metric regressions pass. No external validation target,
+network/live smoke, Ruby/Bundler/package-manager/project execution, credentials
+or archive access occurred. T006–T010 are complete; T011–T013 remain unchecked
+and unstarted. Implementation stops here for the independent post-T010 checkpoint.
 
 ### T011 — Documentation and real-root validation preparation
 
@@ -512,3 +541,13 @@ checkpoint; regardless of verdict, STOP before T006 pending later human authorit
 zero material findings; see [review record](reviews.md#independent-post-t005-implementation-checkpoint--005-0014).
 No remediation performed. T006 requires later human continuation and remains
 unstarted. This run stops at the approved checkpoint.
+
+## Run 005-0015 — post-T010 phase freeze
+
+Explicit continuation authority covered T006–T010 only. All five tasks are
+complete with focused evidence above, 28/28 deterministic AC mappings in the
+fixture acceptance index, and 388 full-suite tests passing without skips.
+The candidate implementation/tests freeze at the T010 local commit for fresh
+independent review. No checkpoint remediation is authorized in this run.
+T011 documentation/real-root preparation, T012 real-root evidence and T013
+convergence remain unstarted. No external/network validation or push occurred.
