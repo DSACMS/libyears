@@ -8,7 +8,7 @@ import sys
 from collections.abc import Sequence
 
 from .output import format_human, format_json
-from .scan import scan_mixed_repository
+from .scan import RubyGroupRequestError, scan_mixed_repository, validate_ruby_groups
 from .snapshot import parse_snapshot
 
 
@@ -22,6 +22,8 @@ def build_parser() -> argparse.ArgumentParser:
     parser = _ArgumentParser(prog="libyears", description="Calculate dependency freshness.")
     parser.add_argument("path", nargs="?", default=".", help="repository path (default: .)")
     parser.add_argument("--json", action="store_true", dest="json_output", help="emit JSON")
+    parser.add_argument("--ruby-group", metavar="GROUP", action="append",
+                        help="select one exact declared Ruby group (repeatable; directory scans only)")
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
     parser.add_argument("--ca-bundle", metavar="FILE", help="verified CA bundle for PyPI HTTPS")
     parser.add_argument("--verbose", action="store_true", help="show concise registry failure diagnostics")
@@ -35,17 +37,19 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         return int(error.code)
     scan_function = scan or scan_mixed_repository
     try:
+        kwargs = {}
+        if args.ruby_group is not None:
+            kwargs["ruby_groups"] = validate_ruby_groups(args.path, args.ruby_group)
         if args.ca_bundle:
             # Validate the supplied file even when this repository has no registry lookups.
             ssl.create_default_context(cafile=args.ca_bundle)
-        if args.resolved is None:
-            report = scan_function(args.path, **({"ca_bundle": args.ca_bundle} if args.ca_bundle else {}))
-        else:
-            snapshot = parse_snapshot(args.resolved)
-            kwargs = {"snapshot": snapshot}
-            if args.ca_bundle:
-                kwargs["ca_bundle"] = args.ca_bundle
-            report = scan_function(args.path, **kwargs)
+            kwargs["ca_bundle"] = args.ca_bundle
+        if args.resolved is not None:
+            kwargs["snapshot"] = parse_snapshot(args.resolved)
+        report = scan_function(args.path, **kwargs)
+    except RubyGroupRequestError as error:
+        print(f"libyears: {error}", file=sys.stderr)
+        return 1
     except OSError as error:
         print(f"libyears: {error}", file=sys.stderr)
         return 1

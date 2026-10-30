@@ -3,14 +3,14 @@ import io
 import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
 
 from libyears.cli import main
-from libyears.model import MetricSummary
+from libyears.model import MetricSummary, RegistryResult
 from libyears.pypi import PyPIResult
-from libyears.scan import ScanReport
+from libyears.scan import RubyGroupRequestError, ScanReport
 
 
 def empty_report():
@@ -352,6 +352,155 @@ class RubyPublicCLITests(unittest.TestCase):
         adapter.assert_called_once_with(ca_bundle='approved.pem')
         context.assert_any_call(cafile='approved.pem')
         self.assertIn('TLS trust: explicit CA bundle', human)
+
+
+class ScopedRubyCLITests(unittest.TestCase):
+    source = 'source "https://rubygems.org"\n'
+    lock = ('GEM\n  remote: https://rubygems.org\n  specs:\n'
+            '    rack (1)\n    rake (1)\n    debug (1)\n'
+            'PLATFORMS\n  ruby\nDEPENDENCIES\n  rack\n  rake\n  debug\n')
+
+    def setUp(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        self.root = Path(directory.name)
+        for target in ('urllib.request.urlopen', 'urllib.request.OpenerDirector.open',
+                       'subprocess.Popen', 'os.system'):
+            guard = patch(target, side_effect=AssertionError('live HTTP or execution'))
+            guard.start()
+            self.addCleanup(guard.stop)
+
+    def invoke(self, *args, scan=None, path=None):
+        output, errors = io.StringIO(), io.StringIO()
+        with redirect_stdout(output), redirect_stderr(errors):
+            code = main([str(path or self.root), *args], scan=scan)
+        return code, output.getvalue(), errors.getvalue()
+
+    def lookup(self, name, version):
+        used = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        return RegistryResult(name, version, used, '2', used + timedelta(days=365.25 * 2))
+
+    def write_inputs(self):
+        (self.root / 'Gemfile').write_text(self.source +
+            'gem "rack"\ngroup :test, :development, optional: true do\n'
+            'gem "rake", group: :extra\nend\ngem "debug", group: :Test\n')
+        (self.root / 'Gemfile.lock').write_text(self.lock)
+
+    def test_explicit_exact_groups_union_duplicates_and_expected_age(self):
+        self.write_inputs()
+        cases = (
+            (('test',), ['rake']), (('Test',), ['debug']),
+            (('default',), ['rack']), (('test', 'development', 'test'), ['rake']),
+            (('default', 'test', 'Test'), ['rack', 'rake', 'debug']),
+        )
+        for groups, names in cases:
+            with self.subTest(groups=groups), patch(
+                    'libyears.scan.RubyGemsAdapter.lookup', side_effect=self.lookup) as lookup:
+                options = [value for group in groups for value in ('--ruby-group', group)]
+                code, output, errors = self.invoke('--json', *options)
+                self.assertEqual((code, errors), (0, ''))
+                data = json.loads(output)
+                self.assertCountEqual([row['name'] for row in data['dependencies']], names)
+                self.assertEqual(data['summary']['dependencies_discovered'], len(names))
+                self.assertEqual(data['summary']['coverage'], 1.0)
+                self.assertEqual(data['summary']['total_libyears'], len(names) * 2.0)
+                self.assertEqual(data['version_evidence']['rubygems']['requested_groups'],
+                                 sorted(set(groups)))
+                self.assertCountEqual([call.args for call in lookup.call_args_list],
+                                      [(name, '1') for name in names])
+
+    def test_cli_validates_and_passes_only_canonical_requested_keyword(self):
+        from unittest.mock import Mock
+        scan = Mock(return_value=empty_report())
+        code, _, errors = self.invoke('--ruby-group', 'test', '--ruby-group', 'Test',
+                                      '--ruby-group', 'test', scan=scan)
+        self.assertEqual((code, errors), (0, ''))
+        scan.assert_called_once_with(str(self.root), ruby_groups=('Test', 'test'))
+        scan.reset_mock()
+        self.invoke(scan=scan)
+        scan.assert_called_once_with(str(self.root))
+
+    def test_malformed_missing_empty_and_comma_values_are_usage_errors_before_scan(self):
+        from unittest.mock import Mock
+        scan = Mock(return_value=empty_report())
+        for options in (('--ruby-group',), ('--ruby-group', '--json'),
+                        *(('--ruby-group', value) for value in
+                          ('', 'test,default', ':test', ' test', 'test ', 'test-name',
+                           '1test', 'é', 'test\n'))):
+            with self.subTest(options=options):
+                code, output, errors = self.invoke(*options, scan=scan)
+                self.assertEqual(code, 1)
+                self.assertEqual(output, '')
+                self.assertTrue(errors)
+                scan.assert_not_called()
+
+    def test_scoped_direct_file_and_invalid_paths_are_usage_errors(self):
+        from unittest.mock import Mock
+        scan = Mock(return_value=empty_report())
+        for name in ('Gemfile', 'Gemfile.lock', 'requirements.txt', 'package.json'):
+            path = self.root / name
+            path.write_text('not consumed')
+            code, output, _ = self.invoke('--ruby-group', 'default', scan=scan, path=path)
+            self.assertEqual((code, output), (1, ''))
+        code, output, _ = self.invoke('--ruby-group', 'default', scan=scan,
+                                     path=self.root / 'missing')
+        self.assertEqual((code, output), (1, ''))
+        scan.assert_not_called()
+
+    def test_evidence_failures_and_empty_scopes_are_completed_reports(self):
+        cases = (
+            (None, None, 'default', 'gemfile_missing', None),
+            (self.source, None, 'default', None, 0),
+            (self.source + 'gem "rack"\n', None, 'default', 'lockfile_missing', 1),
+            (self.source, self.lock, 'unknown', 'unknown_ruby_group', None),
+            (self.source + 'gem "rack"\n', 'BAD\n', 'default',
+             'unsupported_lockfile_format', 1),
+        )
+        for gemfile, lock, group, reason, count in cases:
+            with self.subTest(reason=reason):
+                for name, text in (('Gemfile', gemfile), ('Gemfile.lock', lock)):
+                    path = self.root / name
+                    if path.exists():
+                        path.unlink()
+                    if text is not None:
+                        path.write_text(text)
+                code, output, errors = self.invoke('--json', '--ruby-group', group)
+                self.assertEqual((code, errors), (0, ''))
+                data = json.loads(output)
+                self.assertEqual(data['summary']['dependencies_discovered'], count)
+                if reason:
+                    self.assertEqual((data['source_errors'] + data['unmeasurable'])[0]['reason'], reason)
+
+    def test_request_errors_and_unrelated_systemic_errors_keep_distinct_exits(self):
+        from unittest.mock import Mock
+        for exception, expected in ((RubyGroupRequestError('invalid request'), 1),
+                                    (ValueError('domain failure'), 2),
+                                    (RuntimeError('systemic failure'), 2)):
+            code, output, errors = self.invoke('--ruby-group', 'default',
+                                               scan=Mock(side_effect=exception))
+            self.assertEqual((code, output), (expected, ''))
+            self.assertIn(str(exception), errors)
+
+    def test_resolved_remains_python_only_and_verbose_json_is_identical(self):
+        self.write_inputs()
+        (self.root / 'requirements.txt').write_text('rack>=1\n')
+        snapshot = self.root / 'resolved.txt'
+        snapshot.write_text('rack==3\nrake==99\n')
+        before = {path.name: path.read_bytes() for path in self.root.iterdir()}
+        with patch('libyears.scan.RubyGemsAdapter.lookup', side_effect=self.lookup) as ruby, \
+                patch('libyears.scan.PyPIAdapter.lookup', side_effect=self.lookup) as python:
+            options = ('--json', '--ruby-group', 'test', '--resolved', str(snapshot))
+            plain = self.invoke(*options)
+            verbose = self.invoke(*options, '--verbose')
+        self.assertEqual(plain, verbose)
+        self.assertEqual(plain[0], 0)
+        data = json.loads(plain[1])
+        self.assertEqual({(row['ecosystem'], row['name']): row['used_version']
+                          for row in data['dependencies']},
+                         {('pypi', 'rack'): '3', ('rubygems', 'rake'): '1'})
+        self.assertEqual([call.args for call in ruby.call_args_list], [('rake', '1')] * 2)
+        self.assertEqual([call.args for call in python.call_args_list], [('rack', '3')] * 2)
+        self.assertEqual(before, {path.name: path.read_bytes() for path in self.root.iterdir()})
 
 
 if __name__ == "__main__":

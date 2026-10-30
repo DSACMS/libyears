@@ -314,7 +314,7 @@ tests.test_mixed_scan tests.test_cli` — 87 passed (30 output tests);
 
 ### T009 — Public CLI activation
 
-- [ ] Complete. **Predecessors:** T006, T007, T008.
+- [x] Complete. **Predecessors:** T006, T007, T008.
 - **Authority:** spec S1/S4; plan CLI validation and compatibility. AC-01/02/03/05/19/24/27.
 - **Change:** Add repeatable --ruby-group GROUP with the exact ASCII name
   validation, sort/deduplication, no implicit default and directory-only target
@@ -325,6 +325,20 @@ tests.test_mixed_scan tests.test_cli` — 87 passed (30 output tests);
   missing/comma values, file/invalid paths, all exit categories, --resolved
   remaining Python-only and unchanged injected ordinary scan calls. Public
   activation lands only after both report formats support scoped evidence.
+
+**Run 005-0015 completion evidence:** `libyears/cli.py` exposes repeatable
+`--ruby-group GROUP`, validates exact ASCII names and directory targets before
+scan/snapshot reads, deduplicates/sorts requests, forwards the keyword only when
+activated and maps dedicated request failures to exit 1. Completed evidence
+failures remain exit 0; unrelated systemic exceptions remain exit 2.
+Seven `ScopedRubyCLITests` methods in `tests/test_cli.py` exercise real
+CLI→scan→mock registry age, Test/test, explicit default, overlapping/multiple/
+repeated groups, invalid/missing/comma/empty values, file/missing paths,
+canonical injected calls, evidence failures/empty reports, exit classes and
+Python-only --resolved with JSON verbosity equivalence/target integrity.
+`python -m unittest tests.test_cli` — 27 passed;
+`python -m unittest tests.test_cli tests.test_output tests.test_scoped_scan
+tests.test_mixed_scan` — 94 passed; `git diff --check` — passed.
 
 ### T010 — Composed acceptance and regression verification
 
