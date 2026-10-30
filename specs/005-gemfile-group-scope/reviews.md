@@ -644,3 +644,108 @@ all 28 independently traced ACs, and earlier review history preserved as a byte
 prefix. Only the ledger and this appended review record change. No product code,
 implementation, feature tests, external target access, network or push occurred.
 `git diff --check` passes. One local review-evidence commit is authorized.
+
+## Independent post-T005 implementation checkpoint — 005-0014
+
+**Date:** 2026-10-30. **Completion:** COMPLETE. **Verdict:** APPROVE.
+**Completed boundary:** T001–T005. **Material findings:** 0.
+**Foundation status:** Safe to use for T006 under later explicit human continuation.
+**STOP:** T006–T013 remain unstarted; this approval does not commission them.
+
+Reviewed baseline: `7099669`; frozen product implementation: `09be9fb`.
+Task commits: `4e6f7b4` (T001), `bbd5737` (T002/T003), `e4c5f01` (T004),
+`09be9fb` (T005). Final phase verification in tasks.md was frozen before review;
+only lifecycle/review records change afterward. No checkpoint remediation occurred.
+Approved spec/plan and all prior review history remain unchanged.
+
+### Reviewer structure and independence
+
+Three fresh native children were commissioned after implementation and phase
+verification froze, with `fork_turns="none"` and no model/effort overrides.
+They were separate from all implementation authors and ran concurrently.
+Each independently read repository authority, history/diff, relevant code/tests
+and task evidence. No reviewer received sibling conclusions or author reasoning;
+no cross-review communication occurred. Actual child model/effort/resource
+telemetry was unavailable. Children are orchestration details of this one
+human-launched run, not separate observation rows.
+
+| Reviewer | Primary slice | Completion / verdict |
+|---|---|---|
+| `/root/checkpoint_parser` | T001 closed grammar, completeness, validators; T002 compatibility; later-interface boundary | COMPLETE / APPROVE |
+| `/root/checkpoint_filesystem` | T003 bounded reads/P1, both FIFO replacements; T004 composed availability | COMPLETE / APPROVE |
+| `/root/checkpoint_association` | T004 scope/availability; T005 authority, association, F1/F2 and safe evidence | COMPLETE / APPROVE |
+
+The parent reconciled all reports with the approved contracts, implementation
+and phase evidence. Approval rests on inspected obligations and witnesses,
+not a majority vote. No material finding or missing checkpoint obligation was
+identified. Reviewers made no repository edits.
+
+### Findings and completed-task acceptance evidence
+
+- **T001:** The closed static language consumes complete physical lines/files.
+  Positive forms, comments/quotes, ordered requirements, default/explicit groups,
+  full membership unions, established empty groups, optional membership,
+  duplicates/nesting, unsupported unselected code and first-line/completion
+  precedence are covered by substantive tables/fixtures. No partial population
+  or evaluation occurs. Extracted validators preserve ordinary Ruby framing/order.
+- **T002:** Trailing optional fields preserve old positional/default construction.
+  Typed evidence distinguishes omitted, present-null and safe textual lock
+  requirements; it does not alter registry types or public serialization.
+- **T003/P1:** Both inputs use real nonblocking/no-follow final opens and
+  immediate regular-file fstat before content reads. Containment, descriptor
+  traversal, capability refusal without fallback, strict decoding, limit+1 file
+  bounds and cleanup match the plan. Physical-line limits remain in the pure
+  parser, composed after reading to preserve earlier-line failure precedence.
+  Four real replacement witnesses cover reader and source paths for BOTH
+  filenames. Each replaces a validated regular input at final open with no
+  writer/sleeps, asserts production flags, no FIFO consumption and descriptor
+  closure, under a five-second subprocess guard. Portable capability mocks remain.
+- **T004:** Complete recognition precedes exact group validation and lock access.
+  Union/case/default/empty/unknown distinctions, no lock read after earlier
+  failure, whole-lock rejection and missing/rejected lock availability preserve
+  known versus unknown N. Gemfile FIFO replacement gives invalid_gemfile/unknown
+  N/no lock access; lock replacement follows consumed declarations and gives
+  invalid_lockfile/N=1/no rows. Both forbid lookup.
+- **T005/F1/F2:** Exact direct identities alone authorize association; pins or
+  matching transitive specs cannot substitute. Nonpublic Gemfile authority wins
+  over missing direct identity only after whole-lock acceptance. Existing
+  name→requirement→source order and private/GIT/PATH/pinned/multiple-remote
+  prohibitions survive. Unsupported direct requirements retain N and safe
+  declaration metadata while omitting unsafe lock text and selected artifacts.
+  Supported requirement text compares exact null/order/spacing/operator values
+  before version selection, without semantic satisfaction/equivalence inference.
+  Mismatch has no version artifacts/candidate/lookup. Authorized isolated
+  selection failures preserve ordinary artifact rules.
+
+Task-level evidence in tasks.md accounts for the assigned portions of
+AC-02–16, AC-21, AC-23/24/28. This is not a claim of completed public acceptance
+criteria whose scan/output/CLI portions belong to later tasks. Ordinary Ruby
+source/authorization behavior remains compatible. Diff/history inspection shows
+no changes to scan, CLI, output, registry transport or metric implementations.
+No unauthorized network/external access, target/Ruby/Bundler/package-manager
+execution, credentials access, release or push occurred.
+
+### Independent verification, limitations and next gate
+
+Each reviewer independently ran the full deterministic suite: **357 passed,
+no skips**. Parser reviewer additionally ran `test_gemfile*.py` (47 passed).
+Filesystem reviewer ran `test_ruby_groups.py` (35), `test_rubygems*.py` (53)
+and `test_gemfile.py` (26); association reviewer ran `test_ruby_groups.py` (35)
+and `test_rubygems*.py` (53). Commands use
+`python -m unittest discover -s tests -p 'PATTERN'`; full command is
+`python -m unittest discover -s tests`. All independently passed
+`git diff --check`. Exact parent phase commands/results are recorded in tasks.md.
+
+No external or real-root validation occurred. Future propagation, aggregation,
+serialization, human reporting, CLI activation, composed full-feature acceptance
+and authorized real-root evidence remain unverified/unimplemented later work.
+No reviewer model/effort or resource metrics can be inferred from this verdict.
+
+Prior observation 005-0013 was already committed at run start in `7099669`.
+It exactly matches the supplied handoff and authorized status additions; all
+005-0001–005-0013 occur once with 44 fields, earlier bytes unchanged. No duplicate
+was appended and no new observation-only commit was created. Current run has
+only its temporary 44-field handoff, not a ledger row.
+
+**Next gate:** Later human continuation may authorize T006 after this APPROVE.
+This run stops here regardless of approval; no T006 work is begun.

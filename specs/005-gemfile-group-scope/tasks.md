@@ -414,3 +414,46 @@ scope, dependency readiness, every AC owner, FIFO replacement witnesses, F1/F2,
 ordinary compatibility, and conditional validation boundaries against the
 approved artifacts. This draft is not implementation approval. No task has
 begun, no external validation is authorized, and no product code was changed.
+
+## Run 005-0014 — post-T005 phase verification
+
+T001–T005 are complete under the explicit execution prompt. T006–T013 remain
+unchecked and unstarted. Product implementation is frozen at `09be9fb` for the
+post-T005 independent checkpoint; no implementation remediation is authorized
+inside that review. No scan, CLI, serializer, human output, registry transport,
+or metric implementation changed. No network, external validation target,
+Ruby/Bundler/package-manager or target-code execution occurred.
+
+Final focused verification commands and observed results:
+
+| Exact command | Result |
+|---|---|
+| `python -m unittest discover -s tests -p 'test_gemfile.py'` | 26 passed |
+| `python -m unittest discover -s tests -p 'test_gemfile_evidence.py'` | 7 passed |
+| `python -m unittest discover -s tests -p 'test_ruby_groups.py'` | 35 passed |
+| `python -m unittest discover -s tests -p 'test_gemfile_lock.py'` | 14 passed |
+| `python -m unittest discover -s tests -p 'test_rubygems.py'` | 24 passed |
+| `python -m unittest discover -s tests -p 'test_rubygems_registry.py'` | 29 passed |
+| `python -m unittest discover -s tests -p 'test_metric.py'` | 13 passed |
+| `python -m unittest discover -s tests -p 'test_scan.py'` | 10 passed |
+| `python -m unittest discover -s tests -p 'test_mixed_scan.py'` | 29 passed |
+| `python -m unittest discover -s tests -p 'test_output.py'` | 17 passed |
+| `python -m unittest discover -s tests` | 357 passed, no skips |
+| `git diff --check` | Passed |
+
+The 35 scoped tests include four bounded real FIFO replacement subprocesses:
+reader and composed source for each filename. Every witness replaces a validated
+regular file at final open, without writer/sleeps, asserts nonblocking/no-follow
+flags, immediate fstat rejection before FIFO reads and descriptor closure.
+Composed Gemfile failure has unknown N/no lock open; composed lock failure has
+known N=1/no rows. Portable capability refusal tests remain present.
+
+Completion evidence above covers each task's assigned AC portion, not full
+public feature acceptance. AC-01–28 integration/convergence and real-root
+obligations remain owned by later tasks. Next gate: independent post-T005
+checkpoint; regardless of verdict, STOP before T006 pending later human authority.
+
+**Post-T005 checkpoint:** COMPLETE / APPROVE, three fresh independent reviewers,
+zero material findings; see [review record](reviews.md#independent-post-t005-implementation-checkpoint--005-0014).
+No remediation performed. T006 requires later human continuation and remains
+unstarted. This run stops at the approved checkpoint.
