@@ -6,7 +6,9 @@
 execution authority in observed run `005-0014` (2026-10-30) covers T001–T005
 and the post-T005 independent checkpoint only. Run `005-0015` explicitly
 authorizes continuation through T006–T010 and the post-T010 checkpoint.
-T011–T013 remain unstarted and are a hard stop for this run.
+Run `005-0017` explicitly authorizes T011 documentation and validation
+preparation only, after the corrected post-T010 approval in `005-0016`.
+T012–T013 remain unstarted and are a hard stop for this run.
 No external target or network work is authorized. Historical submission/gate
 text below is superseded by this execution record and the review history.
 
@@ -392,7 +394,7 @@ and unstarted. Implementation stops here for the independent post-T010 checkpoin
 
 ### T011 — Documentation and real-root validation preparation
 
-- [ ] Complete. **Predecessors:** T010.
+- [x] Complete. **Predecessors:** T010.
 - **Authority:** spec user outcome/S1–S5; plan component documentation and later
   validation gate. AC-20/22, plus S5 acceptance-evidence preparation.
 - **Change:** At this documentation checkpoint update README.md, SPEC.md and
@@ -407,6 +409,35 @@ and unstarted. Implementation stops here for the independent post-T010 checkpoin
   observed recognition/rejections, denominator/measurement distinction and
   before/after target integrity. Preparation alone does not satisfy T012.
   No target is selected, inspected or authorized by this task graph.
+
+**Run 005-0017 completion evidence:** README.md documents the implemented
+repeatable directory-only option, closed subset/failures, ordinary all-direct
+compatibility, safe declaration versus exact lock evidence, limits and bounded
+supplied-file claims, with actual human/JSON example fragments. SPEC.md section
+26 and curated CHANGELOG.md Unreleased/Added agree. Canonical detail remains
+in the approved feature specification/plan, which are unchanged.
+
+[release-validation.md](release-validation.md) indexes the existing **28/28**
+AC-to-test assertions, exact prior verification commands/results, approved
+post-T005 and corrected post-T010 checkpoints, and the retained full deterministic
+result **390 passed, no skips (005-0016; not rerun here)**. Its future procedure
+requires explicit human authorization naming a root or permitted supplied
+evidence, exact provenance/revision, requested groups, independently expected
+selected population, recognition/rejection and denominator/measurement
+comparisons, plus before/after integrity. Required real-root evidence is separate
+from offline correctness and optional separately authorized live smoke.
+
+T011 checks: `python -m unittest tests.test_cli tests.test_output
+ tests.test_ruby_group_acceptance` — **62 passed, no skips**; `python -` with
+the reproducible script in release-validation.md — **6 synthetic offline CLI
+examples passed**, matching README human/JSON fragments/counts and unchanged
+synthetic input. Local link, AC-index, ledger and scope assertions passed;
+`git diff --check` passed. Runs 005-0001–005-0016 occur once each with 44 fields;
+005-0016 matches starting HEAD and the ledger remains byte-unchanged. No current
+run row is appended. No real-root target was selected/searched/inspected, no
+external checkout/remote or registry was accessed, and no live validation or
+push occurred. **T012 and T013 remain NOT STARTED. Next gate: explicit human
+authorization for T012.** Preparation does not satisfy that task.
 
 ### T012 — Required authorized real-root evidence
 

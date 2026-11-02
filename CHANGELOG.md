@@ -6,6 +6,14 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Measure explicitly selected declared Ruby groups with repeatable
+  `--ruby-group GROUP` on directory scans, using a conservative static Gemfile
+  subset and independently authorized exact Gemfile.lock evidence. Unsupported
+  or ambiguous syntax fails closed; safe declaration provenance stays separate
+  from version evidence. Results describe supplied files only, without executing
+  Ruby/Bundler or claiming installed, deployed or runtime scope. Ordinary
+  all-direct Ruby scans remain unchanged when the option is absent.
+
 - Measure direct RubyGems dependencies from a bounded root `Gemfile.lock` snapshot,
   alongside Python and npm, without executing Ruby or Bundler. Preserve selected
   artifact and observable publication provenance in additive schema-v3 evidence;

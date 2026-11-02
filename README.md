@@ -233,12 +233,12 @@ Existing package-lock and PyPI evidence representations are unchanged.
 
 ## RubyGems support
 
-A directory scan recognizes exactly the root `Gemfile.lock`, even without a
-Gemfile. All direct dependencies recorded in Gemfile.lock are counted; groups
-are not interpreted. The report describes the supplied lock snapshot. It does
+Without `--ruby-group`, a directory scan recognizes exactly the root
+`Gemfile.lock`, even without a Gemfile. All direct dependencies recorded in
+Gemfile.lock are counted; groups are not interpreted. The report describes the supplied lock snapshot. It does
 not certify committed bytes, current Gemfile contents, installed versions, or
-runtime compatibility. Gemfile is never read or executed. `--resolved` remains
-Python-specific; direct-file arguments do not activate Ruby discovery.
+runtime compatibility. In this ordinary all-direct mode, Gemfile is never read.
+`--resolved` remains Python-specific; direct-file arguments do not activate Ruby discovery.
 
 The supported bounded section format includes GEM, DEPENDENCIES, required
 nonempty PLATFORMS, and optional BUNDLED WITH / RUBY VERSION. GIT and PATH
@@ -287,11 +287,122 @@ without retries. Authorized candidates run in exact name/version lexical order.
 No archives or private source content are fetched. See the approved
 [Feature 004 specification](specs/004-rubygems-support/spec.md) for the full boundary.
 
+## Select declared Ruby groups
+
+Explicitly select groups with repeatable `--ruby-group GROUP` on a directory:
+
+```bash
+python3 -m libyears PATH --ruby-group default --ruby-group test
+python3 -m libyears PATH --ruby-group default --ruby-group test --json
+```
+
+Names are exact and case-sensitive, using ASCII letters/underscores followed by
+ASCII letters/digits/underscores. Supply one name per occurrence, without a
+colon or comma list; abbreviations of `--ruby-group` are rejected. Repeated names
+deduplicate, and several groups select their union, counting each dependency
+once. `default` must be requested explicitly. `production` is an ordinary group
+name with no special behavior. Python/npm scope and Python-only `--resolved`
+remain unchanged. Without this option, ordinary all-direct Ruby behavior above
+is unchanged and Gemfile is not inspected.
+
+Only the supplied directory's root `Gemfile` and `Gemfile.lock` participate;
+scoped direct-file arguments are usage errors. There is no parent/nested search,
+include, gemspec, configuration or environment-based group discovery. Escaping
+symlinks are rejected without reading their targets. Ruby and Bundler are never
+executed, and no packages are installed or resolved.
+
+The conservative static subset accepts one top-level literal `source`, literal
+`gem` declarations with bounded requirement strings, literal `group:`/`groups:`
+options, `require:` values, and nonnested `group :name do` blocks (including
+literal optional flags). Ungrouped gems belong to default; explicit top-level
+groups replace default, and block/option memberships combine. Optionality and
+`require:` do not change declared membership. Complete-file recognition is
+required: unsupported or ambiguous syntax anywhere, including an unselected
+group, fails closed with no partial population. Conditions, interpolation,
+escapes, nested groups, duplicate declarations, platform/source blocks,
+path/git options and arbitrary Ruby are rejected. Rejection does not mean the
+file is invalid Ruby. See the [approved closed subset](specs/005-gemfile-group-scope/spec.md#approved-closed-static-subset)
+for canonical syntax details.
+
+For example, this synthetic supplied Gemfile selects only rack for `default`:
+
+```ruby
+source "https://rubygems.org"
+gem "rack", "~> 3.0"
+group :test do
+  gem "rake"
+end
+```
+
+```bash
+python3 -m libyears PATH --ruby-group default
+python3 -m libyears PATH --ruby-group default --json
+```
+
+Human output includes these lines:
+
+```text
+RubyGems selected declared groups: default.
+Supplied declaration source: Gemfile; supplied version snapshot: Gemfile.lock.
+```
+
+If Gemfile.lock is absent, the selected rack is counted but unmeasurable with
+`lockfile_missing`: a declaration pin or range never supplies the exact version.
+Its JSON row includes this fragment (the unknown `lock_requirement` is omitted):
+
+```json
+{
+  "ecosystem": "rubygems",
+  "name": "rack",
+  "declared": "rack (~> 3.0)",
+  "reason": "lockfile_missing",
+  "gemfile_evidence": {
+    "declared_groups": ["default"],
+    "declaration_requirements": ["~> 3.0"]
+  }
+}
+```
+
+Gemfile establishes declaration membership; only independently authorized exact
+Gemfile.lock evidence establishes a measurable version. Association requires an
+exact direct name and identical supported requirement text. Textual differences
+produce `declaration_lock_requirement_mismatch` without version association or
+lookup: equivalence is not inferred. Transitive matches cannot substitute.
+Public authority must be established independently for both files; nonpublic
+sources never use public namesakes.
+
+Schema v3 adds scoped `scope: "selected_declared_groups"`, sorted unique
+`requested_groups`, and declaration source `Gemfile` under
+`version_evidence.rubygems`. Row `gemfile_evidence` keeps full declared memberships
+and ordered safe requirements separate from lock-version/publication artifacts.
+`lock_requirement` is null for known absence, omitted for missing or unsafe
+requirement evidence, and otherwise safe text. Raw source lines, private URLs
+and unsupported requirement text are not emitted. Ordinary scans omit these
+scoped additions; `--verbose` does not change JSON.
+
+Unknown groups or rejected Gemfiles make the denominator unavailable. A rejected
+lock preserves the selected count but makes Ruby measurement/coverage unavailable,
+with a source error and no rows. A missing lock with nonempty known scope yields
+unmeasurable rows and 0% coverage. An established empty group with absent or
+accepted lock has 0 discovered/measured and null coverage. Successful sibling
+ecosystems survive. Completed evidence-error reports still exit 0; malformed
+requests/path errors exit 1 and systemic failures exit 2.
+
+Results describe supplied-file declaration membership and lock evidence only.
+They establish neither historical coherence nor installed, deployed, runtime
+loading or compatibility state. Publication history remains incomplete as above.
+Scoped bounds are 1 MiB Gemfile, 16 KiB per physical line and 16 MiB lock; platforms
+without required safe file-access capabilities fail closed. The
+[Feature 005 contract](specs/005-gemfile-group-scope/spec.md) holds canonical
+failure/field rules; [validation evidence](specs/005-gemfile-group-scope/release-validation.md)
+separates offline correctness from pending authorized real-root validation.
+
 ## Current limitations
 
 - Python declarations are read from `requirements.txt`; npm declarations are
   read from the root `package.json`; RubyGems scope comes from root
-  `Gemfile.lock` DEPENDENCIES.
+  `Gemfile.lock` DEPENDENCIES unless `--ruby-group` explicitly selects declared
+  Gemfile groups within the closed static subset.
 - Direct dependencies only.
 - The resolved snapshot format is a narrow list of exact `NAME==VERSION`
   entries; repository declarations determine which entries are in scope.

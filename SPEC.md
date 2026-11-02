@@ -662,8 +662,9 @@ remains root package.json dependencies excluding optionalDependencies names.
 Python snapshot behavior and existing registry policies remain unchanged.
 
 RubyGems follows the approved [Feature 004](specs/004-rubygems-support/spec.md).
-Directory scans read only root Gemfile.lock, without requiring or inspecting
-Gemfile. Direct-file scans remain Python-only. Every DEPENDENCIES name counts,
+Without a group request, directory scans read only root Gemfile.lock, without
+requiring or inspecting Gemfile. Direct-file scans remain Python-only. Every
+DEPENDENCIES name counts,
 including bundler/tzinfo-data without selected specs. This is all-direct locked
 snapshot scope, with no group interpretation or certification of commit status,
 current Gemfile, installed environment, or runtime compatibility.
@@ -733,3 +734,79 @@ invalid Retry-After closes Ruby requests for that scan. Authorized candidates
 are scheduled in exact name/version lexical order. Static scans never execute
 Ruby/Bundler/Gemfile/gemspecs, install, resolve, inspect private credentials,
 fetch private content/archives, or modify the target.
+
+### Explicit Ruby declared-group scope (Feature 005)
+
+The approved [Feature 005 specification](specs/005-gemfile-group-scope/spec.md)
+S1–S4 is canonical for activation, the exhaustive static subset, association,
+failure precedence and additive schema-v3 fields. It supersedes the all-direct
+policy above only when repeatable `--ruby-group GROUP` is explicitly requested:
+
+```bash
+python -m libyears PATH --ruby-group default --ruby-group test
+python -m libyears PATH --ruby-group default --ruby-group test --json
+```
+
+PATH MUST be a directory. Only its exactly named root Gemfile/Gemfile.lock
+participate, within the supplied root; no recursive/parent search, includes,
+gemspecs, config or environment-derived membership. Direct-file scoped requests
+are usage errors. Group names are exact case-sensitive ASCII symbol names
+without the colon (`[A-Za-z_][A-Za-z0-9_]*`). Each occurrence supplies one name;
+comma lists, malformed/missing values and abbreviated option spellings reject.
+Repeated names deduplicate; multiple names select the union once per dependency.
+Default membership is implicit for ungrouped gems, but selection of default is
+explicit. Explicit top-level gem groups replace default; block/option groups
+union. Empty blocks establish groups. Optional flags and require options do not
+change membership. Production has no special meaning. With no request, preserve
+ordinary all-direct lock behavior without reading Gemfile; Python/npm/Yarn
+behavior and Python-only --resolved remain unchanged.
+
+The closed conservative subset permits literal source/gem/group/end forms,
+bounded literal requirements and recognized literal group/groups/require options,
+comments and one statement per physical line. Complete-file recognition is
+mandatory. Unsupported/ambiguous constructs anywhere, even in unselected groups,
+reject all scope; no partial rows are salvaged. Duplicate declarations, nesting,
+conditions, interpolation/escapes, platform/source blocks, path/git options and
+arbitrary Ruby are outside the subset. This does not assert invalid Ruby.
+Limits are 1 MiB Gemfile, 16 KiB physical lines and 16 MiB scoped lock. Safe
+contained regular-file access is required; unsupported capabilities fail closed.
+Never execute Ruby/Bundler/project code, install/resolve, inspect credentials or
+configuration, fetch archives/private content or modify targets.
+
+Gemfile establishes the selected declaration denominator, never exact versions,
+even for pins. Measurement requires an exact direct lock identity, independent
+public authority for both files, identical supported textual requirements and
+supported exact lock selection. No transitive/public-namesake fallback is allowed.
+Requirement comparison joins declaration literals in order with `, `, with none
+as null; it infers neither satisfaction nor equivalence. Mismatch counts once as
+unmeasurable (`declaration_lock_requirement_mismatch`), retaining both safe values
+without exact-version artifacts or lookup. Existing publication/metric policy
+remains unchanged.
+
+Scoped schema-v3 evidence always names Gemfile/Gemfile.lock, scope
+`selected_declared_groups`, sorted unique requested_groups and the existing
+publication_basis. Format is gemfile_lock only after whole-lock acceptance,
+otherwise null. Rows add gemfile_evidence: full sorted declared_groups, ordered
+declaration_requirements and lock_requirement only when safely known (null for
+known absence; omitted for missing or unsupported evidence). Authorized measured
+rows retain version_source gemfile_lock and Ruby artifact provenance. Unsupported
+lock requirement text and raw source/private values MUST NOT be echoed; safe
+declaration metadata remains. Ordinary JSON omits scoped additions; verbose
+human diagnostics remain outside JSON.
+
+Gemfile/unknown-group source failures leave unknown denominator and prevent lock
+processing. Rejected locks retain known selected N, null Ruby measurement/coverage
+and numeric aggregates, with no rows. Missing locks with N>0 yield N unmeasurable
+lockfile_missing rows, M=0 and 0% coverage. Empty scope with absent/accepted lock
+has 0/0, null coverage, total 0.0 and null mean/median/max. Dependency failures
+retain the denominator; successful ecosystem siblings survive unavailable Ruby
+sources under existing repository summary rules. Completed evidence failures
+exit 0; request/path errors exit 1; systemic failures exit 2.
+
+Human output names selected declared groups, supplied files, safe memberships
+and requirements, recognition state and coverage distinctions, consistently with
+JSON. Results are bounded supplied-file claims: no installed/deployed/runtime
+scope, compatibility, historical coherence or complete-publication-history claim.
+The [release-validation record](specs/005-gemfile-group-scope/release-validation.md)
+indexes deterministic acceptance separately from required future explicitly
+authorized real-root evidence and optional separately authorized live smoke.
