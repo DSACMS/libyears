@@ -2,13 +2,12 @@
 
 ## Disposition
 
-**T011 COMPLETE — documentation and procedure preparation only (005-0017).**
-**T012 NOT STARTED — pending explicit human authorization identifying a target
-root or specifically permitted supplied evidence. T013 NOT STARTED.**
-No real-root target was selected, searched for, inspected or analyzed; no external
-checkout/remote repository or live registry was accessed in this run. Preparation
-and synthetic examples do not satisfy T012 or establish convergence/release
-readiness. No push, tag or release is authorized.
+**T011 COMPLETE (005-0017). T012 COMPLETE (005-0018). T013 NOT STARTED.**
+Three exact roots were explicitly authorized for read-only offline validation.
+One successful real-root population comparison, one expected rejection and one
+insufficient-evidence result are preserved below. No implementation defect was
+found. This is T012 evidence, not convergence or release approval. No push,
+tag or release occurred. The T011 preparation record below remains historical.
 
 ## Deterministic correctness evidence
 
@@ -121,10 +120,10 @@ with compact-array documentation formatting. It failed that formatting assertion
 inspection confirmed the row values matched. The script above compares parsed
 JSON and passed; no product or example content correction was required.
 
-## Future T012 real-root validation PROCEDURE — NOT EXECUTED
+## T012 real-root validation procedure — prepared in 005-0017
 
-The following steps are instructions for a future authorized run, not completed
-evidence. **T012 remains pending explicit human authorization.** No prior Feature
+The following procedure was prepared without execution in 005-0017. Its later
+authorized execution is recorded below; the procedure itself supplies no permission. No prior Feature
 003/004 target permission transfers here. Do not search for or inspect candidates
 before receiving authorization. Synthetic fixtures cannot substitute for this gate.
 
@@ -189,7 +188,7 @@ before receiving authorization. Synthetic fixtures cannot substitute for this ga
 
 - **Deterministic correctness:** indexed above, offline fixtures/mocks; current
   approved full-suite evidence is 390 passed/no skips. This gate is satisfied.
-- **Required authorized real-root evidence (T012):** NOT STARTED. Requires the
+- **Required authorized real-root evidence (T012):** COMPLETE in 005-0018 below. Required the
   named target/permitted supplied evidence, independent expected selected
   population, exact provenance, recognition/rejection comparison, denominator
   versus measurement accounting and before/after integrity. It remains required
@@ -199,3 +198,223 @@ before receiving authorization. Synthetic fixtures cannot substitute for this ga
   live outcomes/environmental failures separately. It cannot replace offline
   correctness or the required real-root comparison and has no mandatory task
   dependency. Never weaken trust controls or invoke a package manager for it.
+
+## T012 authorized real-root evidence — 005-0018
+
+**Disposition: COMPLETE.** Explicit human authority for this run names exactly
+A `iv-cbv-payroll`, B `price-transparency-guide`, and C `dpc-admin`. C was newly
+authorized for Feature 005; historical baseline familiarity supplied no expected
+population or permission. Access was limited to root Gemfile/Gemfile.lock and Git
+revision/status metadata. No alternate/nested target was sought. Local paths are
+nonpublic authorization inputs and are deliberately omitted here.
+
+### Method, chronology and offline provenance
+
+All approved Feature 005 artifacts, including the complete T012 definition and
+procedure and review history, were read before target access. Inputs were read
+independently of libyears. A was absent; B's entire six-line Gemfile and entire
+lock were manually interpreted against S1–S4. C's entire Gemfile and lock were
+inspected independently; rejection at line 2 prevents any complete population
+claim. No product parser, source function or output supplied the expectation.
+The expected record was frozen **before any product invocation**, SHA-256
+`1b74c2ef366309ebf37e7d2a227985d1e381752fa25c9235ddbef18642ff434a`.
+
+The implemented entry point was `libyears.cli.main(argv, scan=scan)` with
+canonical repeated `--ruby-group GROUP`, once human and once `--json` for each
+case below, always against the authorized original root. A/C use `default` only
+as rejection probes, without asserting an established group or population.
+B uses `default`, `test`, `default+test`, and `test+default+test`; the last tests
+canonical sorting/deduplication. Two registry scenarios per request make **12
+cases / 24 CLI reports**, all exit 0 with empty stderr.
+
+The scan callback delegates to the real `scan_mixed_repository` with injected
+`rubygems_lookup`. To honor the Ruby-only input authorization, its Python/npm
+source functions are mocked to absent `SourceResult`s (empty rows/errors,
+N=0, measurement available, source_present=False); their lookup callbacks fail
+if called. Thus no Python/npm application content is inspected and this run
+makes no sibling-source discovery claim. Existing deterministic sibling evidence
+remains in T010; repository summaries here cover only Ruby.
+
+Registry evidence is **run-authored synthetic adapter output**, not registry
+observations or a claim about these packages' actual ages:
+
+```python
+# Only the independently expected names/versions below may reach lookup.
+# Scenario supplied:
+RegistryResult(name, version, datetime(2020, 1, 1, tzinfo=timezone.utc),
+               version, datetime(2020, 1, 1, tzinfo=timezone.utc))
+# Scenario missing_date:
+RegistryFailure(name, version, 'release_date_missing')
+```
+
+Both scenarios were fixed in the pre-product expectation. Same used/latest
+version yields exactly 0.0 libyears. The adapter supplies no publication artifacts;
+JSON correctly retains selected lock artifacts without inventing observable
+publication records. Socket construction/connection, urllib opener access and
+subprocess execution raise assertions throughout product execution. No adapter
+HTTP, network, Ruby, Bundler, package manager or target code was invoked.
+
+Before and after, only the two permitted input names were lstat'ed and, if
+regular, opened read-only with O_NOFOLLOW|O_NONBLOCK, descriptor regular-file
+validation and bounded binary reads. No symlink was followed. The integrity
+manifest records each name's absence or regular type, mode, byte count, SHA-256
+and symlink text (null for all present inputs), plus root symlink status and
+Git metadata. All three roots are nonsymlinks. All before/after records match
+exactly. No target writes were made; captures stayed outside targets.
+
+Metadata commands, with `ROOT` standing for the authorized local root, were:
+
+```text
+git --no-optional-locks -c core.fsmonitor=false -C ROOT rev-parse HEAD
+git --no-optional-locks -c core.fsmonitor=false -C ROOT status --porcelain=v1 --untracked-files=no
+git --no-optional-locks -c core.fsmonitor=false -C ROOT status --porcelain=v1 --untracked-files=all -- Gemfile Gemfile.lock
+git --no-optional-locks -c core.fsmonitor=false -C ROOT rev-parse --show-prefix
+PYTHONPATH=. python CAPTURE/validate.py
+```
+
+`CAPTURE` denotes the nonpublic temporary run capture directory, outside Git.
+It contains `expected-before-product.json`, `validate.py`, `results.json`,
+`A/B/C-before.json`, equivalent after manifests, permitted binary input copies
+and per-case human/JSON captures. Public reproduction requires the exact hashed
+inputs and authorized root mapping; this record does not publish target content
+or workstation topology. Reports in the capture replace their display path with
+the safe target name. Complete expectations/results needed for review are below.
+
+### Target A — iv-cbv-payroll
+
+- Independently inspected revision: `9e80a7271f39271c878f4bd4cc38af09345e00c5`.
+  Tracked status and permitted-input status clean; Git prefix empty. No remote
+  identity/config was read; safe identity is the human-supplied target label.
+- Both exactly named root inputs are **absent**, so no input hashes/bytes exist.
+  No descendant search or alternate repository was used.
+- Request: `default` rejection probe. Expected complete recognition unavailable;
+  explicit groups, implicit/default membership, per-dependency memberships,
+  union, association, source authority and population cannot be established.
+  Lock is absent and must not be processed after the Gemfile failure.
+- Observed in both registry scenarios/formats: `source_errors` contains exactly
+  `Gemfile / gemfile_missing`; no dependency/unmeasurable rows or lookup.
+  Requested groups `[default]`, format null. **N=null, M=null, N-M unavailable**,
+  zero unmeasurable rows; Ruby coverage and every Ruby aggregate null.
+- Human/JSON agree on unavailable scope/lock recognition and null accounting.
+  Repository N/M/coverage are null; total remains 0.0, other numeric aggregates
+  null, consistent with the existing repository aggregation contract.
+- Integrity: both absences and provenance unchanged before/after.
+  **Outcome: INSUFFICIENT EVIDENCE**, correctly explained by missing root inputs;
+  no claim of successful population validation or implementation defect.
+
+### Target B — price-transparency-guide
+
+- Independently inspected revision: `66898bbd09f00612ffaaac76ea6a740e453904e4`.
+  Tracked status and permitted-input status clean; Git prefix empty. Identity
+  limitations are the same as A; no remote was consulted.
+- Gemfile: regular, mode 0644, 85 bytes, SHA-256
+  `d021c5de245ece8064c78fdcb69727454366afe1d9d9b23c8b76980a3d329308`.
+- Gemfile.lock: regular, mode 0644, 779 bytes, SHA-256
+  `f55183fcb3ca464d283267fa495f68149946065dd3fdf06af9826117aa6a9408`.
+- Complete static recognition expected and observed. Exactly one top-level
+  public source and a supported `group :test do` block establish groups
+  `default` and `test`. Default is implicitly established **empty**; neither
+  dependency acquires default membership. No other explicit group exists.
+
+| Independently expected declaration | Complete memberships | Declaration requirements | Direct lock requirement | Selected exact generic version |
+|---|---|---|---|---|
+| json_schemer | test | [] | null | 2.5.0 |
+| rspec | test | [] | null | 3.13.2 |
+
+The entire lock has a single public GEM remote, unique generic specs/direct
+identities, supported PLATFORMS and BUNDLED WITH sections. Both direct names
+match exactly, neither is pinned, and absence equals absence for requirement
+comparison. Both independently authorize selected artifacts with platform `ruby`
+and source `https://rubygems.org`. All remaining specs are transitive and excluded
+from scoped rows, counts and lookups.
+
+| Requested options, in supplied order | Independent expected = observed names | Supplied N / M / unmeasurable | Missing-date N / M / unmeasurable |
+|---|---|---|---|
+| default | empty | 0 / 0 / 0 | 0 / 0 / 0 |
+| test | json_schemer, rspec | 2 / 2 / 0 | 2 / 0 / 2 |
+| default, test | json_schemer, rspec | 2 / 2 / 0 | 2 / 0 / 2 |
+| test, default, test | json_schemer, rspec | 2 / 2 / 0 | 2 / 0 / 2 |
+
+No default is added automatically; unions and repeated selections count each
+name once. Serialized requests are sorted unique; row membership remains the
+full `[test]`. Each selected name is looked up once per report, using precisely
+the version above; empty scope makes zero calls. JSON has schema 3, accepted
+`gemfile_lock` format, declaration requirements `[]`, present
+`lock_requirement: null`, and exact selected-artifact provenance. Supplied
+measurements retain `version_source: gemfile_lock` and exactly 0.0 ages.
+
+Empty scope has null coverage, total 0.0 and null mean/median/max. Nonempty
+supplied scope has coverage 1.0 and all age aggregates 0.0. Nonempty missing-date
+scope has coverage 0.0, total 0.0, null mean/median/max and exactly two
+`release_date_missing` rows. No source errors. Repository and Ruby summaries
+agree. Human reports agree on identities, versions, full memberships, safe
+requirements, 0/0 versus 2/2 versus 0/2 counts, percentages, source acceptance
+and supplied-file/observable-publication limitations. **Outcome: PASS**;
+one successful real-root target, including nonempty population comparisons.
+Before/after manifests and Git metadata match exactly.
+
+### Target C — dpc-admin (prior-validation baseline)
+
+- Revision, tracked status, input status and Git prefix: **unavailable**; each
+  permitted Git metadata command failed. No parent/sibling repository was
+  searched to recover provenance. No revision association or clean-tree claim
+  is inferred from the prior baseline or human authorization.
+- Gemfile: regular, mode 0644, 2,848 bytes, SHA-256
+  `8ec0c8d786c965f6deb228a0dc43038458c4b798b51f242ff54736bd1d61d167`.
+- Gemfile.lock: regular, mode 0644, 12,463 bytes, SHA-256
+  `e8852e0719202c9e5b210d7da434cae0a094865c82ebf404f15fe27da39146a1`.
+- Independently expected complete-file rejection at physical **line 2**:
+  `git_source` method/block is outside S1; interpolation also lies outside the
+  literal subset. Later Ruby directive and `platforms:` options independently
+  exceed the subset but cannot supersede the first defect. No raw line or URL
+  is needed in diagnostics. Familiar declarations/groups later in the file
+  cannot establish a complete scope. No expected membership map is manufactured.
+- Request: `default` rejection probe only. Both formats/scenarios observe exactly
+  `Gemfile / unsupported_gemfile_syntax`; no rows or lookup, format null,
+  requested `[default]`. **N=null, M=null, N-M unavailable**, zero unmeasurable
+  rows. Human/JSON agreement and repository/Ruby accounting match A's unavailable
+  state; rejection remains visible.
+- The independently inspected lock has supported section framing
+  GEM/PLATFORMS/DEPENDENCIES/RUBY VERSION/BUNDLED WITH and a public remote;
+  product lock recognition, direct association and selected-version authority
+  remain **not reached**, not accepted. No hypothetical lock population counts
+  compensate for rejected Gemfile scope.
+- Input/type/mode/hash/link manifests match exactly before/after. Git metadata
+  remains unavailable both times; integrity claim covers permitted input bytes
+  and names, not the entire application checkout. **Outcome: EXPECTED REJECTION**.
+  Conservative refusal is required by S1, not an implementation defect.
+
+### Verification, limitations and task disposition
+
+All 12 JSON cases asserted requested canonicalization, population identities,
+full memberships, safe requirements, accepted/null format, selected artifacts,
+lookup/exclusion sets, N/M/unmeasurable, stable reasons and summaries. All paired
+human captures were reconciled against JSON, including limitations. All 24 CLI
+reports exited 0; no network/subprocess guard fired. Before/after manifests
+match for A, B and C. Only these three roots and permitted inputs/metadata were
+accessed; no credentials, private configuration or unrelated application content
+was inspected. No target modification occurred.
+
+Two harness-only interruptions are retained: the initial capture printer assumed
+A's absent Gemfile had a copy and stopped; it was corrected to preserve absence
+and continue B/C. The initial report assertion incorrectly required repository
+and Ruby totals to match in unavailable states. Existing scoped aggregation tests
+explicitly preserve repository total 0.0 while Ruby total is null; the harness
+assertion was corrected. Neither changed the frozen population expectations or
+product code. No plausible implementation discrepancy remained.
+
+**T012 is complete:** B supplies the required successful independent real-root
+population comparison, A's insufficiency is explained by missing permitted inputs,
+and C's rejection follows the approved whole-file contract. No failure is hidden
+or offset by B's success. This run does not establish broad application coverage,
+actual publication history, deployment/runtime state, historical pair coherence,
+or whole-checkout integrity. No implementation fixes were made.
+**T013 remains NOT STARTED and requires a separate execution instruction.**
+
+Repository-local evidence checks: 005-0001–005-0017 exactly once with 44 fields;
+all earlier ledger bytes preserved; 005-0017 matches its machine handoff plus
+explicit human status additions, including blank credits_before and preserved
+runtime-confounded note. Current 005-0018 is not appended. Only this file,
+the narrow T012 task/status record and the prior observation row change.
+`git diff --check` passes. No unrelated full suite was rerun; prior approved
+390-test deterministic evidence remains distinct from this validation.

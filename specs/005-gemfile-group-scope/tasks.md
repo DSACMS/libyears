@@ -8,8 +8,9 @@ and the post-T005 independent checkpoint only. Run `005-0015` explicitly
 authorizes continuation through T006–T010 and the post-T010 checkpoint.
 Run `005-0017` explicitly authorizes T011 documentation and validation
 preparation only, after the corrected post-T010 approval in `005-0016`.
-T012–T013 remain unstarted and are a hard stop for this run.
-No external target or network work is authorized. Historical submission/gate
+Run `005-0018` explicitly authorizes T012 read-only offline validation of exactly
+three human-named roots; T012 is complete with evidence below. T013 remains
+unstarted and is a hard stop. No network work is authorized. Historical submission/gate
 text below is superseded by this execution record and the review history.
 
 The [approved specification](spec.md) and [approved technical plan](plan.md)
@@ -441,7 +442,7 @@ authorization for T012.** Preparation does not satisfy that task.
 
 ### T012 — Required authorized real-root evidence
 
-- [ ] Complete. **Predecessors:** T011. **Additional condition:** explicit later
+- [x] Complete. **Run 005-0018**; **Predecessors:** T011. **Additional condition:** explicit later
   human authorization for the particular target or permitted supplied evidence.
 - **Authority:** spec S5 and plan later-validation gate. Acceptance corroboration
   for selected population/claims (AC-02/22); cannot replace T010 offline coverage.
@@ -456,6 +457,26 @@ authorization for T012.** Preparation does not satisfy that task.
   cannot be marked successful by substituting a synthetic fixture or optional
   live smoke. If evidence is unavailable, leave this task pending and convergence
   gated; earlier deterministic work can remain complete.
+
+**Run 005-0018 completion evidence:** Explicit human authorization covered only
+`iv-cbv-payroll`, `price-transparency-guide`, and newly re-authorized `dpc-admin`,
+root Ruby inputs and provenance/integrity metadata. Independent expectations were
+frozen before product execution. [Release validation](release-validation.md#t012-authorized-real-root-evidence--005-0018)
+preserves all three outcomes: A INSUFFICIENT EVIDENCE (both inputs absent),
+B PASS (empty default; test selects json_schemer and rspec, exact public direct
+lock association; union/repeated selection deduplicates), C EXPECTED REJECTION
+(unsupported git_source at Gemfile line 2; revision unavailable). No target was
+substituted and no implementation defect was found. B supplies the required
+successful real-root nonempty population comparison. Supplied synthetic registry
+results and missing-date failures have explicit provenance; no live lookup claim.
+Twelve cases / 24 human+JSON CLI reports exited 0 and agreed on populations,
+full memberships, safe evidence, counts, coverage and limitations. Before/after
+permitted-input manifests and available Git metadata match for every target.
+No network, Ruby/Bundler/package manager, target execution/modification, unrelated
+application content or credentials access occurred. Ledger 005-0017 appended
+with authorized status additions, previous rows byte-preserved; all 17 rows have
+44 fields. Evidence assertions and `git diff --check` passed. No unrelated suite
+rerun. **T013 NOT STARTED; next gate: separately authorized convergence review.**
 
 ### T013 — Read-only convergence review
 
