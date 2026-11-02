@@ -20,6 +20,10 @@ run is reserved as `005-0001`, followed by `005-0002`, and so on. Use one row pe
 agent run, with append-oriented usage. A review of another run or artifact should
 normally be another row.
 
+Feature 005's first nineteen observations and their limitations are analyzed in
+the [retrospective](../specs/005-gemfile-group-scope/retrospective.md). The
+initial-header description above records setup history, not current row count.
+
 ## Collection principles
 
 **Wide rows are cheap. Missing provenance is expensive.** Columns are intentionally
@@ -36,6 +40,14 @@ reading. Post-run `/status` is recommended, not mandatory; pre-run `/status`
 is not routinely required. When the running agent cannot reliably introspect
 model or effort, use directly observed harness evidence. Missing fields remain
 preferable to invented values.
+
+When enriching a handoff, preserve its factual notes and confounding classifications;
+identify human-supplied additions without implying the running agent observed
+them. Earlier notes that metadata was unavailable can describe the machine
+handoff even when later status supplies that metadata. If request and observation
+differ, record the observed state and provenance, as with Feature 005's requested
+fresh but observed continued context. Distinguish displayed runtime components
+when their version readings differ; do not silently reconcile them by inference.
 
 `credits_before` may come from a directly observed pre-run account reading or
 the immediately preceding human-observed post-run account reading when the
@@ -170,6 +182,32 @@ prospectively later.
 
 Record human intervention when a human materially changes, supplies authority
 to, or unblocks the run. Ordinary prompt submission alone does not count.
+
+Consequential authority supplied in an initiating prompt can therefore coexist
+with human_intervention=no. Preserve that decision in the durable feature record
+and concise context/authority notes; the intervention field alone does not measure
+human participation or attention cost.
+
+### Temporary handoff and authorized append
+
+When a run's instructions use a temporary observation JSON baton, write it before
+final reporting, with all 44 schema-v1 keys in header order and null/empty values
+for unavailable observations. Verify that the JSON parses and that its run ID and
+keys match. Keep it outside Git and retain it for the authorized next recorder;
+Feature 005's missing 005-0006 baton delayed a later commit despite completed
+product verification. The task prompt determines the exact temporary destination
+and whether the current run or only a prior run may be appended.
+
+Before an authorized append, check whether the run already exists. Verify an
+existing row against its handoff plus authorized enrichment rather than duplicating
+it. Preserve earlier bytes and verify schema shape/unique IDs after writing.
+Do not reconstruct missing observations from memory to repair an absent baton.
+
+Native children remain orchestration details within the observed parent run unless
+separately commissioned observations establish otherwise. Record requested fork
+and model/effort settings in concise notes where material; actual child settings
+and resource telemetry remain unavailable unless directly observed. Parent model
+identity or no-overrides requests do not prove actual child configuration.
 
 ## Experiments
 

@@ -11,7 +11,7 @@ and accessibility.
 agent-assisted repository work. This is neither permanent policy nor a benchmark
 report or vendor/model leaderboard. Existing [AGENTS.md](AGENTS.md), approved
 feature contracts, and human authorization continue to govern the work. Revise
-this strategy as Feature 005 supplies prospective observations.
+this strategy as further prospective observations become available.
 
 ## Evidence and limits
 
@@ -21,6 +21,12 @@ and Feature 004's [retrospective](specs/004-rubygems-support/retrospective.md),
 [task evidence](specs/004-rubygems-support/tasks.md), and
 [release validation](specs/004-rubygems-support/release-validation.md), read
 alongside its discovery, specification, plan, and Git history.
+
+Feature 005 adds the [prospective ledger](observations/agent-runs.csv), runs
+005-0001–005-0019, its [retrospective](specs/005-gemfile-group-scope/retrospective.md)
+and [review history](specs/005-gemfile-group-scope/reviews.md). The retrospective
+classifies updates and limitations; historical model identities below remain
+observations, not required configurations.
 
 Feature 003 preserved decision summaries but lacked some exact reviewed drafts
 and prospectively recorded routing. Feature 004 retained draft/revision history;
@@ -81,11 +87,14 @@ bounded question, evidence locations, and explicit completion conditions.
 
 Then synthesize the results against the whole gate, checking omissions,
 contradictions, and behavior crossing component boundaries. A collection of
-positive verdicts is insufficient. Feature 004's task ownership and composed
-tests demonstrate useful evidence boundaries; they do not validate decomposed
-agent convergence. The hypothesis that smaller composable evidence tasks could
-let more accessible models establish the same gate surfaced in Feature 004
-but **was not tested**. Decomposition must preserve the standard.
+positive verdicts is insufficient. Feature 004 raised decomposition as an untested
+hypothesis. Feature 005 subsequently completed decomposed specification and plan
+reviews after incomplete broad attempts, then decomposed implementation checkpoints
+and final convergence. Bounded slices, frozen candidates, independent reads and
+parent reconciliation supplied the required evidence, including REVISE findings.
+This supports trying decomposition before expensive escalation where practical;
+it does not isolate decomposition from model, effort or harness effects.
+Decomposition must preserve the standard.
 
 ### 4. Review completeness is not review verdict
 
@@ -99,6 +108,12 @@ incomplete and established no product defect. The subsequent completed audit
 supplied missing review evidence without remediating a finding from that attempt.
 A future handoff should identify inspected coverage, unaudited obligations,
 findings, and blockers rather than relying on a verdict label alone.
+
+Feature 005 repeated this distinction in 005-0005/005-0009: incomplete broad
+audits established no defect. Later complete reviews found actual contract/plan
+gaps. Their ledger task_class labels say narrow_verification; route future work
+by its actual cross-artifact obligations. Recover truncated reads before claiming
+coverage, and preserve incomplete attempts separately from later verdicts.
 
 ### 5. Fresh context for independence, not as ritual
 
@@ -119,6 +134,10 @@ artifacts. Compact prompts should identify role, task/gate, authority, stop
 conditions, and relevant artifact locations, including the baseline and current
 approval record. Avoid restating the whole project. Historical pending text
 should be read alongside the records that supersede it.
+
+Treat the prompt as the assignment delta over durable repository state. Feature
+005 supports this handoff practice, but captured no prompt counts/hashes or
+context-window sizes and therefore establishes no quantitative token savings.
 
 The post-004 sanitization operation supplies an important exception: if a
 downstream agent requires an exact normative artifact to execute safely, an
@@ -180,6 +199,7 @@ the repository, not independent replication of every run.
 | Canonical GPT-6-Astra XHigh synthesis (R/H) | ~2,899 words, combining Low's accessibility/concision with deeper analysis; synthesis, not accumulation of both drafts. |
 | GPT-6-Astra XHigh resource observations (H) | Materially greater observed runtime/credit use in this small sample; no causal or general cost-performance conclusion. |
 | Sol history-reconstruction run (H) | Reported long elapsed duration included a locked/unattended workstation interval; confounded, not active-compute evidence. |
+| Feature 005 GPT-6.1-Sol Medium parent — native orchestration (prospective ledger 005-0010/0014/0015/0019) | Completed decomposed plan review, two implementation phases/checkpoints and final convergence; verdicts included REVISE. Child dispatch/report collection occurred internally. Fresh forks and no overrides were requested; actual child model/effort/resource telemetry was unavailable. |
 
 This is a compact historical reference, not an observational ledger. These
 observations do not isolate model, effort, context, environment, or task effects.
@@ -216,6 +236,11 @@ artifact while XHigh added depth at materially greater observed resource cost.
 Neither observation supports a blanket premium-model requirement. Contributors
 need routes to equivalent evidence, with remaining uncertainty made explicit.
 
+Feature 005 demonstrates an accessible parent configuration orchestrating completed
+gates; unavailable actual child telemetry prevents claiming an entirely
+lower-resource team. Controlled child configurations remain an open experiment,
+not a reason to require premium access or weaken acceptance.
+
 ## Human attention as a resource
 
 Credits and runtime are only part of the cost. Longer, deeper artifacts also
@@ -227,6 +252,13 @@ Do not minimize tokens or output at the expense of readability, evidence, or
 auditability. Ask: **What is the smallest artifact that preserves the evidence
 and decisions a future human needs?** Keep the decision and evidence limits
 visible, with links to deeper records instead of repeating them.
+
+Feature 005's five-task implementation runs used native child dispatch and review
+collection, reducing the need for humans to relay reviewer messages. Net attention
+savings were not measured. Provisionally consider phase-level authorization with
+explicit dependencies, allowed edits, review freeze and hard stops; retain human
+authority over new scope, corrections and external targets. There was no controlled
+comparison with per-task authorization.
 
 ## Environment parity and authority
 
