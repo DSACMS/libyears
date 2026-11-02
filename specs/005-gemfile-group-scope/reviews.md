@@ -967,3 +967,271 @@ only the authorized human /status additions. Runs 005-0001–005-0015 each occur
 once with 44 fields; earlier ledger bytes remain unchanged. Credits_before is
 blank and no credit delta is derived. Current run 005-0016 is handed off as
 44-field temporary JSON and is not appended to the ledger.
+
+
+## T013 independent convergence review — 005-0019
+
+**Date:** 2026-11-02. **Review completeness:** COMPLETE.
+**Final verdict:** CONVERGED. **Independent acceptance accounting:** 28/28.
+**Material findings:** none (0). **Missing required evidence:** none.
+**T013:** COMPLETE. **Feature 005:** CONVERGED / COMPLETE through T001–T013.
+**Next gate:** FEATURE 005 RETROSPECTIVE / ROADMAP REVIEW. That work has not
+begun; no Feature 006, release, tag, publication or push is authorized or begun.
+
+Reviewed HEAD: `87007a21f5f513387074146b56e012bab28d4907`. The working tree
+was clean at run start. Explicit human authority commissioned only this final
+read-only gate, the prior 005-0018 observation, and review/lifecycle evidence.
+All six current Feature 005 artifacts, AGENTS.md, AGENT_ROUTING.md, observation
+protocol/ledger, ROADMAP.md, SPEC.md, README.md and CHANGELOG.md were read.
+The approved specification/plan/task graph, prior reviews, implementation history,
+actual code/test assertions and durable T012 record supply the evidence.
+
+### Independent decomposition and orchestration
+
+Four fresh native child reviewers used `fork_turns="none"`, with no explicit
+model or effort overrides. Primary responsibilities were distinct; cross-cutting
+AC/security checks provided corroboration. No child received sibling conclusions,
+read sibling reports or communicated across slices. The parent read the complete
+reports and synthesized only after all four finished. Temporary reports remain
+outside the repository; the durable evidence needed to review this gate is here.
+
+| Child task | Primary responsibility | Completion / result | Independent execution |
+|---|---|---|---|
+| `/root/review_a` | Product authority, H1–H3/Q1–Q3, spec/plan/task completeness, dependencies and scope | COMPLETE / PASS | 93 focused tests passed, no skips |
+| `/root/review_b` | Actual implementation, P1/F1/F2, security, compatibility, C-01 and regressions | COMPLETE / PASS | 306 + 37 focused/regression tests passed, no skips |
+| `/root/review_c` | Public CLI, output/schema, safe provenance and documentation coherence | COMPLETE / PASS | 62 CLI/output/acceptance tests passed, no skips |
+| `/root/review_d` | Independent all-AC trace and required T012/validation sufficiency | COMPLETE / PASS, 28/28 | 138 focused and 390 full-suite tests passed, no skips |
+
+The harness allows four concurrent agents including the parent. A/B/D ran
+concurrently; C started after B finished, while the remaining reviews were
+finishing. Peak reviewer concurrency was three (four agents including parent).
+Actual child model/effort/resource telemetry is UNAVAILABLE; requested settings
+and task identifiers are observed orchestration facts, not measured telemetry.
+Children are internal audit work and receive no ledger rows. This one run does
+not establish a causal model/resource comparison or general decomposition claim.
+
+### Parent independent synthesis and task completeness
+
+Convergence is based on inspected evidence, not votes. After every child
+completed, the parent reconciled all reports, directly rechecked the authority,
+source flow, parser, safe reader, CLI/scan/output boundaries and substantive
+assertions, and independently checked historical prefixes and frozen files.
+The acceptance index was a locator, never proof by itself.
+
+T001–T012 are complete and dependency-ready in their recorded order:
+T001 parser `4e6f7b4`; T002 typed evidence and T003 safe reads `bbd5737`;
+T004 scope/availability `e4c5f01`; T005 association `09be9fb`; independent
+foundation approval `cb69795`; T006 mixed scan `a0dbf23`; T007 JSON `e3c4f72`;
+T008 human output `7c1d58a`; T009 CLI `ca6613a`; T010 composed acceptance
+`efc231d`; C-01 correction `ecc4924` and focused approval `8e9579c`; T011
+documentation/preparation `0974c56`; T012 authorized offline real-root evidence
+`87007a2`. T002/T003's shared related foundation commit is openly documented;
+separate definitions and evidence remain reviewable. The graph is acyclic:
+T004 requires T001/T002/T003, T009 requires T006/T007/T008, and T013 requires
+T010/T011/T012. Both output formats existed before public activation. T011
+followed corrected checkpoint approval and T012 followed explicit root authority.
+
+The parent verified every T001–T012 completion record and its required evidence,
+not just checkbox totals. Approved spec.md equals its `68589b3` contents;
+approved plan.md equals `52109ab`. Foundation product/test files equal
+`09be9fb`; all product/tests equal corrected `ecc4924` at current HEAD. No
+contract was rewritten to obtain this verdict.
+
+- **P1 CLOSED:** both final inputs open with O_RDONLY/O_NOFOLLOW/O_NONBLOCK,
+  immediately undergo regular-file fstat, and read only that descriptor.
+  Four real regular-to-FIFO replacement witnesses (reader/source × both files)
+  ran without skips, with no writer, pre-read rejection, closed descriptors and
+  five-second guards. Capability refusal has no unsafe fallback.
+- **F1 CLOSED:** after whole-lock acceptance nonpublic Gemfile authority precedes
+  absent direct identity; N survives, unsupported_dependency_source wins and no
+  public lookup occurs. Missing/rejected-lock precedence remains earlier.
+- **F2 CLOSED:** unsupported direct requirement remains a dependency failure;
+  safe declaration metadata/N survive, lock_requirement and selected artifacts
+  are omitted, unsupported text never reaches human/JSON, and lookup is absent.
+- **C-01 CLOSED:** only exact --ruby-group activates scope. All proper long-option
+  prefixes reject before scan with exit 1, including equals/combined requests;
+  ordinary option abbreviations and canonical repeated controls remain compatible.
+- **Ordinary regressions PASS:** absent-request all-direct Ruby never inspects
+  Gemfile; Python/npm/Yarn scopes, mixed ecosystem identities, Python-only
+  snapshots, transport and metric behavior remain intact. Full suite passed.
+- **Security/resources PASS:** complete closed-file recognition, exact root inputs,
+  contained descriptor reads/no-follow replacement handling, 1 MiB/16 KiB/16 MiB
+  bounds, strict decoding, exact direct association and independent public source
+  gates fail closed. No transitive/pin/public-namesake substitution or semantic
+  requirement resolution exists. Existing verified TLS, fixed metadata authority,
+  redirect rejection, request/byte limits and pacing remain unchanged. No new
+  runtime dependency, ecosystem, metric, resolver or general framework was added.
+- **Reporting PASS:** schema 3 remains additive and scoped-only; unknown omitted,
+  known absent null and accepted-format states agree with human reports. Known
+  empty, wholly unmeasurable and unavailable populations and sibling aggregates
+  remain distinct. Safe provenance and supplied-file limitations are explicit.
+
+### Independent 28/28 acceptance accounting
+
+The authoritative requirement for **each** row is approved spec.md S5's matching
+AC identifier, together with S1–S4/security qualifications cited by its behavior.
+Implementation owners below are reconciled against the task Change/Evidence
+clauses and actual code. This table preserves D's independently derived trace;
+the parent independently validated the relevant implementation/assertion bodies
+and current test results before accepting each row. It is not copied from the
+repository's preexisting AC matrix. Every final T013 assessment is PASS.
+
+Test abbreviations: GF=test_gemfile, RG=test_ruby_groups, SS=test_scoped_scan,
+CLI=test_cli, OUT=test_output, ACC=test_ruby_group_acceptance,
+GE=test_gemfile_evidence (all under tests/). Method names omit `test_`.
+R7/R11/R13/R14/R15/R16 denote review records 005-0007/0011/0013/0014/0015/0016
+above; R15 is retained REVISE, qualified by R16's corrected approval. Applicable
+current independent review is A/B/C/D as assigned above, plus this parent T013
+assessment. T012 entries refer to release-validation.md's durable record; a
+criterion without a relevant real-root case is satisfied deterministically and
+is not falsely attributed to T012.
+
+| AC | Requirement and actual implementation / task owners | Independently inspected deterministic witnesses | Review and T012 corroboration | Result |
+|---|---|---|---|---|
+| 01 | Ordinary all-direct scans ignore Gemfile; T006/T009. scan_mixed_repository branches on ruby_groups=None to ruby_source_result, which reads only lock. | SS.ordinary_path_never_opens_gemfile_and_retains_source_call covers absent, valid, invalid Gemfile; OUT.ordinary_ruby_shape_is_unchanged_and_scoped_serializer_is_explicit; ordinary Ruby root tests. | R13/R15/R16. T012 is scoped only and makes no ordinary-mode claim. | PASS |
+| 02 | Exact public selected declaration associates and measures; case-sensitive groups. T005/T006/T009: _associate_scoped_declarations exact direct index, validate_ruby_groups, real scan/metric call. | RG.exact_direct_candidate_and_full_safe_memberships; CLI.explicit_exact_groups_union_duplicates_and_expected_age compares names/ages/lookups for test/Test/default; ACC.real_adapter_population_reaches_scoped_cli_with_platform_dates. | R14/R15/R16; T012 B independently froze json_schemer 2.5.0 and rspec 3.13.2 in test, then compared exact direct public artifacts and CLI rows. | PASS |
+| 03 | Only ungrouped declarations get implicit default; selection explicit. T001/T004/T009: _gem default branch versus explicit groups and selection intersection. | GF.explicit_default_group_is_an_ordinary_membership; RG.union_deduplicates_and_retains_full_memberships_without_default; CLI.explicit_exact_groups_union_duplicates_and_expected_age; ACC.root_read_allowlist_integrity_and_no_implicit_production_or_default. | R14/R15/R16; B empty default versus nonempty test, no default auto-addition. | PASS |
+| 04 | Overlapping memberships yield one identity. T001/T004/T006: sorted set memberships; select each declaration once. | GF.block_membership_unions_and_optional_flags; RG.union_deduplicates_and_retains_full_memberships_without_default; CLI exact-groups test checks rows/count/lookups. | R14/R15; B union/repetition demonstrates population identity deduplication, though its individual declarations each have only test membership. | PASS |
+| 05 | Multi-group union and repeated request deduplication. T004/T006/T009 canonical sorted(set(...)), declaration intersection. | RG.union_deduplicates_and_retains_full_memberships_without_default; SS.scoped_request_is_canonical_and_chooses_only_scoped_source; CLI canonical forwarding and exact-groups tests. | R14/R15/R16; B default+test and test+default+test yield same two names and one lookup each. | PASS |
+| 06 | Established empty block/default gives known zero/null coverage; rejected lock exception retained. T004/T006: parse establishes default/block groups; known count precedes lock. | GF.empty_blocks_and_empty_implicit_default_are_established; RG.known_empty_absent_and_accepted_lock_and_rejected_lock; SS.availability_matrix_with_and_without_successful_siblings; OUT.empty_scopes_keep_requested_inputs_and_recognition_state. | R14/R15; B default 0/0/0 in both scenarios, null coverage, total 0.0. | PASS |
+| 07 | Any unknown group stops entire union before lock. T004: issubset check after complete parse before lock read. | RG.complete_recognition_then_unknown_group_prevents_lock_read checks one error/no partial count and only Gemfile read; SS availability matrix. | R14/R15. No T012 unknown-group case required; deterministic witness supplies obligation. | PASS |
+| 08 | Whole closed subset recognized; arbitrary/unselected/trailing syntax rejected with no partial population and bounded resource work. T001/T003 parse_gemfile anchored cursor, first defect, byte/line limits. | GF.unsupported_statement_families_never_return_partial_scope; unsupported_calls_options_expressions_and_trailing_tokens; literals_reject_escapes_interpolation_and_newlines; nested_blocks_and_unselected_code_reject; physical-line limit; RG byte/line boundary tests. | R11/R14/R15; C git_source at line 2 rejects full scope; later familiar declarations do not salvage population. | PASS |
+| 09 | Optional flags do not change membership/config; nesting rejected. T001 parser validates/discards optional, rejects second active block. | GF.block_membership_unions_and_optional_flags; nested_blocks_and_unselected_code_reject; ACC root allowlist forbids configuration reads with optional:false declaration. | R14/R15. T012 B simple block is not claimed to cover optional/nested cases. | PASS |
+| 10 | Duplicate declarations reject, duplicate lock direct identities reject whole lock. T001/T004 seen-name set and existing whole-lock parser. | GF.duplicates_anywhere_reject_without_merging; RG.rejected_entire_lock_preserves_known_scope_even_for_excluded_rows, including duplicate direct; existing lock parser duplicate assertions. | R14/R15. B independently records unique identities, not general duplicate evidence. | PASS |
+| 11 | Missing/unreadable/unsafe Gemfile means unknown scope/no lookup. T003/T004 _ScopedRubyReader and early failure return. | RG.nonregular_dangling_and_unreadable_are_safe_failures; escaping_links_never_open_or_read_target; safe_read_reasons_map_to_source_without_salvage; four P1 witnesses include Gemfile reader/source FIFO replacement. | R11/R14/R15; A absent Gemfile => gemfile_missing, N/M null, no rows/lookup/lock processing. | PASS |
+| 12 | Missing lock keeps known selected names unmeasurable; declaration pin cannot supply version. T004 missing-lock branch builds only declaration failures. | RG.missing_lock_keeps_pins_as_unmeasurable_safe_declarations; known_empty_absent_and_accepted_lock_and_rejected_lock; OUT.missing_lock_and_missing_direct_omit_unknown_requirement. | R14/R15. A does not cover this because its Gemfile is also absent; do not invent a denominator for A. | PASS |
+| 13 | Absent direct identity cannot use transitive spec/pin. T005 direct-name index and lock_dependency_missing. | RG.missing_direct_identity_cannot_use_transitive_spec_or_pin uses rake/Rack/empty direct list despite rack spec; OUT missing-direct exact row/no-lookup assertion; ACC precedence missing-direct stage. | R14/R15; B excludes all transitive specs and uses only two direct identities. | PASS |
+| 14 | Excluded names absent; textual mismatch safe two-value evidence with no version/lookup or semantic inference. T005 comparison before selected version. | RG.excluded_and_lock_only_identities_never_become_candidates; textual_mismatch_table_preserves_both_safe_values_without_artifacts covers absence/order/spacing/operator; OUT.mismatch_preserves_both_literal_values_without_version_artifacts and human safe failures; ACC mismatch stage. | R7/R14/R15; B confirms transitive exclusions and absence-equals-absence, no coherence claim. Mismatch itself covered offline. | PASS |
+| 15 | Rejected lock retains N but measurement unavailable/no salvaged rows; isolated failures retain N. T004/T005/T006 whole parse then association/availability. | RG.rejected_entire_lock_preserves_known_scope_even_for_excluded_rows; known_empty...; existing_isolated_selection_failures_keep_scope_and_artifact_rules; SS availability matrix. | R14/R15. C is Gemfile failure, not lock rejection; no T012 substitution asserted. | PASS |
+| 16 | Independent public authority; private/pin/GIT/PATH/multiple-remotes cannot obtain namesake. T005 _has_public_authority, authorization prefix, Gemfile authority first only after accepted lock. | RG.lock_authority_prefix_precedes_mismatch_and_selected_evidence; f1_nonpublic_gemfile_precedes_missing_direct_after_lock_acceptance; nonpublic_gemfile_does_not_override_unavailable_lock_precedence; ACC F1/local-authority stages. | R7/R14/R15; B independently validates single public remote/unpinned direct names and exact generic specs. C never reaches lock authority. | PASS |
+| 17 | Empty, unavailable and wholly unmeasurable remain distinct; latter coverage 0%. T006/T008 aggregation plus disclosure branches. | SS.availability_matrix_with_and_without_successful_siblings; OUT.human_empty_unavailable_and_wholly_unmeasurable_remain_distinct. | R15; A/C null unknown states versus B default 0/0/null and B missing-date 2/0/2/0%. | PASS |
+| 18 | Scoped source failure preserves sibling measurements/unknown denominator rules. T006 separate source pairs and availability summaries. | SS.availability_matrix_with_and_without_successful_siblings checks full MetricSummary states; ACC.cli_precedence_stages_safe_output_and_successful_siblings repeats all 11 stages with/without siblings and checks preserved pypi/npm rows and totals. | R15. T012 intentionally mocks Python/npm sources absent to respect root authorization; makes no sibling claim. | PASS |
+| 19 | Ordinary Python/npm/Yarn/mixed identity unchanged. T006/T009 absent keyword branch; Python-only snapshot; no adapter/parser redesign. | SS.three_ecosystems_keep_same_name_and_snapshot_python_only; CLI.resolved_remains_python_only_and_verbose_json_is_identical; full deterministic existing PyPI/npm/Yarn/mixed tests. | R15/R16 ordinary abbreviation/control comparisons and broad regression. T012 explicitly does not inspect sibling content. | PASS |
+| 20 | Safe paired human/JSON names, sources, requirements, counts/limitations; unsupported text absent. T007/T008/T011 explicit serialization and scoped disclosures. | OUT.human_measured_scope_and_evidence_match_json_in_both_branches; human_failures_retain_safe_metadata_and_omit_unsupported_text; human_source_reasons_are_contextual_and_safe; ACC 11-stage normal/verbose human/JSON. | R7/R15; T011 docs/examples; all 24 T012 reports paired and reconciled on population, full memberships, counts, source recognition, limitations and safe evidence. | PASS |
+| 21 | Schema 3 additive evidence, exact presence/null/omission and selected/publication artifacts; ordinary unchanged. T002/T005/T006/T007 model trailing defaults, safe construction/propagation and explicit dictionaries. | GE omitted/null/text and compatibility tests; OUT.source_evidence_presence_and_null_format_across_unavailable_states; measured_evidence_keeps_full_memberships_requirement_order_and_artifacts; known_absent_requirement_is_null_on_success_local_and_registry_failure; f1_and_f2_preserve_safe_evidence_and_never_echo_unsafe_text; mismatch/scoped-failure/ordinary tests. | R7/R14/R15; T012 A/C requested evidence and null format; B accepted format, [] declaration requirements, present null lock requirement, selected artifacts only, no invented publication artifacts. | PASS |
+| 22 | No production/deployed/runtime/history certification. T007/T008/T011 scoped labels/disclosure and docs. | OUT human-measured test asserts literal non-certification and publication limits; ACC separate test/default/production rows; README/SPEC/change note describe supplied-file scope. | R15; T012 explicitly limits application coverage, actual history, runtime/deployment, pair coherence and integrity claims. | PASS |
+| 23 | No execution/install/resolve/credentials/target mutation. T001/T003/T004 pure parser and root-only read pipeline. | GF.parser_does_not_access_files_network_or_execute_code; ACC execution/archive guards, builtins/io/open allowlist, credential/config/include/gemspec decoys and before/after bytes; RG unchanged inputs. | R14/R15; T012 socket/urllib/subprocess guards and permitted-input before/after manifests. No real-root reaccess in this review. | PASS |
+| 24 | Only supplied root inputs; no outside target/included/nested/parent/alternate files; scoped direct-file usage error. T003/T004/T009 reader containment and request validator. | RG missing-decoy/internal/escaping/dangling/replacement tests; both final symlink/directory replacement and both FIFO reader/source witnesses; ACC allowlist; CLI.scoped_direct_file_and_invalid_paths_are_usage_errors. | R11/R14/R15; A no descendant substitute; B/C only authorized root inputs plus authorized provenance; C no search to recover unavailable revision. | PASS |
+| 25 | Existing verified TLS/trust/authority/redirect/transport limits. T006 reuses RubyGemsAdapter; no transport changes. | SS.scoped_default_adapter_retains_ca_bundle_and_trust; ACC.real_adapter_population_reaches_scoped_cli_with_platform_dates asserts fixed URLs, authority, timeout, byte bound, CERT_REQUIRED/hostname verification and pacing; existing registry/Ruby registry tests in 390 suite. | R15/R16. T012 intentionally uses injected synthetic results and cannot prove live transport; optional smoke not required. | PASS |
+| 26 | Existing canonical observable dates/latest/arithmetic/exact zero/flagged clamp. T006 reuses measure_dependency and publication results. | ACC.real_adapter_population_reaches_scoped_cli_with_platform_dates checks 731/365.25 and earliest admissible platform dates/excluded prerelease; SS.same_version_zero_and_flagged_timestamp_clamping; full metric/registry regression tests. | R15; B synthetic same used/latest 2020-01-01 => exact 0.0; this is adapter-output validation, not actual release history. | PASS |
+| 27 | Completed evidence reports 0; usage/path 1; systemic 2; sole exact option. T009 validate before scan and parser errors; C-01 hook rejects abbreviation candidate sets. | CLI malformed/missing/comma, direct-file/path, evidence-failure/empty completed reports, request/systemic mapping; abbreviated_group_options_are_usage_errors_before_scan covers every proper prefix in separate/equal/canonical combination; ordinary_option_spellings_and_abbreviations_remain_compatible. | R15 recorded C-01 REVISE, R16 closes it and restores T009/T010; all 24 T012 evidence reports exit 0 with empty stderr. | PASS |
+| 28 | Safe distinct source/dependency failures and deterministic precedence including F1/F2/P1. T003/T004/T005/T006/T007/T008 safe early returns, authorization order and serialization. | ACC.cli_precedence_stages_safe_output_and_successful_siblings checks 11 stages through registry, safe markers and lookups; RG f1/f2, unavailable-lock precedence, unknown-before-lock and both composed FIFO witnesses; OUT exact omission/safe metadata tests. | R7 F1/F2; R11 P1; R14/R15 implementation reviews; A and C show higher-priority Gemfile errors/no lock processing/lookup, B registry missing-date is dependency-level known population. | PASS |
+
+
+### Required T012 assessment and validation separation
+
+The parent independently reconciled the durable T012 procedure, chronology,
+expectation hash, input provenance, selected identities, counts, lookup sets and
+integrity statements. Existing evidence is sufficient; no original root or
+nonpublic transient capture was accessed again. This is audit of durable recorded
+observations, not a fresh external reproduction.
+
+- **A — iv-cbv-payroll: INSUFFICIENT EVIDENCE.** Both exactly named inputs were
+  absent. The default probe establishes no population. Gemfile/gemfile_missing,
+  unknown N/M, null format, no rows/lookup/later lock processing agree across
+  formats. Absence/provenance integrity is preserved. This is not counted as a
+  successful population comparison and no denominator is fabricated.
+- **B — price-transparency-guide: PASS.** Independently frozen full-input
+  interpretation establishes empty default and test={json_schemer, rspec}, exact
+  public direct versions 2.5.0/3.13.2, no requirements (absence equals absence),
+  unpinned identities and one authorized public remote. Transitives are excluded.
+  default gives N/M/U=0/0/0 and null coverage; test, default+test and repeated
+  test+default+test give the same two identities and one lookup each per report.
+  Supplied mocks yield 2/2/0, coverage 1.0, exact 0.0 ages; missing dates yield
+  2/0/2, coverage 0.0, release_date_missing. Safe membership/null requirement/
+  selected-artifact evidence and human/JSON values agree. Input/Git manifests
+  match before/after. Supplied 2020 timestamps are explicitly synthetic adapter
+  output, not publication observations; publication artifacts are not invented.
+- **C — dpc-admin: EXPECTED REJECTION.** git_source at physical line 2 lies
+  outside the closed language, so complete-file recognition rejects despite
+  familiar later declarations. unsupported_gemfile_syntax, unknown N/M, null
+  format, no rows/lookup or product lock processing agree across formats.
+  Independent lock inspection is explicitly distinct from product acceptance.
+  Input manifests match; unavailable revision/status remain unavailable, and no
+  whole-checkout or clean-tree claim is inferred.
+
+T012's 12 offline cases/24 paired CLI reports account for all targets and scenarios
+(4 A + 16 B + 4 C reports), exit 0 and matching safe evidence. The expectation was
+frozen before product invocation; two harness-only assertion/printer corrections
+are preserved without changing that population oracle. Ruby-only sibling source
+isolation and socket/urllib/subprocess guards respect the authorized boundary.
+No network, Ruby/Bundler/package manager, target code or target mutation occurred.
+B supplies the required successful real-root population comparison. A/C follow
+approved missing-input/conservative-rejection behavior; B compensates for no
+defect and neither other outcome is disguised as success.
+
+Required deterministic verification and required authorized real-root evidence
+are COMPLETE. Optional live registry smoke is NOT REQUIRED, not commissioned
+and not performed. It has no outgoing mandatory dependency and cannot replace
+either required gate. No fresh external access was needed by this review.
+
+### Public documentation, history and limitations
+
+README/SPEC/CHANGELOG describe the exact implemented activation, supported static
+subset, conservative rejection, all-direct compatibility, safe additive evidence,
+coverage distinctions, resource limits and supplied-file claims. T011's checked
+synthetic examples and actual paired output assertions agree. No installed,
+deployed, runtime, historical-coherence, complete-publication-history or broad
+application-coverage claim is introduced.
+
+**Nonmaterial stale lifecycle wording, left unchanged:** README.md:397–398 calls
+real-root validation pending; SPEC.md:810–812 calls it future. These T011-era
+cross-reference descriptions lag completed T012. The linked canonical validation
+disposition and detailed T012 record, independently corroborated by tasks.md,
+unambiguously establish completion and all three outcomes. The phrases change
+no product contract, authorization, evidence sufficiency or success claim. They
+are recorded as editorial lifecycle lag, not a material finding or missing gate;
+a later authorized retrospective/roadmap review may consider them. No repair is
+performed. AGENTS.md's older Feature 004 no-Gemfile language is qualified by its
+explicit approved-feature precedence rule; public docs state the scoped exception.
+Historical next-gate text is preserved under later approval/completion records.
+
+Historical integrity is verified: original discovery uncertainty; deliberate
+human selection H1–H3; draft clarification and Q1–Q3 resolution; initial incomplete
+spec review; decomposed F1/F2 REVISE and focused correction/approval; initial
+incomplete plan review; P1 REVISE and focused correction/approval; approved task
+graph; post-T005 approval; original post-T010 C-01 REVISE; correction/focused
+approval (including intermediate --r failure); T011 preparation; all T012 outcomes.
+The parent compared nine historical review versions (`b8a52bb`, `68589b3`,
+`591da21`, `d8a6e19`, `52109ab`, `63f6135`, `cb69795`, `99dcaf4`, `8e9579c`)
+as exact byte prefixes of pre-T013 reviews.md. This is not a fictional straight-line
+success story. No incomplete attempt is converted into a product defect or pass.
+
+Limits: finite closed-subset tests do not prove arbitrary Ruby support; a passing
+real-root population comparison does not establish general application coverage.
+This review relies on sufficient durable T012 evidence, with its explicit absent
+inputs, synthetic dates, unavailable C revision and permitted-input integrity
+boundary. It did not inspect transient captures or reaccess targets. Child actual
+telemetry and run-level timer/account readings are unavailable. No causal
+performance or billing conclusion is made.
+
+### Current verification, observation and lifecycle boundary
+
+New parent verification in this run, distinct from historical 005-0016 evidence:
+
+| Command | Current result |
+|---|---|
+| `python -m unittest tests.test_cli tests.test_ruby_group_acceptance tests.test_ruby_groups` | 67 passed, no skips |
+| `python -m unittest discover -s tests` | 390 passed, no skips |
+| `git diff --check` | Passed before recording; repeated on final evidence diff |
+
+Retained historical results remain 357 post-T005, 388 original post-T010 (with
+C-01 still open), 390 corrected post-T010, and T011 62 focused/six example
+checks. They are not relabeled as new runs. Independent child results are listed
+above and do not inflate the parent count.
+
+005-0018 is appended exactly once from its JSON handoff plus authorized human
+/status fields and account continuity: credits_before=1, credits_after=3. These
+are account-level observations, not exact per-run billing; no delta is derived or
+stored. runtime_confounded=yes and the existing Git approval-wait runtime note
+remain unchanged. All 005-0001–005-0018 occur exactly once with 44 fields, earlier
+ledger bytes preserved. Current 005-0019 and children are not appended.
+
+Only observations/agent-runs.csv, this appended review, and narrow T013/task
+lifecycle status change. All implementation, tests, spec, plan, discovery,
+README/SPEC/CHANGELOG and T012 evidence remain unchanged. All prior review bytes
+remain a prefix. One coherent local review-evidence commit is authorized; no
+push/tag/release/publication, remediation or Feature 006 work occurred.
+Feature 005 is CONVERGED / COMPLETE through T013. Retrospective/roadmap review
+remains the next separate human gate; no full retrospective lifecycle closure or
+release is claimed here.

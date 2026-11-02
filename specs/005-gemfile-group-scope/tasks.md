@@ -9,8 +9,12 @@ authorizes continuation through T006–T010 and the post-T010 checkpoint.
 Run `005-0017` explicitly authorizes T011 documentation and validation
 preparation only, after the corrected post-T010 approval in `005-0016`.
 Run `005-0018` explicitly authorizes T012 read-only offline validation of exactly
-three human-named roots; T012 is complete with evidence below. T013 remains
-unstarted and is a hard stop. No network work is authorized. Historical submission/gate
+three human-named roots; T012 is complete with evidence below. Run `005-0019`
+explicitly authorizes T013 read-only convergence: COMPLETE / CONVERGED, 28/28
+ACs independently accounted for, no material findings. **Feature 005 is
+CONVERGED / COMPLETE through T001–T013.** Next gate: **FEATURE 005 RETROSPECTIVE /
+ROADMAP REVIEW** (not begun); Feature 006 is not begun. No release or full
+retrospective lifecycle closure is claimed. No network work is authorized. Historical submission/gate
 text below is superseded by this execution record and the review history.
 
 The [approved specification](spec.md) and [approved technical plan](plan.md)
@@ -480,7 +484,7 @@ rerun. **T013 NOT STARTED; next gate: separately authorized convergence review.*
 
 ### T013 — Read-only convergence review
 
-- [ ] Complete. **Predecessors:** T010, T011, T012.
+- [x] Complete. **Run 005-0019: COMPLETE / CONVERGED; 28/28 ACs.** **Predecessors:** T010, T011, T012.
 - **Authority:** spec S5; plan compatibility/verification/validation gates and
   AGENTS.md SDD convergence. Review owner for all ACs and source boundaries.
 - **Change:** Independently reconcile approved spec, plan, task completion,
@@ -491,6 +495,23 @@ rerun. **T013 NOT STARTED; next gate: separately authorized convergence review.*
   P1/F1/F2, ordinary regressions, resource/security boundaries and required versus
   optional validation. No convergence claim if T012 is pending or deterministic
   evidence is incomplete. No release, tag, push or publication is authorized.
+
+**Run 005-0019 completion evidence:** Four fresh independent reviewers audited
+product authority/tasks, implementation/security/regressions, public interface/
+documentation, and every AC/T012. Parent synthesis followed all four reports,
+independently reconciled actual code/assertions, preserved historical failures,
+and found no material finding or required evidence gap. P1/F1/F2/C-01 remain
+closed. T001–T012 and required T012 B population comparison are complete; A's
+insufficiency and C's expected rejection remain explicit. Optional live smoke
+is not required/performed. Parent focused 67 and full deterministic 390 tests
+passed, no skips; git diff --check passed. See the appended
+[T013 review](reviews.md#t013-independent-convergence-review--005-0019) for
+independent 28/28 traces, current versus historical verification, nonmaterial
+stale public lifecycle wording, orchestration and limitations. No product,
+test, approved contract, public documentation or T012 remediation occurred.
+Only prior observation 005-0018 and T013 review/lifecycle evidence change.
+**Next gate: FEATURE 005 RETROSPECTIVE / ROADMAP REVIEW.** Do not begin Feature
+006. No push/tag/release/publication.
 
 ## Acceptance ownership
 
