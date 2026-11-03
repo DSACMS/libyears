@@ -1819,3 +1819,60 @@ commit freezes tests/evidence before fresh independent all36 audit. Existing exa
 77d66b9 Windows/POSIX worker-graph scope and hosted-secret-check limitations remain
 explicit. No live NuGet, external target, producer, credentials/new trust, scanner
 exception, Feature007 or push occurs; T015 not begun before K4.
+
+### Independent K4 all36 acceptance audit — final offline disposition
+
+Frozen candidate `f8e0477007c7310c1ccdc68d9fa7b7fcd5836251`, based on approved
+K3 atcdfef4c. Three fresh non-author contexts, fork_turns=none without overrides,
+directly read complete authority/history/acceptance evidence, recover truncations,
+verify approved digests and inspect actual production/tests. Their reports complete
+before synthesis without current sibling conclusion sharing. All are read-only;
+no edits/commits/network/external targets/producers/delegation. Actual settings
+and resource telemetry remain unavailable.
+
+| Reviewer | Accountable complete AC coverage | Verdict / executed evidence |
+|---|---|---|
+| `/root/k4_local_audit` | AC03–17,24,33,36:18/18; local31/32/35 contributions | COMPLETE / APPROVE, no material finding; focused116 PASS and53 additional composed public cases PASS |
+| `/root/k4_registry_audit` | AC18–23,34:7/7; public24/31/32/35 contributions | COMPLETE / APPROVE, no material finding; focused79/full631 PASS and122 adversarial assertions PASS |
+| `/root/k4_contract_audit` | AC01/02,25–32,35:11/11;36 contribution | COMPLETE / APPROVE, no material finding; focused80/full631 PASS, reason reconciliation3 PASS and244 additional public cases PASS |
+
+The accountable sets are disjoint and cover exactly36/36. Parent reconciliation
+assesses cross-boundaries rather than counting positive votes: complete population
+and known/unknown denominator join whole-lock/witness acceptance; F1/F2 association
+precedes origin/hash capability; complete metadata identity/listing/alias evidence
+precedes public content/date claims; normalized identity feeds unchanged arithmetic;
+typed safe facts feed exact JSON and corresponding human output; every source/
+repository null/zero/count state preserves sibling identities and aggregates.
+All23 retained S6 pairs have reachable executable triggers, deterministic stage
+precedence and safe omissions; no NuGet ambiguity or later-source invention.
+
+The public acceptance injection bypasses adapter/supervisor and is explicitly
+qualified. Separate inspected real adapter/client/protocol/controller composition
+and offline real-worker witnesses supply cancellation/process evidence. Post-call
+forbidden-operation histories catch deliberately swallowed socket/read attempts;
+contract reviewer additionally discriminates swallowed subprocess.run. Actual
+reader whitelist, unavailable-platform refusal, excluded evidence nonrepair and
+before/after synthetic target bytes remain separate from portable fixtures.
+CLI case-variant privacy, Yarn diagnostic protection, raw source/response/exception/
+path canaries and all report modes retain their closed witnesses. Ordinary and
+mixed Python/npm/Yarn/Ruby behavior and public documentation remain consistent.
+
+Registry reviewer verifies13 dependency/lifecycle/workflow paths byte-identical
+to exact77d66b9, whose nine platform jobs passed explicit lifecycle/full-suite/
+whitespace. Other reviewers independently confirm relevant bytes unchanged.
+This preserves required worker-graph platform evidence without claiming later
+CLI/acceptance Windows execution. Live NuGet yield/hash-domain fitness, real-root
+K5 evidence and K6 convergence remain unverified. The hosted secret-check FAIL,
+local redacted synthetic reproduction and unavailable hosted full cause remain
+separate and unchanged; no policy exception or new predecessor is invented.
+
+**K4 audit completion COMPLETE / APPROVE. Offline accounting36/36 PASS.**
+**T014 final offline acceptance checkpoint APPROVED.** No unresolved material
+implementation finding remains; F1/F2/P1/K1-F1/T008-V1/K2-M1/K3-C1 stay closed.
+Frozen spec/plan/tasks and acceptance candidate bytes remain unchanged after
+commissioning, including no approval-only edit. Parent own acceptance8/full631
+and traceability/whitespace checks remain valid. This approval is offline
+acceptance, not full feature convergence, real-root validation, release or push.
+T015 preparation is now dependency-ready and continues automatically. T016 still
+requires explicit exact target/access/network authority; no target is selected
+or accessed by this disposition and required K5 is not made optional.
