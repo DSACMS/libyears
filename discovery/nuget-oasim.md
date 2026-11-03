@@ -1,6 +1,10 @@
 # NuGet / OASim opportunity discovery
 
-**Disposition: bounded discovery COMPLETE; recommended radar state EXPLORE.**
+**Current disposition: Phase 2 execution BLOCKED at SDK preflight; CONTINUE EXPLORE.**
+The [Phase 2 record](#phase-2-retained-evidence-experiment) supersedes the
+historical next gate below. Feature 006 remains unselected and unstarted.
+
+**Phase 1 disposition: bounded discovery COMPLETE; recommended radar state EXPLORE.**
 Research date: 2026-11-03. This is pre-selection opportunity evidence, not
 Feature 006 selection or authority to draft its specification or implementation.
 OASim demonstrates declarations but **no safely measurable population today**.
@@ -305,3 +309,226 @@ target write occurred. Local documentation links and `git diff --check` pass.
 Implementation, tests, Feature 005 records and the observation ledger remain
 unchanged. No Feature 006 artifact exists. The sole repository changes are this
 pre-selection discovery and ROADMAP's EXPLORE entry; no push is performed.
+
+## Phase 2 retained-evidence experiment
+
+**Date:** 2026-11-03. **Status:** BLOCKED / experiment incomplete.
+**Recommendation:** CONTINUE EXPLORE. **Human Feature 006 selection candidate: NO.**
+The environment could not locate `dotnet`; no successful restore, assets, lock
+or package-list oracle was produced. This is an execution-environment limit,
+not evidence that NuGet retained artifacts are unsuitable. It does not justify
+DEFER or product selection. The previous read-only prohibition on generating
+OASim evidence was superseded by the human's explicit Phase 2 authorization;
+that exception does not change libyears' static-scanning boundary.
+
+### Authority, preflight and declaration view A
+
+The parent began with the supplied task and repository artifacts; two analysis
+children received fresh, non-inherited contexts. Authority covered only OASim,
+normal installed-dotnet restore against existing sources, disposable evidence,
+and experimental locks. No installation, source changes, interactive login,
+trust changes, application execution, or unrelated-repository access occurred.
+
+OASim HEAD remains `1e937015e1d242fee5597ea0fbdc4cd5c983f101`.
+Initial Git porcelain status was empty. Before attempting tooling, the parent
+created `/tmp/nuget-phase2.VgJ3IN`, hashed all 223 tracked files for integrity,
+recorded relevant input hashes and safely identified the two in-repository
+source additions. No tracked application content was interpreted; its bytes
+were hashed only for the required unchanged-content check.
+
+The 14-file dependency/configuration manifest matches Phase 1 exactly:
+`c21dcac8ed8405194671294b5d2fe6c3d4c647ae927fd7d6e6aad271372ace4c`.
+Its canonicalization remains the compact sorted JSON described above.
+Both configs add the source named `AvaloniaCI`, using the same non-nuget.org
+HTTPS endpoint. Its URL is withheld; no credential nodes were inspected.
+Neither config clears inherited sources or supplies source mapping. Effective
+user/machine/ancestor configuration was not inspected or established. These
+are configured identities, not proof of the sources effective for a restore.
+
+Hidden/ignored-inclusive metadata inventory and an independent declaration
+analysis reconfirmed the Phase 1 table: ten C# projects, all literal `net10.0`,
+51 explicit PackageReference occurrences, 24 unique IDs/request pairs, and 15
+ProjectReference edges. All package Include/Version values remain literal;
+there are no observed dependency conditions, explicit imports, central version
+inputs, Update or VersionOverride forms. Three legacy conditional OutputPath
+groups do not condition dependencies. SDK/ancestor imports remain outside the
+observed static baseline. Bare numeric requests still do not establish selected
+versions. PrivateAssets on the xunit runner does not remove its explicit direct
+reference. The installer was not treated as an additional C# package context.
+
+`declarations.json` retains the per-project identities, requests, framework
+elements and project-reference edges outside Git. Its SHA-256 is
+`7eb820c73356ca035b75366ba86a03a735694ebc661ef8731dc2d741045c8eb0`.
+No pre-existing obj/bin, assets, locks or generated NuGet artifact names were
+found. The declaration population is known statically; the evaluated direct,
+implicit and transitive populations remain unknown.
+
+### Execution record and missing views B–D
+
+The parent executed these tool-discovery commands from the authorized checkout:
+
+```sh
+dotnet --version
+command -v dotnet
+```
+
+The first exited **127**, reporting `command not found: dotnet`; the second
+exited **1** with no executable location. SDK version is **UNKNOWN**. No restore
+was attempted, so there is no restore exit status, source connectivity result,
+restore warning/error record, or generated assets location. This is not a failed
+NuGet restore and not a credentials/trust failure. The human was asked for an
+exact installed executable path; no broader filesystem search or SDK installation
+was substituted. `tool-preflight.txt` retains the commands and outcomes.
+
+Git provenance commands were `git rev-parse HEAD`,
+`git status --porcelain=v1 --untracked-files=all`, and `git ls-files -z`.
+Metadata discovery used `rg --files --hidden --no-ignore`, excluding `.git`,
+with project/solution/config/Directory/global/assets/lock/NuGet/dgspec filename
+filters. Local standard-library Python scripts hashed tracked bytes, extracted
+only source-section identities, serialized XML declarations and compared final
+integrity. These were evidence operations, not package tooling or application
+execution. No restore, build, run, test, package-list or lock-generation command
+was executed. The following documented command is **prospective, not executed**:
+
+```sh
+dotnet package list --project <project.csproj> --include-transitive --format json --output-version 1 --no-restore
+```
+
+Microsoft documents the noun-first form for .NET 10 and verb-first
+`dotnet list package` for earlier SDKs. The installed version must be established
+before choosing syntax. The explicit no-restore option is required to avoid
+.NET 10 automatic restore. Requested and resolved versions differ; implicit
+references also occur. [Package-list reference](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-package-list)
+
+No oracle JSON exists, so its location/hash and direct/transitive/implicit counts
+are **N/A / unknown**, not zero. No assets or lock file exists, so locations and
+hashes are **N/A**. Cross-evidence agreement/disagreement is **NOT TESTED**;
+there is no frozen empirical comparison to validate. Static declarations were
+not rewritten from an oracle. Views B (restore/assets), C (oracle) and D (lock)
+remain unavailable; the requested minimum three observed views was not achieved.
+
+### Documentation-supported hypotheses, not experimental results
+
+Assets are generated restore graphs, normally under obj, accompanied by NuGet
+props/targets. This supports investigating static selected-version extraction;
+it does not validate a parser, association rule, implicit classification or
+stale-evidence detection for OASim. [Restore outputs](https://learn.microsoft.com/en-us/nuget/reference/msbuild-targets#restore-outputs)
+
+Locks retain dependency closure including transitives. Normal restore can update
+them; locked mode has different consistency behavior. They appear more suitable
+for retention than temporary assets, but stronger portability and declaration
+association were not demonstrated here. SDK implicit references still require
+separation from explicit scope. [PackageReference and locking](https://learn.microsoft.com/en-us/nuget/consume-packages/package-references-in-project-files#locking-dependencies)
+
+The documented restore options include `--use-lock-file` and `--lock-file-path`.
+A custom external pathname is a plausible bounded experiment for an individual
+project without project references. The documentation does not establish safe
+unique destinations when one absolute lock path is propagated through a
+multi-project graph; assuming that behavior would be unsafe. No such command was
+attempted. [Restore reference](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore)
+Project and solution invocation can also use different configuration hierarchies;
+a future narrow-project restore must retain that distinction rather than claim
+solution equivalence. [Common configurations](https://learn.microsoft.com/en-us/nuget/consume-packages/configuring-nuget-behavior)
+
+### Evidence chain, source authority and synthesis
+
+These classifications describe **potential supplied evidence**, conditional on
+future validation; no observed artifact qualifies as a strong candidate.
+
+| Candidate | Classification | Missing evidence / product boundary |
+|---|---|---|
+| project.assets.json plus declarations/context/provenance | CONDITIONAL CANDIDATE | No actual selection, association, implicit/project distinction, freshness or source-origin comparison |
+| packages.lock.json plus declarations/context/provenance | CONDITIONAL CANDIDATE | No lock witness, per-project external-generation validation or consistency comparison |
+| Exported package-list JSON plus producer/context/provenance | CONDITIONAL CANDIDATE | Documented oracle mechanism; supplied-snapshot product fitness untested |
+| Any candidate alone as authority for OASim public publication lookup | INSUFFICIENT | Public origin/authorization absent |
+| Bare requests treated as selected versions, or public namesake substitution | UNSAFE / WRONG SEMANTICS | Violates selection and source-authority boundaries |
+
+Answers to the ten synthesis questions:
+
+1. **Assets:** plausible static selected evidence, suitability unproven here.
+2. **Locks:** retention lifecycle is promising; stronger/portable evidence is
+   unproven, especially project/framework association and source authority.
+3. **Export:** useful as a documented oracle mechanism; no actual oracle obtained.
+   Whether to support supplied snapshots remains an unanswered product question.
+4. **Declaration → selection:** potentially without resolver reproduction when
+   sufficient retained context exists; no OASim association was demonstrated.
+5. **Direct/transitive:** documentation distinguishes these concepts; reliable
+   explicit-direct versus implicit versus project classification remains untested.
+6. **Frameworks:** retain each project/framework independently. Ten single-value
+   net10.0 declarations do not validate true multi-targeting, runtime-specific
+   graphs, differing selections or cross-project aggregation.
+7. **Source authority:** UNKNOWN / public lookup unauthorized. No producing
+   restore or effective source context exists, and no package origin was proved.
+8. **Inputs together:** investigate declarations, retained exact evidence,
+   project/framework and producer/tool context, coherent input provenance and
+   independent nonsecret public-source authorization. This is a hypothesis,
+   not a selected required-input product contract.
+9. **Fail closed:** missing/failed/partial restore, stale or mismatched inputs,
+   malformed/unsupported formats, ambiguous ID/selection/context, unknown imports
+   or conditions affecting scope, implicit/project population confusion,
+   conflicting evidence, and unknown source authority. Unknown scope must not
+   become fabricated coverage. No new public error taxonomy is approved.
+10. **Selection readiness:** NO. CONTINUE EXPLORE after tool availability is
+    resolved; do not select Feature 006 on documentation possibilities alone.
+
+Configuration identifies eligible sources, not necessarily the source of each
+selected package. Multiple sources can contain the same identity, and cached
+packages bypass mapping/download lookup. Thus source lists or mappings alone
+cannot prove historical origin. No OASim publication lookup was performed, and
+no public metadata probe was performed. A future experiment may evaluate a
+bounded combination of producing restore/configuration evidence, mapping and
+supplied nonsecret origin provenance, with cache limitations explicit. Whether
+that suffices is a human trust/product decision. [Source-mapping limitations](https://learn.microsoft.com/en-us/nuget/consume-packages/package-source-mapping)
+
+### Verification, review and next gate
+
+Final integrity comparison matched all 223 tracked OASim file hashes. HEAD and
+empty porcelain status were unchanged. Generated-artifact inventory remained
+empty; no cleanup was necessary and no residual generated state remains. No
+project declarations, versions, source configuration, credentials or trust
+controls were changed. No application code executed. All raw experiment evidence
+remains under the external temporary directory; only this summary enters Git.
+
+The two fresh non-author review dispositions are recorded below after review.
+They audit this blocked record and its limits; they cannot replace the missing
+empirical comparison. No Feature 006 directory, implementation change, ledger
+append or schema change is authorized. ROADMAP remains unchanged: no material
+NuGet evidence-fitness result was obtained. Product tests are inapplicable to
+this documentation-only change; patch whitespace and scope are checked instead.
+
+**Next human gate:** identify/authorize an installed SDK executable or separately
+provide an authorized execution environment, then resume the evidence experiment.
+This run grants no installation authority. Source/credentials/trust changes or
+interactive authentication still require new human authority. Feature selection
+remains a separate later human decision.
+
+**Observation convention:** retain this run in this artifact, with no retroactive
+ID for Phase 1 and no ledger append. Recommend prospective `discovery-0001`
+with pre-selection lifecycle context only after human adoption; preserve schema
+v1's 44 fields.
+
+### Phase 2 independent review record
+
+Analysis children were `/root/declarations` (independent declaration baseline)
+and `/root/semantics` (official-document semantics and safe command research).
+The parent alone attempted SDK discovery and synthesized the blocked record.
+No analysis child generated restore evidence.
+
+After freezing document SHA-256
+`9bd0edc2859c62d7a095099b03867ff40cdc9235bd2e021dfe1875c11e630327`,
+two fresh non-author contexts completed independent audits:
+
+| Reviewer | Scope | Verdict |
+|---|---|---|
+| `/root/phase2_fact_review` | NuGet documentation, retained baseline/hashes/counts, missing oracle/assets/lock comparison and factual qualification | COMPLETE / ACCEPT blocked record; no blocking defects |
+| `/root/phase2_fit_review` | Prior libyears contracts, declaration/selection/direct/source fidelity, project/framework context and product nonselection | COMPLETE / APPROVE blocked record; no material findings |
+
+Both explicitly confirmed the empirical experiment remains incomplete and that
+review acceptance supplies no missing comparison or selection authority. The
+parent validated these conclusions against the retained baseline, execution
+results and official documentation; no correction was needed. Only this review
+record was appended after freeze. All four Phase 2 children used
+`fork_turns="none"`, without model/effort overrides; actual resource telemetry
+is unavailable. Fresh contexts establish independent assignments, not external
+ground truth. Local links resolve, `git diff --check` passes, and only this
+discovery document changes. No push occurred.
