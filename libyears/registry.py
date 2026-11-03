@@ -10,6 +10,7 @@ import ssl
 import stat
 import sys
 import sysconfig
+import zlib
 from pathlib import Path
 from typing import Any
 from urllib import error as urlerror, request
@@ -26,8 +27,8 @@ class TransportFailure:
     retry_after: str | None = None
 
 
-def _retry_after(error: Exception) -> str | None:
-    if not isinstance(error, urlerror.HTTPError) or error.code != 429 or error.headers is None:
+def _retry_after(error: Exception, statuses: tuple[int, ...] = (429,)) -> str | None:
+    if not isinstance(error, urlerror.HTTPError) or error.code not in statuses or error.headers is None:
         return None
     value = error.headers.get("Retry-After")
     # Retain only a short printable header value, never arbitrary header objects
@@ -54,7 +55,12 @@ class _RejectRedirects(request.HTTPRedirectHandler):
 def _read_bounded_response(response: Any, limit: int) -> bytes | TransportFailure:
     declared_length = response.headers.get("Content-Length")
     if isinstance(declared_length, str) and declared_length.isascii() and declared_length.isdecimal():
-        declared_length = int(declared_length)
+        digits = declared_length.lstrip("0") or "0"
+        # Compare lengths first: a hostile header must not trigger Python's
+        # integer-string conversion limit or allocate an enormous integer.
+        if len(digits) > len(str(limit)):
+            return TransportFailure(None, "response exceeds byte limit", "response_too_large")
+        declared_length = int(digits)
     else:
         declared_length = None
     if declared_length is not None and declared_length > limit:
@@ -68,6 +74,40 @@ def _read_bounded_response(response: Any, limit: int) -> bytes | TransportFailur
     if declared_length is not None and len(body) < declared_length:
         return TransportFailure(None, "incomplete response", "incomplete_response")
     return body
+
+
+class DecodedResponse(bytes):
+    """Expanded bytes retaining wire accounting for an opt-in registry client."""
+
+    def __new__(cls, body: bytes, wire_bytes: int):
+        result = super().__new__(cls, body)
+        result.wire_bytes = wire_bytes
+        return result
+
+
+def _decode_response(body: bytes, encoding: str, limit: int) -> bytes | TransportFailure:
+    if encoding == "identity":
+        if len(body) <= limit:
+            return DecodedResponse(body, len(body))
+    elif encoding == "gzip":
+        decoder = zlib.decompressobj(16 + zlib.MAX_WBITS)
+        chunks = []
+        expanded = 0
+        try:
+            for offset in range(0, len(body), 64 * 1024):
+                chunk = decoder.decompress(body[offset:offset + 64 * 1024], limit - expanded + 1)
+                expanded += len(chunk)
+                if expanded > limit:
+                    break
+                chunks.append(chunk)
+            else:
+                # eof checks the gzip trailer/CRC; concatenated members and junk
+                # are unsupported rather than silently accepting a partial body.
+                if decoder.eof and not decoder.unused_data and not decoder.unconsumed_tail:
+                    return DecodedResponse(b"".join(chunks), len(body))
+        except zlib.error:
+            pass
+    return TransportFailure(None, "unsupported or incomplete response encoding", "invalid_encoding")
 
 
 def diagnostic(error: Exception) -> str:
@@ -165,12 +205,18 @@ class VerifiedJSONTransport:
         ca_bundle: str | None = None,
         max_response_bytes: int | None = None,
         allowed_authority: str | None = None,
+        max_decompressed_bytes: int | None = None,
+        retry_after_statuses: tuple[int, ...] = (429,),
     ) -> None:
         if not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("timeout must be finite and positive")
         if max_response_bytes is not None:
             if type(max_response_bytes) is not int or max_response_bytes <= 0:
                 raise ValueError("max_response_bytes must be a positive integer")
+        if max_decompressed_bytes is not None:
+            if (type(max_decompressed_bytes) is not int or max_decompressed_bytes <= 0
+                    or max_response_bytes is None):
+                raise ValueError("decompression requires positive wire and expanded limits")
         if allowed_authority is not None:
             authority_url = urlsplit("https://" + allowed_authority)
             if (not allowed_authority or not allowed_authority.isascii()
@@ -182,6 +228,8 @@ class VerifiedJSONTransport:
         self.user_agent = user_agent
         self.max_response_bytes = max_response_bytes
         self.allowed_authority = allowed_authority
+        self.max_decompressed_bytes = max_decompressed_bytes
+        self.retry_after_statuses = retry_after_statuses
         self.ssl_context, self.tls_trust = select_tls_context(ca_bundle)
         self._restricted_opener = None
         if max_response_bytes is not None or allowed_authority is not None:
@@ -201,7 +249,7 @@ class VerifiedJSONTransport:
                 return response.read()
         except Exception as error:
             return TransportFailure(
-                getattr(error, "code", None), diagnostic(error), retry_after=_retry_after(error)
+                getattr(error, "code", None), diagnostic(error), retry_after=_retry_after(error, self.retry_after_statuses)
             )
 
     def _get_restricted(self, url: str) -> bytes | TransportFailure:
@@ -211,11 +259,20 @@ class VerifiedJSONTransport:
                 or (self.allowed_authority is not None
                     and destination.netloc != self.allowed_authority)):
             return TransportFailure(None, "unsupported request authority")
-        http_request = request.Request(url, headers={"User-Agent": self.user_agent})
+        headers = {"User-Agent": self.user_agent}
+        if self.max_decompressed_bytes is not None:
+            headers["Accept-Encoding"] = "gzip, identity"
+        http_request = request.Request(url, headers=headers)
         with self._restricted_opener.open(http_request, timeout=self.timeout) as response:
             if self.max_response_bytes is None:
                 return response.read()
-            return _read_bounded_response(response, self.max_response_bytes)
+            body = _read_bounded_response(response, self.max_response_bytes)
+            if isinstance(body, TransportFailure) or self.max_decompressed_bytes is None:
+                return body
+            encoding = response.headers.get("Content-Encoding", "identity")
+            if not isinstance(encoding, str):
+                return TransportFailure(None, "unsupported response encoding", "invalid_encoding")
+            return _decode_response(body, encoding.strip().lower(), self.max_decompressed_bytes)
 
 
 __all__ = [
