@@ -1308,3 +1308,27 @@ attributes. The corrected code/test/workflow candidate is frozen by its local
 commit before non-author commissioning; no candidate edits follow commissioning.
 
 Parent final full deterministic suite: **543 PASS**; diff check PASS.
+
+### Fresh focused verification and publication readiness
+
+**Frozen correction:** `78409d09d73479e54aae99af319318e1f9343913`;
+baseline `006f4df`. Fresh non-author `/root/portability_review`, fork_turns=none,
+no overrides, directly inspects complete authority/history, frozen bytes and diff.
+**Completion COMPLETE / local correction APPROVE; material findings NONE.**
+Independent NuGet142, real-worker3 and full543 PASS; missing-capability-before-
+import simulation45 PASS with exactly13 real-filesystem skips. Static fixture
+hashes, narrow LF attributes, production-unchanged diff and whitespace/tree PASS.
+No reviewer writes/network/targets/commits/delegation; actual child settings and
+resource telemetry unavailable. Parent independently repeats simulation45/13,
+checks whole diff, immutable authority digests, real source composition guards
+and explicit CI command. Local approval is supported; it does not claim Windows
+execution, T008 completion, K2 or full feature acceptance.
+
+Publication candidate adds only this approval record to the reviewed bytes.
+Parent full543 PASS already verifies the exact code/test/workflow candidate;
+subsequent changes are review prose only. Before delegated push the parent will
+verify clean tree and both live main refs still equal the previously published
+candidate, then push only main to github and cms without force, solely to obtain
+mandatory Windows lifecycle/regression evidence. Evidence and final task
+disposition will follow. The interrupted initial freeze tool did not execute;
+subsequent state inspection and successful freeze preserve an explicit boundary.
