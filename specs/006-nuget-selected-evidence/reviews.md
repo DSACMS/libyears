@@ -1602,3 +1602,19 @@ run focused/shared scan/snapshot/scoped/Yarn/Ruby/metric regressions: **136 PASS
 diff check PASS. **T010 COMPLETE**, pending later K3 integration review. No
 T011/output or CLI activation is included in this task commit. Full suite remains
 required at the coherent phase boundary, avoiding redundant per-task full runs.
+
+### T011 — Additive schema-v3 JSON
+
+After committed T010, the same author context executes only T011 sequentially.
+`output.py` serializes the exact NuGet source fields with required nulls and safe
+row facts/publications only after their evidence stage. Existing schema3 fields,
+sibling records and ordinary reports retain their shape; raw authority hashes,
+origins/baseline and diagnostics never enter JSON. No human formatter or CLI
+activation changes occur. New snapshots cover full/partial/rejected source N0/N1/
+unknown, missing witness null, association mismatch with no selected provenance,
+unsafe text omission, unsupported selection, origin/hash/publication stages,
+normalized/original spelling, UTC/listed dates and empty/zero/full summaries.
+Verbose-equivalent diagnostic enrichment cannot alter JSON. Author and parent
+focused JSON/output/model/mixed/scoped regressions **84 PASS**; diff check PASS.
+Parent directly inspects complete serializer/test diff. **T011 COMPLETE**, pending
+K3 whole integration review. Approved contracts and worker import graph unchanged.

@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import json
 from typing import Any
 
-from .model import GemfileEvidence, RubyGemsEvidence
+from .model import GemfileEvidence, NuGetEvidence, RubyGemsEvidence
 from .scan import MixedScanReport, ScanReport
 from .snapshot import SNAPSHOT_FORMAT
 
@@ -66,6 +66,12 @@ def _report_parts(report: ScanReport | MixedScanReport) -> tuple[Any, dict[str, 
                 evidence[source.ecosystem]["publication_basis"] = source.evidence.publication_basis
             if source.evidence.requested_groups is not None:
                 evidence[source.ecosystem]["requested_groups"] = sorted(set(source.evidence.requested_groups))
+            if source.ecosystem == "nuget":
+                evidence["nuget"].update(
+                    provenance_source=source.evidence.provenance_source,
+                    framework=source.evidence.framework,
+                    trust_basis=source.evidence.trust_basis,
+                )
         ecosystems = sorted(set(evidence) | {error.ecosystem for error in report.source_errors})
         summaries = {key: _summary_dict(value) for key, value in report.by_ecosystem.items()}
         return report.summary, evidence, ecosystems, list(report.measurements), list(report.unmeasurable), list(report.source_errors), summaries
@@ -116,6 +122,31 @@ def _gemfile_evidence_dict(evidence: GemfileEvidence) -> dict[str, Any]:
     return result
 
 
+def _nuget_evidence_dict(evidence: NuGetEvidence) -> dict[str, Any]:
+    """Emit safe established facts, never private authority or unpassed stages."""
+    result = {
+        "project": evidence.project,
+        "framework": evidence.framework,
+        "requested": evidence.requested,
+        "origin_state": evidence.origin_state,
+        "content_hash_state": evidence.content_hash_state,
+        "publication_basis": evidence.publication_basis,
+    }
+    for field in ("lock_requested", "selected_version", "normalized_version", "selection_source"):
+        value = getattr(evidence, field)
+        if value is not None:
+            result[field] = value
+    for field in ("used_publication", "latest_publication"):
+        publication = getattr(evidence, field)
+        if publication is not None:
+            result[field] = {
+                "version": publication.version,
+                "created": _timestamp(publication.created),
+                "listed": publication.listed,
+            }
+    return result
+
+
 def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str, Any]:
     """Convert a scan report to the stable schema-v3 JSON data shape."""
     summary, version_evidence, ecosystems, measurements, unmeasurable, source_errors, by_ecosystem = _report_parts(report)
@@ -139,6 +170,8 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
             dependencies[-1]["rubygems_evidence"] = _ruby_evidence_dict(dependency.rubygems_evidence)
         if dependency.gemfile_evidence is not None:
             dependencies[-1]["gemfile_evidence"] = _gemfile_evidence_dict(dependency.gemfile_evidence)
+        if dependency.nuget_evidence is not None:
+            dependencies[-1]["nuget_evidence"] = _nuget_evidence_dict(dependency.nuget_evidence)
     failures = []
     for item in unmeasurable:
         row = {"ecosystem": item.ecosystem, "name": item.name,
@@ -147,6 +180,8 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
             row["rubygems_evidence"] = _ruby_evidence_dict(item.rubygems_evidence)
         if getattr(item, "gemfile_evidence", None) is not None:
             row["gemfile_evidence"] = _gemfile_evidence_dict(item.gemfile_evidence)
+        if getattr(item, "nuget_evidence", None) is not None:
+            row["nuget_evidence"] = _nuget_evidence_dict(item.nuget_evidence)
         failures.append(row)
     return {
         "schema_version": 3,
