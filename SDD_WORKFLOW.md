@@ -56,12 +56,26 @@ verification method, not a passed implementation test. Required validation and
 optional smoke checks remain distinct; an optional check must not become a
 mandatory predecessor by accident.
 
-**A run stops at the next meaningful authority or review gate.** Agents do not
+**A run stops at the next unresolved human authority gate.** Agents do not
 continue by momentum into specification, planning, task decomposition,
 implementation, external validation or the next feature unless explicitly
 authorized. Naming the next gate reports readiness; it grants no permission.
 When a prompt authorizes several stages, continue only through resolved gates
 within that scope. Never cross an unresolved human authority gate.
+
+**Internal quality gates are not automatic human authority gates.** When durable
+authority already determines the permitted next action, APPROVE continues to the
+next already-authorized phase; REVISE permits a bounded correction determined by
+the approved spec/plan/tasks, regression evidence, freeze and fresh focused
+non-author verification; INCOMPLETE permits completing already-authorized review
+or evidence. Continue after approval. Humans are not routine message buses for
+internal tasks, reviews or correction cycles.
+
+Stop when NEW human authority is required: consequential unresolved product or
+security choices, scope expansion, credentials/new trust authority, unauthorized
+external-target access or package-manager/target execution, push/release/publication,
+or a gate explicitly designated HUMAN by durable authority. Required evidence
+and mandatory task predecessors still apply.
 
 ## Freeze, independent review and correction
 
