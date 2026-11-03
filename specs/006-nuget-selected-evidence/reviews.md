@@ -1411,3 +1411,53 @@ integration begins before independent phase disposition. Existing exact-SHA
 Windows evidence above proves T008 lifecycle; K2 must reconcile whether any new
 platform evidence is needed for the composed candidate. Actual child settings/
 resource telemetry remain unavailable. Approved spec/plan/tasks stay byte-frozen.
+
+### Independent K2 review — initial candidate
+
+**Frozen candidate:** `8377163f6e8396c3f089a5cb54dc476d5bbff7fe`.
+Two fresh non-author children, fork_turns=none without overrides, directly read
+complete authority/history, verified digests and inspected frozen code/tests.
+No sibling conclusions are shared until both reports complete. Neither edits,
+commits, delegates, uses live network/targets or executes producers. Actual child
+settings/resource telemetry are unavailable.
+
+| Reviewer | Assigned completed coverage | Verdict / execution |
+|---|---|---|
+| `/root/k2_metadata_review` | H3/H4, complete registration/catalog identity/count/bounds/listing/alias reconciliation, selected content, created dates/latest, reasons/order/privacy | COMPLETE / REVISE, K2-M1; focused85 PASS plus adversarial reproductions |
+| `/root/k2_security_review` | Shared transport/default compatibility, all limits/cooldown/scheduling, trusted worker/P1 lifecycle/protocol/deadlines/cleanup and T009 composition | Local audit COMPLETE / APPROVE, no implementation finding; focused151/full575 PASS; current-platform evidence pending |
+
+#### K2-M1 — Unavailable alias material is mistaken for agreement
+
+**VALIDATED MATERIAL IMPLEMENTATION FINDING / OPEN.** Owner T009; S5, plan
+registration reconciliation, AC-22 and relevant AC-31. In `_reconcile_material`,
+both absent/invalid hashes or creation dates reduce to identical None values.
+Two equivalent middle aliases can therefore collapse despite missing evidence.
+Using existing synthetic fixture versions 1.0.0, 2.0.0, 02.0+build and 3.0.0,
+remove created from BOTH middle catalog documents: actual success/latest3.0.0;
+expected invalid_registry_response. Removing both hashes, algorithms or all
+material fields, and different invalid date strings, produces the same false
+agreement. Reversed leaf order retains the false result and request schedule.
+The parent independently reproduces missing-date, missing-hash and combined
+cases against the exact frozen candidate without edits. The existing negative
+witness covers only one unavailable side against a usable side.
+
+Bounded closure is determined by approved authority: unavailable material cannot
+prove duplicate-alias agreement. Preserve singleton missing-hash/date reasons;
+add both-missing/both-invalid hash/algorithm/date cases across used/latest/middle
+aliases, order invariance, no measurement claim, valid-equal/conflict and staged
+absence/hash/date regressions. Freeze correction and commission fresh focused
+non-author verification. No product or architecture choice is reopened.
+
+**Initial K2 completion:** assigned local audits COMPLETE; phase verdict REVISE,
+K2-M1 OPEN; unqualified platform verification INCOMPLETE. T010 not started.
+Positive security review does not overrule the validated metadata defect.
+Current authority permits the bounded correction cycle automatically.
+
+The security reviewer separately notes that unchanged worker/supervisor/lifecycle
+bytes retain their legitimate T008 closure at221f048, while worker bootstrap now
+imports changed registry code. Parent agrees refreshed exact-candidate Windows
+lifecycle/full-suite evidence is required before unqualified K2 approval. This is
+outstanding verification, not a second defect or reopened T008-V1/P1. Delegated
+push authority is available only after corrected candidate local review and
+regressions pass. Full feature acceptance and live yield/hash-domain fitness
+remain unclaimed.
