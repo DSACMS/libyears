@@ -1332,3 +1332,38 @@ candidate, then push only main to github and cms without force, solely to obtain
 mandatory Windows lifecycle/regression evidence. Evidence and final task
 disposition will follow. The interrupted initial freeze tool did not execute;
 subsequent state inspection and successful freeze preserve an explicit boundary.
+
+### Observed follow-up Windows evidence and T008 disposition
+
+Delegated pushes of `221f04819edfc3cc3a1f9de3f09408adee7b4088` succeeded only to
+github/main and cms/main, without force. Immediately before each push the tree
+was clean, local code/test/workflow verification and independent approval were
+complete, and directly inspected remote refs matched the expected prior state.
+After both pushes, live refs independently resolve to that exact candidate.
+
+[Python CI run 41727847718](https://github.com/DSACMS/libyears/actions/runs/41727847718)
+returns exact head SHA on every job. Fresh read-only observer
+`/root/windows_diagnosis` and parent directly inspect public job metadata; the
+explicit lifecycle command is unchanged from independently reviewed workflow.
+
+| Windows Python | Job | Lifecycle step | Offline suite | Whitespace / job |
+|---|---|---|---|---|
+| 3.11 | [126237197713](https://github.com/DSACMS/libyears/actions/runs/41727847718/job/126237197713) | PASS | PASS | PASS |
+| 3.12 | [126237197738](https://github.com/DSACMS/libyears/actions/runs/41727847718/job/126237197738) | PASS | PASS | PASS |
+| 3.13 | [126237197462](https://github.com/DSACMS/libyears/actions/runs/41727847718/job/126237197462) | PASS | PASS | PASS |
+
+All six Ubuntu/macOS Python3.11–3.13 matrix jobs also PASS lifecycle, full offline
+suite and whitespace. The separate live PyPI smoke PASS is unrelated to NuGet
+metadata fitness. Job metadata does not supply individual full-suite counts;
+543 is the locally observed count. The explicit lifecycle step runs all three
+unskipped reviewed witnesses; its success establishes actual Windows execution,
+including positive handler-entry cancellation/reaping/cleanup and the retained
+command-suppression mutation. This is observed CI evidence, not inference from
+local tests, configured CI or an unrelated successful check.
+
+**T008 COMPLETE. T008-V1 platform closure COMPLETE / CLOSED.** Local focused
+correction review APPROVE plus required POSIX/Windows lifecycle evidence satisfy
+this task gate. Historical F1/F2/P1/K1-F1 remain closed and witnessed. T007 remains
+complete; T009 is now dependency-ready and execution continues automatically
+under current authority. K2 is still pending until T009 and complete composed
+review, not approved by T008 evidence. No new product or trust choice is made.
