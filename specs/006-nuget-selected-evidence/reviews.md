@@ -1519,3 +1519,61 @@ are complete; candidate code/test bytes are unchanged after focused commissionin
 Before each push, clean tree and live remote main refs will be checked; both must
 still match expected221f048, then each destination will be verified against the
 intended candidate. No force, other refs/remotes, new credentials or trust changes.
+
+### Refreshed K2 platform evidence and final disposition
+
+Delegated push candidate `77d66b9a9a31be6b5cac0bf99c4ff8906a3da9a4` contains
+only reviewed Feature006 task/correction/review work since221f048. Before each
+push the tree is clean and live remote refs follow the expected transition:
+both221f048 before github push, then github77d66b9/cms221f048 before cms push.
+No unexpected divergence, force, other ref/remote or history rewrite occurs.
+After both pushes each live main ref resolves exactly77d66b9.
+
+[Python CI run41731562096](https://github.com/DSACMS/libyears/actions/runs/41731562096)
+returns this exact SHA on all ten jobs. Read-only observer and parent inspect
+actual public job metadata, including separately named lifecycle command.
+
+| Windows Python | Job | Lifecycle / offline suite / whitespace / job |
+|---|---|---|
+| 3.11 | [126249961065](https://github.com/DSACMS/libyears/actions/runs/41731562096/job/126249961065) | PASS |
+| 3.12 | [126249961144](https://github.com/DSACMS/libyears/actions/runs/41731562096/job/126249961144) | PASS |
+| 3.13 | [126249961199](https://github.com/DSACMS/libyears/actions/runs/41731562096/job/126249961199) | PASS |
+
+All six POSIX matrix jobs likewise PASS all three required steps. Live PyPI smoke
+PASS separately; no NuGet yield/fitness claim follows. Local full580 and focused
+review remain exact-code evidence; no individual hosted test count is inferred.
+This closes the current-candidate platform verification gap.
+
+### Separate hosted secret check and read-only triage
+
+[Secret check41731561997](https://github.com/DSACMS/libyears/actions/runs/41731561997)
+FAILS with a generic GitLeaks detection annotation, unlike the original published
+baseline's passed check. Public logs/details are unavailable, check text empty and
+artifacts absent. It is not dismissed as infrastructure or reported as passed.
+
+Existing local Gitleaks8.30.1 with explicit repository configuration and fully
+redacted output, scanning exact221f048..77d66b9, reproduces one generic-api-key
+finding at published8377163, `tests/test_nuget_registry.py:491`. The entire source
+line constructs a synthetic `TransportFailure(404, 'SECRET', bounded_failure='body_limit')`.
+Parent directly inspects its provenance. Fresh read-only `/root/secret_canary_audit`
+independently reproduces the same single fingerprint, inspects the synthetic
+fixture/recording transport and verifies redaction. **Assigned triage COMPLETE:
+reproduced finding is a synthetic false positive, no credential disclosure.**
+No policy exception, scanner suppression, history rewrite or configuration change
+is performed. Hosted resolved version/range/full failure cause remain unverified;
+local reproduction does not establish that the hosted scan has only this finding.
+This limitation remains explicit rather than manufacturing clearance.
+
+The fresh authority audit and parent reconcile tasks: T010 requires K2; K2 requires
+security/metadata/P1, regressions, full offline suite and platform evidence. No
+current authority makes all unrelated CI checks green or a secret-scanner policy
+exception a mandatory predecessor. Internal work can proceed without making any
+new security-policy choice. Any later scanner exception needs separate authority;
+this run leaves the failed check visible and unchanged.
+
+**Corrected K2 completion COMPLETE / APPROVE. T007–T009 phase APPROVED.**
+K2-M1 CLOSED; current POSIX/Windows evidence complete. F1/F2/P1/K1-F1/T008-V1
+remain closed with retained witnesses. No new material implementation finding
+remains. Full feature/36-AC acceptance is later T014/K4; live yield/hash-domain
+fitness remains unverified. T010 is now dependency-ready and continues under
+existing execution authority, without an unnecessary human routine gate.
