@@ -131,6 +131,45 @@ class NuGetCLITests(unittest.TestCase):
                 ca.assert_not_called()
         scan.assert_not_called()
 
+    def test_capitalized_malformed_options_do_not_echo_secret_values(self):
+        for option in ('--NuGet-project=SECRET-canary', '--NUGET-PROVENANCE=SECRET-canary'):
+            with self.subTest(option=option):
+                status, stdout, stderr = self.call([str(self.root), option])
+                self.assertEqual((status, stdout), (1, ''))
+                self.assertNotIn('SECRET', stderr)
+                self.assertIn('invalid NuGet command line arguments', stderr)
+
+    def test_case_variant_abbreviated_and_malformed_options_are_safe_before_content_reads(self):
+        scan = Mock(side_effect=AssertionError('malformed options must not activate scan'))
+        names = ('NuGet-project', 'NUGET-PROJECT', 'NuGeT-ProJect',
+                 'NuGet-provenance', 'NUGET-PROVENANCE', 'nUgEt-pRoVeNaNcE',
+                 'N', 'NuG', 'NUGET-PROJ', 'NuGet-PrOv')
+        with patch('libyears.cli.parse_snapshot') as snapshot, \
+                patch('libyears.cli.ssl.create_default_context') as ca:
+            for name in names:
+                for prefix in ('-', '--', '---'):
+                    for joined in (False, True):
+                        option = prefix + name
+                        values = [option + '=SECRET-value'] if joined else [option, 'SECRET-value']
+                        with self.subTest(option=option, joined=joined):
+                            status, stdout, stderr = self.call([str(self.root), *values,
+                                '--resolved', 'SECRET-snapshot', '--ca-bundle', 'SECRET-ca'], scan=scan)
+                            self.assertEqual((status, stdout), (1, ''))
+                            self.assertNotIn('SECRET', stderr)
+                            self.assertNotIn('Traceback', stderr)
+                            self.assertIn('invalid NuGet command line arguments', stderr)
+            snapshot.assert_not_called()
+            ca.assert_not_called()
+        scan.assert_not_called()
+
+    def test_unrelated_ordinary_argparse_errors_keep_their_existing_context(self):
+        scan = Mock()
+        status, stdout, stderr = self.call([str(self.root), '--UNKNOWN=PUBLIC-value'], scan=scan)
+        self.assertEqual((status, stdout), (1, ''))
+        self.assertIn('unrecognized arguments: --UNKNOWN=PUBLIC-value', stderr)
+        self.assertNotIn('invalid NuGet command line arguments', stderr)
+        scan.assert_not_called()
+
     def test_missing_project_and_source_failures_empty_partial_are_completed_reports(self):
         cases = []
         missing = nuget_inputs()

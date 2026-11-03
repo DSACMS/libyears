@@ -1732,3 +1732,21 @@ argparse behavior, exact lowercase activation and pre-read exits. Freeze correct
 and obtain fresh focused non-author verification plus relevant regressions.
 **Initial K3 completion COMPLETE / REVISE, K3-C1 OPEN.** T014 not started; current
 execution authority permits this correction cycle without a new human decision.
+
+### K3-C1 bounded correction and freeze
+
+The continued T013 author context changes only CLI privacy detection and its
+focused tests. Case folding selects fixed error rendering; argparse registration
+and accepted option spellings remain exact lowercase. The historical two
+capitalized canary witnesses fail before correction and pass afterward. Sixty
+mixed/upper case, abbreviation, single/double/triple-hyphen and equals/separate
+variants now reject safely before snapshot/CA/scan reads, with no raw values or
+traceback. A separate witness retains unrelated ordinary argparse context.
+
+Author focused/shared139 and full623 PASS; parent inspects the complete minimal
+code/test diff and independently runs CLI41 PASS. Whitespace PASS. No docs,
+approved contract, source/metric/output, worker or registry bytes change. The
+correction commit freezes these bytes before fresh focused non-author review;
+**K3-C1 remains OPEN and K3 unapproved pending that closure. T014 not begun.**
+This bounded cycle uses existing safe-error authority, with no new accepted flag,
+product scope, trust policy or public schema decision. No external access/push.

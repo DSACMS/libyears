@@ -54,7 +54,9 @@ def build_parser() -> argparse.ArgumentParser:
 def _nuget_arguments_present(arguments) -> bool:
     options = ('nuget-project', 'nuget-provenance')
     for argument in arguments:
-        option = argument.split('=', 1)[0].lstrip('-')
+        # Fold malformed spellings only for privacy; argparse still accepts
+        # exclusively the exact lowercase option names registered above.
+        option = argument.split('=', 1)[0].lstrip('-').lower()
         if argument.startswith('-') and option and (
                 option.startswith('nuget') or any(name.startswith(option) for name in options)):
             return True
