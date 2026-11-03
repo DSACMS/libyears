@@ -1876,3 +1876,49 @@ acceptance, not full feature convergence, real-root validation, release or push.
 T015 preparation is now dependency-ready and continues automatically. T016 still
 requires explicit exact target/access/network authority; no target is selected
 or accessed by this disposition and required K5 is not made optional.
+
+### T015 — Validation preparation and first unresolved human authority gate
+
+Following approved K4, parent authors [release-validation.md](release-validation.md)
+without selecting, accessing or producing any target. It supplies exact future
+parameter/access requirements, scoped before/after byte manifests, at most two
+read-only CLI captures with individual exit statuses, human/JSON comparisons for
+scope/selection/origin/hash/created dates/arithmetic/availability/privacy, evidence
+shape and K5 disposition. Co-located sibling access is explicit, evidence stays
+outside target/Git, three-input hashes are not a whole-tree claim, and agent raw
+inspection is distinguished from accepted human attestation. Offline results stay
+separate from unexecuted live yield/hash-domain and environmental evidence.
+No producer, package manager, target code, archive, trust or source/hash-policy
+workaround is included.
+
+Frozen procedure SHA256:
+`352e1c2daa5d5b5755810c8e4d30237a14f9662de197cd441a3a17409013f2ec`.
+Fresh read-only `/root/validation_prep_review`, fork_turns=none without overrides,
+completes an optional narrow preparation check against T015/T016/K5, security and
+latest acceptance authority. **COMPLETE / APPROVE; no material findings.** All
+three shell blocks pass static sh-n syntax checks; embedded Python passes AST
+parsing. No procedure block or target/network/producer command executes. Digest
+and frozen bytes remain unchanged. This optional review introduces no extra gate
+and does not establish T016 evidence or K5 approval. Actual child settings/resource
+telemetry are unavailable.
+
+**T015 COMPLETE. Run006-0012 authorized internal continuation COMPLETE through
+T015; STOP at separately authorized T016.** Required new authority is an exact
+existing root/project/supplied witness, read/byte-comparison and public-network
+scope (including any co-located siblings), private evidence location and executing
+or accepted-handoff channel. No exact target/access grant currently exists;
+discovery's OASim history is not authority. No target, dotnet/NuGet/MSBuild or
+application code has been accessed/executed. K5 remains mandatory and pending;
+T017/K6 convergence and T018 separately authorized closure remain dependency-blocked.
+No Feature007, unrelated CLI table alignment, release/tag or further push occurs.
+
+Latest full deterministic631 and NuGet225 PASS remain exact code/test evidence;
+T015 changes documentation only. Approved spec/plan/tasks and frozen acceptance
+candidate stay unchanged. The hosted secret-check failure/local synthetic finding
+and hosted-cause limit stay visible, without scanner exception or history rewrite.
+Only the two reviewed CI candidates221f048 and77d66b9 were pushed to github/main
+and cms/main, with required clean/verification/review/ref checks and exact post-push
+verification. Later authorized implementation/checkpoint commits remain local.
+The current run is not appended; its complete44-field handoff is written outside
+Git before final reporting. Final integrity/whitespace/tree checks follow the last
+authorized local commit.
