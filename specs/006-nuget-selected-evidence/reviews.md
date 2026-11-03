@@ -852,3 +852,69 @@ Historical F1/F2/P1 remain preserved; K1-F1 is a new implementation finding, not
 reopening the approved product decisions. Useful live yield/hash-domain fitness
 remain unverified non-findings. The full offline suite's 499 PASS and focused
 98 PASS remain valid test results, with the uncovered boundary explicitly retained.
+
+
+## K1-F1 bounded correction and focused verification — 006-0009
+
+**Date:** 2026-11-03. **At freeze: NOT APPROVED; focused review pending.**
+Starting clean HEAD: `b4372c5b9dcacfe69c391fe9708d30a4eef6b794`.
+The commissioning human authorizes correction of only validated K1-F1,
+local Conventional Commits, freeze, fresh non-author focused verification and
+parent validation. T007, Feature 007, external targets, producer/target execution
+and push remain hard stops. Historical 006-0008 REVISE evidence remains intact.
+Approved spec/plan/tasks retain their recorded frozen digests and bytes.
+
+### Bounded correction and author evidence
+
+`nuget_lock.py` now checks version text during complete lock validation:
+`requested` and `resolved` on every entry, plus every dependency-map request
+on Direct, Transitive and Project nodes. The same 256-character and 32-decimal-
+digit bounds apply before association, without parsing ranges, converting
+numbers or requiring closure packages to become measurable/public-authorized.
+Decimal runs are checked even inside request punctuation. Overflow is accumulated
+as unsupported structure; whole-structure malformed findings still win regardless
+of entry/context ordering. The existing source mapping yields
+`unsupported_lockfile_format`, retains independently established N, marks
+measurement unavailable and emits neither dependency rows nor LocalAuthority.
+Within-bound unsupported selected syntax retains its isolated behavior.
+
+Deterministic witnesses added to `test_nuget_lock.py` cover cap/cap+1 for all
+accepted version-bearing fields and closure kinds, component limits inside
+ranges and malformed-before-overflow precedence under entry/context permutations.
+The general 16-KiB string witness now uses contentHash, whose general bound is
+unchanged, rather than a request subject to the stricter version bound.
+`test_nuget_source.py` reproduces all four exact 006-0008 Direct/Transitive
+failure shapes with correctly byte-bound supplied witness, source filename,
+known N, unavailable measurement, absent accepted-lock evidence and no rows or
+capabilities. Further witnesses cover every closure request kind, overlong Direct
+request before missing witness, malformed precedence, exact transitive bounds
+and ordinary within-bound unsupported closure syntax with unrelated Direct
+authority preserved. Existing F1/F2 and isolated unsupported-selection tests pass.
+Input byte invariance, restricted reads and no-network/no-process guards remain
+active in the composed source harness.
+
+Verification before freeze: focused lock **25 PASS**, focused source **16 PASS**,
+NuGet foundations **104 PASS**, complete deterministic suite **505 PASS**;
+`git diff --check` PASS. Final composed precedence assertions were added after
+the first full run; focused lock/source and the full 505-test suite passed again.
+This is author verification, not independent approval or a new all-AC audit.
+
+Candidate code/test SHA-256 values at freeze:
+
+| File | SHA-256 |
+|---|---|
+| `libyears/nuget_lock.py` | `28f5d71b64cf22d3aebcc856270ddeec501212fa2ec9baff6416d8a487c7c9e0` |
+| `tests/test_nuget_lock.py` | `42080ee03e86c505d474a81c9393775969d2528cd4fc22e1661e5164bd87f7f7` |
+| `tests/test_nuget_source.py` | `47b1377d7a1a55ffac7122cc163038d413a49ac8af8343e92cc13918fc1d9c4f` |
+
+The correction commit containing these bytes is the frozen candidate; review
+commissioning identifies its exact hash. No code/test edits occur after freeze.
+Review verdict and checkpoint disposition will be appended here separately.
+
+Prior run 006-0008 was appended once in `ff08f60` from its 44-field handoff,
+with authorized human /status fields and account continuity readings 19/22.
+Its runtime_confounded=yes and original runtime note are preserved verbatim;
+no credit delta is derived/stored and all earlier ledger bytes are unchanged.
+Run 006-0009 and its reviewer are not appended. Git commit needed escalation
+because sandbox index-lock creation failed; this is runtime confounding, not a
+product failure. The current run's complete handoff remains outside Git.

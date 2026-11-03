@@ -7,10 +7,12 @@ from .nuget_input import (
     LocalInput, NuGetInputFailure, ValidationFindings, check_count, decode_json,
     MAX_FRAMEWORK_LENGTH, MAX_LOCK_BYTES, MAX_LOCK_ENTRIES,
 )
+from .nuget_version import MAX_COMPONENT_DIGITS, MAX_VERSION_LENGTH
 
 
 _PACKAGE_ID = re.compile(r'[A-Za-z0-9][A-Za-z0-9._-]{0,99}')
 _FRAMEWORK = re.compile(r'[A-Za-z0-9][A-Za-z0-9.-]*')
+_DIGITS = re.compile(r'[0-9]+')
 _FIELDS = {
     'Direct': frozenset({'type', 'requested', 'resolved', 'contentHash', 'dependencies'}),
     'Transitive': frozenset({'type', 'resolved', 'contentHash', 'dependencies'}),
@@ -67,6 +69,9 @@ def _entry(name: str, value: object, findings: ValidationFindings) -> LockEntry 
     for field in ('requested', 'resolved', 'contentHash'):
         if field in value and not isinstance(value[field], str):
             findings.malformed = True
+    for field in ('requested', 'resolved'):
+        if isinstance(value.get(field), str):
+            _version_bounds(value[field], findings)
     if kind == 'Direct' and 'requested' not in value:
         findings.malformed = True
     if kind == 'Transitive' and not {'resolved', 'contentHash'} <= set(value):
@@ -78,10 +83,26 @@ def _entry(name: str, value: object, findings: ValidationFindings) -> LockEntry 
         for request in mapping.values():
             if not isinstance(request, str):
                 findings.malformed = True
+            else:
+                _version_bounds(request, findings)
         dependencies = tuple(sorted(mapping.items(), key=lambda pair: pair[0].lower()))
 
     return LockEntry(name, name.lower(), kind, value.get('requested'),
                      value.get('resolved'), value.get('contentHash'), dependencies)
+
+
+def _version_bounds(value: str, findings: ValidationFindings) -> None:
+    """Bound all lock version text without interpreting requests or selections.
+
+    Closure requests can contain range punctuation, so inspect decimal runs
+    without parsing ranges or converting numbers. Record overflow and finish
+    structural validation so malformed fields still take precedence.
+    """
+    if len(value) > MAX_VERSION_LENGTH:
+        findings.unsupported = True
+    if any(len(match.group()) > MAX_COMPONENT_DIGITS
+           for match in _DIGITS.finditer(value)):
+        findings.unsupported = True
 
 
 def parse_lock(source: LocalInput) -> LockSnapshot:
@@ -90,8 +111,9 @@ def parse_lock(source: LocalInput) -> LockSnapshot:
     A different sole literal framework is retained for orchestration's context
     binding check. Extra/RID contexts reject this source. Complete validation of
     every framework still precedes that unsupported disposition, so malformed
-    structure always wins independent of object ordering. Selected version/hash
-    string interpretation and declaration association belong to later stages.
+    structure always wins independent of object ordering. Version resource bounds
+    apply here to every entry and closure request; syntax/hash interpretation
+    and declaration association belong to later stages.
     """
     check_count(len(source.data), MAX_LOCK_BYTES)
     try:

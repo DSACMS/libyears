@@ -11,6 +11,7 @@ from libyears.nuget_input import (
 )
 from libyears.nuget_lock import parse_lock
 from libyears.nuget_project import parse_project
+from libyears.nuget_version import MAX_COMPONENT_DIGITS, MAX_VERSION_LENGTH
 
 
 def direct(**changes):
@@ -197,12 +198,57 @@ class NuGetLockTests(unittest.TestCase):
         self.rejected(lock(packages), 'limit')
 
     def test_general_string_and_framework_length_boundaries(self):
-        self.assertEqual(parse(lock({'Example': direct(requested='x' * MAX_STRING_LENGTH)}))
-                         .entries[0].requested, 'x' * MAX_STRING_LENGTH)
-        self.rejected(lock({'Example': direct(requested='x' * (MAX_STRING_LENGTH + 1))}), 'limit')
+        self.assertEqual(parse(lock({'Example': direct(contentHash='x' * MAX_STRING_LENGTH)}))
+                         .entries[0].content_hash, 'x' * MAX_STRING_LENGTH)
+        self.rejected(lock({'Example': direct(contentHash='x' * (MAX_STRING_LENGTH + 1))}), 'limit')
         self.assertEqual(parse({'version': 1, 'dependencies': {'n' * 128: {}}}).framework,
                          'n' * 128)
         self.rejected({'version': 1, 'dependencies': {'n' * 129: {}}}, 'limit')
+
+    def test_version_bounds_cover_direct_transitive_and_all_closure_requests(self):
+        at_cap = ('1.2+' + 'a' * (MAX_VERSION_LENGTH - 4),
+                  '1.' + '9' * MAX_COMPONENT_DIGITS)
+        over_cap = ('1.2+' + 'a' * (MAX_VERSION_LENGTH - 3),
+                    '1.' + '9' * (MAX_COMPONENT_DIGITS + 1))
+        fields_by_kind = {
+            'Direct': ('requested', 'resolved', 'dependencies'),
+            'Transitive': ('resolved', 'dependencies'),
+            'Project': ('dependencies',),
+        }
+        for kind, fields in fields_by_kind.items():
+            for field in fields:
+                for text in at_cap + over_cap:
+                    with self.subTest(kind=kind, field=field, text=text):
+                        entry = {'type': kind}
+                        if kind != 'Project':
+                            entry.update(resolved='1.0.0', contentHash='hash')
+                        if kind == 'Direct':
+                            entry['requested'] = '[1.0.0, )'
+                        entry[field] = {'Helper': text} if field == 'dependencies' else text
+                        value = lock({'Example': entry})
+                        if text in at_cap:
+                            self.assertEqual(len(parse(value).entries), 1)
+                        else:
+                            self.rejected(value, 'unsupported')
+
+    def test_component_bound_applies_inside_requested_ranges(self):
+        for digits in (MAX_COMPONENT_DIGITS, MAX_COMPONENT_DIGITS + 1):
+            request = '[1.' + '9' * digits + '.0, 2.0.0)'
+            value = lock({'Example': direct(requested=request)})
+            if digits == MAX_COMPONENT_DIGITS:
+                self.assertEqual(parse(value).entries[0].requested, request)
+            else:
+                self.rejected(value, 'unsupported')
+
+    def test_version_overflow_does_not_mask_malformed_structure_in_any_order(self):
+        oversized = direct(resolved='1.' + '9' * 33)
+        malformed = direct(resolved=None)
+        for packages in ({'Oversized': oversized, 'Bad': malformed},
+                         {'Bad': malformed, 'Oversized': oversized}):
+            self.rejected(lock(packages))
+        for contexts in ({'net10.0': {'Oversized': oversized}, 'net9.0': {'Bad': malformed}},
+                         {'net9.0': {'Bad': malformed}, 'net10.0': {'Oversized': oversized}}):
+            self.rejected({'version': 1, 'dependencies': contexts})
 
     def test_byte_limit_uses_exact_bytes_and_does_not_trust_cached_text(self):
         data = json.dumps(lock()).encode()

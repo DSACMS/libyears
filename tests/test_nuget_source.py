@@ -200,6 +200,68 @@ class NuGetSourceTests(unittest.TestCase):
         lock['dependencies']['net9.0'] = {}
         self.assert_reason(self.run_source(lock=lock), 'unsupported_lockfile_format', level='source')
 
+    def test_k1_exact_direct_and_transitive_overflows_reject_whole_source(self):
+        cases = (
+            ('Direct', '1.2+' + 'a' * 253),
+            ('Direct', '1.' + '9' * 33),
+            ('Transitive', '1.0-' + 'a' * 253),
+            ('Transitive', '1.' + '1' * 33),
+        )
+        for kind, resolved in cases:
+            for reverse in (False, True):
+                with self.subTest(kind=kind, resolved=resolved, reverse=reverse):
+                    lock = self.lock()
+                    entries = lock['dependencies']['net10.0']
+                    if kind == 'Direct':
+                        entries['Example']['resolved'] = resolved
+                    else:
+                        entries['Helper'] = {'type': kind, 'resolved': resolved,
+                                             'contentHash': HASH}
+                    if reverse:
+                        lock['dependencies']['net10.0'] = dict(reversed(list(entries.items())))
+                    source = self.run_source(lock=lock)
+                    self.assert_reason(source, 'unsupported_lockfile_format', level='source')
+                    self.assertEqual(source.result.source_errors[0].source, 'packages.lock.json')
+                    self.assertIsNone(source.result.evidence.format)
+
+    def test_k1_closure_requests_and_direct_requests_cannot_bypass_bounds(self):
+        for text in ('x' * 257, '[1.' + '9' * 33 + '.0, )'):
+            for kind in ('Direct', 'Transitive', 'Project'):
+                lock = self.lock()
+                entry = {'type': kind, 'dependencies': {'Helper': text}}
+                if kind != 'Project':
+                    entry.update(resolved='1.0.0', contentHash=HASH)
+                if kind == 'Direct':
+                    entry['requested'] = '[1.0.0, )'
+                    lock['dependencies']['net10.0']['Example'] = entry
+                else:
+                    lock['dependencies']['net10.0']['Closure'] = entry
+                self.assert_reason(self.run_source(lock=lock), 'unsupported_lockfile_format',
+                                   level='source')
+            lock = self.lock(text)
+            self.assert_reason(self.run_source(lock=lock, missing='witness.json'),
+                               'unsupported_lockfile_format', level='source')
+        for reverse in (False, True):
+            lock = self.lock()
+            entries = lock['dependencies']['net10.0']
+            entries['Example']['resolved'] = '1.' + '9' * 33
+            entries['Malformed'] = {'type': 'Transitive', 'resolved': None,
+                                    'contentHash': HASH}
+            if reverse:
+                lock['dependencies']['net10.0'] = dict(reversed(list(entries.items())))
+            self.assert_reason(self.run_source(lock=lock), 'invalid_lockfile', level='source')
+
+    def test_k1_transitive_boundaries_preserve_unrelated_direct_authority(self):
+        for resolved in ('1.0-' + 'a' * 252, '1.' + '1' * 32, 'ordinary unsupported syntax'):
+            lock = self.lock()
+            lock['dependencies']['net10.0']['Helper'] = {
+                'type': 'Transitive', 'resolved': resolved, 'contentHash': HASH}
+            source = self.run_source(lock=lock)
+            self.assertEqual(source.result.source_errors, ())
+            self.assertEqual(source.result.unmeasurable, ())
+            self.assertTrue(source.result.measurement_available)
+            self.assertEqual(len(source.authorized_candidates), 1)
+
     def test_context_failures_extra_direct_framework_and_stale_bytes(self):
         lock = self.lock('[1.0.0, )', ('Example', 'Extra'))
         self.assert_reason(self.run_source(lock=lock), 'nuget_context_mismatch', level='source')
