@@ -976,3 +976,147 @@ code/tests and approved authority, prior-ledger bytes/44-field schema/unique IDs
 review disposition changes after freeze; its local Conventional Commit preserves
 the exact reviewed correction. The complete current-run handoff is written to
 `/tmp/libyears-observations/006-0009.json` before final reporting.
+
+
+## Partial adapter phase and independent verification — 006-0010
+
+**Date:** 2026-11-03. **Partial-phase verdict: REVISE.**
+**Local assigned audits: COMPLETE. Phase completion: INCOMPLETE.**
+**Validated material verification findings: 1, T008-V1 OPEN.**
+**K2: NOT DEPENDENCY-READY / NOT APPROVED; no K2 approval is claimed.**
+Starting clean HEAD: `dfe3b5abe0c640ff21f51512d12965b6bb10d0f2`.
+
+### Authority, execution and candidate freeze
+
+The commissioning human approved corrected T001–T006/K1 and authorized exactly
+phase 2, T007–T009 through K2, local task commits and native decomposition.
+The approved task graph remains the authority for mandatory predecessors and
+required verification. T008 requires real-worker evidence on supported POSIX and
+Windows; the existing CI matrix includes Windows, but no execution of the new
+witnesses on Windows is available in this environment. Configured CI is not
+passed evidence. Therefore T008 cannot be marked complete, T009 is not ready,
+and the K2 node cannot be reached. No successor is begun by treating this gap
+as an optional smoke check or waiving an approved obligation.
+
+Two fresh child authors, `/root/transport` and `/root/worker`, used
+`fork_turns="none"` without model/effort overrides. T008 began only after the
+parent validated and committed T007. Each owned its task code/tests; the parent
+inspected changes, ran verification and made the task commits. Actual child
+settings/resource telemetry remain unavailable. Approved spec/plan/tasks retain
+their frozen hashes and bytes; execution status is recorded here, not by editing
+those authority artifacts. F1/F2/P1 and corrected K1/K1-F1 remain preserved.
+
+| Task | Candidate commit | Implemented behavior / status |
+|---|---|---|
+| T007 | `4705a22` | COMPLETE within task scope. Opt-in bounded gzip and safe 503 Retry-After support; unchanged transport defaults/get(url) doubles; exact public metadata URL purposes, bounded JSON, package/scan counters, cooldown and admission checks. Absolute cancellation is not claimed from socket timeouts. |
+| T008 | `ff65b02` | Implementation candidate; NOT COMPLETE. Trusted isolated worker, offline readiness, private cwd/DEVNULL, bounded atomic regular-file commands/results, fixed parent deadlines and cancellation reserve, finite terminate/kill/reap, typed safe publication/state results and deferred cleanup. Local verification below passes; Windows evidence and T008-V1 remain outstanding. |
+| T009 | None | NOT STARTED: mandatory T008 predecessor is incomplete. Registration/catalog traversal, public hash/date gates and complete latest selection remain unimplemented. |
+
+**Frozen partial-phase candidate:**
+`ff65b026fae723d631f0170fb52ccb34ebea2f8e`.
+**Baseline:** `dfe3b5abe0c640ff21f51512d12965b6bb10d0f2`.
+Code/tests were committed before independent commissioning and remain unchanged
+after freeze. The T008 commit explicitly retains incomplete Windows verification;
+a reviewable implementation commit does not establish task acceptance.
+
+The future T009 worker handler seam is
+`lookup_authorized_package(authority, client) -> PackageResult`, lazily imported
+only after a command. It is deliberately absent now. Startup/readiness is offline;
+the retained client will own index/counters/cooldown across sequential commands.
+No scan/CLI/output activation or synchronous network fallback is introduced.
+
+Author/parent verification: T007 transport **12 PASS**, shared registry **18 PASS**,
+PyPI **25 PASS**, npm registry **13 PASS**, RubyGems registry **29 PASS**;
+T007 shared-boundary full suite **517 PASS**. Final T008 worker **21 PASS** and
+full deterministic suite **538 PASS**, including closed foundation regressions.
+The earlier parent NuGet-only run was **136 PASS** before the final socket-timeout
+witness was added; the final 538-test full run includes that additional witness.
+Parent also independently checked protocol exact 16-KiB cap, cap+1 rejection,
+atomic nonpublication on overflow, symlink rejection and nonblocking FIFO
+rejection. Diff checks pass. All execution was offline; real process tests launch
+only the installed trusted Python helper or explicit trusted blocking fixture.
+
+### Fresh independent partial-phase review
+
+Two fresh non-author reviewers were commissioned after freeze with
+`fork_turns="none"`, no model/effort overrides, the exact candidate/baseline and
+separate scopes. They reconstructed complete current authority directly,
+recovered truncated reads and verified the frozen candidate/approved digests.
+No current sibling conclusions were shared before both completed reports.
+Neither changed files, committed, delegated, used network/external targets or
+executed producers/target code. Their assignments explicitly distinguish partial
+verification from approval/execution of the non-ready K2 node.
+
+| Reviewer | Completed assigned local coverage | Result |
+|---|---|---|
+| `/root/review_transport` | Shared transport/default compatibility; URL purposes, gzip/JSON and work caps, cooldown/admission, local authority interaction and static worker handoff | COMPLETE / APPROVE only in T007 slice; no material finding. Independently ran **121 PASS**: transport 12, shared registry 18, PyPI 25, npm 13, RubyGems 53. |
+| `/root/review_worker` | Trusted bootstrap, protocol, parent deadlines/reserve, late results, lifecycle/cleanup/deferred faults, client retention and controller/mutation/local real-worker witnesses | Local assigned audit COMPLETE / REVISE; one verification finding below. Independently ran worker **21 PASS**, full **538 PASS**, and discriminating no-command mutation. T008 verification remains INCOMPLETE. |
+
+Both confirmed clean frozen bytes and passing diff checks. Positive transport
+coverage cannot overrule the worker finding or establish absent T009 composition.
+Windows lifecycle evidence, T009 public resource/identity/hash/date/listing/latest
+behavior, composed scheduling/budget allocation and remaining K2 reconciliation
+are explicitly outstanding. Later integration/activation/acceptance is outside
+this partial review. No full AC-18–23/34 or phase acceptance is claimed.
+
+### T008-V1 — Real-worker witness does not prove blocking-handler entry
+
+**Disposition: VALIDATED MATERIAL VERIFICATION FINDING; OPEN.**
+**Owner:** T008; plan AC-34 real-worker witness (plan lines 404–410).
+The required evidence must show cancellation reaches an actual blocking boundary.
+`RealWorkerTests.test_offline_blocked_worker_cancelled_with_outer_watchdog`
+asserts cancellation, OS process exit, temporary-directory removal and an unfired
+outer watchdog, but never observes entry into the trusted fixture's `block`
+handler. Worker readiness precedes command processing; an idle ready worker can
+satisfy every current assertion without entering the injected blocking operation.
+
+The reviewer suppressed publication only when the parent's `write_message` path
+was `command.json`, leaving other protocol behavior and the separate worker
+unchanged. One command was suppressed; the existing real-worker blocking test
+still passed. The fixture remained in the no-command polling loop, so its
+blocking handler could not have run. Parent independently reproduced this exact
+mutation against the frozen candidate with unittest/mock and the same result:
+**one suppressed command, one test PASS**. No repository bytes were modified.
+
+Reproduction seam: patch `libyears.nuget_supervisor.write_message` with a wrapper
+that returns without writing `command.json` and otherwise calls the original;
+run the named real-worker test. This is a verification defect, not a demonstrated
+failure of the supervisor's absolute-deadline implementation. Passing 538 tests
+does not supply the missing positive blocking-boundary evidence.
+
+Bounded closure obligation: establish and assert trusted fixture handler entry
+before cancellation, retain offline isolation, outer watchdog, OS exit/cleanup
+and absence of exact wall-time assertions; demonstrate the no-command mutation
+then fails. Obtain required POSIX and Windows lifecycle evidence and fresh
+non-author verification, including relevant collateral deadline/protocol/cleanup
+regressions. This describes required closure, not an authorized correction or a
+new architecture/product decision. P1's approved architectural resolution remains
+closed; its implementation verification is incomplete here.
+
+### Parent reconciliation and stop
+
+The parent validated T008-V1 against the plan's explicit blocking-boundary
+obligation, inspected fixture/test/worker control flow and independently reproduced
+the no-command mutation. It also inspected the transport and worker seams and
+passing regression evidence. No additional material implementation defect was
+established in inspected surfaces. Missing Windows execution is a separate
+verification gap, not a second product finding. Hash-domain fitness and useful
+live yield remain unverified non-findings.
+
+**Final partial-phase verdict: REVISE; phase completion INCOMPLETE.**
+**T007 complete; T008 not complete; T009 not started; K2 pending/unapproved.**
+The approved task graph requires separate bounded correction authorization after
+REVISE. No frozen code/test correction occurs in this run. The next meaningful
+gate is separately authorized T008 witness correction, required platform evidence
+and fresh verification; T009 cannot begin until its mandatory predecessor passes.
+No T010/integration, external validation target, Feature 007, producer/package-
+manager execution, archive/config/cache/credential access, release/tag or push.
+
+Prior run 006-0009 was appended once in `176c689` from its complete handoff, with
+authorized human /status enrichment and account continuity readings 22/23.
+Its runtime confounding and original runtime note are preserved; no credit delta
+is derived/stored and earlier ledger bytes are unchanged. Git index creation was
+sandbox-blocked, requiring escalation/approval waits for authorized local commits;
+this is runtime confounding, not product failure. Current run 006-0010 and its
+children are not appended. Its complete 44-field handoff is written outside Git
+at `/tmp/libyears-observations/006-0010.json` before final reporting.
