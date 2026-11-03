@@ -592,3 +592,105 @@ specification/discovery/ROADMAP/product code/tests, tasks, target or producer
 execution, external checkout, archives, caches/config/credentials or push.
 The complete current-run handoff is written outside Git; current run/child are
 not appended to the canonical ledger.
+
+
+## Independent task-graph gate — 006-0007
+
+**Date:** 2026-11-03. **At freeze: NOT APPROVED; independent review pending.**
+Starting clean HEAD: `1042e625a27c66bf4b011f08877dad157726ed14`.
+Task decomposition is explicitly authorized; implementation, external validation,
+Feature 007 and push are not. Run 006-0006 is already recorded; the ledger remains
+unchanged. Run 006-0007 is handed off outside Git, never appended here.
+
+### Author audit and frozen candidate
+
+[Tasks](tasks.md) SHA-256:
+`9e3fa72b5ff4aa903f842255e89118b672e645e5ab292ae9886f8d73cdb3dffe`.
+Word count: **3,785**, whitespace-separated (`str.split`).
+Approved specification and plan digests remain respectively
+`f02a947ae33dc83afa08a800e0bd965f56e697317e40dd1c6209d133f3c73cc8` and
+`b340a41df7eee3e5e7e0b012c8976d7a79921a12960c3a156e212a004704c875`.
+All approval history was read alongside the current approved dispositions.
+
+Author audit maps 36 unique ACs to one completion owner each and concrete
+deterministic witnesses, checks 24 unique dependency-ordered nodes (18 tasks,
+six review gates), and preserves F1/F2/P1, H1–H4, internal-only foundations and
+coherent CLI activation. Mechanical AC ownership/dependency checks and
+`git diff --check` pass. No implemented acceptance or independent approval is
+claimed by self-audit. Product tests are not run for documentation-only work.
+
+Candidate bytes are frozen before reviewer commissioning. No post-freeze repair
+or approval-only task-file edit is authorized in this gate. Fresh non-author
+reviewers receive separate scopes and inspect repository authority directly;
+parent synthesis waits for all completed reports and validates material findings.
+
+### Fresh independent review evidence
+
+Three fresh non-author reviewers were commissioned after freeze, each with
+`fork_turns="none"`, no model or effort override, an explicit read-only scope
+and all three frozen digests. They directly read repository authority and the
+complete current Feature 006 record, recovering truncated reads and independently
+recomputing the matching digests. No author conversation was inherited, and no
+current sibling conclusion was shared before all final reports completed.
+No reviewer mutated files, ran tests, browsed, accessed targets, executed producers,
+appended observations, committed or delegated. Actual child model/provider/effort/
+resource telemetry was unavailable; requested settings do not establish it.
+
+| Reviewer | Completed independent coverage | Result |
+|---|---|---|
+| `/root/task_review_a` | All 36 AC ownership/witness mappings; complete declarations, local task order, lock/F1/F2, version concepts, failure precedence and no invented decisions | COMPLETE / APPROVE; zero material findings |
+| `/root/task_review_b` | H3/H4, local/public identity and hash authority, metadata completeness/dates/latest, security/privacy/caps, P1 supervision and controller/mutation/real-worker POSIX/Windows witnesses; inspected current reader/transport seams | COMPLETE / APPROVE; no material findings |
+| `/root/task_review_c` | Whole dependency graph and review/commit boundaries, K1–K6, coherent activation, S6/S7/CLI, 36 AC ownership, documentation, required separately authorized validation/convergence; inspected current model/scan/output/CLI seams | COMPLETE / APPROVE; zero material findings |
+
+### Parent reconciliation and final disposition
+
+**Completion: COMPLETE. Task-graph verdict: APPROVE.**
+**Feature 006 task graph status: APPROVED. Material findings: NONE.**
+**Acceptance planning traceability: 36/36 unique owners and concrete deterministic
+witness mappings; no implemented or executed NuGet acceptance is claimed.**
+**Next gate: EXPLICIT PHASE-1 IMPLEMENTATION EXECUTION AUTHORIZATION
+(T001–T006 and K1).** No task execution is begun by this disposition.
+
+Parent reconciliation assesses the full gate rather than voting on slices:
+
+- F1 remains the bounded normalized-minimum oracle, with all five positive pairs,
+  unequal-minimum/shared-selected negatives and no resolver/satisfaction shortcut.
+  T001/T003 supply concepts; T006 owns association and its exact evidence boundary.
+- F2 remains whole-lock duplicate/case-alias/non-string selection rejection before
+  association. T004/T006 and T014 cover reachable reasons and precedence, with
+  no dependency ambiguity reason or selected provenance on request mismatch.
+- P1 is a concrete T008 process/supervisor unit, with T007 transport and T009
+  composition predecessors. The frozen plan's in-flight boundaries, fixed
+  deadlines/reserve, bounded protocol/waits, no restart, cleanup/systemic faults,
+  socket-only mutation and separate real-worker platform evidence are retained.
+  Missing platform evidence cannot be presented as a passed gate.
+- H3 local origin/hash authority precedes adapter use; public identity/hash
+  agreement precedes dates. H4 complete listed-stable enumeration and created-only
+  dates have concrete T009 witnesses. Privacy/no-execution safeguards accompany
+  components and are composed by T014/K4, with only the trusted helper exception.
+- Source availability remains distinct from individual failure and validated
+  empty. Parent checked the current scan serializer's Ruby-specific unavailable
+  numeric condition: T010/T011 explicitly require NuGet handling and regressions,
+  rather than assuming the old condition suffices. Sibling evidence, metric and
+  schema-v3 behavior retain dedicated integration/output/CLI verification.
+- All dependencies point to earlier nodes; review gates are mandatory predecessors.
+  T010–T012 stay internal until T013 activates scan, both reports, exact CLI and
+  documentation coherently. K1–K4 separate implementation from independent review.
+  K5 is required, cannot borrow discovery target authority and cannot become an
+  optional smoke predecessor. K6 requires fresh read-only whole-feature convergence.
+
+No omission, cross-slice contradiction or new consequential product/architecture
+decision was established. Hash-domain fitness and useful live measurement yield
+remain unverified non-findings. All 36 specification checkboxes remain open.
+The exact 3,785-word candidate remains unchanged after commissioning, including
+no approval-only edit. The approved spec/plan, discovery, ROADMAP and ledger remain
+byte-unchanged. Historical findings and review dispositions remain intact.
+
+Verification: matching approved/frozen digests, 36-owner accounting, 24-node
+acyclic predecessor check, resolving local task links, unchanged authority/ledger
+bytes, 44-column ledger shape with 006-0006 once and 006-0007 absent, and
+`git diff --check`. Product tests were not run for documentation-only work.
+Only tasks.md and this appended review record enter one coherent local
+Conventional Commit. The complete 44-key run handoff is written outside Git at
+`/tmp/libyears-observations/006-0007.json`. No implementation, Feature 007,
+external validation/producer execution, forbidden filesystem access or push.
