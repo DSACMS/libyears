@@ -1750,3 +1750,33 @@ correction commit freezes these bytes before fresh focused non-author review;
 **K3-C1 remains OPEN and K3 unapproved pending that closure. T014 not begun.**
 This bounded cycle uses existing safe-error authority, with no new accepted flag,
 product scope, trust policy or public schema decision. No external access/push.
+
+### Fresh focused K3-C1 verification and final K3 disposition
+
+Frozen correction `fb6daf70b5836a05f534c571351d88de86a109ef`, baseline
+`212daa24254da5e888d362bca0c35c6e63552d82`. Fresh non-author
+`/root/k3_case_verification`, fork_turns=none without overrides, directly reads
+complete authority/history, verifies digests and inspects frozen bytes. **Focused
+audit COMPLETE / APPROVE; no material findings.** Production change is solely
+privacy-detector case folding/comment; registration, exact accepted options and
+activation remain unchanged. Historical leaks close. Independent480 guarded
+case/abbreviation/hyphen/equality/output-mode cases PASS; in-memory historical
+detector substitution causes62 expected subtest failures with zero errors. Nineteen
+ordinary/exact-lowercase parser comparisons remain identical. Focused131/full623
+PASS on Darwin/Python3.11.0; clean/frozen bytes and whitespace PASS. No edits,
+commits, network/target access or delegation; actual child settings/telemetry
+remain unavailable.
+
+Parent reconciles the minimal detector change, exact reproduced original leaks,
+its independent CLI41 PASS and retained pre-read/error/activation witnesses with
+both completed original K3 slices and focused closure. **K3-C1 CLOSED. Corrected
+K3 COMPLETE / APPROVE. T010–T013 coherent integration checkpoint APPROVED.**
+This is not full 36-AC K4 acceptance. All prior named closures remain preserved.
+Worker/registry/transport/protocol/workflow bytes remain those reviewed with
+exact77d66b9 platform evidence; no later CLI Windows execution is claimed and no
+new mandatory platform gate is invented. Separate hosted secret-check failure,
+synthetic local reproduction and hosted-evidence limitation remain unchanged;
+no suppression/exception is authorized or applied.
+
+T014 is dependency-ready and continues automatically under existing authority.
+No target/network/producer/next-feature authority is conferred by this approval.
