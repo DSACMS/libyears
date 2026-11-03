@@ -918,3 +918,61 @@ no credit delta is derived/stored and all earlier ledger bytes are unchanged.
 Run 006-0009 and its reviewer are not appended. Git commit needed escalation
 because sandbox index-lock creation failed; this is runtime confounding, not a
 product failure. The current run's complete handoff remains outside Git.
+
+### Fresh focused review and parent validation
+
+**Frozen correction commit:** `a10459862b58c1b48605dfeb642c05d7c1e7b176`.
+**Baseline:** `b4372c5b9dcacfe69c391fe9708d30a4eef6b794`.
+One fresh non-author child `/root/k1_focused_verification` was commissioned only
+following that commit, with `fork_turns="none"` and no model/effort overrides.
+Actual child settings/resource telemetry is unavailable. The reviewer directly
+read workflow and complete current Feature 006 authority/relevant discovery,
+recovered truncated reads, independently verified authority/candidate hashes and
+inspected underlying implementation, tests and diff. It made no file changes,
+commits, delegation, network/target accesses or producer/target execution.
+**Review completion: COMPLETE. Focused verdict: APPROVE. Material findings: NONE.**
+
+| Focused obligation | Independent evidence and parent disposition |
+|---|---|
+| K1-F1 exact shapes | All four historical Direct/Transitive overflows reject the whole lock as unsupported_lockfile_format with known N, unavailable measurement, no rows/capabilities and no accepted-lock format claim. PASS. |
+| Complete accepted structure | requested/resolved bounds apply to every entry and request values in Direct/Transitive/Project closure maps; closure cannot evade validation because it is unmeasured. PASS. |
+| Boundaries and precedence | Exact caps accepted; ordinary within-bound unsupported selections remain isolated; malformed framing wins over overflow under entry/context permutations; lock overflow precedes witness/association. PASS. |
+| Collateral | F1 canonical minimum comparison, F2 malformed whole-lock rejection, staged evidence omissions, origin/hash/no-call/privacy guards, T001 default compatibility and internal-only activation preserved. PASS. |
+
+Reviewer independently ran **104 foundation tests** and **505 full deterministic
+tests**, plus **29 additional composed cases** covering exact historical shapes,
+closure kinds, N=0/N=2, byte invariance and explicit capability-construction
+guards. All passed, as did `git diff --check`. This is focused closure and relevant
+collateral verification, not a second complete feature/36-AC acceptance audit.
+
+Parent validated the report against the approved local-bound table, S3/S6/S8,
+T004/T006/K1 and frozen implementation. Separate parent execution reproduced all
+four exact shapes with corrected source outcomes; temporarily bypassing the new
+bound checker reproduced the prior isolated Direct failures and retained
+Transitive authority, demonstrating the witnesses discriminate the defect.
+No repository bytes were mutated by that check. Parent also independently checked
+malformed-versus-closure-overflow precedence in both entry orders and **12**
+additional N=0/N=2 cases across all closure kinds and both overflow classes, with
+capability construction forbidden. All passed. Complete-parser placement and
+accumulated findings support the review's whole-source and precedence claims;
+no consequential missing decision or collateral material finding was established.
+
+### Final disposition — corrected K1 checkpoint
+
+**Completion: COMPLETE. Corrected K1 verdict: APPROVE. K1-F1: CLOSED.**
+**T001–T006 foundation checkpoint: APPROVED.** This supersedes the historical
+006-0008 checkpoint REVISE while retaining its original finding and reproduction.
+T004 consuming bounds and T006 composed outcome now satisfy this checkpoint's
+AC-33/local AC-31 closure obligations. Full feature acceptance, specification
+checkboxes and later-task AC ownership remain pending; historical F1/F2/P1
+approvals and frozen spec/plan/tasks remain unchanged.
+
+**Next gate: EXPLICIT PHASE-2 EXECUTION AUTHORIZATION (T007–T009 and K2).**
+Stop before T007. No adapter/worker implementation, public activation, external
+validation target, Feature 007 or push occurred. Useful live yield/hash-domain
+fitness remain unverified non-findings. Final checks verify unchanged frozen
+code/tests and approved authority, prior-ledger bytes/44-field schema/unique IDs,
+006-0008 present once, 006-0009 absent, and `git diff --check`. Only this appended
+review disposition changes after freeze; its local Conventional Commit preserves
+the exact reviewed correction. The complete current-run handoff is written to
+`/tmp/libyears-observations/006-0009.json` before final reporting.
