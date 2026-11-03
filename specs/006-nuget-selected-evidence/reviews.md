@@ -1488,3 +1488,34 @@ The local correction commit freezes these bytes before fresh focused review;
 **K2-M1 remains OPEN pending independent closure. K2 not approved; T010 not begun.**
 No live network, external root, package-manager/target execution or push occurs
 in this correction. Earlier failed candidate and finding evidence remain intact.
+
+### Fresh focused K2-M1 verification and parent reconciliation
+
+Frozen correction `1ffa0f9bd40f5a9a151acfc9f1be7c799a09cfa9`, baseline
+`c88d25933154b034eb8003204dd432d4bba0da0e`. Fresh non-author
+`/root/k2_alias_verification`, fork_turns=none without overrides, reads complete
+current authority and directly validates frozen bytes/diff. **Assigned focused
+audit COMPLETE / APPROVE; no material findings.** Historical middle-alias missing
+created/hash/algorithm/all-material cases now return exactly invalid response
+without publications or verified-state claims. In-memory substitution of the
+rejected Git function makes all39 matrix subcases fail with zero errors; no
+repository bytes change. An additional135 independent cases pass across alias
+roles, either/both sides, null/nonstring/invalid evidence, reordered inputs and
+identical schedules. Valid equal/conflicting/shared-link aliases, singleton
+reasons, latest with no local hash binding, absence precedence and safe stages
+remain covered. Registry37/NuGet179/full580 PASS on Darwin/Python3.11.0; frozen
+hashes, approved authority digests, clean tree and whitespace PASS.
+
+Parent validates the exact eight-line guard against S5 and plan alias agreement,
+checks full correction/tests and its own focused37 PASS plus historical defect
+reproductions. **K2-M1 CLOSED.** Existing K2 slice coverage is complete and the
+focused review closes its only material finding; this is not a second full audit
+or full feature acceptance. Historical F1/F2/P1/K1-F1/T008-V1 remain closed.
+Only refreshed exact-candidate platform evidence remains before K2 approval.
+
+The next delegated push includes only Feature006 task/correction/review records
+and reviewed implementation/tests. Local verification and independent reviews
+are complete; candidate code/test bytes are unchanged after focused commissioning.
+Before each push, clean tree and live remote main refs will be checked; both must
+still match expected221f048, then each destination will be verified against the
+intended candidate. No force, other refs/remotes, new credentials or trust changes.
