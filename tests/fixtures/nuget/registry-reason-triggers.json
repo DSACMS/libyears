@@ -1,0 +1,10 @@
+[
+  {"level": "dependency", "reason": "package_not_found", "test": "test_registry_reason_trigger_table"},
+  {"level": "dependency", "reason": "version_not_found", "test": "test_registry_reason_trigger_table"},
+  {"level": "dependency", "reason": "content_hash_unavailable", "test": "test_registry_reason_trigger_table"},
+  {"level": "dependency", "reason": "content_hash_mismatch", "test": "test_registry_reason_trigger_table"},
+  {"level": "dependency", "reason": "release_date_missing", "test": "test_registry_reason_trigger_table"},
+  {"level": "dependency", "reason": "no_stable_release", "test": "test_registry_reason_trigger_table"},
+  {"level": "dependency", "reason": "invalid_registry_response", "test": "test_registry_reason_trigger_table"},
+  {"level": "dependency", "reason": "registry_error", "test": "test_registry_reason_trigger_table"}
+]

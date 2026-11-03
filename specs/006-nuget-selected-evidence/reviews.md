@@ -1367,3 +1367,47 @@ this task gate. Historical F1/F2/P1/K1-F1 remain closed and witnessed. T007 rema
 complete; T009 is now dependency-ready and execution continues automatically
 under current authority. K2 is still pending until T009 and complete composed
 review, not approved by T008 evidence. No new product or trust choice is made.
+
+### T009 implementation and K2 freeze — 006-0012
+
+After T008 completion, fresh child `/root/author_t009` implements only T009:
+`nuget_registry.py`, focused registry tests, synthetic public metadata/reason
+fixtures and their README. No supervisor/worker, scan/output/CLI or approved
+contract bytes change. The parent directly inspects the complete diff and tests.
+
+LocalAuthority-only parent batches sort candidates and invoke the existing
+supervisor; the installed worker lazily calls the real metadata handler. Verified
+SemVer-2 resource discovery is cached, including failure, at most once per scan.
+Registration framing/count/bounds/listing/identity and complete inline/external
+pages precede selection. Inline fragment page IDs are validated non-request
+identifiers; all actual requests retain the approved fragment-free allowlist.
+Equivalent aliases require material agreement, including duplicate catalog leaves;
+missing duplicate evidence cannot silently prove agreement. No prerelease order
+framework is introduced. Selected public identity/SHA512 correspondence precedes
+created-only aware UTC dates; greatest listed stable is chosen before checking
+its date, with no older fallback or published/commit substitute. Safe staged
+PackageResult records alone cross the existing bounded protocol.
+
+Pre-freeze parent inspection prompts bounded self-audit corrections for missing
+alias evidence, split equal-core prerelease pages and once-only failed discovery.
+A test-module import is corrected to work under both focused module invocation
+and discovery. These are author preparation, not post-freeze review cycles.
+True404 resource absence remains distinct from bounded404 invalid response and
+allows other required catalog leaves to establish availability; timeout/service/
+rate/structure failures retain existing fail-closed handling and budgets.
+
+Author focused32, NuGet174 and full575 PASS. Parent independently runs focused32
+and final full575 PASS; diff check PASS. Tests include every registry reason,
+reordered page/alias/object request invariance, hostile/no-fetch links, secret
+canaries, used/latest date/hash/identity matrices, failed-index caching, retained
+cooldown/counters, sorted supervision, interruption cleanup, and actual handler/
+byte-client/protocol/controller composition with index/page/catalog cutoff
+discard/no restart. Existing P1/T008-V1 and foundation witnesses remain intact.
+No live NuGet package, real root, producer or package manager is accessed.
+
+The task commit freezes the complete phase candidate before K2 commissioning.
+**T009 implementation/required local verification COMPLETE; K2 PENDING.** No
+integration begins before independent phase disposition. Existing exact-SHA
+Windows evidence above proves T008 lifecycle; K2 must reconcile whether any new
+platform evidence is needed for the composed candidate. Actual child settings/
+resource telemetry remain unavailable. Approved spec/plan/tasks stay byte-frozen.

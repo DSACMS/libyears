@@ -4,13 +4,18 @@ Admission checks bound work between operations. Absolute in-flight cancellation
 belongs to the NuGet supervisor, not this client's socket timeout.
 """
 
+import base64
 import json
 import math
 import re
 import time
+from dataclasses import dataclass
+from datetime import datetime, timezone
 from email.utils import parsedate_to_datetime
 from urllib.parse import urlsplit
 
+from .model import NuGetPublication
+from .nuget_version import SelectedIdentity, parse_selected_identity
 from .registry import TransportFailure, VerifiedJSONTransport
 
 SERVICE_INDEX = 'https://api.nuget.org/v3/index.json'
@@ -155,6 +160,8 @@ class NuGetMetadataClient:
         self.scan_requests = 0
         self.cooldown_until = 0.0
         self.package_id = None
+        self.registration_ready = False
+        self.registration_failure = None
 
     def begin_package(self, package_id, *, package_deadline=None, scan_deadline=None):
         if not isinstance(package_id, str) or not _PACKAGE_ID.fullmatch(package_id):
@@ -235,6 +242,10 @@ class NuGetMetadataClient:
             if body.status in (429, 503):
                 self._rate_limit(body.retry_after)
             reason = 'invalid_registry_response' if body.bounded_failure else 'registry_error'
+            # Absence has resource-specific meaning in traversal. It does not
+            # invalidate the connection or suppress other required catalog leaves.
+            if body.status == 404 and not body.bounded_failure:
+                raise NuGetRegistryFailure(reason, body.status)
             self._fail(reason, body.status)
         if not isinstance(body, bytes):
             self._fail()
@@ -249,3 +260,332 @@ class NuGetMetadataClient:
             return decode_metadata(body)
         except NuGetRegistryFailure:
             self._fail()
+
+
+@dataclass(frozen=True)
+class PublicVersion:
+    identity: SelectedIdentity
+    listed: bool
+    catalog_url: str
+    assertions: tuple[dict, ...]
+
+
+def _object(value):
+    if not isinstance(value, dict):
+        raise NuGetRegistryFailure()
+    return value
+
+
+def _items(value):
+    value = _object(value)
+    items = value.get('items')
+    count = value.get('count')
+    if (not isinstance(items, list) or type(count) is not int
+            or count != len(items)):
+        raise NuGetRegistryFailure()
+    return items
+
+
+def _identity(value, package_id):
+    value = _object(value)
+    name = value.get('id')
+    identity = parse_selected_identity(value.get('version'))
+    if (not isinstance(name, str) or not name.isascii()
+            or name.lower() != package_id or identity is None):
+        raise NuGetRegistryFailure()
+    if 'isPrerelease' in value:
+        flag = value['isPrerelease']
+        if type(flag) is not bool or flag != (identity.prerelease is not None):
+            raise NuGetRegistryFailure()
+    return identity
+
+
+def _listed(value):
+    flag = value.get('listed', True)
+    if type(flag) is not bool:
+        raise NuGetRegistryFailure()
+    return flag
+
+
+def _created(value):
+    if not isinstance(value, str) or not re.fullmatch(
+            r'[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}'
+            r'(?:\.[0-9]{1,7})?(?:Z|[+-][0-9]{2}:[0-9]{2})', value):
+        return None
+    if not value.endswith('Z') and (int(value[-5:-3]) > 23 or int(value[-2:]) > 59):
+        return None
+    try:
+        # fromisoformat consistently truncates the seventh fractional digit.
+        date = datetime.fromisoformat(value.replace('Z', '+00:00'))
+        if date.year == 1900:
+            return None
+        date = date.astimezone(timezone.utc)
+        return date if date.year != 1900 else None
+    except (ValueError, OverflowError):
+        return None
+
+
+def _hash(value):
+    if value.get('packageHashAlgorithm') != 'SHA512':
+        return None
+    text = value.get('packageHash')
+    if not isinstance(text, str) or len(text) > 128:
+        return None
+    try:
+        digest = base64.b64decode(text, validate=True)
+    except (ValueError, UnicodeError):
+        return None
+    return digest if len(digest) == 64 else None
+
+
+def _service_index(client):
+    if client.registration_ready:
+        return
+    if client.registration_failure is not None:
+        raise NuGetRegistryFailure(client.registration_failure)
+    try:
+        _discover_registration(client)
+    except NuGetRegistryFailure as failure:
+        client.registration_failure = failure.reason
+        raise
+    client.registration_ready = True
+
+
+def _discover_registration(client):
+    value = _object(client.get_json(SERVICE_INDEX, purpose='index'))
+    resources = value.get('resources')
+    if not isinstance(resources, list):
+        raise NuGetRegistryFailure()
+    selected = []
+    for resource in resources:
+        resource = _object(resource)
+        if resource.get('@type') == 'RegistrationsBaseUrl/3.6.0':
+            selected.append(resource.get('@id'))
+    if not selected or any(url != REGISTRATION_BASE for url in selected):
+        raise NuGetRegistryFailure()
+
+
+def _page_url(page, package_id):
+    url = page.get('@id')
+    if isinstance(url, str) and '#' in url and 'items' in page:
+        # nuget.org names inline pages with fragments. They are identifiers,
+        # never request destinations; only this exact bounded shape is accepted.
+        prefix = REGISTRATION_BASE + package_id + '/index.json#page/'
+        if not url.startswith(prefix) or len(url) > 4096:
+            raise NuGetRegistryFailure()
+        parts = url[len(prefix):].split('/')
+        if (len(parts) != 2 or parts != [page.get('lower'), page.get('upper')]
+                or any(parse_selected_identity(part) is None for part in parts)):
+            raise NuGetRegistryFailure()
+        return url
+    return validate_url(url, package_id)
+
+
+def _bound(page, key):
+    identity = parse_selected_identity(page.get(key))
+    if identity is None:
+        raise NuGetRegistryFailure()
+    return identity
+
+
+def _core_bound(identity):
+    # Prereleases precede their stable core. Their mutual order is unnecessary
+    # for stable selection and deliberately remains uninterpreted.
+    return identity.components, identity.prerelease is None
+
+
+def _registration(client, package_id):
+    index_url = REGISTRATION_BASE + package_id + '/index.json'
+    try:
+        index = client.get_json(index_url)
+    except NuGetRegistryFailure as failure:
+        if failure.status == 404 and failure.reason == 'registry_error':
+            raise NuGetRegistryFailure('package_not_found') from None
+        raise
+    if '@id' in _object(index) and index['@id'] != index_url:
+        raise NuGetRegistryFailure()
+    pages = _items(index)
+    client.count_page(len(pages))
+    descriptors = {}
+    for page in pages:
+        page = _object(page)
+        url = _page_url(page, package_id)
+        if url in descriptors or type(page.get('count')) is not int or page['count'] < 1:
+            raise NuGetRegistryFailure()
+        _bound(page, 'lower')
+        _bound(page, 'upper')
+        descriptors[url] = page
+    versions = []
+    registration_urls = set()
+    ranges = []
+    for url in sorted(descriptors):
+        descriptor = descriptors[url]
+        page = descriptor
+        if 'items' not in page:
+            try:
+                page = _object(client.get_json(url))
+            except NuGetRegistryFailure as failure:
+                if failure.status == 404:
+                    raise NuGetRegistryFailure() from None
+                raise
+            if page.get('@id') != url:
+                raise NuGetRegistryFailure()
+            if any(page.get(key) != descriptor.get(key) for key in ('count', 'lower', 'upper')):
+                raise NuGetRegistryFailure()
+        if 'parent' in page and page['parent'] != index_url:
+            raise NuGetRegistryFailure()
+        lower, upper = _bound(page, 'lower'), _bound(page, 'upper')
+        if _core_bound(lower) > _core_bound(upper):
+            raise NuGetRegistryFailure()
+        entries = _items(page)
+        client.count_versions(len(entries))
+        page_identities = set()
+        for leaf in entries:
+            leaf = _object(leaf)
+            leaf_url = validate_url(leaf.get('@id'), package_id)
+            if leaf_url in registration_urls:
+                raise NuGetRegistryFailure()
+            registration_urls.add(leaf_url)
+            entry = _object(leaf.get('catalogEntry'))
+            identity = _identity(entry, package_id)
+            if not _core_bound(lower) <= _core_bound(identity) <= _core_bound(upper):
+                raise NuGetRegistryFailure()
+            page_identities.add(identity.normalized_version)
+            listed = _listed(entry)
+            if 'listed' in leaf and _listed(leaf) != listed:
+                raise NuGetRegistryFailure()
+            if 'isPrerelease' in leaf:
+                _identity(dict(leaf, id=package_id, version=identity.normalized_version), package_id)
+            catalog_url = validate_url(entry.get('@id'), package_id, 'catalog')
+            versions.append(PublicVersion(identity, listed, catalog_url, (entry, leaf)))
+        if lower.normalized_version not in page_identities or upper.normalized_version not in page_identities:
+            raise NuGetRegistryFailure()
+        ranges.append((lower.components, upper.components))
+    # Numeric overlap is decidable without introducing prerelease ordering.
+    # Equal numeric boundaries can split prereleases sharing a numeric core.
+    ranges.sort(key=lambda item: (item[0], item[1]))
+    for earlier, later in zip(ranges, ranges[1:]):
+        if earlier[1] > later[0]:
+            raise NuGetRegistryFailure()
+    grouped = {}
+    for version in versions:
+        grouped.setdefault(version.identity.normalized_version, []).append(version)
+    for aliases in grouped.values():
+        if len({alias.listed for alias in aliases}) != 1:
+            raise NuGetRegistryFailure()
+    return grouped
+
+
+def _catalog(client, record):
+    try:
+        value = client.get_json(record.catalog_url, purpose='catalog')
+    except NuGetRegistryFailure as failure:
+        if failure.status == 404 and failure.reason == 'registry_error':
+            return None
+        raise
+    value = _object(value)
+    identity = _identity(value, client.package_id)
+    kinds = value.get('@type')
+    if isinstance(kinds, str):
+        kinds = [kinds]
+    if (not isinstance(kinds, list) or not all(isinstance(kind, str) for kind in kinds)
+            or not any(kind in ('PackageDetails', 'nuget:PackageDetails') for kind in kinds)
+            or any(kind in ('PackageDelete', 'nuget:PackageDelete') for kind in kinds)
+            or identity.normalized_version != record.identity.normalized_version
+            or ('@id' in value and value['@id'] != record.catalog_url)):
+        raise NuGetRegistryFailure()
+    if 'listed' in value and _listed(value) != record.listed:
+        raise NuGetRegistryFailure()
+    return value
+
+
+def _reconcile_material(records, documents):
+    hashes, dates = set(), set()
+    alias_material = set()
+    for record in records:
+        document = documents[record.catalog_url]
+        if document is None:
+            if len(records) > 1:
+                raise NuGetRegistryFailure()
+            continue
+        alias_material.add((_hash(document), _created(document.get('created'))))
+        for assertion in (*record.assertions, document):
+            if 'created' in assertion:
+                dates.add(_created(assertion['created']))
+            if 'packageHash' in assertion or 'packageHashAlgorithm' in assertion:
+                hashes.add(_hash(assertion))
+    if len(hashes) > 1 or len(dates) > 1 or len(alias_material) > 1:
+        raise NuGetRegistryFailure()
+
+
+def lookup_authorized_package(authority, client):
+    """Worker-only handler: complete enumeration before any measurement claim."""
+    from .nuget_supervisor import PackageResult, authority_message
+    authority_message(authority)
+    if client.package_id != authority.package_key:
+        raise NuGetRegistryFailure()
+    _service_index(client)
+    grouped = _registration(client, authority.package_key)
+    used = grouped.get(authority.normalized_version)
+    if used is None:
+        return PackageResult(reason='version_not_found')
+    stable = [key for key, aliases in grouped.items()
+              if aliases[0].listed and aliases[0].identity.prerelease is None]
+    latest_key = max(stable, key=lambda key: grouped[key][0].identity.components) if stable else None
+    needed = set((authority.normalized_version,))
+    if latest_key is not None:
+        needed.add(latest_key)
+    needed.update(key for key, aliases in grouped.items() if len(aliases) > 1)
+    by_url = {}
+    for key in sorted(needed):
+        for record in grouped[key]:
+            previous = by_url.get(record.catalog_url)
+            if previous and previous.identity.normalized_version != key:
+                raise NuGetRegistryFailure()
+            by_url[record.catalog_url] = record
+    documents = {url: _catalog(client, by_url[url]) for url in sorted(by_url)}
+    if any(documents[record.catalog_url] is None for record in used):
+        return PackageResult(reason='version_not_found')
+    for key in sorted(needed):
+        _reconcile_material(grouped[key], documents)
+    # Catalog hash authority cannot be supplied by a registration assertion.
+    hashes = [_hash(documents[record.catalog_url]) for record in used]
+    if any(digest is None for digest in hashes):
+        return PackageResult(reason='content_hash_unavailable', content_hash_state='unavailable')
+    if any(digest != authority.content_hash for digest in hashes):
+        return PackageResult(reason='content_hash_mismatch', content_hash_state='mismatch')
+    verified = dict(origin_state='public_content_verified', content_hash_state='public_agreement')
+    used_dates = [_created(documents[record.catalog_url].get('created')) for record in used]
+    if any(date is None for date in used_dates):
+        return PackageResult(reason='release_date_missing', **verified)
+    used_publication = NuGetPublication(authority.normalized_version, used_dates[0], used[0].listed)
+    verified['used_publication'] = used_publication
+    if latest_key is None:
+        return PackageResult(reason='no_stable_release', **verified)
+    latest = grouped[latest_key]
+    latest_dates = [_created(documents[record.catalog_url].get('created'))
+                    if documents[record.catalog_url] is not None else None for record in latest]
+    if any(date is None for date in latest_dates):
+        return PackageResult(reason='release_date_missing', **verified)
+    return PackageResult(latest_publication=NuGetPublication(latest_key, latest_dates[0], True), **verified)
+
+
+class NuGetRegistryAdapter:
+    """Parent-side scan lifetime; all production lookup work is supervised."""
+
+    def __init__(self, supervisor=None):
+        if supervisor is None:
+            from .nuget_supervisor import NuGetSupervisor
+            supervisor = NuGetSupervisor()
+        self.supervisor = supervisor
+
+    def lookup_all(self, authorities):
+        from .nuget_supervisor import authority_message
+        authorities = list(authorities)
+        for authority in authorities:
+            authority_message(authority)
+        authorities.sort(key=lambda item: (item.package_key, item.normalized_version))
+        try:
+            return tuple((authority, self.supervisor.lookup(authority)) for authority in authorities)
+        finally:
+            self.supervisor.close()

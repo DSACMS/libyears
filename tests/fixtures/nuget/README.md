@@ -56,3 +56,19 @@ Raw origin strings, hashes, fingerprints and baseline/producer details stay in
 internal records. Public evidence exposes only safe states and selected identity
 facts. Tests perform no registry requests and use guards around the authority
 boundary to ensure rejected packages never reach an adapter.
+
+`registry-public.json` is a synthetic URL-to-document map containing a SemVer-2
+service-index resource, an inline registration page, and two catalog
+PackageDetails leaves. Its content hash encodes repeated `x` bytes, not package
+archive content. The intentionally private packageContent canary must never be
+fetched. The deliberately different created, published and commit timestamps
+show that only catalog created supplies first-receipt dates. Test builders derive
+small malformed, missing, alias, paged and reordered variants without network.
+
+`registry-reason-triggers.json` extends the mechanically checked local S6 table
+with every public-registry dependency reason, including bounded response errors
+versus transport/budget failures. `test_nuget_registry.py` tests this table and
+composes the real byte client and lookup handler with the supervisor's injected
+process controller and bounded protocol. Absolute blocking/cancellation and real
+OS lifecycle witnesses remain in `test_nuget_worker.py`; no package manager,
+producer, live NuGet service or external project is used.
