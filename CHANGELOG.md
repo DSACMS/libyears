@@ -11,6 +11,13 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Measure explicitly selected NuGet project snapshots with `--nuget-project`
+  and an explicitly accepted producer/supplier witness via `--nuget-provenance`.
+  Require coherent lock evidence and local/public content agreement; use nuget.org
+  first-receipt dates and greatest listed stable versions. Add safe schema-v3
+  evidence and availability reporting without executing dotnet, NuGet or MSBuild.
+  Ordinary scans remain unchanged; unsupported filesystem safety primitives fail closed.
+
 - Measure explicitly selected declared Ruby groups with repeatable
   `--ruby-group GROUP` on directory scans, using a conservative static Gemfile
   subset and independently authorized exact Gemfile.lock evidence. Unsupported

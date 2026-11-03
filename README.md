@@ -2,7 +2,8 @@
 
 ## About the Project
 
-Libyears is a local Python CLI that measures the age of direct Python, npm, and RubyGems
+Libyears is a local Python CLI that measures the age of direct Python, npm, RubyGems,
+and explicitly selected NuGet
 dependencies using release timestamps from their public registries.
 It uses only the Python standard library at runtime.
 
@@ -397,6 +398,181 @@ without required safe file-access capabilities fail closed. The
 failure/field rules; [validation evidence](specs/005-gemfile-group-scope/release-validation.md)
 separates offline correctness from pending authorized real-root validation.
 
+## Explicit NuGet project snapshots
+
+NuGet is opt-in on directory scans. Select exactly one immediate C# project;
+even a sole project, lock or assets file does not activate NuGet automatically:
+
+```bash
+python -m libyears PATH --nuget-project Example.csproj
+python -m libyears PATH --nuget-project Example.csproj --nuget-provenance witness.json
+python -m libyears PATH --nuget-project Example.csproj --nuget-provenance witness.json --json
+```
+
+The first command reports unavailable measurement authority. Only explicitly
+supplying `--nuget-provenance` accepts that file's producer/supplier assertions;
+a conventionally named or co-located witness is never trusted automatically.
+Supply genuine retained evidence from an independently authorized producer, rather
+than inventing assertions to make a scan pass. Libyears does not create it by
+running dotnet, NuGet or MSBuild.
+
+Both options require their exact spelling, occur at most once, and accept immediate
+filenames with the shown suffixes. Paths, globs, filename lists, unsafe characters,
+witness-only requests and direct-file PATH arguments are usage errors (exit 1).
+The lock is always root `packages.lock.json`. Multiple co-located projects are
+allowed because one is selected explicitly; their populations are never combined.
+Python `--resolved`, npm/Yarn arbitration and Ruby group selection keep their
+existing independent meanings.
+
+Supported scope is one namespace-free UTF-8 SDK-style `Project Sdk="..."` with
+one unconditional literal `TargetFramework` or single-valued `TargetFrameworks`.
+Count immediate unconditional `PackageReference Include="ID" Version="1.0"`
+declarations, including test, tool, analyzer and PrivateAssets references, once
+per case-insensitive ID. Requests must be bare two-, three- or four-component
+decimal minimums without leading zeros. They are not selected pins. Allowed
+ancillary metadata is literal PrivateAssets, IncludeAssets, ExcludeAssets and
+GeneratePathProperty, once each. Conditions, imports, generated/central package
+management, version children/overrides, Update/Remove, duplicate IDs, multiple
+frameworks and RIDs reject scope. ProjectReference/FrameworkReference and implicit
+SDK packages add no measured dependencies; referenced content is never traversed.
+
+Only lock schema integer `version: 1` with exactly the project's literal framework
+is supported. Direct entries provide selection; Transitive/Project entries frame
+closure but never enlarge scope. Duplicate JSON identities, non-string selections
+and unknown semantic fields reject the whole lock. A declaration `1.0` requires
+lock `requested: "[1.0.0, )"`; `1.2.3.0` requires `[1.2.3, )`, while `1.2.3.4`
+retains its fourth component. Different minimum bounds disagree even with identical
+resolved outcomes. Only `resolved` supplies the exact version; there is no range
+solver, satisfaction check, assets/export or package-list fallback.
+
+The supplied witness is strict version-1 UTF-8 JSON with these required fields:
+
+```json
+{
+  "version": 1,
+  "project": "Example.csproj",
+  "framework": "net10.0",
+  "project_sha256": "<64 lowercase hex digits for exact project bytes>",
+  "lock_sha256": "<64 lowercase hex digits for exact lock bytes>",
+  "producer": {"name": "supplier", "version": "1"},
+  "coherent_snapshot": true,
+  "baseline": {
+    "sdk": "Microsoft.NET.Sdk",
+    "sdk_version": "10.0.100",
+    "explicit_population_complete": true,
+    "unsupported_membership_version_influences": false,
+    "unsupported_framework_rid_influences": false,
+    "unsupported_source_influences": false
+  },
+  "packages": [{
+    "id": "Example.Package",
+    "version": "1.0.0",
+    "content_hash": "<standard base64 of the 64-byte SHA512 value>",
+    "origins": ["https://api.nuget.org/v3/index.json"]
+  }]
+}
+```
+
+Replace placeholders only with established evidence. The baseline asserts that
+SDK/imported/generated/ancestor/central inputs add no unsupported population,
+version, framework/RID or source influences. SDK identity must match the literal
+project Sdk. Exact byte digests bind the project and lock without newline repair;
+mtime, Git presence or equal package names/versions cannot establish coherence.
+Unknown/duplicate fields or package identities are rejected. Each origin record
+binds its ID, normalized selected version and hash to that envelope. A missing,
+private, alternate or conflicting origin causes an individual failure without
+querying a public namesake. Only the singleton canonical public URL above permits
+lookup, after decoded lock/witness SHA512 agreement. Public catalog identity and
+SHA512 agreement must then pass before dates authorize measurement. No archive,
+cache, NuGet.Config, source mapping or credential lookup repairs missing evidence.
+
+These are accepted supplier assertions, not authenticated producing history.
+Matching hashes establish content correspondence. The snapshot does not prove
+evaluated MSBuild completeness, successful restore, installed/deployed/runtime
+scope or compatibility. Live measurement yield and signed-content hash-domain
+fitness remain unvalidated; disagreement fails closed.
+
+Dates mean first receipt by nuget.org, from identity-bound catalog `created`,
+never original upstream release, published/commit/listing/restore/local time.
+Latest means the greatest currently listed stable version from complete
+SemVer-2 registration, independent of framework or requested compatibility.
+An undated actual latest is not replaced by an older dated version. Used
+prerelease/unlisted versions can measure; absent public records are not rebuilt
+from archives. Listing or record changes may change later measurements.
+Missing, invalid, timezone-free, sentinel year-1900 or conflicting creation
+evidence is unavailable. Selected/public identities normalize leading core zeros, missing patch/zero
+revision, ignored build metadata and case-insensitive prerelease suffixes;
+stable ordering compares numeric components. Dates accept aware ISO timestamps
+with zero to seven fractional digits, normalize UTC and truncate to microseconds.
+The unchanged 365.25-day metric returns exact zero for used=latest and flags
+negative timestamp deltas clamped to zero.
+
+Schema 3 adds `version_evidence.nuget` only on activation. It records declaration,
+lock and optional witness filenames, literal framework, accepted lock format,
+explicit direct scope, supplied-assertion trust and first-receipt publication
+basis. Measured NuGet rows use `version_source: "packages_lock"` and
+`nuget_evidence`; unmeasurable rows retain name, declared and reason plus
+`nuget_evidence`, without `version_source`.
+safe requested/lock-requested/original and normalized selection/publication facts
+appear only after their stages establish them. Request mismatches claim no exact
+selection. Origin states are unavailable, unsupported, asserted_public and
+public_content_verified; hash states are unavailable, mismatch, local_agreement
+and public_agreement. The last states require public identity/hash correspondence.
+Raw hashes, origins, baseline, XML and diagnostics are omitted. NuGet-active human
+reports abstract the root path and omit raw verbose diagnostics/TLS paths;
+ordinary reports retain their established output. Verbose JSON is identical.
+
+Project/population rejection gives an unknown denominator. Accepted declarations
+plus an unavailable lock/witness retain known N (even zero), with null measured,
+coverage and NuGet numeric aggregates and no fabricated dependency failures.
+Accepted nonempty scope uses M/N, including 0% for all individual failures;
+validated empty evidence has 0/0, null coverage, total 0.0 and other aggregates
+null. Repository coverage is null when any source is unavailable; available
+sibling rows/aggregates survive. Whole-source failures use `source_errors`,
+individual failures `unmeasurable`. Completed empty/partial/source-error reports,
+including an explicitly missing project, exit 0; systemic worker/report failures
+exit 2 with fixed safe text. See the [complete failure contract](specs/006-nuget-selected-evidence/spec.md#s6--failure-and-availability-contract).
+
+Inputs are read through bounded descriptor-relative, regular-file checks inside
+the selected root; only contained regular-file symlinks are permitted. Replaced,
+unsafe or special inputs fail closed. Hosts without the required no-follow,
+nonblocking and descriptor-relative primitives refuse source reading, including
+Windows environments without those primitives. Windows worker lifecycle CI
+success does not imply filesystem-reader support or usable scan coverage.
+
+| Enforced bound | Limit |
+|---|---|
+| Project / lock / witness bytes | 1 MiB / 16 MiB / 16 MiB |
+| XML depth / elements / attributes per element | 32 / 50,000 / 32 |
+| JSON depth / local values / local string | 32 / 200,000 / 16 KiB |
+| Version text / numeric component | 256 ASCII characters / 32 decimal digits |
+| Framework / producer or SDK assertion string | 128 / 256 characters |
+| Direct references / lock entries / witness package records | 10,000 / 50,000 / 50,000 |
+| Each metadata wire / expanded body | 8 MiB / 32 MiB |
+| Aggregate wire / expanded bytes per package | 64 MiB / 128 MiB |
+| Metadata JSON depth / values / string | 32 / 500,000 / 1 MiB |
+| Pages / versions per package | 256 / 100,000 |
+| Requests per package / NuGet scan | 512 / 4096, including service-index discovery |
+| Socket operation timeout / package / NuGet metadata scan | at most 10 / 60 / 300 seconds |
+| Worker readiness / protocol message | 10 seconds after process creation / 16 KiB |
+| Parent polling / cancellation reserve / initial terminate wait | 10 ms ceiling / 0.5 seconds within deadline / at most 0.25 seconds |
+| Retries / redirects | zero / zero |
+
+Requests use verified HTTPS only on exact `api.nuget.org`: fixed V3 index,
+`registration5-gz-semver2` paths for the expected package, and validated linked
+`catalog0/data` leaves. No alternate host, credentials, query, fragment, explicit
+port or archive request is admitted. Retry-After on 429/503 suppresses later
+requests within scan budgets; there is no sleeping retry. The isolated trusted
+installed Python helper runs only libyears metadata code, never target code or
+a package manager. Absolute parent deadlines cover DNS/connect/TLS/headers/body,
+parsing and traversal; cutoff results are discarded, the worker is terminated,
+killed/reaped with bounded waits and remaining requests suppressed. Earlier
+successes survive. Startup/process creation and OS scheduling are not hard
+real-time guarantees for the whole CLI. An unreaped worker is systemic failure,
+with deferred cleanup rather than an unbounded wait or synchronous fallback.
+The worker uses shared default verified TLS trust selection; the explicit
+`--ca-bundle` argument is validated but is not forwarded to this worker.
+
 ## Current limitations
 
 - Python declarations are read from `requirements.txt`; npm declarations are
@@ -404,6 +580,8 @@ separates offline correctness from pending authorized real-root validation.
   `Gemfile.lock` DEPENDENCIES unless `--ruby-group` explicitly selects declared
   Gemfile groups within the closed static subset.
 - Direct dependencies only.
+- NuGet requires the explicit supported project/lock/witness snapshot above;
+  there is no solution, portfolio, general MSBuild or private-feed interpretation.
 - The resolved snapshot format is a narrow list of exact `NAME==VERSION`
   entries; repository declarations determine which entries are in scope.
 - Libyears does not install or resolve dependencies.

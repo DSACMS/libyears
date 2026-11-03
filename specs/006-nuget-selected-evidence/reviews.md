@@ -1648,3 +1648,43 @@ Author and parent output/model/mixed/scoped/CLI regressions **120 PASS**, whites
 PASS. Parent directly inspects complete formatter changes and new correspondence
 witnesses. **T012 COMPLETE**, pending K3. No CLI activation, table-alignment
 cleanup, approved-contract change or external access occurs in this task.
+
+### T013 — Coherent CLI activation and documentation checkpoint
+
+Only after committed T010/T011/T012, the same author context activates exact
+`--nuget-project NAME.csproj` and optional `--nuget-provenance NAME.json` through
+typed request wiring. Occurrence tracking, exact spelling and directory/immediate
+filename validation precede snapshot/CA/source content reads. Ordinary scans omit
+NuGet despite co-located artifacts; Python resolved and Ruby group options retain
+isolation. Usage/path failures exit1; completed missing-project/source/empty/partial
+reports exit0; worker/systemic/render failures exit2 with fixed safe messages.
+NuGet-specific argparse/input/exception/rendering privacy does not change ordinary
+error/abbreviation behavior.
+
+Parent pre-freeze inspection reproduces raw error risks for root-stat exceptions
+and malformed single/triple-hyphen NuGet-looking options. Bounded preparation fixes
+and retained regressions produce safe usage1 without content reads or raw tokens.
+Rendering exceptions are also covered. Final prose explicitly limits packages_lock
+version_source to measured rows, keeping standard failed-row fields plus evidence.
+These are pre-freeze author corrections, not post-freeze checkpoint repairs.
+
+README, public SPEC, AGENTS ecosystem scope and CHANGELOG Unreleased Added describe
+actual supported inputs/scope/request normalization, strict version1 witness schema
+and accepted assertions, identity/origin/local/public hash gates, created-only
+first receipt and greatest listed stable, staged schema3 evidence, source/count/
+coverage/metric semantics, all numeric limits, process/deadline qualifications,
+privacy and exclusions. Reader safety refusal is distinguished from Windows worker
+lifecycle support; worker default verified trust does not claim explicit CA override
+forwarding. Live yield/hash-domain fitness and real-root evidence remain unverified.
+No release/tag or policy exception is added.
+
+Author focused/shared136 PASS, finalCLI38 PASS; author and parent full deterministic
+suite **620 PASS** at coherent phase boundary. Parent inspects complete CLI/test/
+documentation diff, recovers truncated reads and checks limits against current
+source/approved plan; final doc-only clarification follows passing code tests.
+Whitespace PASS. **T013 COMPLETE; K3 PENDING.** The task commit freezes the full
+integration candidate before fresh non-author K3 commissioning. T014 not begun.
+Approved spec/plan/tasks and trusted worker/registry import graph remain unchanged;
+existing exact77d66b9 platform evidence retains its defined scope, without claiming
+Windows execution of later CLI/output tests. Secret-check limitation stays separate
+and unchanged; no targets, live NuGet, package managers or new trust are accessed.

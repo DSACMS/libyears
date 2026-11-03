@@ -4,9 +4,10 @@
 
 Implement a dependency-free CLI that calculates the CHAOSS Libyears metric for a local source repository.
 
-The current implementation supports direct Python, npm, and RubyGems dependencies.
+The current implementation supports direct Python, npm, RubyGems and explicitly
+selected NuGet dependencies.
 The original MVP sections below describe Python policy; the ecosystem extensions
-in section 26 govern npm and RubyGems without changing PyPI behavior.
+in section 26 govern npm, RubyGems and NuGet without changing PyPI behavior.
 
 It must work equally well for public repositories, private repositories, source archives, and ordinary local directories.
 
@@ -67,7 +68,7 @@ The MVP does not:
 - infer versions from the developer's machine
 - inspect transitive dependencies
 - support private package registries
-- support ecosystems beyond the explicitly approved PyPI, npm, and RubyGems scope
+- support ecosystems beyond the explicitly approved PyPI, npm, RubyGems and bounded NuGet scope
 
 The tool MUST NOT turn an unresolved dependency declaration into an exact version by resolving it against the package registry at scan time.
 
@@ -810,3 +811,107 @@ scope, compatibility, historical coherence or complete-publication-history claim
 The [release-validation record](specs/005-gemfile-group-scope/release-validation.md)
 indexes deterministic acceptance separately from required future explicitly
 authorized real-root evidence and optional separately authorized live smoke.
+
+### Explicit NuGet selected-version snapshots (Feature 006)
+
+The approved [Feature 006 specification](specs/006-nuget-selected-evidence/spec.md),
+[plan](specs/006-nuget-selected-evidence/plan.md) and
+[tasks](specs/006-nuget-selected-evidence/tasks.md) govern NuGet. The
+[README workflow](README.md#explicit-nuget-project-snapshots) documents the exact
+witness schema, supported inputs and enforced numeric limits. This extension
+does not change Python/npm/Yarn/Ruby policy or the 365.25-day metric.
+
+Only exact directory-only `--nuget-project NAME.csproj` activates NuGet. Optional
+exact `--nuget-provenance NAME.json` accepts the supplied producer/supplier
+assertions; no found witness is implicitly trusted. Both occur at most once.
+Witness-only, repeated/abbreviated flags, non-filename/path/glob/list values,
+direct-file PATH and invalid roots fail usage before source content is read.
+Missing explicitly selected projects instead yield completed source-error reports.
+There is no recursive or automatic project choice, solution or portfolio scope.
+
+Bounded static scope is one supported namespace-free UTF-8 SDK-style project,
+one unconditional literal framework, and all immediate unconditional literal
+Include/Version PackageReferences, including test/tool/analyzer/PrivateAssets.
+Duplicate case-insensitive IDs, conditions, version children/overrides,
+Update/Remove, imports, generated/central influences, multiple TFMs and RIDs
+reject scope. Project/Framework references and implicit SDK packages are excluded,
+without following reference content. Only two-to-four-component canonical numeric
+minimum requests are supported. A request is never an exact-version fallback.
+
+Root packages.lock.json schema integer 1 must contain exactly that framework.
+Direct selection is associated only with a unique same-ID declaration and a
+canonical normalized minimum request: `1.0` maps to `[1.0.0, )`, zero revision
+is omitted and nonzero revision retained. Different minimums disagree even with
+the same resolved selection. Missing Direct/version and unsupported selected
+strings are isolated failures; duplicate identities, non-string selections,
+unknown semantic fields and extra contexts reject the entire lock. Transitive
+and Project entries provide closure framing, not measured population.
+
+Strict version-1 witness context binds project/framework, exact project/lock
+SHA256 bytes, producer/coherent snapshot and SDK/baseline assertions. Unsupported
+population influences invalidate the denominator. Per-package evidence binds
+normalized ID/selected version/SHA512 and a singleton explicit canonical
+`https://api.nuget.org/v3/index.json` origin. Local decoded lock/witness hashes
+must agree before LocalAuthority permits supervised public lookup; public catalog
+ID/version/SHA512 agreement precedes dates. No public namesake, configuration,
+cache, source mapping, credential, archive or identity/hash-only shortcut supplies
+missing authority. Hash agreement establishes content correspondence, not origin
+or producing history; the snapshot remains qualified supplier testimony.
+
+Complete SemVer-2 registration determines greatest currently listed stable by
+numeric precedence, independently of request/framework/date compatibility.
+Supported selected/public spellings normalize two-to-four numeric components,
+leading zeros, omitted patch/zero revision, ignored build and case-insensitive
+prerelease identity. Used prerelease/unlisted versions may measure. Only aware
+catalog PackageDetails `created` supplies first nuget.org receipt, normalized
+UTC with up to seven fraction digits truncated to microseconds. Missing, naive,
+invalid, sentinel-1900 or conflicting dates never use published/commit/local time
+or an older dated comparator. Missing records are not reconstructed from archives.
+Used=latest is exactly 0.0; negative deltas clamp to zero and remain flagged.
+
+Schema 3/direct scope is retained. Activated NuGet adds required
+version_evidence.nuget source keys (including null witness/framework/format where
+specified), packages_lock version_source on measured rows and staged safe
+nuget_evidence on measured/unmeasurable rows. Unmeasurable rows retain name,
+declared and reason without version_source.
+Only established requests, original/normalized selection, authority/hash states
+and UTC version/created/listed publications appear; request mismatch claims no
+selected provenance. Source errors and dependency failures remain distinct.
+Human reporting consumes the same typed facts, explains supplier/snapshot and
+publication/comparator limits, and preserves anomaly flags. Raw XML, witness,
+origins, hashes, baseline, unsafe paths and diagnostics are never disclosed;
+NuGet-active root headers are abstracted and raw verbose diagnostics omitted.
+Ordinary reports remain unchanged; verbose JSON is identical.
+
+Unknown population yields null NuGet counts, coverage and numeric aggregates.
+Known N with rejected lock/witness retains N, even zero, but null measurement,
+coverage and numerics without fabricated rows. Accepted nonempty populations
+use M/N including zero coverage; accepted empty uses 0/0, null coverage, total
+0.0 and other numerics null. Repository discovered is unknown if any denominator
+is unknown; coverage is unavailable if any source is unavailable; measured is
+null only when every detected source is unavailable. Available sibling rows and
+repository numeric aggregates survive all NuGet failures.
+
+Finite local bounds reject complete sources without partial salvage. Metadata
+limits reject incomplete latest rather than truncate. Verified HTTPS uses only
+fixed api.nuget.org index/SemVer-2 registration and validated linked catalog
+paths, with zero redirects/retries, bounded incremental gzip and rate-limit
+suppression. The installed isolated trusted Python metadata helper is the sole
+new process: no dotnet/NuGet/MSBuild/target/package-manager execution, evaluation,
+restore/install/resolution, archive or private-content access occurs. Parent
+absolute 60/300-second package/metadata-scan budgets cover blocking I/O and
+parsing, reserve 0.5 seconds for bounded terminate/kill/reap, reject cutoff results
+and suppress remaining requests after cancellation. Startup/OS scheduling is not
+a hard real-time whole-CLI guarantee; unreaped workers are systemic failures with
+deferred cleanup. Worker verified trust uses shared defaults, without forwarding
+the explicit --ca-bundle argument. Source readers refuse hosts lacking required
+descriptor-relative/no-follow/nonblocking primitives, independently of successful
+POSIX/Windows worker lifecycle evidence.
+
+Completed empty/partial/source-error reports exit 0, request/path errors exit 1,
+and unexpected systemic failures exit 2. NuGet argument/exception/rendering errors
+use fixed safe messages. Snapshot assertions do not establish evaluated scope,
+runtime compatibility, current restore or cryptographic provenance. Useful live
+yield and hash-domain fitness remain unverified; real-root validation requires
+separate explicit target/network authority. Assets/exports/packages.config,
+general MSBuild/CPM, private feeds and portfolio aggregation remain out of scope.

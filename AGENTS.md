@@ -421,7 +421,8 @@ Source-level failures should remain distinct from dependency-level unmeasurable 
 
 The current implementation supports direct Python packages from PyPI and
 direct npm production dependencies under Feature 002, Yarn Classic evidence under
-Feature 003, and direct RubyGems lock snapshots under Feature 004. Public JSON output uses
+Feature 003, direct RubyGems lock snapshots under Feature 004, and explicitly
+selected bounded NuGet snapshots under Feature 006. Public JSON output uses
 schema version 3, with ecosystem-keyed evidence and repository plus
 per-ecosystem summaries. Keep source-discovery failures in `source_errors` and
 dependency-level failures in `unmeasurable`.
@@ -455,6 +456,28 @@ measurements. Ruby JSON provenance is additive in schema v3. Never execute
 Ruby/Bundler, install/resolve gems, fetch archives/private content, or inspect
 credentials. Gemfile interpretation/group reconstruction remains out of scope.
 
-Do not infer authorization for Maven, Go, Cargo, NuGet, additional npm dependency scopes, or other registries from the existence of npm support.
+Feature 006 authorizes NuGet only according to its approved `spec.md`, `plan.md`
+and `tasks.md` under `specs/006-nuget-selected-evidence/`. Exact directory-only
+`--nuget-project NAME.csproj` activation selects one immediate SDK C# project;
+root packages.lock.json schema 1 alone supplies selection. Explicit
+`--nuget-provenance NAME.json` accepts supplied producer assertions with exact
+byte/context binding and supported baseline. All supported explicit direct
+PackageReferences count, including test/tool/analyzer/PrivateAssets. No implicit
+activation or project/solution traversal; Python --resolved supplies no NuGet
+authority. Request/lock minimum coherence is bounded normalization, not resolution.
+Only LocalAuthority from singleton asserted public origin plus decoded local
+SHA512 agreement permits supervised public metadata lookup; identity/public hash
+agreement precedes catalog created dates. Complete SemVer-2 registration chooses
+greatest listed stable without compatibility filtering. Keep safe evidence staged;
+no mismatch selection claim or raw hash/origin/baseline/path/diagnostic disclosure.
+Unavailable lock/witness preserves known N with null measurement/coverage/numerics;
+unsupported population clears N. Required filesystem primitives fail closed even
+where the worker lifecycle is supported. Never execute dotnet/NuGet/MSBuild/target
+code, restore/install/resolve, fetch archives, inspect caches/config/credentials,
+or use assets/export/CPM/multi-framework/RID/private-feed/portfolio fallback.
+Only the installed trusted isolated Python metadata worker is permitted. Live
+yield/hash-domain fitness remains unverified; no policy workaround is authorized.
+
+Do not infer authorization for Maven, Go, Cargo, additional npm dependency scopes, or other registries from the existence of npm support.
 
 For ecosystem behavior, the approved feature specification takes precedence over generic assumptions in this file.
