@@ -208,3 +208,131 @@ Verification confirms frozen specification bytes, unchanged discovery/history,
 and `git diff --check` passes. One coherent local documentation commit contains
 only those two files. No product code/tests, plan or tasks were changed or begun;
 no push occurred. **Final verdict: REVISE. Next gate: SPECIFICATION CORRECTION.**
+
+
+## F1/F2 correction and focused verification — 006-0004
+
+**Date:** 2026-11-03. Candidate frozen before reviewer commissioning.
+**Approval at freeze:** NOT APPROVED; focused independent verification pending.
+Starting clean baseline: `56665a694ed7c65df3b1617fd0b4e57a34bec110`.
+Corrected [specification](spec.md) SHA-256:
+`f02a947ae33dc83afa08a800e0bd965f56e697317e40dd1c6209d133f3c73cc8`.
+Word count: **4,997**, using whitespace-separated words (`str.split`).
+The specification will remain byte-unchanged after commissioning; its status
+section delegates approval and next-gate recording to the latest disposition
+here, so review status cannot alter the reviewed candidate.
+
+### Exact corrections and author self-audit
+
+- **F1, S2/S3/S6; AC-06/10/11:** replace raw declaration-spelling insertion with
+  bounded inclusive-minimum coherence. Supply missing patch zero, omit zero
+  revision, retain nonzero revision; require canonical lock `[w, )` and equal
+  numeric minimum bounds. `1.0` matches `[1.0.0, )`; `1.2.3.0` matches
+  `[1.2.3, )`; `1.2.3.4` retains its fourth component. Five positive examples
+  and explicit unequal-bound/unsupported-form negatives define the oracle.
+  Equal selected outcomes cannot repair unequal requests. Unsupported project
+  requests still reject scope; noncanonical/unsupported lock strings disagree,
+  while missing/non-string requested evidence is malformed structure. No general
+  range evaluator, satisfaction check or resolver is authorized. Declaration
+  intent, original request evidence and lock-only selection remain separate.
+- **F2, S3/S6; AC-11/31: choose B.** Remove the unreachable public failure reason
+  `ambiguous_lock_evidence` and its precedence stage. One framework, one unique
+  case-insensitive package key and one scalar selected value cannot produce
+  multiple accepted Direct candidates. Repeated keys/case aliases and non-string
+  selections (including arrays/objects) reject the whole lock as
+  `invalid_lockfile`; extra frameworks remain `unsupported_lockfile_format`.
+  Absent selected value remains `lock_version_missing`, unsupported selected
+  string syntax remains `unsupported_lock_evidence`. No accepted ambiguous
+  representation is invented.
+
+Parent semantic verification used the primary NuGet
+[lock serializer](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.ProjectModel/ProjectLockFile/PackagesLockFileFormat.cs),
+[range formatter](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.Versioning/VersionRangeFormatter.cs),
+[version formatter](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.Versioning/VersionFormatter.cs)
+and [Microsoft version rules](https://learn.microsoft.com/en-us/nuget/concepts/package-versioning#normalized-version-numbers).
+The serializer normalizes RequestedVersion, the range formatter supplies the
+inclusive/unbounded delimiters and the version formatter emits major/minor/patch
+plus a nonzero legacy revision. This is source-based semantic verification,
+not producer execution, live package measurement or empirical coverage evidence.
+Development-branch source links may change. No OASim/raw experiment was needed.
+
+The parent audited the complete corrected contract. All 36 AC identifiers remain
+stable; only AC-06/10/11/31 wording changed. H1–H4's authority paragraph and S1,
+S4, S5, S7, S8 remain byte-unchanged. All exclusions, known-denominator/source
+availability distinctions, origin/hash/publication policy, metric and schema-v3
+contracts remain intact. No new consequential product question or planning/
+implementation authority was introduced. The historical 006-0003 hash-domain
+fitness concern remains an **UNVERIFIED NON-FINDING**; no experiment or product
+defect is inferred and useful measurement yield remains unvalidated.
+`git diff --check` passed before freeze. This author audit does not approve the
+specification or claim implementation acceptance; all AC checkboxes remain open.
+
+Prior observation `006-0003` was appended exactly once from its 44-field handoff
+with only the authorized human session/model/provider/effort/version/runtime and
+account continuity readings added. Every other field, runtime_confounded=yes and
+the existing runtime note remain verbatim; no credit delta is stored. All 24 data
+rows have 44 fields; 006-0001 through 006-0003 each occur once and earlier ledger
+bytes are unchanged. Current run 006-0004 and its reviewer are not appended.
+
+### Fresh independent review and parent validation
+
+**Reviewer:** `/root/f1_f2_verification`, one fresh non-author child commissioned
+only after freeze, `fork_turns="none"`, no model/effort overrides. Actual child
+model/provider/effort/runtime/credit telemetry is unavailable. No second reviewer
+or repair cycle was used. The child independently read repository authority,
+all three Feature 006 artifacts and the baseline diff, recovered relevant
+truncated reads, verified the frozen digest/word count and consulted primary
+NuGet sources. It made no file changes. Supporting evidence arrived separately
+before its final verdict: **APPROVE (no material findings)**.
+
+| Obligation | Independent evidence and parent disposition |
+|---|---|
+| F1 / AC-06 | Two-, three- and four-component declarations retain minimum meaning. All five S3 positive examples follow normalized serializer output, including omitted patch, zero revision and retained nonzero revision. Unsupported declarations still reject scope. PASS. |
+| F1 / AC-10 | Same-ID Direct association compares only the supported normalized numeric bound; `1.0` versus `[1.0.1, )` fails even with shared `2.0.0` selection. Only resolved establishes selection; no satisfaction/resolution step. PASS. |
+| F1/F2 / AC-11 | Negative request examples, malformed requested structure, missing Direct, absent selected string and unsupported selected string have distinct specified outcomes without lookup/fallback. Duplicates, case aliases and multi-value/non-string selections reject the whole lock; extra frameworks remain unsupported. PASS. |
+| F2 / AC-31 | All retained S6 public reasons have reachable triggers. One accepted framework/key/scalar supplies at most one Direct candidate; removed ambiguity reason cannot be emitted. Whole-structure acceptance precedes association and malformed structure precedes unsupported structure. PASS. |
+| Collateral | All 36 ACs read and reconciled with S1–S8. H1–H4, exclusions, supplier limitations, coverage, metric and schema-v3 compatibility preserved; no new consequential product question or embedded technical planning/implementation work. PASS. |
+
+The reviewer audited the entire retained S6 reason set: project missing/invalid/
+unsupported/duplicate; lock missing/invalid/unsupported and context mismatch;
+witness missing/invalid and asserted unsupported influences; missing Direct,
+request disagreement and missing/unsupported selected version; unsupported
+origin; unavailable/mismatching hashes; authorized package/version absence;
+missing usable creation date; complete enumeration without stable; invalid
+registry response; and transport/service/budget failure. These are reachable
+conditions, not claims that implementation fixtures already exist.
+
+The parent validated the evidence against the frozen S2/S3/S6 and all 36 ACs,
+rechecked the upstream serializer/formatter chain, and independently inspected
+[NuGetVersion.IsLegacyVersion](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.Versioning/NuGetVersion.cs)
+(`Revision > 0`) and the
+[version factory](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.Versioning/NuGetVersionFactory.cs)
+(missing numeric components become zero). This confirms the reviewer's
+normalization claims rather than accepting its verdict alone. The accepted
+framing and rejection rules leave no multiple-candidate representation to
+exercise a dependency ambiguity code. Parent checks independently confirmed
+unchanged H1–H4 and S1/S4/S5/S7/S8 bytes and changed AC wording limited to
+06/10/11/31. No material collateral finding or new consequential question exists.
+The unverified hash-domain fitness concern remains a non-finding; neither review
+nor parent verification establishes live measurement yield or universal hash
+domain fitness.
+
+### Final disposition — current specification gate
+
+**Completion:** COMPLETE. **Focused verdict:** APPROVE.
+**Feature 006 specification status: APPROVED.** F1 and F2 are CLOSED.
+**Acceptance accounting:** 36/36 specification obligations coherent; AC-06,
+AC-10, AC-11 and AC-31 auditable. This is specification approval, not implemented
+or executed acceptance; the 36 specification checkboxes remain open.
+**Next gate: TECHNICAL PLANNING.** Planning has not begun and requires a separate
+execution prompt. Implementation has not begun.
+
+The approved specification is exactly the frozen candidate above, with no
+post-commission edit, including no approval-only byte change. Approval is
+recorded here through its status cross-reference. Historical 006-0003 REVISE
+findings and hash-domain limitation remain intact. Only the prior observation,
+F1/F2 specification correction and this review history enter one coherent local
+Conventional Commit. Documentation/ledger integrity checks and
+`git diff --check` pass; product tests were not run for documentation-only work.
+No discovery/ROADMAP, product implementation/tests, plan or task changes, producer
+execution, archives, external checkout, raw experiment or push occurred.

@@ -2,9 +2,11 @@
 
 ## Status and authority
 
-**DRAFT — awaiting INDEPENDENT SPECIFICATION REVIEW.** Written on 2026-11-03
-in fresh run `006-0002`. This is product/behavioral authority proposed for review,
-not approval, a technical plan or permission to implement.
+**Specification approval and next gate:** see the latest disposition in
+[reviews.md](reviews.md). Written on 2026-11-03 in fresh run `006-0002`;
+F1/F2 corrected and frozen for focused independent verification in `006-0004`.
+This product/behavioral contract grants no permission to begin implementation.
+The frozen specification is not edited to record the subsequent review verdict.
 
 The human selected Feature 006, accepted H1–H4 and authorized this draft. The
 [canonical discovery](discovery.md#human-decisions-and-reconciliation--006-0002)
@@ -107,8 +109,10 @@ nonnegative decimal components, each without leading zeros except `0`. Leading
 or trailing whitespace is not part of supported literal values. Requests such
 as `1.0`, `1.2.3`, `1.2.3.4` are inclusive minimum requests, never selected pins.
 Bracket-exact `[v]`, ranges, floats, prerelease requests, metadata requests and
-other forms are unsupported initially. No satisfaction or equivalence test is
-performed. This bounded request subset is narrower than NuGet's full grammar.
+other forms are unsupported initially. S3 compares only the numeric minimum
+bounds of this subset after documented NuGet normalization; it does not test
+whether a selected version satisfies a request or evaluate general range
+equivalence. This bounded request subset is narrower than NuGet's full grammar.
 
 All supported explicit direct references count once, including test, tool,
 analyzer and PrivateAssets references. They are not labeled production-only.
@@ -150,19 +154,60 @@ Transitive/project closure entries are not required to become public-authorized
 or measurable merely to measure supported direct entries.
 
 Associate a declaration only with its unique same-ID `Direct` entry in the
-selected framework. Compare its request `v` with lock `requested` exactly
-`[v, )`, the bounded observed minimum transformation. Do not normalize whitespace,
-version spelling or range semantics for this comparison. For example `1.2.3`
-associates with `[1.2.3, )`; `[1.2.3,)` is a textual mismatch under this contract,
-not a claim of semantic incompatibility. A selected version may differ from the
-request; only `resolved` establishes selection. The request is never a fallback.
+selected framework. The declaration remains authority for direct dependency
+intent; the lock supplies selected-version evidence. For request coherence,
+compare only inclusive numeric minimum bounds with no upper bound:
+
+- Normalize the supported S2 declaration by supplying a zero patch when absent
+  and omitting a zero fourth component; retain a nonzero fourth component.
+- Lock `requested` must be exactly `[w, )`, where `w` is the normalized numeric
+  spelling: three components, or four with a nonzero fourth, no leading zeros,
+  suffixes or surrounding whitespace. This is the supported serialized form,
+  not an extension of the declaration grammar to range expressions.
+- Coherence requires equality of the declaration and lock numeric bounds with
+  absent patch/revision treated as zero. Different bounds are a disagreement,
+  even if both requests happen to select the same `resolved` version.
+
+| Declaration request | Coherent lock `requested` |
+|---|---|
+| `1.0` | `[1.0.0, )` |
+| `1.2.3` | `[1.2.3, )` |
+| `1.2.3.0` | `[1.2.3, )` |
+| `1.2.3.4` | `[1.2.3.4, )` |
+| `0.0.0.0` | `[0.0.0, )` |
+
+For declaration `1.0`, `[1.0.1, )` disagrees even when both snapshots select
+`2.0.0`. For declaration `1.2.3.4`, `[1.2.3, )` disagrees. Noncanonical lock
+strings such as `[1.0, )`, `[1.2.3.0, )` or `[1.2.3,)`, and unsupported forms
+such as `[1.2.3]`, `(1.2.3, )`, `[1.2.3, 2.0.0)`, floating or prerelease bounds,
+are request disagreements in an otherwise attributable Direct entry; no general
+range interpretation or whitespace repair is promised. Non-string/missing
+`requested` is malformed lock structure. Unsupported declaration forms still
+reject scope under S2, regardless of lock contents.
+
+NuGet's [lock serializer](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.ProjectModel/ProjectLockFile/PackagesLockFileFormat.cs)
+writes normalized requested ranges; its
+[range formatter](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.Versioning/VersionRangeFormatter.cs)
+and [version formatter](https://raw.githubusercontent.com/NuGet/NuGet.Client/dev/src/NuGet.Core/NuGet.Versioning/VersionFormatter.cs)
+define this bounded spelling. A selected version may differ from the request;
+only `resolved` establishes selection. No selection, request-satisfaction check
+or shared selected outcome can replace request coherence. Preserve both original
+safe request strings for output; the declaration is never a selected-version
+fallback.
 
 An extra Direct identity absent from declarations undermines whole-context
 coherence and rejects the lock. A missing Direct entry, isolated request mismatch,
-missing/unsupported resolved value or isolated selected ambiguity is dependency
-unmeasurability after whole-structure acceptance. A Transitive entry with the
-same ID does not fill a missing Direct entry. Duplicate object identities reject
-the source, not just that dependency. A missing hash is isolated S4 failure
+missing/unsupported resolved string is dependency unmeasurability after
+whole-structure acceptance. A Transitive entry with the same ID does not fill a
+missing Direct entry. Duplicate object identities reject the source, not just
+that dependency. With one accepted framework, one case-insensitive package key
+and one scalar `resolved` string, multiple candidate Direct selections for one
+declaration are structurally impossible. Repeated keys (including `resolved`),
+case aliases and non-string `resolved` values, including arrays/objects, are
+malformed lock structure (`invalid_lockfile`); additional frameworks remain
+`unsupported_lockfile_format`. An absent `resolved` remains the isolated
+`lock_version_missing` case. There is no dependency-level ambiguity reason or
+accepted multi-selection shape. A missing hash is isolated S4 failure
 when entry identity/framing remains attributable; malformed hash strings never
 authorize measurement.
 
@@ -291,8 +336,7 @@ request, established evidence and reason. No local failure permits lookup.
 | Unreadable, unsafe, malformed, unsupported or over-limit witness | Source / `invalid_nuget_provenance` |
 | Known unsupported influence asserted by witness | Source / `unsupported_nuget_project` |
 | Missing matching Direct lock entry | Dependency / `lock_dependency_missing` |
-| Isolated request disagreement | Dependency / `declaration_lock_requirement_mismatch` |
-| Isolated multiple selected claims after safe association | Dependency / `ambiguous_lock_evidence` |
+| Isolated request disagreement under S3's bounded normalized-minimum comparison | Dependency / `declaration_lock_requirement_mismatch` |
 | Missing selected version | Dependency / `lock_version_missing` |
 | Unsupported selected syntax | Dependency / `unsupported_lock_evidence` |
 | Missing/unknown/private/alternate/conflicting package origin | Dependency / `unsupported_dependency_source` |
@@ -310,9 +354,10 @@ structure/identity, public hash, used-version availability/date, and latest/date
 Malformed whole structure takes precedence over unsupported structure in the
 same input. Report the earliest applicable stage, independent of input iteration
 order; do not invent errors for unprocessed later sources. Within association,
-missing Direct precedes request mismatch, ambiguity, missing version and
-unsupported version. Public absence is identified before hash/date validation
-of an absent record. Unsupported origin always prevents public lookup even if
+missing Direct precedes request mismatch, missing version and unsupported
+version. Structural duplicate/multi-value failures are whole-lock failures,
+never a later dependency ambiguity stage. Public absence is identified before
+hash/date validation of an absent record. Unsupported origin always prevents public lookup even if
 another failure would take display precedence.
 
 | Availability | NuGet summary |
@@ -431,12 +476,12 @@ and implementation. None is marked satisfied by drafting this specification.
 - [ ] **AC-03:** A supported project with one TargetFramework or single-valued TargetFrameworks establishes its explicit direct population and literal context.
 - [ ] **AC-04:** Multiple/conditional/computed/duplicate frameworks, RID declarations and unsupported SDK-style/XML context reject scope without partial counting.
 - [ ] **AC-05:** Supported unconditional Include/Version references count test/tool/analyzer/PrivateAssets dependencies once; ProjectReference, FrameworkReference and implicit packages do not count or cause traversal.
-- [ ] **AC-06:** Two-, three- and four-component bare numeric requests retain their request meaning; ranges, bracket-exact, floats, property expansion and prerelease requests reject scope without guessed pins.
+- [ ] **AC-06:** Two-, three- and four-component bare numeric requests retain inclusive-minimum meaning; S3's examples accept omitted-patch and zero-revision normalization while preserving nonzero revision. Ranges, bracket-exact, floats, property expansion and prerelease declarations still reject scope without guessed pins.
 - [ ] **AC-07:** Duplicate or case-aliased declarations reject scope; conditional/generated/imported/CPM/Update/Remove/VersionOverride or unknown package-affecting constructs fail closed.
 - [ ] **AC-08:** Lock schema 1 with exactly matching sole framework supports Direct/Transitive/Project framing; no transitive/project row supplies measured membership.
 - [ ] **AC-09:** Unsupported schema, extra framework/RID, unknown semantic fields, malformed structure and duplicate JSON identities reject the whole lock, preserving independently known N.
-- [ ] **AC-10:** Exact same-ID Direct plus `[v, )` association yields the retained resolved version, including a resolved version differing from its request; no resolution or satisfaction check occurs.
-- [ ] **AC-11:** Missing Direct, request spelling disagreement, selected ambiguity, missing selected value and unsupported selected syntax use the specified individual reasons without lookup; no transitive fallback occurs.
+- [ ] **AC-10:** A unique same-ID Direct with S3's coherent normalized numeric minimum yields the retained resolved version, including a version differing from its request. All five positive S3 examples associate; different minimum bounds never associate merely because their selected outcome agrees. No resolution or satisfaction check occurs.
+- [ ] **AC-11:** Missing Direct, S3 request disagreement (including its negative examples), absent selected value and unsupported selected string syntax use their specified individual reasons without lookup or transitive fallback. Duplicate/case-aliased keys and non-string selections reject the whole lock as invalid_lockfile; additional frameworks use unsupported_lockfile_format, never a dependency ambiguity reason.
 - [ ] **AC-12:** Extra Direct identities, project/framework disagreement and stale project/lock digest bindings reject context; mtime and Git presence cannot repair it.
 - [ ] **AC-13:** Explicitly supplied version-1 witness with required context/producer/baseline assertions binds exact project/lock bytes; a found-but-unselected witness confers no authority.
 - [ ] **AC-14:** Missing/rejected whole witness produces unavailable-source behavior; a known unsupported membership influence also invalidates the denominator.
@@ -456,7 +501,7 @@ and implementation. None is marked satisfied by drafting this specification.
 - [ ] **AC-28:** Mixed scans preserve sibling ecosystem identities, sources, rows, evidence and summaries through NuGet failure; repository counts/coverage/available-row aggregates follow S6.
 - [ ] **AC-29:** Schema v3 adds only specified NuGet evidence, with deterministic presence/null/omission and safe partial evidence; ordinary reports remain compatible and verbose JSON unchanged.
 - [ ] **AC-30:** Human and JSON reports agree on scope, identity, requests/selections, context, authority/hash states, publication dates, failures and aggregates; human output explains accepted supplier limitations.
-- [ ] **AC-31:** All specified source/dependency reasons and precedence are deterministic under reordered inputs/responses; no unprocessed-source errors or exact-selection claims on mismatch are fabricated.
+- [ ] **AC-31:** Every retained source/dependency reason has a reachable S6 trigger and deterministic precedence under reordered inputs/responses. S3 structural duplicates/multi-value selections reject the whole lock before dependency association; no ambiguous_lock_evidence result, unprocessed-source error or exact-selection claim on request mismatch is fabricated.
 - [ ] **AC-32:** No product path executes dotnet/NuGet/MSBuild/target code, restore/install/resolution or reads cache/config/credentials; scans leave target bytes unchanged and deterministic tests are offline.
 - [ ] **AC-33:** Input size/depth/count/numeric limits and unsafe/nonregular/replaced-file cases fail closed, bounded in work, without partial scope or root escape.
 - [ ] **AC-34:** Public metadata transport enforces HTTPS authority/redirect restrictions, finite pagination/byte/expansion/request/time/retry bounds and rate-limit handling; no private endpoint, archive or unbounded history fallback occurs.
@@ -480,5 +525,7 @@ Microsoft version, registration and catalog references on 2026-11-03; no live
 package-age or yield claim was made. No external checkout/raw temporary experiment
 was accessed. No product code/tests, plan or tasks were changed or created.
 
-This self-audit is not independent approval. **Next gate: INDEPENDENT
-SPECIFICATION REVIEW.** Technical planning and implementation remain unstarted.
+The `006-0004` correction audit preserves H1–H4, the exclusions and all 36 AC
+identifiers; only F1/F2 association/failure obligations and their acceptance
+wording changed. This self-audit is not independent approval. The latest disposition and next gate are recorded in [reviews.md](reviews.md).
+Technical planning and implementation remain unstarted.
