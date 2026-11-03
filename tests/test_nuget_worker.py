@@ -7,6 +7,7 @@ import subprocess
 import tempfile
 import io
 import threading
+import time
 import unittest
 from unittest.mock import patch
 
@@ -460,9 +461,65 @@ class RealWorkerTests(unittest.TestCase):
         timer = threading.Timer(15, watchdog)
         timer.start()
         try:
-            with patch.object(supervision, 'PACKAGE_SECONDS', .7):
+            supervisor._start()
+            # Preserve the real bootstrap witness, then control metadata time.
+            # Entry is observed, never inferred from a short startup sleep.
+            clock = Clock()
+            clock.now = time.monotonic()
+            admitted = clock()
+            cutoff = admitted + supervision.PACKAGE_SECONDS - supervision.CLEANUP_SECONDS
+            entry_observation_limit = time.monotonic() + 5
+            polling = threading.Event()
+            def pause(seconds):
+                self.assertGreaterEqual(seconds, 0)
+                self.assertLessEqual(seconds, supervision.POLL_SECONDS)
+                if ((supervisor.path / 'handler-entered.json').exists()
+                        or time.monotonic() >= entry_observation_limit):
+                    # Advance to the original cutoff, without resetting either
+                    # deadline. The real-time limit only bounds missing evidence.
+                    clock.now = cutoff
+                else:
+                    polling.wait(seconds)
+            supervisor.clock = clock
+            supervisor.pause = pause
+            observations = []
+            terminate = supervisor.process.terminate
+            def observe_termination():
+                entry = supervisor.path / 'handler-entered.json'
+                observations.append({
+                    'entry': read_message(entry) if entry.exists() else None,
+                    'alive': supervisor.process.poll() is None,
+                    'command_pending': (supervisor.path / 'command.json').exists(),
+                    'result': (supervisor.path / 'result.json').exists(),
+                    'returned': (supervisor.path / 'handler-returned.json').exists(),
+                    'cutoff': clock(),
+                })
+                terminate()
+            with patch.object(supervisor.process, 'terminate', side_effect=observe_termination) as stopped, \
+                    patch.object(supervisor.process, 'wait', wraps=supervisor.process.wait) as waited:
                 self.assertEqual(supervisor.lookup(AUTHORITY).reason, 'registry_error')
+            self.assertEqual(len(observations), 1)
+            observation = observations[0]
+            self.assertIsNotNone(observation['entry'], 'blocking handler was not entered')
+            self.assertEqual(observation['entry'], {
+                'pid': supervisor.process.pid, 'authority': authority_message(AUTHORITY),
+                'package_deadline': cutoff,
+                'scan_deadline': admitted + supervision.SCAN_SECONDS - supervision.CLEANUP_SECONDS,
+            })
+            self.assertTrue(observation['alive'])
+            self.assertFalse(observation['command_pending'])
+            self.assertFalse(observation['result'])
+            self.assertFalse(observation['returned'])
+            self.assertEqual(observation['cutoff'], cutoff)
+            self.assertEqual(supervisor.scan_deadline, admitted + supervision.SCAN_SECONDS)
+            stopped.assert_called_once_with()
+            self.assertGreaterEqual(waited.call_count, 1)
+            self.assertLessEqual(waited.call_args_list[0].kwargs['timeout'], .25)
+            for call in waited.call_args_list:
+                self.assertGreaterEqual(call.kwargs['timeout'], 0)
+                self.assertLessEqual(call.kwargs['timeout'], supervision.CLEANUP_SECONDS)
             self.assertTrue(supervisor.cancelled)
+            self.assertIsNotNone(supervisor.process.returncode)
             self.assertIsNotNone(supervisor.process.poll())
             self.assertFalse(supervisor.path.exists())
             self.assertFalse(watchdog_fired.is_set())
@@ -470,6 +527,21 @@ class RealWorkerTests(unittest.TestCase):
             timer.cancel()
             timer.join(timeout=1)
             supervisor.close()
+
+    def test_suppressing_command_fails_real_blocking_handler_witness(self):
+        original = supervision.write_message
+        suppressed = []
+        def suppress_command(path, value):
+            if path.name == 'command.json':
+                suppressed.append(path)
+                return
+            original(path, value)
+        # Exercise exactly the positive witness with only command publication
+        # removed. An idle ready worker must fail its entry assertion.
+        with patch.object(supervision, 'write_message', side_effect=suppress_command):
+            with self.assertRaisesRegex(AssertionError, 'blocking handler was not entered'):
+                self.test_offline_blocked_worker_cancelled_with_outer_watchdog()
+        self.assertEqual(len(suppressed), 1)
 
 
 if __name__ == '__main__':
