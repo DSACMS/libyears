@@ -1688,3 +1688,47 @@ Approved spec/plan/tasks and trusted worker/registry import graph remain unchang
 existing exact77d66b9 platform evidence retains its defined scope, without claiming
 Windows execution of later CLI/output tests. Secret-check limitation stays separate
 and unchanged; no targets, live NuGet, package managers or new trust are accessed.
+
+### Independent K3 review — initial candidate
+
+Frozen integration `aeb8964493cc442d3b0eaff7cf6430d9aeb00e81`, K2 baseline
+`943d5de`. Two fresh non-author contexts, fork_turns=none without overrides,
+read complete current authority, recover truncated reads and inspect frozen
+implementation/tests/docs directly. Both complete before parent synthesis;
+current sibling conclusions are not shared beforehand. No reviewer writes,
+commits, delegates, uses external targets/live network or executes producers.
+Actual child settings/resource telemetry are unavailable.
+
+| Reviewer | Completed assigned coverage | Verdict / evidence |
+|---|---|---|
+| `/root/k3_output_review` | S6 scan/source/repository matrices; normalized metric and staged evidence; exact S7 JSON/human correspondence, privacy and ordinary/sibling compatibility | COMPLETE / APPROVE, no material finding; focused129/full620 PASS, 2401 composed availability cases and17 exact baseline comparisons PASS |
+| `/root/k3_cli_docs_review` | Exact CLI activation/usage/read ordering/exits, argument/root/exception/render privacy; documentation contract/caps/platform qualification and option isolation | COMPLETE / REVISE, K3-C1; focused84/full620 PASS and77 additional invalid-argument cases PASS; two capitalized leaks reproduced |
+
+The output matrix crosses seven NuGet states with seven states for each sibling,
+using an independent summary oracle, serialized/human evidence and guarded
+network/process boundaries. Its injected SourceResults exhaust aggregation;
+concrete sibling parsing and ordinary byte-equivalence have separate inspected
+tests and baseline comparisons. Reviewed worker/registry/transport/protocol and
+workflow bytes retain exact77d66b9 platform scope; no new CLI Windows execution
+is claimed or invented as a mandatory predecessor. Secret-check limitation stays
+visible and unchanged, without policy exception. No material docs/scope divergence
+or source/output finding is established in either assigned review.
+
+#### K3-C1 — Capitalized malformed options bypass safe errors
+
+**VALIDATED MATERIAL PRIVACY FINDING / OPEN.** Owner T013; plan safe NuGet argparse
+rendering and AC-35. `_nuget_arguments_present` detects strings case-sensitively.
+`main(['.', '--NuGet-project=SECRET-canary'])` and uppercase provenance equivalent
+return1 while stderr echoes the entire raw token. Lowercase counterparts produce
+fixed safe text. Source/snapshot/CA guards prove no content read occurs; the
+privacy defect is error rendering. Parent independently reproduces both exact
+frozen cases, including leaked canary. Positive output/compatibility review and
+620 passing tests do not override it.
+
+The existing authority determines bounded closure: recognize malformed NuGet-looking
+case variants for sanitization while keeping actual option parsing exact and
+case-sensitive. Add mixed/upper case canary regressions, preserve ordinary unrelated
+argparse behavior, exact lowercase activation and pre-read exits. Freeze correction
+and obtain fresh focused non-author verification plus relevant regressions.
+**Initial K3 completion COMPLETE / REVISE, K3-C1 OPEN.** T014 not started; current
+execution authority permits this correction cycle without a new human decision.
