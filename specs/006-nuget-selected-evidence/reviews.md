@@ -474,3 +474,121 @@ Documentation/ledger/digest/scope checks and `git diff --check` pass. Product
 tests were not run for this documentation-only change. One coherent local
 Conventional Commit is authorized; no push, implementation or tasks. The frozen
 candidate is retained for the separately authorized PLAN CORRECTION gate.
+
+## P1 correction and focused verification — 006-0006
+
+**Date:** 2026-11-03. **Approval at freeze: NOT APPROVED.**
+Starting clean HEAD: `17845b8f7bb5c07bf12616aa01171b926d0c9a8e`.
+Only validated technical-plan finding P1 is corrected. Historical 006-0005
+REVISE and its original frozen candidate remain above.
+
+### Correction, self-audit and freeze
+
+Corrected [plan.md](plan.md) frozen SHA-256:
+`b340a41df7eee3e5e7e0b012c8976d7a79921a12960c3a156e212a004704c875`.
+Word count: **5,168**, whitespace-separated (`str.split`). This file delegates
+its approval status here and will remain byte-unchanged after commissioning.
+Approved specification remains byte-identical at SHA-256
+`f02a947ae33dc83afa08a800e0bd965f56e697317e40dd1c6209d133f3c73cc8`.
+
+P1 correction distinguishes socket-operation timeout from absolute package and
+NuGet metadata-scan deadlines. One isolated, trusted libyears Python worker
+contains blocking DNS/connect/TLS/read, parsing and traversal. Parent monotonic
+supervision cannot be reset by progress, reserves 0.5 seconds inside the 60/300
+second budgets for terminate/kill/reap, rejects late results and suppresses later
+requests after cancellation. Small bounded regular-file messages avoid blocking
+IPC receives, shared locks and pipe/queue cancellation hazards. Normal, error,
+interruption and unreaped-process paths have explicit cleanup/fail-closed rules.
+Worker startup is offline, bounded readiness follows process creation, and the
+plan explicitly records Python's noninterruptible process-creation and OS
+scheduling limits rather than promising a hard real-time whole-CLI bound.
+
+Parent checked authoritative Python 3.11
+[urllib semantics](https://docs.python.org/3.11/library/urllib.request.html#urllib.request.urlopen)
+and [subprocess lifecycle semantics](https://docs.python.org/3.11/library/subprocess.html#subprocess.Popen.wait).
+The former exposes blocking-operation timeouts; the latter supplies bounded wait,
+terminate/kill and the process-creation limitation. These support a process
+supervisor, rather than a renamed socket timeout or uncancellable thread.
+No live slow server, package-age experiment or implementation was executed.
+
+AC-34 now requires fake-clock/process-controller witnesses for drip-feed progress,
+blocked connect/TLS/header/body, package versus scan cutoff, late/exact-cutoff
+results, termination escalation and cleanup faults; a mutation witness must reject
+the former admission-only design. Separate offline real-worker lifecycle evidence
+must prove cancellation reaches an actual blocking boundary on supported POSIX
+and Windows CI. These are planning witnesses, not tests already passed.
+
+Collateral self-audit: all **36/36** AC component/witness/checkpoint rows remain
+unique and coherent with the approved S1–S8. AC-32 guards explicitly permit only
+the installed trusted helper; package-manager/target execution stays forbidden.
+Other mappings are unchanged except AC-34. H1–H4, F1/F2, source-authority gates,
+content identity, created-only publication, complete listed-stable latest,
+availability, privacy, metric, schema-v3 and sibling transport/output semantics
+remain intact. No consequential product question or collateral finding was
+established. `git diff --check` passed before freeze.
+
+Prior observation 006-0005 is appended once from its exact schema-v1 handoff,
+with only authorized session/model/provider/effort/version/reported-runtime and
+account continuity readings enriched. runtime_confounded=yes and the original
+runtime note are verbatim; no credit delta is stored. All 26 data rows have 44
+fields; 006-0001 through 006-0005 each occur exactly once; earlier bytes are
+unchanged. Run 006-0006 and its child are not appended.
+
+### Fresh independent review and parent validation
+
+**Reviewer:** `/root/p1_verification`, one fresh non-author child, commissioned
+only after freeze with `fork_turns="none"`, no model/effort overrides. Actual
+child model/provider/effort/runtime/token/credit telemetry is unavailable. No
+second reviewer, delegation or repair cycle was used. The reviewer independently
+read repository authority, all Feature 006 artifacts and the baseline diff,
+recovered relevant truncated reads, recomputed both frozen digests and the plan
+word count, and checked primary Python semantics. It changed no files.
+**Completion: COMPLETE. Verdict: APPROVE; no material findings.**
+
+| Obligation | Independent evidence and parent disposition |
+|---|---|
+| P1 / absolute deadlines | Blocking DNS/connect/TLS/header/body, parsing and traversal are confined to a killable worker. Fixed parent-owned monotonic deadlines and cancellation reserve remain independent of socket progress. No pre-request-only or thread-cancellation shortcut. PASS. |
+| AC-34 regression witness | Drip-feed and separately blocked stages, earlier scan cutoff, exact/late results, socket-only mutation and real offline worker cancellation complement deterministic fake-clock arithmetic. Required future witnesses can catch P1's original defect. PASS at planning level. |
+| Cleanup | Normal/interrupted/abrupt/ignored-termination/unreaped paths use finite wait, terminate/kill/reap, DEVNULL and bounded regular-file results; no blocking queue/pipe teardown or worker restart after cancellation. OS failure is systemic failure, not claimed deadline success. PASS. |
+| Product fidelity | Installed trusted Python helper executes libyears, never scanned-target/package-manager code. Specification unchanged; H1–H4, F1/F2, source/content authority, dates, scope, privacy, availability, metric, schema-v3 and sibling behavior preserved. PASS. |
+| Traceability/collateral | All 36 unique mappings read against the specification. No material collateral finding or new consequential product question. PASS. |
+
+Parent independently validated the reviewer evidence against the frozen plan,
+approved S8/AC-32/34 and the Python 3.11 contracts. `Popen.wait(timeout)` raises
+on expiration rather than cancelling automatically; the plan explicitly sends
+terminate and then kill, caps every wait, avoids context-manager/unbounded cleanup
+and documents the different POSIX/Windows signals. Parent confirmed urllib's
+blocking-operation timeout cannot supply this supervision and that subprocess
+creation may itself be noninterruptible. Offline startup before the metadata
+clock is explicit; no network is admitted until the command/deadlines exist.
+These are ordinary process/OS enforcement guarantees, not a hard real-time claim.
+
+The parent also checked the complete diff: nine unrelated architecture sections
+are byte-identical, and only AC-32's exact trusted-helper guard and AC-34's witness
+row changed among the 36 mappings. The added deadline design and verification
+section, network-timeout clarification, trusted-helper fixture exception and
+candidate provenance are confined to P1. No approved specification bytes changed;
+no product-code/test or task graph changes occurred. The reviewer's APPROVE is
+supported by mechanism and witness evidence, not accepted solely as a verdict.
+
+### Final disposition — current technical-plan gate
+
+**Completion: COMPLETE. Focused verdict: APPROVE. P1: CLOSED.**
+**Feature 006 technical plan status: APPROVED.**
+**Acceptance accounting: 36/36 coherent planning mappings; AC-34 architecture
+and deterministic verification design PASS.** No implemented or executed NuGet
+acceptance is claimed; all specification acceptance checkboxes remain open.
+**Collateral material findings: NONE. New consequential product questions: NONE.**
+**Next gate: IMPLEMENTATION TASK DECOMPOSITION.** A separate execution prompt is
+required; no task graph or implementation is begun here.
+
+Approved plan is exactly the 5,168-word frozen candidate above; no post-commission
+or approval-only edit was made. Historical 006-0005 REVISE remains intact.
+Hash-domain fitness/live useful yield remain unverified non-findings. Final
+schema/digest/scope checks and `git diff --check` pass. Product tests were not run
+for documentation-only work. Only the prior-run ledger row, P1 plan correction
+and this review history enter one coherent local Conventional Commit. No
+specification/discovery/ROADMAP/product code/tests, tasks, target or producer
+execution, external checkout, archives, caches/config/credentials or push.
+The complete current-run handoff is written outside Git; current run/child are
+not appended to the canonical ledger.

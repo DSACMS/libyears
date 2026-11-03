@@ -2,7 +2,8 @@
 
 ## Status and authority
 
-Candidate drafted in fresh run `006-0005`, 2026-11-03. Approval status and next
+Candidate drafted in fresh run `006-0005`; P1 corrected in fresh run
+`006-0006`, 2026-11-03. Approval status and next
 gate are recorded in [reviews.md](reviews.md); this file remains byte-frozen
 through independent review, including after an approval. This plan grants no
 implementation authority. Task decomposition requires the next separate gate.
@@ -279,7 +280,7 @@ so equivalent used/latest yields exactly zero and anomalies retain existing flag
 | JSON depth / values / string | 32 / 500,000 / 1 MiB (identity/version limits remain stricter) |
 | Pages / versions per package | 256 / 100,000; overflow invalid response |
 | Requests | 512 per package; 4096 per scan including index |
-| Timeout / total elapsed budget | 10 seconds per request; 60 seconds per package; 300 seconds per scan |
+| Socket operation timeout / absolute network budgets | at most 10 seconds per blocking operation; 60 seconds per package; 300 seconds per NuGet metadata scan |
 | Retries / redirects | zero / zero |
 
 Wrap bounded VerifiedJSONTransport in a NuGet-only metadata client. Add opt-in
@@ -293,7 +294,124 @@ later requests until eligible, bounded by the scan budget. Invalid/missing heade
 uses fail-closed scan-local suppression. Sort candidates by canonical ID/version
 and pages/duplicate links by validated URL before requests, so reorderings cannot
 change cooldown or budget allocation. Check remaining elapsed budget before each
-request and cap its timeout to remaining budget. No partial latest on exhaustion.
+request and cap its socket timeout to remaining budget. These checks alone do
+not enforce elapsed deadlines; the supervisor below does. No partial latest on
+exhaustion.
+
+### P1: absolute-deadline supervision
+
+Use one private Python worker for the activated NuGet metadata phase, supervised
+by the parent adapter. This is execution of installed libyears transport code,
+never dotnet, a package manager or code from the scanned target. Keep the entire
+blocking DNS/connect/TLS/header/body path, bounded decompression/JSON parsing and
+package traversal inside this worker. A thread or Future cancellation is not a
+substitute: it cannot forcibly stop a running blocking read. Existing ecosystem
+transport calls and injected `get(url)` interfaces remain unchanged.
+
+Launch with `subprocess.Popen`, `shell=False`, the current interpreter in isolated
+mode and an absolute trusted libyears worker entry file. Bootstrap imports only
+from the installed libyears code location; use a private temporary working
+directory, never the target root. stdin/stdout/stderr go to DEVNULL; no shell,
+target imports, descendants, pool, background threads or credential/config reads.
+The worker initializes offline and reports ready before network budgets start;
+no request is permitted before a parent command. After Popen returns, allow at
+most 10 seconds for readiness, then use the finite cancellation path below.
+Python documents that process
+creation itself is not generally interruptible. These are absolute *NuGet network
+phase* deadlines, not a hard real-time bound on interpreter startup, local input
+reading, OS scheduling or the whole mixed-ecosystem CLI. A startup failure is a
+safe systemic failure; no synchronous network fallback is allowed.
+
+Keep the protocol small: sequential package commands contain only LocalAuthority
+facts and the fixed allowlist policy; the worker retains the service index,
+scan request/byte counters and cooldown. Exchange bounded JSON regular files in
+the parent's private temporary directory using atomic replace to publish complete
+commands/results. One outstanding command, at most 16 KiB each; no response bodies,
+raw exceptions, pickle, queues, shared locks or blocking pipe receives. Parent
+validates schema/size and reads only completed files with cap+1. The worker alone
+owns responses/sockets, closes each normally, and never changes target inputs.
+Only validated small typed package results cross the boundary. Temporary files
+are internal ephemeral transport state, never provenance or user output.
+
+The parent owns an injected monotonic clock and a minimal process-control seam:
+
+1. Set scan deadline `Ds = now + 300` immediately before the first command,
+   including service-index discovery. For each sorted package set `Dp = now + 60`;
+   neither deadline is reset by pages, bytes, retries, worker messages or progress.
+   The first package includes discovery; the service index is fetched once.
+2. Set `D = min(Dp, Ds)` and reserve the final 0.5 seconds of D for cancellation
+   and reaping. Do not admit a command with less than that reserve. Worker also
+   checks these supplied deadlines between operations, but parent supervision is
+   authoritative while the worker blocks. Socket timeout is at most 10 seconds
+   and remaining working time; repeated socket progress cannot extend D.
+3. Parent polls completion/process status with waits capped at the smaller of
+   10 milliseconds and remaining time to `D - 0.5`. Check the clock before and
+   after reading/validating a result; reject completion at/after the working
+   cutoff. At the cutoff, stop work and discard any partial/late package result.
+   Send terminate, wait at most 0.25 seconds (also capped by D), then kill if
+   still alive and wait only until D. Use `Popen.wait(timeout=...)`, never an
+   unbounded wait, communicate, context-manager exit or executor shutdown.
+   On Windows kill/terminate use TerminateProcess; on POSIX kill uses SIGKILL.
+4. Deadline exhaustion yields `registry_error` for that package. A killed worker
+   ends this scan's metadata phase: remaining locally authorized candidates get
+   `registry_error` without requests, while earlier completed measurements and
+   local failures survive. This conservative suppression avoids restart/reset
+   of scan counters/cooldown and cannot produce a partial latest. No new worker
+   is launched after cancellation. Scan exhaustion uses the same path.
+5. On success, normal scan end, exceptions and caller interruption, the parent
+   closes the command channel, terminates/kills if necessary with the same finite
+   cleanup allowance, reaps the exited process, closes handles and removes its
+   temporary directory. Normal shutdown also reserves cleanup within Ds. Abrupt
+   worker death or corrupt protocol fails closed without raw diagnostics. If the
+   OS does not reap a killed process by the finite cleanup deadline, stop with
+   the existing systemic-failure exit category; never block indefinitely or
+   admit more work. Retain the handle for nonblocking reap and defer deletion
+   of files still in use. OS scheduling/termination failure is not a successful
+   deadline-enforcement result. No portable Python API promises hard real-time
+   process termination under a stalled kernel.
+
+This confines uninterruptible network/library work to a killable process and
+keeps cancellation waits inside the documented 60/300-second budgets, rather
+than adding cleanup time per request. A finite local startup/shutdown path is
+separate from the metadata clock; no network occurs outside supervision.
+Authoritative semantics: Python's [urllib blocking-operation timeout](https://docs.python.org/3.11/library/urllib.request.html#urllib.request.urlopen)
+and [subprocess timeout, wait and termination contracts](https://docs.python.org/3.11/library/subprocess.html#subprocess.Popen.wait).
+The process/protocol boundary is NuGet-specific; no generic transport framework.
+
+### AC-34 deterministic deadline witnesses
+
+At K2 and K4 implement offline unittest fixtures with an injected monotonic clock,
+process controller and worker transport. Assert exact commands, wait ceilings,
+reasons, accepted/discarded results, request counts and cleanup transitions:
+
+- A body source keeps returning bytes every simulated second, always below the
+  socket timeout, but never completes before Dp. A separately blocked connect,
+  TLS/header read and body read never consult the clock. Parent must terminate
+  each at the package cutoff, kill an uncooperative worker and reap within D.
+  Byte caps remain unexceeded, proving time enforcement independently of size.
+- Start a package near Ds after earlier successful packages; scan cutoff wins
+  over its later Dp. No progress resets either clock. Include service-index
+  stall, exact-cutoff result, late result, already-exhausted budget and normal
+  early success. Earlier results remain; no partial latest or later request.
+- Simulate terminate ignored, kill succeeds, already-exited worker, abrupt death,
+  malformed/oversized result, interruption and kill/reap failure. Verify bounded
+  waits, no restart, closed handles and normal temporary-file removal; verify
+  systemic failure and deferred cleanup for unreaped-process faults. Verify
+  zero surviving workers on all ordinary success/timeout/error paths.
+- Include a mutation witness: replacing supervision with only pre-request checks
+  and socket timeout must fail the drip-feed and blocked-operation tests.
+  Socket inactivity timeout alone still maps to registry_error in its own test.
+- Add a separate offline real-worker lifecycle test using an explicitly injected
+  trusted blocking fixture (no socket/server/live network). A ready handshake
+  precedes the stall; a short test deadline cancels it, confirms OS process exit
+  and cleanup, using a generous outer test watchdog rather than exact wall-clock
+  timing assertions. Test spawn/bootstrap and cancellation on supported POSIX
+  and Windows CI. Fake-clock tests establish deterministic deadline arithmetic;
+  real-worker tests establish that cancellation reaches the blocking boundary.
+
+No acceptance claim is made here: these are required future verification
+witnesses. No-execution guards allow only this exact trusted Python helper;
+all package-manager/target subprocess and live-network calls remain forbidden.
 
 ## Version helper boundaries
 
@@ -356,7 +474,8 @@ Use unittest/mock and small synthetic directories under
 W (witness/association), R (registry), I (mixed scan), C (CLI), O (output),
 S (security/bounds). Each row below names a concrete witness to implement, not
 an already executed acceptance test. Inject byte transport and clock; forbid
-live urlopen and subprocess calls in acceptance fixtures. No dotnet/NuGet,
+live urlopen and unauthorized subprocess calls in acceptance fixtures. The
+AC-34 worker lifecycle fixture is the sole trusted process exception. No dotnet/NuGet,
 restore, target execution or OASim environment. Generate only size/depth boundary
 variants; retain readable minimal positive and negative fixture examples.
 
@@ -397,9 +516,9 @@ K5 separately authorized real-root validation; K6 fresh final convergence.
 | 29 | JSON | O full/partial/rejected-stage presence/omission/null snapshots, schema 3, verbose equality and old-output equality | K3/K4 |
 | 30 | correspondence | O parse human/JSON fixture facts and compare counts/identities/requests/states/dates/values/disclosures | K3/K4 |
 | 31 | precedence/F2 | W/R table with one trigger per every S6 reason plus combined/reordered triggers; no ambiguity or mismatch selection fields | K1/K2/K3/K4 |
-| 32 | no execution | S patched process/network/cache/config access guards, before/after input byte digests, offline full path | K1/K3/K4 |
+| 32 | no execution | S exact trusted-worker-only process guard; forbidden network/cache/config access, before/after input byte digests, offline full path | K1/K3/K4 |
 | 33 | local bounds | S cap and cap+1 bytes/depth/count/digits, symlink inside/escape, FIFO/device/replacement/encoding fixtures | K1/K4 |
-| 34 | network bounds | R/S wrong host/path/redirect/userinfo/HTTP/gzip bomb/truncation/page/request/time/429 budgets | K2/K4 |
+| 34 | network bounds/supervisor | R/S wrong host/path/redirect/userinfo/HTTP/gzip bomb/truncation/page/request/429 bounds; P1 drip-feed, blocked connect/read, package/scan cutoff, mutation and worker cleanup witnesses | K2/K4 |
 | 35 | privacy | C/O/S secret canaries in XML/witness/origin/paths/errors/responses absent from stdout/stderr/JSON | K1/K2/K3/K4 |
 | 36 | scope | S co-located assets/export/packages.config/CPM/private/multi-context/portfolio fixtures never supply fallback | K1/K3/K4 |
 
