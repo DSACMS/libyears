@@ -508,7 +508,13 @@ def _reconcile_material(records, documents):
             if len(records) > 1:
                 raise NuGetRegistryFailure()
             continue
-        alias_material.add((_hash(document), _created(document.get('created'))))
+        digest = _hash(document)
+        created = _created(document.get('created'))
+        # Unavailable values cannot establish agreement between aliases.
+        # Single records retain their later hash/date-specific failure reasons.
+        if len(records) > 1 and (digest is None or created is None):
+            raise NuGetRegistryFailure()
+        alias_material.add((digest, created))
         for assertion in (*record.assertions, document):
             if 'created' in assertion:
                 dates.add(_created(assertion['created']))

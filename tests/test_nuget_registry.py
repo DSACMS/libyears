@@ -259,6 +259,134 @@ class RegistryTests(unittest.TestCase):
                 docs[catalog_url('02.0+build')] = value
             self.assertEqual(self.lookup(docs).reason, 'invalid_registry_response')
 
+    def alias_fixture(self, role):
+        aliases = {'used': ('1.0.0', '01.0+build'),
+                   'middle': ('2.0.0', '02.0+build'),
+                   'latest': ('3.0.0', '03.0+build')}[role]
+        versions = ['1.0.0', '2.0.0', '3.0.0']
+        versions.insert(versions.index(aliases[0]) + 1, aliases[1])
+        return fixture(versions), aliases
+
+    def test_both_aliases_need_usable_hash_algorithm_and_creation_material(self):
+        mutations = [
+            ('missing_hash', {'packageHash': None}, {'packageHash': None}),
+            ('missing_algorithm', {'packageHashAlgorithm': None}, {'packageHashAlgorithm': None}),
+            ('missing_created', {'created': None}, {'created': None}),
+            ('missing_all', {'packageHash': None, 'packageHashAlgorithm': None, 'created': None},
+             {'packageHash': None, 'packageHashAlgorithm': None, 'created': None}),
+            ('invalid_hash', {'packageHash': 'bad'}, {'packageHash': 'bad'}),
+            ('different_invalid_hash', {'packageHash': 'bad'}, {'packageHash': 'also-bad'}),
+            ('short_hash', {'packageHash': base64.b64encode(b'x').decode()},
+             {'packageHash': base64.b64encode(b'y').decode()}),
+            ('invalid_algorithm', {'packageHashAlgorithm': 'SHA256'}, {'packageHashAlgorithm': 'SHA256'}),
+            ('different_invalid_algorithm', {'packageHashAlgorithm': 'SHA256'},
+             {'packageHashAlgorithm': 'sha512'}),
+            ('invalid_created', {'created': 'invalid'}, {'created': 'invalid'}),
+            ('different_invalid_created', {'created': 'invalid'}, {'created': 'also-invalid'}),
+            ('naive_created', {'created': DATE[:-1]}, {'created': DATE[:-1]}),
+            ('sentinel_created', {'created': '1900-01-01T00:00:00Z'},
+             {'created': '1900-01-01T00:00:00Z'}),
+        ]
+        for role in ('used', 'middle', 'latest'):
+            for name, first_changes, second_changes in mutations:
+                with self.subTest(role=role, material=name):
+                    docs, aliases = self.alias_fixture(role)
+                    for version, changes in zip(aliases, (first_changes, second_changes)):
+                        document = docs[catalog_url(version)]
+                        for field, value in changes.items():
+                            if value is None:
+                                del document[field]
+                            else:
+                                document[field] = value
+                    result = self.lookup(docs)
+                    self.assertEqual(result, PackageResult(reason='invalid_registry_response'))
+                    schedule = self.transport.urls
+                    docs[INDEX]['items'][0]['items'].reverse()
+                    docs = {url: dict(reversed(list(value.items())))
+                            for url, value in reversed(list(docs.items()))}
+                    self.assertEqual(self.lookup(docs), result)
+                    self.assertEqual(self.transport.urls, schedule)
+
+    def test_valid_equal_and_conflicting_alias_material_at_every_position(self):
+        for role in ('used', 'middle', 'latest'):
+            with self.subTest(role=role):
+                docs, aliases = self.alias_fixture(role)
+                # Different timestamp spellings still establish the same UTC date.
+                docs[catalog_url(aliases[1])]['created'] = '2020-01-01T01:00:00+01:00'
+                result = self.lookup(docs)
+                self.assertIsNone(result.reason)
+                self.assertEqual(result.latest_publication.version, '3.0.0')
+                for field, value in [('created', '2021-01-01T00:00:00Z'),
+                                     ('packageHash', base64.b64encode(b'y' * 64).decode()),
+                                     ('listed', False)]:
+                    with self.subTest(field=field):
+                        changed = deepcopy(docs)
+                        changed[catalog_url(aliases[1])][field] = value
+                        self.assertEqual(self.lookup(changed),
+                                         PackageResult(reason='invalid_registry_response'))
+
+    def test_singleton_unavailable_material_preserves_reason_and_evidence_stages(self):
+        for field in ('packageHash', 'packageHashAlgorithm', 'created'):
+            for missing in (True, False):
+                with self.subTest(field=field, missing=missing):
+                    docs = fixture()
+                    if missing:
+                        del docs[catalog_url('1.0.0')][field]
+                    else:
+                        docs[catalog_url('1.0.0')][field] = 'invalid'
+                    result = self.lookup(docs)
+                    if field == 'created':
+                        self.assertEqual(result, PackageResult(reason='release_date_missing',
+                            origin_state='public_content_verified', content_hash_state='public_agreement'))
+                    else:
+                        self.assertEqual(result, PackageResult(reason='content_hash_unavailable',
+                                                              content_hash_state='unavailable'))
+                    docs[catalog_url('1.0.0')] = TransportFailure(404, 'SECRET')
+                    self.assertEqual(self.lookup(docs), PackageResult(reason='version_not_found'))
+        for field in ('packageHash', 'packageHashAlgorithm', 'created'):
+            with self.subTest(latest_field=field):
+                docs = fixture()
+                del docs[catalog_url('2.0.0')][field]
+                result = self.lookup(docs)
+                if field == 'created':
+                    self.assertEqual(result.reason, 'release_date_missing')
+                    self.assertIsNotNone(result.used_publication)
+                    self.assertIsNone(result.latest_publication)
+                    self.assertEqual(result.origin_state, 'public_content_verified')
+                    self.assertEqual(result.content_hash_state, 'public_agreement')
+                else:
+                    # A singleton latest needs no binding to a local artifact.
+                    self.assertIsNone(result.reason)
+                    self.assertEqual(result.latest_publication.version, '2.0.0')
+
+    def test_shared_catalog_document_still_requires_usable_duplicate_material(self):
+        for role in ('used', 'middle', 'latest'):
+            for field in ('packageHash', 'packageHashAlgorithm', 'created'):
+                with self.subTest(role=role, field=field):
+                    docs, aliases = self.alias_fixture(role)
+                    leaves = docs[INDEX]['items'][0]['items']
+                    for item in leaves:
+                        if item['catalogEntry']['version'] == aliases[1]:
+                            item['catalogEntry']['@id'] = catalog_url(aliases[0])
+                    self.assertIsNone(self.lookup(docs).reason)
+                    self.assertEqual(self.transport.urls.count(catalog_url(aliases[0])), 1)
+                    del docs[catalog_url(aliases[0])][field]
+                    self.assertEqual(self.lookup(docs), PackageResult(reason='invalid_registry_response'))
+
+    def test_used_absence_precedes_unavailable_duplicate_material(self):
+        for absent in ('registration', 'catalog'):
+            with self.subTest(absent=absent):
+                docs, aliases = self.alias_fixture('middle')
+                for version in aliases:
+                    del docs[catalog_url(version)]['created']
+                    del docs[catalog_url(version)]['packageHash']
+                if absent == 'registration':
+                    leaves = docs[INDEX]['items'][0]['items'][1:]
+                    docs[INDEX]['items'] = [page(leaves)]
+                else:
+                    docs[catalog_url('1.0.0')] = TransportFailure(404, 'SECRET')
+                self.assertEqual(self.lookup(docs), PackageResult(reason='version_not_found'))
+
     def test_prereleases_can_span_equal_numeric_page_boundaries(self):
         versions = ('1.0.0-a', '1.0.0-b', '2.0.0')
         docs = fixture(versions)

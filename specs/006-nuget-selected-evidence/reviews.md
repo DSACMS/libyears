@@ -1461,3 +1461,30 @@ outstanding verification, not a second defect or reopened T008-V1/P1. Delegated
 push authority is available only after corrected candidate local review and
 regressions pass. Full feature acceptance and live yield/hash-domain fitness
 remain unclaimed.
+
+### K2-M1 bounded correction and freeze
+
+Fresh author `/root/k2_alias_correction`, fork_turns=none without overrides,
+changes only registry reconciliation and focused registry tests. Duplicate groups
+now require each catalog document to yield a usable SHA512 hash and created date
+before equality can establish agreement. Singletons retain later hash/date-specific
+failures; selected absence still precedes reconciliation. No public contract,
+transport/supervisor policy or authority decision changes.
+
+The new role × material matrix covers used/middle/latest alias pairs with both
+missing or invalid hash/algorithm/created, differing invalid values, short hashes,
+naive and sentinel dates. All39 subcases fail against pre-correction bytes, then
+pass with correction; reversed leaf/object order retains exact failure and request
+schedule. Additional witnesses preserve valid equal UTC spellings, all-position
+conflicts, shared catalog links, singleton selected/latest semantics, selected
+absence and safe staged evidence. Parent inspects the full two-file diff and
+independently runs focused37 PASS. Author NuGet179/full580 PASS, whitespace PASS.
+
+Correction code SHA-256:
+`58f13fd5aaf967b5cb652af6bf828fa05084cd2f4359904e33828460d7c9dea0`;
+registry test SHA-256:
+`8ed0c7be874d11432a05a46e4b1c6cf4d2acf0368bcd8c30d18096283bd821c9`.
+The local correction commit freezes these bytes before fresh focused review;
+**K2-M1 remains OPEN pending independent closure. K2 not approved; T010 not begun.**
+No live network, external root, package-manager/target execution or push occurs
+in this correction. Earlier failed candidate and finding evidence remain intact.
