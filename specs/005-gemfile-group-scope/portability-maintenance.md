@@ -93,3 +93,48 @@ Public documentation already states the runtime capability limitation and is
 unchanged. Only the test acceptance index explains the repaired test architecture.
 Historical convergence/release/retrospective evidence and all ledger bytes remain
 unchanged. Independent post-repair review follows the candidate freeze.
+
+## Independent review and final parent determination
+
+Frozen candidate: `69303171b62dd714ae5cef276687e00beb24ff75`, baseline
+`461ea0d8761b0e6d972d4ef0913031a88cf37699`. Three fresh non-author reviewers
+used `fork_turns="none"`, with no requested model/effort overrides, after both
+implementation children completed. None received sibling conclusions; each
+read actual repository authority, implementation and the complete candidate diff.
+The parent waited for all three before this final synthesis. Actual child
+model/effort/resource telemetry is unavailable.
+
+| Reviewer | Scope | Completeness / verdict | Independent checks |
+|---|---|---|---|
+| `/root/review_security` | Approved contract, filesystem safety, F1/F2 and precedence | COMPLETE / APPROVE; no material findings | Focused 108, full 393/no skips, unavailable-dir_fd 393/18 skips |
+| `/root/review_portability` | Windows-relevant capabilities, test architecture and regression sensitivity | COMPLETE / APPROVE; no material findings | Original 390/89 failures/8 errors/33 skips reproduced; candidate full 393/no skips and absent-required-flags plus unavailable-dir_fd 393/18 skips; in-memory removal of refusal and loss of membership detected by repaired tests |
+| `/root/review_compatibility` | CLI/output, cross-platform and ecosystem regressions | COMPLETE / APPROVE; no material findings | Focused 108, full 393/no skips, both unavailable-capability configurations 393/18 skips; 27 forbidden CLI abbreviation combinations rejected and exact separate/equals/repeated controls accepted |
+
+All reviewers passed candidate whitespace checks and made no edits. Their local
+capability simulations are not Windows executions. Parent validation reconciled
+the actual reader check and safe source mapping with plan/T003 authority; checked
+that the fixture boundary returns text rather than parsed populations/reports;
+inspected retained F1/F2, no-lookup, source ordering, ordinary-mode and C-01
+assertions; and confirmed production/workflow/contracts/historical artifacts and
+ledger have no diff against the baseline. No material review finding remains.
+The established maintenance finding is the test portability defect repaired by
+the frozen candidate; review found no additional defect.
+
+Parent additionally passed full discovery/execution with all three required
+safe-open flags disabled and dir_fd unavailable: **393 tests, no failures/errors,
+18 actual-filesystem skips**. All parent/reviewer results support **LOCAL PASS**
+and **WINDOWS-EXPECTED PASS** only. No Windows execution was observed, no remote
+job was dispatched and no push occurred. The unchanged Windows Actions matrix
+will exercise the architecture when a later separately authorized push reaches
+normal CI. That actual Windows observation is the next maintenance gate.
+
+Final disposition: **COMPLETE / APPROVE**, classification
+**TEST_PORTABILITY_DEFECT**; product defect **NO**; CI configuration defect **NO**.
+Production Windows scoped reads continue to fail closed when required capabilities
+are absent. No weaker filesystem model, Windows substitute, feature-contract
+change, release, Feature 006 or NuGet discovery was introduced. Public documents
+already state the capability limitation; only test documentation and this new
+post-convergence record change. Historical Feature 005 convergence is preserved
+as evidence from its original gate, without retroactive Windows-success claims.
+The observation ledger remains byte-identical; the current run is handed off
+as temporary schema-v1 JSON rather than appended.
