@@ -4,6 +4,11 @@ Notable changes to Libyears are documented here.
 
 ## [Unreleased]
 
+### Security
+
+- Prevent pathological backtracking when classifying npm registry versions,
+  preserving the accepted SemVer forms and release-selection behavior.
+
 ### Added
 
 - Measure explicitly selected declared Ruby groups with repeatable
