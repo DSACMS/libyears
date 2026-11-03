@@ -184,15 +184,20 @@ aggregation semantics remain unclear.
 evidence can establish exact selected versions and authorize public metadata.
 
 **Evidence:** A human reports a team outbounding OASim this month. Authorized
-read-only discovery found ten C# projects, 51 explicit PackageReference
-declarations and 24 unique package IDs, but no retained lock/assets selection
-evidence. Bare numeric requirements are not resolved versions. Source authority
-and usable publication-date semantics remain unresolved.
+initial discovery found ten C# projects, 51 explicit PackageReference
+declarations and 24 unique package IDs. The authorized Phase 2 resume produced
+assets, oracle JSON and experimental locks agreeing on all 51 direct selections
+and 229 transitive occurrences across ten net10.0 contexts. Separate hash-bound
+NuGet metadata records public-source provenance for this producing run; retained
+selection artifacts alone do not establish source authority. No age/publication
+measurement was performed; date semantics and an accepted source trust contract
+remain unresolved.
 
 **Why this state:** A concrete workflow signal and documented retained-evidence
-paths justify further bounded investigation. OASim does not yet demonstrate a
-safely measurable population or readiness for human product selection. This is
-not Feature 006 selection.
+paths now have empirical declaration/selection/context witnesses. A bounded
+static/supplied-evidence direction is a HUMAN FEATURE 006 SELECTION CANDIDATE,
+subject to human scope, provenance/trust and publication-policy decisions.
+EXPLORE is retained until human selection; Feature 006 remains unselected.
 
 **Success signal:** An authorized project/lock or project/assets pair with
 independently established direct population, producing context and safe

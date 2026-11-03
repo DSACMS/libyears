@@ -1,8 +1,9 @@
 # NuGet / OASim opportunity discovery
 
-**Current disposition: Phase 2 execution BLOCKED at SDK preflight; CONTINUE EXPLORE.**
-The [Phase 2 record](#phase-2-retained-evidence-experiment) supersedes the
-historical next gate below. Feature 006 remains unselected and unstarted.
+**Current disposition: Phase 2 resume COMPLETE; HUMAN FEATURE 006 SELECTION CANDIDATE.**
+The [resumed evidence record](#phase-2-resume--observed-retained-evidence) supersedes
+the historical SDK gate. Radar state remains EXPLORE; Feature 006 is unselected
+and unstarted. The earlier BLOCKED attempt is preserved below.
 
 **Phase 1 disposition: bounded discovery COMPLETE; recommended radar state EXPLORE.**
 Research date: 2026-11-03. This is pre-selection opportunity evidence, not
@@ -532,3 +533,296 @@ record was appended after freeze. All four Phase 2 children used
 is unavailable. Fresh contexts establish independent assignments, not external
 ground truth. Local links resolve, `git diff --check` passes, and only this
 discovery document changes. No push occurred.
+
+## Phase 2 resume — observed retained evidence
+
+**Date:** 2026-11-03. **Status:** COMPLETE within the authorized experiment.
+**Decision: HUMAN FEATURE 006 SELECTION CANDIDATE.** Recommended opportunity
+state remains **EXPLORE** pending human product selection. **Feature 006 selected:
+NO.** This section supersedes the blocked SDK gate, without changing the earlier
+attempt or Phase 1 observations. It establishes a technically credible bounded
+supplied-evidence direction, not a product contract, completed measurement, or
+permission to implement NuGet support.
+
+### Continuity and execution boundary
+
+The fresh parent reconstructed state from AGENTS.md, AGENT_ROUTING.md, ROADMAP.md,
+this artifact and commits `26fc59d` and `3314cd0`. Independently executed
+`/usr/local/share/dotnet/dotnet --version` returned **10.0.403**, exit 0.
+`--info` reported **osx-arm64**, MSBuild 18.9.15, host/runtime 10.0.14.
+OASim HEAD remains `1e937015e1d242fee5597ea0fbdc4cd5c983f101`; initial
+porcelain status was empty. All **223 tracked files** match the prior integrity
+manifest. All **14 dependency/configuration inputs** match, including manifest
+SHA-256 `c21dcac8ed8405194671294b5d2fe6c3d4c647ae927fd7d6e6aad271372ace4c`.
+Thus the declaration baseline was verified, not rediscovered or replaced.
+The original `declarations.json` was copied byte-for-byte from
+`/tmp/nuget-phase2.VgJ3IN`; its hash remains
+`7eb820c73356ca035b75366ba86a03a735694ebc661ef8731dc2d741045c8eb0`.
+No product/tool output was used to amend it.
+
+The existing human exception authorized restore, source access and disposable
+lock evidence only for the exact OASim root. Sandbox escalation permitted the
+two bounded orchestration scripts. No package versions, committed source or
+configuration, sources, trust settings or TLS controls were changed. No
+interactive option was supplied; no authentication prompt was observed.
+No application build/run/test/publish command was invoked. Restore evaluates
+MSBuild inputs and generates NuGet imports; this exception is experimental
+producer authority, not permission for a future libyears scanner to execute it.
+The installer was excluded. Per-project invocation is retained explicitly;
+these results are not asserted equivalent to a solution restore.
+
+### Commands and retained evidence
+
+Let `R=/Users/dpjj/code/hhs/OASim`,
+`D=/var/folders/33/t96n6m0j5qn7vpzq49gtyl1m0000gp/T/nuget-phase2-resume.w3zgqj_q`,
+and `SDK=/usr/local/share/dotnet/dotnet`. All ten project paths are in the
+unchanged declaration baseline. For each project `P`, sequentially, the actual
+argument vectors were equivalent to:
+
+```sh
+"$SDK" restore "$R/$P" --packages "$D/packages" --disable-parallel --verbosity minimal
+"$SDK" package list --project "$R/$P" --include-transitive --format json --output-version 1 --no-restore
+"$SDK" restore "$R/$P" --packages "$D/packages" --disable-parallel --verbosity minimal --use-lock-file
+```
+
+Working directory was `R`; child environment additions were
+`DOTNET_CLI_TELEMETRY_OPTOUT=1` and `DOTNET_NOLOGO=1`. Each phase covered ten
+projects before proceeding to the next. The package directory was newly created
+for this experiment. Existing HTTP-cache behavior was left intact; this is not
+a claim that every package was freshly downloaded from the network. No source
+or configuration override was used. The SDK's local package-list help, run
+outside the sandbox, confirmed the .NET 10 syntax above. A preliminary sandboxed
+`--info`/help chain printed SDK information but ended 143 at subsequent help;
+the elevated standalone help succeeded. This did not fail a restore.
+[Noun-first syntax and no-restore behavior](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-package-list),
+[restore switches](https://learn.microsoft.com/en-us/dotnet/core/tools/dotnet-restore).
+
+All **10 initial restores**, **10 oracle commands**, and **10 lock restores**
+exited **0**. First restore emitted a workload-verification advisory; no workload
+update was attempted. NU1903/NU1904 vulnerability warnings appeared for MRCalc,
+MatchRunTests and OASim. NU1510 warned that MatchRunProfileUpdater's explicit
+Microsoft.Win32.Registry reference is unnecessary but **will not be pruned**.
+It remains in all four evidence views. These warnings are retained without
+changing declarations. Audit traffic is part of ordinary restore, not an
+OASim publication-date/age measurement.
+
+Producer scripts and exact command arrays, exit codes and logs are retained in
+D: `nuget-resume-run.py`, `nuget-resume-views.py`, `nuget-resume-compare.py`,
+`restore-records.json`, and `view-records.json`. For each project name N:
+
+- `D/N.restore.log` retains the initial restore log.
+- `D/views/N/before-lock.project.assets.json` and
+  `before-lock.project.nuget.cache` freeze initial restore state before locks.
+- `D/views/N/oracle.json` and `oracle.stderr` retain the no-restore oracle.
+- `D/views/N/lock-restore.log`, `project.assets.json` and `packages.lock.json`
+  retain experimental lock production and resulting artifacts.
+
+Raw logs/assets can contain local configuration paths and source endpoints;
+they remain outside Git. No credential nodes or user/machine config files were
+opened. Nonpublic endpoints are not reproduced here. The evidence directory is
+local temporary retention, not permanent archival storage; preserve it separately
+if later review requires the full bytes. The committed summary and hashes do
+not substitute for unavailable raw evidence.
+
+SHA-256 witnesses (all paths below relative to D):
+
+| Evidence | SHA-256 |
+|---|---|
+| `evidence-manifest.json` | `b9a0ba773c1dca98090d3e8fec29e4c681984f7cb5e811d30cfcf43664dad0f6` |
+| `comparison.json` | `df7762499ab0424116d1f1637ca02ada9e31c7991926066d3bf1df53a1c91997` |
+| `association.json` | `91caf0d3c38468f16b8a0ce65f9bfc45c2b6d40cb9b1596d2348dcc931d51990` |
+| `origin-provenance.json` | `6de27fd42fce6396b66068ce33a968d9b6999fe33a61ce65144b4b64be2eea31` |
+| `restore-records.json` | `9fdfec90e19526db47a934641c7967e9781d6cfe7e1d583fb78b740e6c496af5` |
+| `view-records.json` | `64b07fa4a722e2331210adb87ec3b29e81e93d0869d7994529e37fbe1d41bd08` |
+| `views/MRCalc/before-lock.project.assets.json` | `f1a5c5c8c7d392159cb2097581d07b78865ef717bfdad92e011369dd093f0ae9` |
+| `views/MRCalc/oracle.json` | `e774693b0cc4d53e63952ef18160b264ee31ba5684094545e99aabbc337f10af` |
+| `views/MRCalc/packages.lock.json` | `11f1658d4a00e06e8b8509ee86e6648e02bec5a9c702cf6a366a24a616e3ddf1` |
+
+The manifest enumerates all retained non-package evidence files at freeze,
+including every project's artifacts and scripts. Package archives/contents were
+not manually inspected. Only this experiment's generated `.nupkg.metadata`
+JSON was read to extract source/content-hash provenance; no existing home
+package cache was inspected. Metadata file hashes are in origin-provenance.json.
+
+### Independent view comparison
+
+Assets format is **4**, lock format **1**, oracle output format **1**.
+Each row represents its own project / `net10.0` context, without an explicit RID
+restore target. Project node counts are closure entries, not direct-edge counts.
+
+| Project | Baseline direct | Oracle direct | Oracle transitive | Assets project nodes |
+|---|---:|---:|---:|---:|
+| MRCalc | 9 | 9 | 39 | 1 |
+| MatchRunBenchmarks | 2 | 2 | 30 | 2 |
+| MatchRunCLI | 8 | 8 | 12 | 1 |
+| MatchRunEngine | 4 | 4 | 1 | 0 |
+| MatchRunProfileUpdater | 1 | 1 | 0 | 0 |
+| MatchRunProfiling | 2 | 2 | 30 | 2 |
+| MatchRunTests | 5 | 5 | 60 | 4 |
+| OASim | 9 | 9 | 40 | 2 |
+| OASimCLI | 9 | 9 | 13 | 2 |
+| SimulationEngine | 2 | 2 | 4 | 1 |
+| **Occurrence totals** | **51** | **51** | **229** | **15** |
+
+There are **24 distinct direct ID/version pairs**, **83 distinct transitive
+ID/version pairs**, and **92 distinct ID/version pairs in the combined closure**.
+Direct and transitive sets overlap across contexts. These are descriptive
+experiment counts, not an approved repository-wide libyears denominator.
+
+The parent compared each view separately against the preserved declarations,
+then reconciled all four; `comparison.json` reports **zero disagreements**:
+
+1. Baseline IDs exactly match assets `project.frameworks.net10.0.dependencies`,
+   oracle `topLevelPackages`, and lock entries typed `Direct`, per project.
+2. For every declaration, oracle `requestedVersion` equals its original literal
+   request. Assets and locks retain the corresponding inclusive minimum
+   `[request, )`. This mapping was checked only for the observed literal numeric
+   forms; no general range parser or version solver was implemented.
+3. Oracle `resolvedVersion`, assets package target ID/version, and lock `resolved`
+   agree on all 51 direct occurrences. All happen to equal the numeric request;
+   successful retained resolution, not that coincidence, supplies exactness.
+4. Oracle top-level plus transitive ID/version maps equal assets targets typed
+   `package`. Oracle transitives exactly equal locks typed `Transitive`.
+   Project nodes are typed separately and excluded. No extra implicit top-level
+   package was observed; the framework reference Microsoft.NETCore.App does not
+   become a direct package. This does not validate implicit-package cases.
+5. Pre-lock and post-lock assets targets and libraries are identical for every
+   project. Lock generation changed restore state/provenance but not the selected
+   closure. Locks were generated at each project's normal `packages.lock.json`
+   destination, not one shared absolute filename propagated through a graph.
+   None existed before; none is tracked. Committed opt-in/configuration was
+   unnecessary. No locked-mode consistency or deliberate stale-pair experiment
+   was performed. Locks therefore demonstrate useful retention, not inherently
+   stronger proof of historical coherence or portability.
+
+For example, MRCalc's explicit `Avalonia / 0.10.19` associates within MRCalc /
+net10.0 with assets request `[0.10.19, )`, package target `Avalonia/0.10.19`,
+oracle requested/resolved `0.10.19`, and lock Direct requested `[0.10.19, )` /
+resolved `0.10.19`. CoreCLR-NCalc, direct in MatchRunEngine, is transitive in
+MRCalc. ID-only matching across projects would misclassify it. PrivateAssets
+on the test runner does not erase its direct membership in MatchRunTests.
+
+This is independent interpretation of distinct views, not independent resolver
+implementations: assets, locks and oracle all depend on the same NuGet producer,
+and the oracle consumes restore state. Agreement corroborates field association;
+it cannot independently prove NuGet correct or reconstruct historical inputs.
+Only the producing run and recorded input integrity bind these particular
+snapshots. Arbitrary supplied snapshots still need a coherent provenance claim,
+static association checks and fail-closed disagreement handling.
+
+### Source authority — separate from selection
+
+Assets report one configured source for eight projects and two for MRCalc/OASim.
+That is eligible-source context, not per-package origin. Neither assets, locks,
+source counts, package IDs nor content hashes alone authorize public namesakes.
+
+A separate provenance witness is available here: of **97** generated package
+metadata records in the disposable package directory, all record source exactly
+`https://api.nuget.org/v3/index.json`. For each of the **92 selected closure
+ID/version pairs**, the parent bound that metadata's `contentHash` to both the
+assets library `sha512` and lock `contentHash`, with no missing/mismatched record.
+The other five metadata records are not counted as selected context packages.
+`origin-provenance.json` retains selected IDs/versions, source, content hash and
+metadata SHA-256. This is inspected **NuGet producer-reported public provenance
+for this run**, not inferred public identity or proof that a network download
+occurred rather than HTTP-cache reuse. Microsoft documents the extraction-marker
+role of `.nupkg.metadata` and cache behavior; the source/contentHash fields here
+are observed SDK output, not a proposed stable interchange schema.
+[Cache/extraction lifecycle](https://learn.microsoft.com/en-us/nuget/consume-packages/managing-the-global-packages-and-cache-folders).
+
+This provides a technically credible way to supply separate nonsecret source
+provenance. It is not cryptographic attestation, proof about past OASim restores,
+or adoption of a libyears trust policy. A future human-selected contract must
+decide which producer/supplier assertions authorize public lookup, bind them to
+selected context evidence, reject unknown/nonpublic origin and avoid reading
+credential-bearing configuration or arbitrary cache locations. Source mapping
+alone would still be insufficient, particularly with caches.
+[Source-mapping boundaries](https://learn.microsoft.com/en-us/nuget/consume-packages/package-source-mapping).
+
+**OASim publication lookup performed: NO.** No package-age measurement,
+registration/catalog publication query, latest-stable selection or libyears
+coverage/age total was performed. Ordinary restore package/audit traffic is
+separate. Date semantics and latest eligibility remain open as in Phase 1.
+
+### Candidate classifications and decision
+
+| Supplied evidence candidate | Classification after experiment | Boundary |
+|---|---|---|
+| Declarations + assets + project/framework + producer/input provenance | STRONG BOUNDED SELECTION CANDIDATE | Demonstrated 51 associations; generated, path-bearing snapshot needs explicit retention and coherence policy |
+| Declarations + per-project lock + context/provenance | STRONG BOUNDED SELECTION CANDIDATE | Direct/requested/resolved distinction and closure demonstrated; source and historical coherence remain separate |
+| Exported package-list JSON + declarations/context/provenance | CONDITIONAL SUPPLIED-EVIDENCE CANDIDATE | Useful oracle, but less closure/hash detail; not an independent resolver or source authority |
+| Selection evidence + hash-bound supplied origin witness | CREDIBLE SOURCE-PROVENANCE DIRECTION | Demonstrated producer-reported nuget.org provenance; human acceptance/trust contract required |
+| Any assets/lock/oracle alone for public lookup | INSUFFICIENT | No standalone per-package public-source authority |
+| Bare requests as selections, cross-project ID matching, public namesake substitution | UNSAFE / WRONG SEMANTICS | Contradicts observed evidence roles |
+
+The decision advances from the blocked attempt to **HUMAN FEATURE 006 SELECTION
+CANDIDATE** because a bounded static/supplied contract is technically credible:
+literal explicit declarations can associate with exact retained selections in
+one project/framework, distinguish transitive/project entries, and carry a
+separate hash-bound nonsecret origin witness. It rests on more than printing
+versions. It does not claim a complete public-date chain, general MSBuild
+interpretation, solution aggregation, or ready-to-ship feature scope.
+
+Human decisions remain: useful project/context and direct population (including
+tests/tools/analyzers), accepted supplied artifacts/provenance and public-source
+trust boundary, usable publication/latest policy and unsupported-case behavior.
+True multi-targeting, RID-specific targets, differing direct selections,
+conditional/imported/central versions, source conflicts, stale/malformed evidence,
+missing/partial restore and adversarial snapshots remain unvalidated. A future
+contract must reject ambiguity and preserve unknown scope rather than fabricate
+coverage. No parser architecture, CLI/schema change, spec, plan or task graph was
+created. ROADMAP retains EXPLORE while updating its materially changed evidence.
+
+### Integrity, residual state and observation boundary
+
+All 223 tracked OASim files still match the pre-attempt manifest, and HEAD is
+unchanged. Final porcelain lists only ten **untracked** per-project lock files.
+There are **50 ignored obj files** across the ten projects (including assets,
+generated NuGet props/targets, dgspec and cache); no bin output was generated.
+D retains disposable packages, scripts, copied baseline, logs and comparison
+artifacts. Ordinary SDK/NuGet HTTP-cache/scratch or first-run side effects were
+not exhaustively inventoried outside the authorized root. No cleanup, reset or
+`git clean` was used. Residual locks are experimental, not silently adopted
+committed OASim configuration.
+
+The pre-selection observation namespace is still unadopted. Recommend a human-
+approved prospective `discovery-0001` namespace with pre-selection lifecycle;
+do not assign IDs retroactively, append a ledger row or change schema v1's 44
+fields. No product tests are needed for this documentation-only change.
+
+**Next human gate:** decide whether to select a bounded supplied-evidence NuGet
+direction for Feature 006 and settle its product/trust/date questions before
+SDD. This experiment neither selects it nor authorizes further implementation.
+
+### Resume independent review and parent validation
+
+After freezing comparison/evidence and discovery SHA-256
+`4a06e67ce8b4d2a83e7d4d43de9bd89fd4997aa90725de6cd4efe338d3a090a0`
+(ROADMAP `0b6ebe3ed61cd176e2d564f54a14b951db2568228304f41433689ea7ede8dbbd`),
+the parent dispatched two fresh non-author reviewers with `fork_turns="none"`
+and no model/effort overrides. Neither received the other's report or inherited
+the author conversation; both received the frozen artifacts and narrow authority.
+
+| Reviewer | Completed independent coverage | Verdict |
+|---|---|---|
+| `/root/resume_fact_review` | Recomputed all four raw views, 92 manifest hashes, source/hash bindings, command records/logs, OASim input/tracked integrity and generated-state counts; checked official Microsoft command/cache/source documentation | COMPLETE / APPROVE; no material factual or cross-evidence findings |
+| `/root/resume_fit_review` | Recomputed context/direct/request/selection/closure associations and source/hash bindings; verified baseline/manifest; compared Feature 003/004/005 evidence principles and human selection/source-trust boundaries | COMPLETE / PASS; no material evidence-model findings |
+
+Both supported the candidate recommendation only as a bounded supplied-evidence
+direction, preserving EXPLORE and human selection. They explicitly did not
+validate publication-date measurement, arbitrary snapshot coherence, accepted
+trust policy, untested contexts or all producer side effects. Neither ran dotnet,
+modified files, inspected archives/credentials or interpreted application code.
+SDK preflight remains the parent's producer observation rather than a reviewer
+rerun. Actual child model/effort/resource telemetry is unavailable; fresh task
+contexts demonstrate orchestration, not independent resolver ground truth.
+
+The parent received both completed reports and validated their findings against
+raw associations, selected origin/hash witnesses, unchanged tracked content,
+zero bin files, lock/snapshot byte identity and the already verified manifest.
+No correction was required. Only this review record was appended after freeze.
+Local file links and `git diff --check` pass. The sole libyears changes are this
+discovery and ROADMAP's updated EXPLORE rationale; no implementation, test,
+Feature 006 artifact, observation ledger or schema change was made. The earlier
+BLOCKED attempt remains intact. One local documentation commit is authorized;
+no push is performed.
