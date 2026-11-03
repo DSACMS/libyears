@@ -60,6 +60,7 @@ An evidence-backed problem or learning opportunity is required.
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
+| [NuGet retained dependency evidence](#7-nuget-retained-dependency-evidence) | EXPLORE | .NET / NuGet | Bounded evidence-fitness discovery |
 
 ### 3. Project-root discovery/listing
 
@@ -170,6 +171,40 @@ aggregation semantics remain unclear.
 
 - [Feature 003 discovery](specs/003-yarn-lock-evidence/discovery.md)
 - [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
+
+### 7. NuGet retained dependency evidence
+
+**State:** EXPLORE
+
+**Area:** .NET / NuGet
+
+**Contributor fit:** Bounded evidence-fitness discovery
+
+**Opportunity:** Measure direct NuGet dependency age if supplied project/context
+evidence can establish exact selected versions and authorize public metadata.
+
+**Evidence:** A human reports a team outbounding OASim this month. Authorized
+read-only discovery found ten C# projects, 51 explicit PackageReference
+declarations and 24 unique package IDs, but no retained lock/assets selection
+evidence. Bare numeric requirements are not resolved versions. Source authority
+and usable publication-date semantics remain unresolved.
+
+**Why this state:** A concrete workflow signal and documented retained-evidence
+paths justify further bounded investigation. OASim does not yet demonstrate a
+safely measurable population or readiness for human product selection. This is
+not Feature 006 selection.
+
+**Success signal:** An authorized project/lock or project/assets pair with
+independently established direct population, producing context and safe
+declaration association, plus public-source and publication-date witnesses.
+
+**Stop condition:** Useful scope requires MSBuild/project execution, package
+resolution, private-source/credential access, unapproved project aggregation,
+or unsupported assumptions about selection, source authority or dates.
+
+**References:**
+
+- [NuGet / OASim pre-selection discovery](discovery/nuget-oasim.md)
 
 ## Selected Work Moved into SDD
 
