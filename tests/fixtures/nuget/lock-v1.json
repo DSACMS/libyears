@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net10.0": {
+      "Example": {
+        "type": "Direct",
+        "requested": "[1.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "synthetic-unvalidated-hash",
+        "dependencies": {"Helper": "[2.0.0, )"}
+      },
+      "Helper": {
+        "type": "Transitive",
+        "resolved": "2.0.0",
+        "contentHash": "synthetic-unvalidated-hash"
+      },
+      "SharedProject": {
+        "type": "Project",
+        "dependencies": {"Helper": "[2.0.0, )"}
+      }
+    }
+  }
+}
