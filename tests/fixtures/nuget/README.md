@@ -72,3 +72,18 @@ composes the real byte client and lookup handler with the supervisor's injected
 process controller and bounded protocol. Absolute blocking/cancellation and real
 OS lifecycle witnesses remain in `test_nuget_worker.py`; no package manager,
 producer, live NuGet service or external project is used.
+
+`test_nuget_acceptance.py` generates exact byte-bound variants and offline
+multi-package registration/catalog maps from these same synthetic assertions.
+It composes the public CLI, local parsers, actual metadata handler, typed result
+protocol, metric and both renderers, with forbidden I/O/process/network guards
+and before/after target-byte comparisons. A separate supported-host test uses
+the real descriptor reader; portable semantic tests retain the bounded byte
+seam and never imply unavailable filesystem primitives are safe. Existing
+controller/mutation/real-worker tests remain the cancellation evidence.
+
+The acceptance reason enumeration derives `(level, reason)` directly from S6
+and checks exact equality with the union of both trigger tables; each table's
+own executable test reaches every listed reason. The complete AC, limit,
+privacy, ordering and platform evidence reconciliation lives in
+`specs/006-nuget-selected-evidence/acceptance.md`.

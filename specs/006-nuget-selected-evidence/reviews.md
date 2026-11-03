@@ -1780,3 +1780,42 @@ no suppression/exception is authorized or applied.
 
 T014 is dependency-ready and continues automatically under existing authority.
 No target/network/producer/next-feature authority is conferred by this approval.
+
+### T014 — Final offline acceptance consolidation and freeze
+
+After approved K3, fresh `/root/acceptance_author` reads complete current authority
+and adds eight composed acceptance/security tests, the fixture README explanation
+and [acceptance.md](acceptance.md). No production or approved-contract bytes change.
+The evidence reconciles 36 unique ACs to actual methods/results, all finite limits,
+23 exact S6 level/reason pairs, P1 controller/mutation/real-worker evidence and
+F1/F2/K1-F1/T008-V1/K2-M1/K3-C1 regression witnesses. It does not mark real-root,
+convergence or frozen specification checkboxes complete.
+
+Public CLI composition runs complete local parsers, authority, actual offline
+metadata client/handler, typed result codec, unchanged metric and both renderers.
+The injected batch lookup deliberately bypasses parent adapter/supervisor;
+separate retained T009 controller/protocol composition and T008 real-process tests
+supply that evidence. Portable synthetic-byte semantics and actual supported-host
+descriptor reading remain distinct. Permutations preserve request schedule,
+evidence and summaries; combined failures assert earliest stage, attempted input
+names and no invented later errors. Private origins/metadata/exceptions/XML/
+witnesses/root paths and excluded artifacts cannot leak or repair authority.
+Synthetic target file bytes are unchanged during every scan.
+
+Parent pre-freeze harness review requires post-main forbidden-call assertions,
+since product exception handling could otherwise swallow a guard AssertionError
+on an expected registry_error path. Retained socket/read mutation attempts are
+caught even when swallowed inside the injected transport path. Descriptor calls
+are also checked afterward. Setup materializes exact managed input presence before
+snapshot, preserving excluded files; failed/missing cases cannot accidentally
+reuse prior physical inputs. These are test-harness preparation, not product
+corrections or post-freeze K4 repairs. No production defect is established.
+
+Author acceptance8/NuGet225/full631 PASS; parent independently acceptance8/full631
+PASS. Parent inspects the complete new tests/evidence, mechanically checks36 unique
+AC rows and that referenced methods resolve, and checks tracked plus both new-file
+whitespace PASS. **T014 author verification COMPLETE; K4 PENDING.** The local task
+commit freezes tests/evidence before fresh independent all36 audit. Existing exact
+77d66b9 Windows/POSIX worker-graph scope and hosted-secret-check limitations remain
+explicit. No live NuGet, external target, producer, credentials/new trust, scanner
+exception, Feature007 or push occurs; T015 not begun before K4.
