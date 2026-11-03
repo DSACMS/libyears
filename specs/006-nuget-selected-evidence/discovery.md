@@ -1,6 +1,12 @@
 # Feature 006 Discovery: Bounded NuGet Selected-Version Evidence
 
-**Status: HUMAN DECISION REQUIRED. Readiness for specification: NO.**
+**Status: READY FOR SPECIFICATION. Readiness for specification: YES.**
+
+Human H1–H4 acceptance and specification authorization were supplied on
+2026-11-03 for fresh run `006-0002`. The original discovery recommendations,
+questions and run `006-0001` review record below are historical; the decision
+record at the end supersedes their pending-gate language. Specification remains
+a draft until independent review; planning and implementation are not authorized.
 
 Bounded discovery completed on 2026-11-03 in fresh run `006-0001`, starting at
 `c389208dda26406646ed42d0384cb83cde1c4a6d` with a clean working tree.
@@ -341,3 +347,35 @@ handoff remains temporary and outside Git; this run is not appended to the ledge
 
 **Next gate:** human decisions H1–H4 and explicit authorization of specification.
 Hard stop before Feature 006 specification, planning or implementation.
+
+
+## Human decisions and reconciliation — 006-0002
+
+**Authority:** the commissioning human explicitly approved H1–H4, recording the
+prior observation and drafting the specification in run `006-0002` on 2026-11-03.
+The original four questions and their alternatives above remain intact.
+
+| Original question | Human decision / resulting initial boundary |
+|---|---|
+| H1 — Selection evidence | **ACCEPT.** `packages.lock.json` is the sole supported selected-version product input. `project.assets.json` and exported `dotnet package list` JSON are out of initial product scope. Their successful experiments remain useful research/oracle evidence for possible future expansion; this is no claim that either is unsafe in principle. |
+| H2 — Declaration/context | **ACCEPT.** One explicit SDK-style C# project, one literal framework, unconditional literal direct PackageReferences and bounded numeric requested-version forms. Test/tool/analyzer direct references remain included. Transitives, project references and implicit/auto-referenced packages are not measured. Accept qualified supplier-coherence assertions and the documented failure/denominator policy; do not demand stronger historical/evaluated-scope proof. Fail closed outside the supported static subset. |
+| H3 — Source authority | **ACCEPT.** Exact ID/version alone never authorizes public lookup. Bind package, project/framework, selected version, content identity/hash and asserted public origin. Require public content-hash agreement before treating public publication metadata as authority. Unknown/private/alternate/conflicting origin remains unmeasurable; never substitute public namesakes. Supplier assertions are accepted testimony, not cryptographic attestation. Libyears never executes NuGet/dotnet to establish this evidence. |
+| H4 — Publication/latest | **ACCEPT.** Catalog `created` means first receipt by nuget.org. No catalog-update, listing/unlisting, restore or snapshot-time substitutes. Latest is greatest currently listed stable under a bounded NuGet ordering contract. Missing authoritative dates remain unmeasurable. The accepted discovery policy permits authorized prerelease/unlisted used versions with usable dates. |
+
+**Consequential-question audit:** applying H1–H4 exposes no new consequential
+product question. The existing metric, public-source protection and static-input
+boundary remain intact. Activation, stable reasons, additive output fields and
+the bounded syntax are finalized as proposed product behavior in the draft
+[specification](spec.md), subject to independent specification review. Parser
+organization, witness serialization mechanics, transport implementation and task
+ordering remain later design work, not a new product approval gate.
+
+**Readiness: READY FOR SPECIFICATION.** Drafting is explicitly authorized;
+self-audit cannot approve the draft. No technical plan or task decomposition is
+begun. The next gate after drafting is **INDEPENDENT SPECIFICATION REVIEW**.
+
+Clerical provenance: `006-0001` is recorded once from its machine handoff, enriched
+only with the explicitly authorized human post-run session/model/provider/effort,
+agent-version, reported-runtime and two account-level credit readings. The
+runtime classification and runtime note remain verbatim; the readings are
+continuity observations, not per-run billing. No credit delta is stored.

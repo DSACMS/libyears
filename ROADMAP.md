@@ -177,9 +177,10 @@ aggregation semantics remain unclear.
 ### 7. Bounded NuGet selected-version evidence
 
 **Selection state:** SELECTED as Feature 006 on 2026-11-03 by explicit human
-product authority; discovery only. Specification readiness is NO pending the
-product decisions in the canonical discovery. No specification, assets-versus-lock
-choice, planning, implementation, or product dotnet execution is approved.
+product authority. H1–H4 accepted in run `006-0002`: discovery is READY FOR
+SPECIFICATION and specification drafting is authorized. The draft awaits
+independent specification review. Planning, implementation and product
+dotnet/NuGet execution remain unauthorized.
 
 **Area:** .NET / NuGet
 
@@ -195,19 +196,20 @@ assets, oracle JSON and experimental locks agreeing on all 51 direct selections
 and 229 transitive occurrences across ten net10.0 contexts. Separate hash-bound
 NuGet metadata records public-source provenance for this producing run; retained
 selection artifacts alone do not establish source authority. No age/publication
-measurement was performed; date semantics and an accepted source trust contract
-remain unresolved.
+measurement was performed. H3–H4 now accept bound public-origin supplier
+assertions plus public hash agreement and catalog-created first-receipt dates.
 
 **Why this state:** The human selected BOUNDED NUGET SELECTED-VERSION EVIDENCE,
 grounded in the completed ten-project Phase 2 comparison. Libyears consumes
 supported declaration and retained/supplied selection evidence; it does not
 perform restore or package resolution. This supersedes EXPLORE and the historical
-unselected disposition without rewriting the pre-selection experiment. Artifact,
-scope/coherence, source-trust and publication-policy recommendations still require
-human decisions before specification. Arbitrary generated artifacts and public
-package-name coincidence do not supply authority.
+unselected disposition without rewriting the pre-selection experiment. Human
+H1–H4 accept lock-only selection, conservative one-project/framework declarations,
+qualified supplier coherence, bound public-origin assertions with public hash
+agreement, and first-receipt/listed-latest publication policy. Arbitrary generated
+artifacts and public package-name coincidence do not supply authority.
 
-**Success signal:** An authorized project/lock or project/assets pair with
+**Success signal:** An authorized project/lock pair with
 independently established direct population, producing context and safe
 declaration association, plus public-source and publication-date witnesses.
 
