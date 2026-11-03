@@ -336,3 +336,141 @@ Conventional Commit. Documentation/ledger integrity checks and
 `git diff --check` pass; product tests were not run for documentation-only work.
 No discovery/ROADMAP, product implementation/tests, plan or task changes, producer
 execution, archives, external checkout, raw experiment or push occurred.
+
+## Decomposed independent technical-plan review — 006-0005
+
+**Date:** 2026-11-03. **Completion:** COMPLETE. **Final verdict:** REVISE.
+**Plan status: NOT APPROVED. Validated material findings: 1.**
+**Next gate: PLAN CORRECTION.** No correction, task decomposition or implementation
+is performed in this run. Specification approval from 006-0004 remains in force.
+
+### Candidate, authority and freeze
+
+Starting clean HEAD: `62bfd38f6c96e821f2a4692a4e32b10e9ea8dae6`.
+Approved specification SHA-256:
+`f02a947ae33dc83afa08a800e0bd965f56e697317e40dd1c6209d133f3c73cc8`;
+its bytes remain unchanged. The parent drafted and self-audited [plan.md](plan.md)
+against S1–S8, H1–H4, F1/F2, all 36 ACs, existing model/source/scan/CLI/output/
+transport seams and prior Ruby technical-plan conventions. `git diff --check`
+passed before commissioning. Frozen candidate SHA-256:
+`4a2e329a1eac2298c434aba436b1dfb99820836a413b794015055ca6c1ae40f3`.
+Word count: **4,015** by whitespace-separated words (`str.split`). The plan was
+not modified after commissioning, including no status-only edit. Its opening
+status cross-reference points here for the current disposition.
+
+### Independent review evidence
+
+Three fresh non-author children received separate read-only assignments with
+`fork_turns="none"`, no model/effort overrides and the exact approved specification
+and frozen plan digests. No author conversation was inherited. Assignments were
+concurrent; no sibling conclusions were shared before all three completed. Each
+reviewer reconstructed relevant repository evidence directly. Existing historical
+review records were available as historical authority, not current sibling input.
+No reviewer wrote files, ran product tests, invoked producers or delegated further.
+Actual child model/provider/effort/runtime/token/credit telemetry is unavailable;
+requested no-overrides does not establish actual child configuration.
+
+| Reviewer | Independent primary scope and completed result |
+|---|---|
+| `/root/plan_review_a` | PASS. Static complete-scope XML, schema-1 lock framing, direct/closure separation, framework association, F1 normalized minimums, F2 structural rejection, identity/stable ordering and local bounds. Relevant AC-03–12/21/24/25/31/33 witnesses credible. Independently recomputed both digests and checked primary NuGet normalization/serializer sources. |
+| `/root/plan_review_b` | MATERIAL FINDINGS, B1 below. H3 origin/context/hash authority, namesake protection, H4 public resources/dates, local/network security, privacy and no execution audited completely. Other assigned obligations coherent; independently verified both frozen digests and primary Microsoft/Python sources. |
+| `/root/plan_review_c` | PASS with planning AC coverage 36/36. Independently reconciled every AC mapping and current model/scan/CLI/output/metric seams, availability matrices, compatibility, deterministic strategy and K1–K6 gates. Digests supplied by parent, not independently recomputed by C. No missing planning evidence within its primary scope. |
+
+C's cross-contract mapping review does not override B's transport-depth finding.
+No majority vote determines approval. The parent waited for all final reports,
+read their evidence and independently validated the material finding below.
+
+### P1 — In-flight elapsed network deadlines are not designed
+
+**Origin:** Review B / B1. **Affected obligations:** S8, AC-34; K2/K4.
+**Disposition:** VALIDATED MATERIAL FINDING; unresolved in this frozen candidate.
+
+The plan's network table promises a 10-second request timeout, 60-second package
+elapsed budget and 300-second scan elapsed budget. Its enforcement text specifies
+checking remaining elapsed budget before each request and reducing that request's
+timeout. It reuses VerifiedJSONTransport with opt-in compression. No design
+checks/cancels an in-flight operation at the absolute package/scan deadline, and
+no concrete slow-response witness protects that distinction.
+
+The parent inspected `libyears/registry.py`: `_get_restricted` passes timeout to
+`opener.open`, then `_read_bounded_response` calls `response.read(limit + 1)`.
+The documented [urllib timeout contract](https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen)
+is for blocking operations, not the total request lifecycle. A server can make
+repeated progress inside the socket timeout while the body read continues beyond
+the package or scan elapsed budget. Byte caps make total work finite but do not
+establish the elapsed limits promised here. Pre-request checks cannot interrupt
+that read. This is independent source/code validation, not a live slow-server
+experiment or executed implementation failure.
+
+**Required later correction:** specify an enforceable absolute-deadline mechanism
+covering in-flight connection/response work and budget exhaustion, preserving
+verified TLS, privacy, existing transport defaults and standard-library-only
+runtime. Add a deterministic injected slow-response witness distinguishing
+socket inactivity timeout from package/scan elapsed exhaustion. Do not silently
+weaken S8, reinterpret elapsed budgets as admission-only checks, or rely on task
+implementation to invent the missing transport architecture. Review the corrected
+frozen candidate independently before approval. No mechanism is chosen here.
+
+### Parent synthesis and acceptance accounting
+
+**Traceability accounting: 36/36 ACs mapped and independently examined.** The
+plan contains exactly one explicit component/witness/checkpoint row per AC.
+35 have no validated planning defect; AC-34's intended witness is present but
+insufficient for elapsed-deadline enforcement until P1 is corrected. Thus the
+approval requirement of credible complete verification for all 36 is not met.
+These counts concern planning evidence, not implemented or executed acceptance.
+
+- F1 planning: PASS. AC-06/10/11 preserve omitted patch/zero revision, retained
+  nonzero revision, five positive S3 pairs and different-minimum/shared-selection
+  negatives; no selected-outcome shortcut, resolution or satisfaction check.
+- F2 planning: PASS. AC-11/31 reject duplicate/case-aliased/multi-value selections
+  as whole-lock malformed structure; additional frameworks remain unsupported;
+  no NuGet dependency ambiguity reason or mismatch-row exact-selection claim.
+- H1/H2: lock-only, explicit project/framework, all supported direct test/tool
+  references, qualified baseline/coherence testimony, no evaluated completeness.
+- H3: strict supplied witness, exact project/lock digests, context-bound per-package
+  origin and local hash gate precede public metadata; catalog identity/SHA512
+  agreement precedes authoritative dates. Supplier assertions remain distinct
+  from independently observed public facts; no namesake fallback.
+- H4: SemVer-2-inclusive complete registration, catalog leaves for selected and
+  greatest listed stable, created-only first receipt, no older-date fallback.
+  Parent checked the primary [registration](https://learn.microsoft.com/en-us/nuget/api/registration-base-url-resource)
+  and [catalog](https://learn.microsoft.com/en-us/nuget/api/catalog-resource)
+  resource contracts. Useful live yield/hash-domain fitness remain unverified
+  non-findings; no public package-age measurement was performed.
+- Integration: optional typed evidence, explicit fourth source pair, S6 matrix,
+  schema-v3 additions, human/JSON correspondence and exact CLI validation are
+  coherent. Parent checked existing SourceResult/summary/output/CLI code and
+  relevant compatibility tests. C correctly notes current per-ecosystem
+  unavailable-numeric handling is Ruby-scope-specific; NuGet must explicitly
+  supply its condition at integration. The plan's S6 and AC-26–28 witnesses
+  already require this; it is an implementation checkpoint, not a second defect.
+- Determinism: synthetic directories, supplied lock/witness bytes, injected
+  public responses/clocks and no-call guards; no network/dotnet/NuGet/restore/
+  target execution required. P1 is the identified missing security witness.
+- Checkpoints: K1 foundation; K2 transport/public adapter; K3 coherent integration/
+  output/CLI; K4 offline acceptance; K5 separately authorized real-root evidence;
+  K6 fresh convergence. No task graph is created by these phases.
+- Scope: no assets/export product support, packages.config fallback, execution,
+  CPM/general imports/conditions, multi-framework/RID, transitive measurement,
+  private feeds, portfolio aggregation, metric or sibling policy change. No
+  consequential product question was silently answered. P1 is within technical
+  correction authority, not a reopened H1–H4 decision.
+
+### Observation and repository integrity
+
+Run 006-0004 was appended exactly once from the authorized 44-field handoff.
+Only authorized human session/model/provider/effort/version/runtime/account
+continuity fields enrich it; all other values remain exact, including
+`runtime_confounded=yes` and its original runtime note. Credits 16/16 are
+account-level continuity observations; no credit delta is derived or stored.
+All 25 data rows have 44 fields; 006-0001 through 006-0004 each occur once.
+Every earlier ledger byte is unchanged. Current run 006-0005 and children are
+not appended. Its separate temporary 44-field handoff is outside Git.
+
+Only the prior observation, frozen plan and this technical review record change.
+Specification, discovery, ROADMAP and all product code/tests remain unchanged.
+Documentation/ledger/digest/scope checks and `git diff --check` pass. Product
+tests were not run for this documentation-only change. One coherent local
+Conventional Commit is authorized; no push, implementation or tasks. The frozen
+candidate is retained for the separately authorized PLAN CORRECTION gate.
