@@ -1,5 +1,9 @@
 # Prospective agent observation ledger
 
+For the lifecycle and human/agent handoff surrounding this protocol, see
+[SDD_WORKFLOW.md](../SDD_WORKFLOW.md). This document remains authoritative for
+the observation schema and provenance rules.
+
 **Prospective observation begins with Feature 005.** The canonical ledger is
 [agent-runs.csv](agent-runs.csv). This is cross-cutting methodology infrastructure;
 its creation does not begin Feature 005 discovery, specification, planning, or

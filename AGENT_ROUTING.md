@@ -13,6 +13,10 @@ report or vendor/model leaderboard. Existing [AGENTS.md](AGENTS.md), approved
 feature contracts, and human authorization continue to govern the work. Revise
 this strategy as further prospective observations become available.
 
+For canonical lifecycle, review, authority and handoff mechanics, see
+[SDD_WORKFLOW.md](SDD_WORKFLOW.md). This document retains provisional routing
+guidance and its supporting observations.
+
 ## Evidence and limits
 
 The primary sources are the [Feature 003 retrospective](specs/003-yarn-lock-evidence/retrospective.md)
