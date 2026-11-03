@@ -11,7 +11,7 @@ from unittest.mock import patch
 
 from libyears.model import NuGetPublication, RegistryResult
 from libyears.nuget_supervisor import PackageResult
-from libyears.output import format_json, report_to_dict
+from libyears.output import format_human, format_json, report_to_dict
 from libyears.scan import NuGetRequest, scan_mixed_repository
 from tests.nuget_fixtures import fixture_nuget_reads
 from tests.test_nuget_scan import HASH, nuget_inputs, nuget_unavailable_cases
@@ -244,6 +244,183 @@ class NuGetJSONTests(unittest.TestCase):
         self.assertNotIn('nuget_evidence', sibling)
         self.assertEqual(data['version_evidence']['pypi'],
                          {'declaration_source': 'requirements.txt', 'snapshot_source': None})
+
+    def assert_human_row(self, human, row):
+        evidence = row['nuget_evidence']
+        for value in (row['name'], evidence['project'], evidence['framework'], evidence['requested'],
+                      evidence['origin_state'], evidence['content_hash_state']):
+            self.assertIn(value, human)
+        for field, label in (('lock_requested', 'Lock requested'),
+                             ('selected_version', 'Selected version'),
+                             ('normalized_version', 'Normalized selected version')):
+            if field in evidence:
+                self.assertIn(f"{label}: {evidence[field]}", human)
+            else:
+                self.assertNotIn(label + ':', human)
+        for field, label in (('used_publication', 'Used'), ('latest_publication', 'Latest')):
+            if field in evidence:
+                publication = evidence[field]
+                listed = str(publication['listed']).lower()
+                self.assertIn(f"{label} publication: version {publication['version']}; "
+                              f"created {publication['created']}; listed {listed}.", human)
+            else:
+                self.assertNotIn(label + ' publication:', human)
+        if 'reason' in row:
+            self.assertIn(row['reason'] + ':', human)
+        else:
+            self.assertIn(f"{row['libyears']:.2f}", human)
+            self.assertIn('timestamp_anomaly: ' + str(row['timestamp_anomaly']).lower(), human)
+
+    def test_human_success_corresponds_to_json_and_explains_evidence_limits(self):
+        report = self.scan(nuget_inputs(selected='01.0+build'))
+        data = self.data(report)
+        for verbose in (False, True):
+            human = format_human(report, '.', verbose=verbose)
+            self.assert_human_row(human, data['dependencies'][0])
+            for text in ('Witness.csproj', 'packages.lock.json', 'witness.json', 'net10.0',
+                         'explicit direct PackageReferences', 'test, tool, analyzer and PrivateAssets',
+                         'producer/supplier assertions', 'explicitly supplied witness',
+                         'evaluated MSBuild completeness', 'installed/deployed/runtime scope',
+                         'restore success', 'compatibility or cryptographic provenance',
+                         'first receipt by nuget.org from catalog created', 'not original upstream release',
+                         'greatest currently listed stable version', 'no framework, request or compatibility filter',
+                         'hashes establish content correspondence, not producing history',
+                         'changed listing or records may change future measurements',
+                         '1 / 1 measured; 100.0% coverage', 'Total:    1.00 libyears'):
+                self.assertIn(text, human)
+
+    def test_human_source_failures_correspond_to_json_and_hide_root_and_diagnostics(self):
+        for reason, files, count in nuget_unavailable_cases():
+            report = self.scan(files)
+            data = self.data(report)
+            for verbose in (False, True):
+                with self.subTest(reason=reason, verbose=verbose):
+                    human = format_human(replace(report,
+                        diagnostics=(('SECRET-NAME', 'SECRET-EXCEPTION'),),
+                        tls_trust='/private/SECRET-CA'), '/private/SECRET-ROOT', verbose=verbose)
+                    self.assertNotIn('SECRET', human)
+                    self.assertNotIn(HASH, human)
+                    self.assertIn('Libyears: selected repository', human)
+                    self.assertIn(reason + ':', human)
+                    self.assertIn(data['source_errors'][0]['source'], human)
+                    self.assertIn('nuget: null coverage;', human)
+                    self.assertIn('total null, mean null, median null, max null libyears', human)
+                    if count is None:
+                        self.assertIn('NuGet population unavailable', human)
+                    else:
+                        self.assertIn('NuGet measurement unavailable; known explicit population: 1', human)
+
+    def test_human_distinguishes_unavailable_zero_empty_partial_and_full(self):
+        cases = (
+            (nuget_inputs(()), None, 'validated empty population: 0 / 0 measured; null coverage; total 0.00'),
+            (nuget_inputs(), PackageResult(reason='registry_error'),
+             'wholly unmeasurable: 0 / 1 measured; 0.0% coverage'),
+            (nuget_inputs(), None, 'accepted population: 1 / 1 measured; 100.0% coverage'),
+            (nuget_inputs(('alpha', 'beta'), lock_change=lambda value:
+                value['dependencies']['net10.0']['beta'].pop('resolved')), None,
+             'accepted population: 1 / 2 measured; 50.0% coverage'),
+        )
+        for files, result, expected in cases:
+            with self.subTest(expected=expected):
+                report = self.scan(files, package_result=result)
+                human = format_human(report, '.')
+                self.assertIn(expected, human)
+                data = self.data(report)
+                for row in data['dependencies'] + data['unmeasurable']:
+                    # Multiple rows can establish different optional facts.
+                    if len(data['dependencies']) + len(data['unmeasurable']) == 1:
+                        self.assert_human_row(human, row)
+        files = nuget_inputs(())
+        del files['witness.json']
+        human = format_human(self.scan(files), '.')
+        self.assertIn('measurement unavailable; known explicit population: 0', human)
+        self.assertNotIn('validated empty population', human)
+
+    def test_human_staged_failures_preserve_omissions_and_private_canaries(self):
+        from libyears.nuget_supervisor import REASONS
+        stages = [PackageResult(reason=reason) for reason in sorted(REASONS)]
+        stages.append(PackageResult(reason='no_stable_release', origin_state='public_content_verified',
+            content_hash_state='public_agreement', used_publication=NuGetPublication('1.0.0', USED, False)))
+        reports = [self.scan(package_result=result) for result in stages]
+        reports.extend((
+            self.scan(nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0'].clear())),
+            self.scan(nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].pop('resolved'))),
+            self.scan(nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].update(resolved='1'))),
+            self.scan(nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].update(contentHash='SECRET-HASH'))),
+            self.scan(nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].update(
+                    contentHash=base64.b64encode(b'x' * 64).decode()))),
+            self.scan(nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].update(requested='[2.0.0, )'))),
+            self.scan(nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].update(requested='SECRET-REQUEST'))),
+            self.scan(nuget_inputs(witness_change=lambda value:
+                value['packages'][0].update(origins=['https://user:SECRET@private.invalid/feed']))),
+        ))
+        for report in reports:
+            row, = self.data(report)['unmeasurable']
+            for verbose in (False, True):
+                with self.subTest(reason=row['reason'], verbose=verbose):
+                    human = format_human(replace(report, diagnostics=(('SECRET', 'SECRET-response'),)),
+                                         '/private/SECRET-path', verbose=verbose)
+                    self.assert_human_row(human, row)
+                    for private in ('SECRET', 'private.invalid', 'project_sha256', HASH, 'sdk_version'):
+                        self.assertNotIn(private, human)
+
+    def test_human_anomaly_and_same_name_sibling_correspondence(self):
+        result = PackageResult(origin_state='public_content_verified', content_hash_state='public_agreement',
+            used_publication=NuGetPublication('1.0.0', USED, True),
+            latest_publication=NuGetPublication('2.0.0', USED - timedelta(days=1), True))
+        (self.root / 'requirements.txt').write_text('alpha==1.0\n')
+        report = self.scan(package_result=result)
+        human = format_human(report, '.')
+        data = self.data(report)
+        nuget = next(row for row in data['dependencies'] if row['ecosystem'] == 'nuget')
+        self.assert_human_row(human, nuget)
+        self.assertIn('negative date delta clamped to zero', human)
+        self.assertEqual(nuget['libyears'], 0.0)
+        self.assertIn('pypi', human)
+        self.assertIn('nuget', human)
+        self.assertIn('Repository: 100.0% coverage; 2 / 2 measured; total 1.00', human)
+        self.assertIn('nuget: 100.0% coverage; 1 / 1 measured; total 0.00', human)
+        self.assertIn('pypi: 100.0% coverage; 1 / 1 measured; total 1.00', human)
+
+    def test_ordinary_human_output_stays_identical_and_keeps_verbose_diagnostics(self):
+        (self.root / 'requirements.txt').write_text('alpha==1.0\n')
+        lookup = lambda name, version: RegistryResult(name, version, USED, '2.0.0', LATEST)
+        before = scan_mixed_repository(self.root, pypi_lookup=lookup)
+        (self.root / 'Witness.csproj').write_text('unselected')
+        after = scan_mixed_repository(self.root, pypi_lookup=lookup)
+        for verbose in (False, True):
+            self.assertEqual(format_human(before, '/ordinary/path', verbose=verbose),
+                             format_human(after, '/ordinary/path', verbose=verbose))
+        human = format_human(replace(after, diagnostics=(('alpha', 'safe diagnostic'),),
+                                    tls_trust='explicit trust'), '/ordinary/path', verbose=True)
+        self.assertIn('Libyears: /ordinary/path', human)
+        self.assertIn('safe diagnostic', human)
+        self.assertIn('explicit trust', human)
+        self.assertNotIn('NuGet', human)
+
+    def test_mixed_yarn_failure_cannot_reintroduce_private_diagnostic_context(self):
+        (self.root / 'package.json').write_text('{"dependencies":{"alpha":"^1.0.0"}}')
+        (self.root / 'yarn.lock').write_text('unsupported SECRET-YARN')
+        report = self.scan()
+        self.assertTrue(any(error.source == 'yarn.lock' for error in report.source_errors))
+        report = replace(report, diagnostics=(('yarn.lock', 'SECRET-DIAGNOSTIC'),))
+        for verbose in (False, True):
+            human = format_human(report, '/private/SECRET-ROOT', verbose=verbose)
+            self.assertNotIn('SECRET', human)
+            self.assertIn('yarn.lock', human)
+            self.assertIn('npm dependencies could not be measured from this evidence source', human)
+        ordinary = scan_mixed_repository(self.root)
+        ordinary = replace(ordinary, diagnostics=(('yarn.lock', 'safe established Yarn context'),))
+        for verbose in (False, True):
+            human = format_human(ordinary, '.', verbose=verbose)
+            self.assertIn('safe established Yarn context', human)
 
 
 if __name__ == '__main__':

@@ -326,10 +326,20 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
         ]
     if scoped_ruby is not None:
         ruby_disclosure = _scoped_ruby_disclosure(scoped_ruby, report.by_ecosystem["rubygems"])
+    nuget_source = next((source for source in report.source_results
+                         if source.ecosystem == "nuget" and source.source_present), None)
+    nuget_disclosure = []
+    heading = f"Libyears: {path}"
+    if nuget_source is not None:
+        # The root and raw diagnostics can contain private paths. NuGet reports
+        # identify inputs by the safe selected filenames and stable facts only.
+        heading = "Libyears: selected repository"
+        nuget_disclosure = _nuget_disclosure(nuget_source, report.by_ecosystem["nuget"])
     if len(ecosystems) == 1 and not report.source_errors:
         ecosystem = ecosystems[0]
-        lines = [f"Libyears: {path}", f"Ecosystem: {ecosystem}", ""]
+        lines = [heading, f"Ecosystem: {ecosystem}", ""]
         lines.extend(ruby_disclosure)
+        lines.extend(nuget_disclosure)
         if yarn_evidence:
             lines.append("Version evidence: yarn.lock")
         if report.measurements:
@@ -341,6 +351,9 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
                     f"{dependency.latest_stable_version:<12} {measurement.libyears:.2f}"
                 )
                 lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
+                lines.extend(_nuget_detail_lines(dependency.nuget_evidence))
+                if dependency.nuget_evidence is not None:
+                    lines.append(_nuget_anomaly_line(measurement.timestamp_anomaly))
         lines.extend([
             "", f"Measured: {summary.dependencies_measured} / {summary.dependencies_discovered} dependencies",
             f"Coverage: {_coverage(summary.coverage)}",
@@ -360,14 +373,16 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
                     reason = _scoped_dependency_reason(item.reason)
                 lines.append(f"  {declaration}    {reason}")
                 lines.extend(_gemfile_detail_lines(item.gemfile_evidence))
-        if verbose and report.tls_trust:
+                lines.extend(_nuget_detail_lines(item.nuget_evidence))
+        if verbose and nuget_source is None and report.tls_trust:
             lines.extend(["", f"TLS trust: {report.tls_trust}"])
-        if verbose and report.diagnostics:
+        if verbose and nuget_source is None and report.diagnostics:
             lines.extend(["", "Registry diagnostics:", *(f"  {name}: {message}" for name, message in report.diagnostics)])
         return "\n".join(lines) + "\n"
 
-    lines = [f"Libyears: {path}", f"Ecosystems: {labels}", ""]
+    lines = [heading, f"Ecosystems: {labels}", ""]
     lines.extend(ruby_disclosure)
+    lines.extend(nuget_disclosure)
     lines.append(
         f"Repository: {_coverage(summary.coverage)} coverage; "
         f"{summary.dependencies_measured} / {summary.dependencies_discovered} measured; "
@@ -392,31 +407,124 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
                 f"{measurement.libyears:.2f}  {_source_text(dependency.version_source)}"
             )
             lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
+            lines.extend(_nuget_detail_lines(dependency.nuget_evidence))
+            if dependency.nuget_evidence is not None:
+                lines.append(_nuget_anomaly_line(measurement.timestamp_anomaly))
     if report.unmeasurable:
         lines.extend(["", "Unmeasurable:"])
         for item in report.unmeasurable:
             reason = _dependency_reason_text(item.reason, yarn_evidence and item.ecosystem == 'npm', item.ecosystem)
             if item.gemfile_evidence is not None:
                 reason = _scoped_dependency_reason(item.reason)
-            lines.append(f"  {item.ecosystem}: {item.name} ({item.declared})    {reason}")
+            declaration = item.declared if item.ecosystem == 'nuget' else f"{item.name} ({item.declared})"
+            lines.append(f"  {item.ecosystem}: {declaration}    {reason}")
             lines.extend(_gemfile_detail_lines(item.gemfile_evidence))
+            lines.extend(_nuget_detail_lines(item.nuget_evidence))
     if report.source_errors:
         lines.extend(["", "Source errors:"])
         for error in report.source_errors:
             explanation = "npm manifest discovery failed; no npm dependencies were invented" if error.reason == "invalid_manifest" else _reason_text(error.reason)
             if error.ecosystem == "rubygems":
                 explanation = _ruby_reason_text(error.reason)
+            if error.ecosystem == "nuget":
+                explanation = _nuget_reason_text(error.reason)
             if error.source == "yarn.lock":
-                context = dict(report.diagnostics).get("yarn.lock")
+                context = None if nuget_source is not None else dict(report.diagnostics).get("yarn.lock")
                 explanation = context or _reason_text(error.reason)
                 explanation += "; npm dependencies could not be measured from this evidence source"
             lines.append(f"  {error.ecosystem} {error.source}: {explanation}")
-    if verbose:
+    if verbose and nuget_source is None:
         if report.tls_trust:
             lines.extend(["", f"TLS trust: {report.tls_trust}"])
         if report.diagnostics:
             lines.extend(["Registry diagnostics:", *(f"  {name}: {message}" for name, message in report.diagnostics)])
     return "\n".join(lines) + "\n"
+
+
+def _nuget_disclosure(source, summary) -> list[str]:
+    evidence = source.evidence
+    lines = [
+        f"NuGet project: {evidence.declaration_source}; framework: {evidence.framework or 'unavailable'}.",
+        f"NuGet declaration source: {evidence.declaration_source}; version snapshot: {evidence.snapshot_source}; "
+        f"provenance source: {evidence.provenance_source or 'not supplied'}.",
+        "Scope: all supported explicit direct PackageReferences, including test, tool, analyzer and PrivateAssets references.",
+        "Trust basis: supplied producer/supplier assertions, accepted only through an explicitly supplied witness.",
+        "asserted_public is supplier testimony; public_content_verified and public_agreement require public identity and SHA512 correspondence.",
+        "This supplied snapshot does not establish evaluated MSBuild completeness, installed/deployed/runtime scope, "
+        "restore success, compatibility or cryptographic provenance; hashes establish content correspondence, not producing history.",
+        "Publication basis: first receipt by nuget.org from catalog created, not original upstream release.",
+        "Latest comparator: greatest currently listed stable version; no framework, request or compatibility filter.",
+        "Missing public records do not establish never-existence; changed listing or records may change future measurements.",
+    ]
+    lock_state = 'accepted' if evidence.format == 'packages_lock_v1' else 'unavailable'
+    lines.append(f"NuGet packages.lock.json recognition: {lock_state}.")
+    if source.dependencies_discovered is None:
+        lines.append("NuGet population unavailable; discovered, measured, coverage and numeric aggregates are null.")
+    elif not source.measurement_available:
+        lines.append(f"NuGet measurement unavailable; known explicit population: {summary.dependencies_discovered}; "
+                     "measured, coverage and numeric aggregates are null.")
+    elif summary.dependencies_discovered == 0:
+        lines.append("NuGet validated empty population: 0 / 0 measured; null coverage; total 0.00 libyears.")
+    elif summary.dependencies_measured == 0:
+        lines.append(f"NuGet accepted population is wholly unmeasurable: 0 / {summary.dependencies_discovered} "
+                     "measured; 0.0% coverage.")
+    else:
+        lines.append(f"NuGet accepted population: {summary.dependencies_measured} / "
+                     f"{summary.dependencies_discovered} measured; {_coverage(summary.coverage)} coverage.")
+    return lines
+
+
+def _nuget_detail_lines(evidence: NuGetEvidence | None) -> list[str]:
+    if evidence is None:
+        return []
+    lines = [f"    NuGet project: {evidence.project}; framework: {evidence.framework}; requested: {evidence.requested}."]
+    if evidence.lock_requested is not None:
+        lines.append(f"    Lock requested: {evidence.lock_requested}")
+    if evidence.selected_version is not None:
+        lines.append(f"    Selected version: {evidence.selected_version}; selection source: {evidence.selection_source}.")
+    if evidence.normalized_version is not None:
+        lines.append(f"    Normalized selected version: {evidence.normalized_version}")
+    lines.append(f"    Origin state: {evidence.origin_state}; content hash state: {evidence.content_hash_state}.")
+    for label, publication in (("Used", evidence.used_publication), ("Latest", evidence.latest_publication)):
+        if publication is not None:
+            listed = 'true' if publication.listed else 'false'
+            lines.append(f"    {label} publication: version {publication.version}; created {_timestamp(publication.created)}; listed {listed}.")
+    return lines
+
+
+def _nuget_anomaly_line(anomaly: bool) -> str:
+    if anomaly:
+        return "    timestamp_anomaly: true; negative date delta clamped to zero."
+    return "    timestamp_anomaly: false"
+
+
+def _nuget_reason_text(reason: str) -> str:
+    explanation = {
+        'nuget_project_missing': 'selected project is missing; declaration population unavailable',
+        'invalid_nuget_project': 'selected project is unreadable, unsafe or malformed; declaration population unavailable',
+        'unsupported_nuget_project': 'unsupported project, context or population influence; declaration population unavailable',
+        'duplicate_nuget_declaration': 'duplicate package declaration identity; declaration population unavailable',
+        'lockfile_missing': 'packages.lock.json is missing; measurement unavailable',
+        'invalid_lockfile': 'packages.lock.json is unreadable, unsafe or malformed; measurement unavailable',
+        'unsupported_lockfile_format': 'unsupported packages.lock.json format or context; measurement unavailable',
+        'nuget_context_mismatch': 'supplied project, lock and witness do not establish one coherent snapshot',
+        'nuget_provenance_missing': 'explicit supplier witness unavailable; measurement authority not established',
+        'invalid_nuget_provenance': 'supplied witness is unreadable, unsafe, malformed or unsupported',
+        'lock_dependency_missing': 'matching Direct entry missing from packages.lock.json; no transitive fallback',
+        'declaration_lock_requirement_mismatch': 'declaration and lock numeric minimum requests disagree; selection not established',
+        'lock_version_missing': 'selected version missing from packages.lock.json',
+        'unsupported_lock_evidence': 'unsupported selected version syntax in packages.lock.json',
+        'unsupported_dependency_source': 'accepted public-origin assertion unavailable; no public namesake is substituted',
+        'content_hash_unavailable': 'usable SHA512 content evidence unavailable',
+        'content_hash_mismatch': 'content hashes disagree; content correspondence not established',
+        'package_not_found': 'authorized public nuget.org package metadata absent',
+        'version_not_found': 'authorized selected public version metadata absent',
+        'release_date_missing': 'usable catalog created timestamp unavailable for used or actual latest version',
+        'no_stable_release': 'complete public enumeration has no listed stable version',
+        'invalid_registry_response': 'public metadata is malformed, conflicting, unsupported or incomplete',
+        'registry_error': 'public metadata transport, service, rate limit or work budget unavailable',
+    }.get(reason, 'measurement unavailable')
+    return f"{reason}: {explanation}"
 
 
 def _scoped_ruby_disclosure(source, summary) -> list[str]:
@@ -483,6 +591,8 @@ def _number(value: float | None) -> str:
 
 
 def _dependency_reason_text(reason: str, yarn_evidence: bool, ecosystem: str = "") -> str:
+    if ecosystem == "nuget":
+        return _nuget_reason_text(reason)
     if ecosystem == "rubygems":
         return _ruby_reason_text(reason)
     if yarn_evidence and reason == "lock_version_missing":
@@ -523,6 +633,7 @@ def _source_text(source: str) -> str:
         "resolved_snapshot": "snapshot",
         "yarn_lock": "yarn.lock",
         "gemfile_lock": "Gemfile.lock",
+        "packages_lock": "packages.lock.json",
     }.get(source, source)
 
 

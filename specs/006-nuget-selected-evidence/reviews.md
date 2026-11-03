@@ -1618,3 +1618,33 @@ Verbose-equivalent diagnostic enrichment cannot alter JSON. Author and parent
 focused JSON/output/model/mixed/scoped regressions **84 PASS**; diff check PASS.
 Parent directly inspects complete serializer/test diff. **T011 COMPLETE**, pending
 K3 whole integration review. Approved contracts and worker import graph unchanged.
+
+### T012 — Human evidence, correspondence and safe failures
+
+The same author context executes T012 only after committed T011. Human output
+uses the same typed source/row facts as JSON, showing context and safe input
+names, all-direct test/tool/analyzer/PrivateAssets scope, accepted supplier trust
+meaning and snapshot limits, first-receipt created dates and greatest listed
+stable comparator. Established requests/original selections/normalized identities,
+origin/hash states, UTC dates/listing, stable reasons, summaries and anomaly flags
+are rendered without inventing omitted evidence. Unavailable measurement, zero
+coverage and validated empty populations are explicitly distinguished.
+
+Under S7/AC-35, NuGet-active reports abstract the passed root heading and omit
+raw verbose diagnostics/TLS paths; ordinary sibling reports retain established
+paths and verbose behavior. Parent pre-freeze inspection catches one composed
+Yarn-source-error branch that could reinsert a diagnostics entry despite this
+policy. The author limits the correction to fixed safe Yarn explanation in
+NuGet-active mode and adds a mixed invalid-Yarn/successful-NuGet canary witness;
+ordinary Yarn context is retained. This is author preparation before K3 freeze,
+not a repair to an independently frozen review candidate.
+
+Only `output.py` and NuGet output tests change. JSON snapshots remain unchanged;
+human/JSON comparisons cover every source/dependency reason, partial safe states,
+identity/context/request/date/numeric agreement, source availability and anomaly
+flags. Success/failure and ordinary/verbose canaries cover private root/diagnostic/
+origin/hash/producer values; ordinary output compatibility remains witnessed.
+Author and parent output/model/mixed/scoped/CLI regressions **120 PASS**, whitespace
+PASS. Parent directly inspects complete formatter changes and new correspondence
+witnesses. **T012 COMPLETE**, pending K3. No CLI activation, table-alignment
+cleanup, approved-contract change or external access occurs in this task.
