@@ -889,5 +889,163 @@ class RubyPublicScanTests(unittest.TestCase):
         self.assertEqual(report.tls_trust, 'explicit CA bundle')
 
 
+class NuGetMixedScanTests(unittest.TestCase):
+    def setUp(self):
+        from tests.test_nuget_scan import nuget_inputs
+        self.inputs = nuget_inputs
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        (self.root / 'requirements.txt').write_text('alpha>=1.0\n')
+        (self.root / 'package.json').write_text('{"dependencies":{"alpha":"^1.0.0"}}')
+        (self.root / 'package-lock.json').write_text(
+            '{"lockfileVersion":3,"packages":{"node_modules/alpha":{"version":"1.0.0"}}}')
+        (self.root / 'Gemfile').write_text('source "https://rubygems.org"\ngem "alpha"\n')
+        (self.root / 'Gemfile.lock').write_text(
+            'GEM\n  remote: https://rubygems.org\n  specs:\n    alpha (1.0)\n'
+            '\nPLATFORMS\n  ruby\n\nDEPENDENCIES\n  alpha\n')
+        for target in ('subprocess.Popen', 'subprocess.run', 'os.system',
+                       'socket.socket', 'urllib.request.urlopen'):
+            guard = patch(target, side_effect=AssertionError(target))
+            guard.start()
+            self.addCleanup(guard.stop)
+
+    def lookup(self, name, version):
+        used = datetime(2020, 1, 1, tzinfo=timezone.utc)
+        return RegistryResult(name, version, used, '2.0.0', used + timedelta(days=365.25))
+
+    def scan(self, files=None, *, nuget_lookup=None, **kwargs):
+        from libyears.scan import NuGetRequest
+        from tests.nuget_fixtures import fixture_nuget_reads
+        with fixture_nuget_reads(self.root, files or {}):
+            return scan_mixed_repository(
+                self.root, pypi_lookup=self.lookup, npm_lookup=self.lookup,
+                rubygems_lookup=self.lookup, snapshot=parse_snapshot_text('alpha==1.5\n'),
+                nuget_request=NuGetRequest('Witness.csproj', 'witness.json')
+                    if files is not None else None,
+                nuget_lookup=nuget_lookup, **kwargs)
+
+    def test_each_nuget_source_failure_preserves_siblings_in_both_ruby_modes(self):
+        # Reconcile the shared aggregation seam against real accepted sources.
+        from tests.test_nuget_scan import nuget_unavailable_cases
+        cases = nuget_unavailable_cases()
+        for ruby_groups in (None, ('default',)):
+            baseline = self.scan(ruby_groups=ruby_groups)
+            for reason, files, count in cases:
+                with self.subTest(reason=reason, count=count, groups=ruby_groups):
+                    lookup = Mock(side_effect=AssertionError('source rejection reached metadata'))
+                    report = self.scan(files, nuget_lookup=lookup, ruby_groups=ruby_groups)
+                    lookup.assert_not_called()
+                    self.assertEqual(report.measurements, baseline.measurements)
+                    self.assertEqual(report.source_results[:3], baseline.source_results)
+                    self.assertEqual({key: value for key, value in report.by_ecosystem.items()
+                                      if key != 'nuget'}, baseline.by_ecosystem)
+                    self.assertEqual([(row.dependency.ecosystem, row.dependency.name)
+                                      for row in report.measurements],
+                                     [('pypi', 'alpha'), ('npm', 'alpha'), ('rubygems', 'alpha')])
+                    self.assertEqual(report.summary, MetricSummary(
+                        None if count is None else count + 3, 3, None, 3.0, 1.0, 1.0, 1.0))
+                    self.assertEqual(report.by_ecosystem['nuget'],
+                                     MetricSummary(count, None, None, None, None, None, None))
+
+    def test_each_nuget_registry_failure_retains_three_same_name_rows(self):
+        from libyears.nuget_supervisor import PackageResult, REASONS
+        baseline = self.scan()
+        for reason in sorted(REASONS):
+            with self.subTest(reason=reason):
+                def lookup(authorities):
+                    return tuple((authority, PackageResult(reason=reason)) for authority in authorities)
+                report = self.scan(self.inputs(), nuget_lookup=lookup)
+                self.assertEqual(report.measurements, baseline.measurements)
+                self.assertEqual(report.source_results[:3], baseline.source_results)
+                self.assertEqual(report.summary, MetricSummary(4, 3, 0.75, 3.0, 1.0, 1.0, 1.0))
+                self.assertEqual(report.by_ecosystem['nuget'],
+                                 MetricSummary(1, 0, 0.0, 0.0, None, None, None))
+                self.assertEqual([(row.ecosystem, row.name, row.reason) for row in report.unmeasurable],
+                                 [('nuget', 'alpha', reason)])
+
+    def test_each_nuget_local_failure_preserves_same_name_siblings_without_lookup(self):
+        import base64
+        def change_entry(**changes):
+            return lambda value: value['dependencies']['net10.0']['alpha'].update(changes)
+        cases = (
+            ('lock_dependency_missing', self.inputs(
+                lock_change=lambda value: value['dependencies']['net10.0'].clear())),
+            ('declaration_lock_requirement_mismatch', self.inputs(
+                lock_change=change_entry(requested='[2.0.0, )'))),
+            ('lock_version_missing', self.inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].pop('resolved'))),
+            ('unsupported_lock_evidence', self.inputs(lock_change=change_entry(resolved='1'))),
+            ('unsupported_dependency_source', self.inputs(witness_change=lambda value:
+                value['packages'][0].update(origins=['https://private.invalid/index.json']))),
+            ('content_hash_unavailable', self.inputs(lock_change=change_entry(contentHash='bad'))),
+            ('content_hash_mismatch', self.inputs(lock_change=change_entry(
+                contentHash=base64.b64encode(b'x' * 64).decode()))),
+        )
+        baseline = self.scan()
+        for reason, files in cases:
+            with self.subTest(reason=reason):
+                lookup = Mock(side_effect=AssertionError('locally rejected identity reached lookup'))
+                report = self.scan(files, nuget_lookup=lookup)
+                lookup.assert_not_called()
+                self.assertEqual(report.measurements, baseline.measurements)
+                self.assertEqual(report.source_results[:3], baseline.source_results)
+                self.assertEqual(report.summary, MetricSummary(4, 3, 0.75, 3.0, 1.0, 1.0, 1.0))
+                self.assertEqual([(row.ecosystem, row.name, row.reason) for row in report.unmeasurable],
+                                 [('nuget', 'alpha', reason)])
+
+    def test_four_same_names_success_and_yarn_arbitration_survive_nuget_failure(self):
+        from libyears.model import NuGetPublication
+        from libyears.nuget_supervisor import PackageResult
+        def lookup(authorities):
+            used = datetime(2020, 1, 1, tzinfo=timezone.utc)
+            return tuple((authority, PackageResult(origin_state='public_content_verified',
+                content_hash_state='public_agreement',
+                used_publication=NuGetPublication(authority.normalized_version, used, True),
+                latest_publication=NuGetPublication('2.0.0', used + timedelta(days=365.25), True)))
+                for authority in authorities)
+        report = self.scan(self.inputs(), nuget_lookup=lookup)
+        self.assertEqual([row.dependency.ecosystem for row in report.measurements],
+                         ['pypi', 'npm', 'rubygems', 'nuget'])
+        self.assertEqual(report.summary, MetricSummary(4, 4, 1.0, 4.0, 1.0, 1.0, 1.0))
+        self.assertEqual(report.measurements[0].dependency.version_source, 'resolved_snapshot')
+        self.assertEqual(report.measurements[0].dependency.used_version, '1.5')
+        (self.root / 'package-lock.json').unlink()
+        (self.root / 'yarn.lock').write_text(
+            '# yarn lockfile v1\n\nalpha@^1.0.0:\n  version "1.0.0"\n')
+        missing_witness = self.inputs()
+        del missing_witness['witness.json']
+        baseline = self.scan()
+        report = self.scan(missing_witness)
+        self.assertEqual(report.source_results[:3], baseline.source_results)
+        self.assertEqual(report.measurements, baseline.measurements)
+        self.assertEqual(report.measurements[1].dependency.version_source, 'yarn_lock')
+        self.assertEqual(report.summary, MetricSummary(4, 3, None, 3.0, 1.0, 1.0, 1.0))
+
+    def test_all_unavailable_and_some_available_with_zero_successes(self):
+        # Unknown Ruby + unknown npm + known unavailable NuGet; Python absent.
+        (self.root / 'requirements.txt').unlink()
+        (self.root / 'package.json').write_text('{broken')
+        (self.root / 'Gemfile.lock').write_text('broken')
+        files = self.inputs()
+        del files['witness.json']
+        report = self.scan(files)
+        self.assertEqual(report.summary, MetricSummary(None, None, None, 0.0, None, None, None))
+        self.assertEqual(report.unmeasurable, ())
+        # A detected valid empty Python source makes measured count available.
+        (self.root / 'requirements.txt').write_text('')
+        report = self.scan(files)
+        self.assertEqual(report.summary, MetricSummary(None, 0, None, 0.0, None, None, None))
+        # Known zero NuGet remains unavailable; successful empty siblings cannot repair it.
+        files = self.inputs(())
+        del files['witness.json']
+        (self.root / 'package.json').write_text('{"dependencies":{}}')
+        (self.root / 'Gemfile.lock').unlink()
+        report = self.scan(files)
+        self.assertEqual(report.summary, MetricSummary(0, 0, None, 0.0, None, None, None))
+        self.assertEqual(report.by_ecosystem['nuget'],
+                         MetricSummary(0, None, None, None, None, None, None))
+
+
 if __name__ == "__main__":
     unittest.main()

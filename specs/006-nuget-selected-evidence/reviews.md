@@ -1577,3 +1577,28 @@ remain closed with retained witnesses. No new material implementation finding
 remains. Full feature/36-AC acceptance is later T014/K4; live yield/hash-domain
 fitness remains unverified. T010 is now dependency-ready and continues under
 existing execution authority, without an unnecessary human routine gate.
+
+### T010 — Internal scan/metric integration
+
+After approved K2, fresh `/root/integration_author` implements only T010 before
+stopping for parent verification/commit. `scan.py` adds typed NuGetRequest,
+explicit fourth source/lookup pair, one LocalAuthority batch through the supervised
+adapter, safe PackageResult-to-common-result propagation and explicit unavailable
+NuGet numeric handling. Existing model records suffice; metric, worker import
+graph, serializers and CLI bytes are unchanged. Public activation remains absent.
+Normalized selected identity supplies metric equality while original safe selected
+spelling remains evidence. Sibling policies and existing defaults are retained.
+
+New NuGet scan and mixed-scan tests reconcile all S6 availability states, including
+unknown versus known N, unavailableN0 versus validated empty, all/partial/full
+individual failures, all versus some sources unavailable, and exact null/zero/
+count summaries. Every local/public NuGet dependency failure and source failure
+preserves same-name Python/npm/Ruby rows; Python resolved, Yarn arbitration and
+both Ruby modes remain checked. Byte invariance, no-call source/local failures,
+actual platform refusal and pre-source direct-file rejection are witnessed.
+365.25-day arithmetic, normalized identity zero, negative anomaly flag and
+measured-only totals use the unchanged metric. Author and parent independently
+run focused/shared scan/snapshot/scoped/Yarn/Ruby/metric regressions: **136 PASS**;
+diff check PASS. **T010 COMPLETE**, pending later K3 integration review. No
+T011/output or CLI activation is included in this task commit. Full suite remains
+required at the coherent phase boundary, avoiding redundant per-task full runs.

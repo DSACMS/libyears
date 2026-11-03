@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 import re
 from typing import Callable
@@ -27,6 +27,10 @@ from .model import (
     UnmeasurableDependency,
 )
 from .npm import NpmAdapter, discover_manifest, resolve_npm_evidence
+from .nuget import NuGetSource, read_nuget_source
+from .nuget_provenance import LocalAuthority
+from .nuget_registry import NuGetRegistryAdapter
+from .nuget_supervisor import PackageResult
 from .pypi import PyPIAdapter, PyPIResult
 from .requirements import (
     ExactRequirement,
@@ -398,6 +402,40 @@ class RubyGroupRequestError(ValueError):
     """An invalid scoped Ruby request, before any dependency source is read."""
 
 
+@dataclass(frozen=True, slots=True)
+class NuGetRequest:
+    """Explicit internal activation; filenames have no implicit defaults."""
+
+    project: str
+    provenance: str | None = None
+
+
+def _nuget_registry_results(source: NuGetSource, lookup_all):
+    """Consume only local capabilities and join safe worker facts to declarations."""
+    candidates = {item.authority: item.candidate for item in source.authorized_candidates}
+    results = {}
+    for authority, result in lookup_all(tuple(candidates)):
+        candidate = candidates[authority]
+        evidence = replace(
+            candidate.nuget_evidence,
+            origin_state=result.origin_state,
+            content_hash_state=result.content_hash_state,
+            used_publication=result.used_publication,
+            latest_publication=result.latest_publication,
+        )
+        if result.reason is not None:
+            combined = RegistryFailure(candidate.name, authority.normalized_version,
+                                       result.reason, nuget_evidence=evidence)
+        else:
+            combined = RegistryResult(
+                candidate.name, authority.normalized_version,
+                result.used_publication.created, result.latest_publication.version,
+                result.latest_publication.created, nuget_evidence=evidence,
+            )
+        results[(candidate.registry_name, candidate.used_version)] = combined
+    return results
+
+
 def validate_ruby_groups(path: str | Path, groups: tuple[str, ...]) -> tuple[str, ...]:
     """Validate a scoped request and return its canonical group names."""
     if not isinstance(groups, (tuple, list)) or not groups:
@@ -422,10 +460,16 @@ def scan_mixed_repository(
     snapshot: Snapshot | None = None,
     ca_bundle: str | None = None,
     ruby_groups: tuple[str, ...] | None = None,
+    nuget_request: NuGetRequest | None = None,
+    nuget_adapter: NuGetRegistryAdapter | None = None,
+    nuget_lookup: Callable[[tuple[LocalAuthority, ...]],
+                           tuple[tuple[LocalAuthority, PackageResult], ...]] | None = None,
 ) -> MixedScanReport:
-    """Discover and measure the three explicit supported ecosystems."""
+    """Discover supported sources, with NuGet behind an explicit internal request."""
     if ruby_groups is not None:
         ruby_groups = validate_ruby_groups(path, ruby_groups)
+    if nuget_request is not None and not Path(path).is_dir():
+        raise ValueError('NuGet selection requires a directory')
     python_result = _python_source_result(path, snapshot)
     root = Path(path)
     npm_root = root if root.is_dir() else None
@@ -455,6 +499,14 @@ def scan_mixed_repository(
         (npm_result, npm_registry_lookup),
         (ruby_result, ruby_registry_lookup),
     )
+    nuget_source = None
+    if nuget_request is not None:
+        nuget_source = read_nuget_source(root, nuget_request.project, nuget_request.provenance)
+        active_nuget_adapter = nuget_adapter or (
+            None if nuget_lookup is not None else NuGetRegistryAdapter()
+        )
+        nuget_registry_lookup = nuget_lookup or active_nuget_adapter.lookup_all
+        source_pairs += ((nuget_source.result, nuget_registry_lookup),)
     sources = tuple(source for source, _ in source_pairs)
     measurements: list[DependencyMeasurement] = []
     unmeasurable = [
@@ -475,11 +527,16 @@ def scan_mixed_repository(
 
     for source, registry_lookup in source_pairs:
         candidates = source.candidates
+        if source.ecosystem == 'nuget':
+            # One batch owns the supervised worker and its scan-wide budgets.
+            results = _nuget_registry_results(nuget_source, registry_lookup) if candidates else {}
+            registry_lookup = lambda name, version: results[(name, version)]
         if source.ecosystem == "rubygems":
             candidates = schedule_ruby_candidates(candidates)
         for candidate in candidates:
             result = registry_lookup(candidate.registry_name, candidate.used_version)
             ruby_evidence = candidate.rubygems_evidence
+            nuget_evidence = result.nuget_evidence or candidate.nuget_evidence
             if ruby_evidence is not None and result.rubygems_evidence is not None:
                 ruby_evidence = RubyGemsEvidence(
                     ruby_evidence.selected_artifacts,
@@ -497,19 +554,21 @@ def scan_mixed_repository(
                         result.reason,
                         ruby_evidence,
                         candidate.gemfile_evidence,
+                        nuget_evidence,
                     )
                 )
                 continue
             dependency = Dependency(
                 candidate.ecosystem,
                 candidate.name,
-                candidate.used_version,
+                result.used_version if source.ecosystem == 'nuget' else candidate.used_version,
                 result.used_release_time,
                 result.latest_stable_version,
                 result.latest_stable_release_time,
                 candidate.version_source,
                 ruby_evidence,
                 candidate.gemfile_evidence,
+                nuget_evidence,
             )
             measurements.append(measure_dependency(dependency))
 
@@ -549,7 +608,7 @@ def scan_mixed_repository(
             coverage_available=source.measurement_available,
             discovery_failed=source.dependencies_discovered is None,
             unavailable_numeric=(
-                source.evidence.requested_groups is not None
+                (source.ecosystem == 'nuget' or source.evidence.requested_groups is not None)
                 and not source.measurement_available
             ),
         )
@@ -581,6 +640,7 @@ __all__ = [
     "MixedScanReport",
     "ScanReport",
     "RubyGroupRequestError",
+    "NuGetRequest",
     "result_to_dependency",
     "scan",
     "scan_mixed_repository",
