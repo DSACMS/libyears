@@ -57,6 +57,36 @@ class GemfileEvidence:
 
 
 @dataclass(frozen=True, slots=True)
+class NuGetPublication:
+    """Public first-receipt evidence for one normalized package version."""
+
+    version: str
+    created: datetime
+    listed: bool
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "created", _utc(self.created))
+
+
+@dataclass(frozen=True, slots=True)
+class NuGetEvidence:
+    """Safe staged evidence, separate from private hashes and supplier context."""
+
+    project: str
+    framework: str
+    requested: str
+    lock_requested: str | None = None
+    selected_version: str | None = None
+    normalized_version: str | None = None
+    selection_source: str | None = None
+    origin_state: str = "unavailable"
+    content_hash_state: str = "unavailable"
+    publication_basis: str = "nuget_org_first_receipt_created"
+    used_publication: NuGetPublication | None = None
+    latest_publication: NuGetPublication | None = None
+
+
+@dataclass(frozen=True, slots=True)
 class Dependency:
     """A dependency with both release timestamps resolved by an adapter."""
 
@@ -69,6 +99,7 @@ class Dependency:
     version_source: str = "requirements_exact"
     rubygems_evidence: RubyGemsEvidence | None = None
     gemfile_evidence: GemfileEvidence | None = None
+    nuget_evidence: NuGetEvidence | None = None
 
     def __post_init__(self) -> None:
         if not self.ecosystem or not self.name or not self.used_version:
@@ -89,6 +120,7 @@ class RegistryResult:
     latest_stable_version: str
     latest_stable_release_time: datetime
     rubygems_evidence: RubyGemsEvidence | None = None
+    nuget_evidence: NuGetEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -100,6 +132,7 @@ class RegistryFailure:
     reason: str
     diagnostic: str | None = None
     rubygems_evidence: RubyGemsEvidence | None = None
+    nuget_evidence: NuGetEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -114,6 +147,7 @@ class DependencyCandidate:
     version_source: str
     rubygems_evidence: RubyGemsEvidence | None = None
     gemfile_evidence: GemfileEvidence | None = None
+    nuget_evidence: NuGetEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -126,6 +160,7 @@ class UnmeasurableDependency:
     reason: str
     rubygems_evidence: RubyGemsEvidence | None = None
     gemfile_evidence: GemfileEvidence | None = None
+    nuget_evidence: NuGetEvidence | None = None
 
 
 @dataclass(frozen=True, slots=True)
