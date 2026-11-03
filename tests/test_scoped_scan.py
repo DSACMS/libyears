@@ -1,5 +1,6 @@
 """Deterministic scoped Ruby scan propagation and availability contracts."""
 
+from contextlib import nullcontext
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -14,6 +15,7 @@ from libyears.model import (
 )
 from libyears.scan import RubyGroupRequestError, scan_mixed_repository
 from libyears.snapshot import parse_snapshot_text
+from tests.scoped_ruby_fixtures import fixture_scoped_reads
 
 
 SOURCE = 'source "https://rubygems.org"\n'
@@ -40,7 +42,10 @@ class ScopedScanTests(unittest.TestCase):
         arguments = dict(pypi_lookup=self.lookup, npm_lookup=self.lookup,
                          rubygems_lookup=self.lookup, ruby_groups=('default',))
         arguments.update(kwargs)
-        return scan_mixed_repository(self.root, **arguments)
+        reads = (fixture_scoped_reads(self.root)
+                 if arguments['ruby_groups'] is not None else nullcontext())
+        with reads:
+            return scan_mixed_repository(self.root, **arguments)
 
     def siblings(self):
         self.write('requirements.txt', 'rack==1\n')

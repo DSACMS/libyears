@@ -34,7 +34,7 @@ Aliases for test locations:
 |---|---|
 | AC-01 | M.`test_ordinary_path_never_opens_gemfile_and_retains_source_call`; `test_rubygems.RootSourceTests.test_lock_only_and_gemfile_presence_have_identical_unchanged_results`. Absent, accepted and arbitrary Gemfiles have identical ordinary results with no read. |
 | AC-02 | C.`test_explicit_exact_groups_union_duplicates_and_expected_age`; X.`test_real_adapter_population_reaches_scoped_cli_with_platform_dates`. Exact direct identity, Test/test distinction, expected age and public artifact provenance reach CLI JSON. |
-| AC-03 | P.`test_explicit_default_group_is_an_ordinary_membership`; X.`test_root_read_allowlist_integrity_and_no_implicit_production_or_default`. Explicit test/default/production each selects exactly its own dependency. |
+| AC-03 | P.`test_explicit_default_group_is_an_ordinary_membership`; X.`test_no_implicit_production_or_default`. Explicit test/default/production each selects exactly its own dependency. |
 | AC-04 | S.`test_union_deduplicates_and_retains_full_memberships_without_default`; C.`test_explicit_exact_groups_union_duplicates_and_expected_age`. Overlapping block/option memberships yield one count/row/lookup. |
 | AC-05 | C.`test_explicit_exact_groups_union_duplicates_and_expected_age`; M.`test_scoped_request_is_canonical_and_chooses_only_scoped_source`. Repeated/multiple requests select the union and serialize sorted unique names. |
 | AC-06 | S.`test_known_empty_absent_and_accepted_lock_and_rejected_lock`; O.`test_empty_scopes_keep_requested_inputs_and_recognition_state`. Empty named/default scope, N=0, null coverage; rejected lock retains unavailable measurement. |
@@ -54,7 +54,7 @@ Aliases for test locations:
 | AC-20 | O.`test_human_measured_scope_and_evidence_match_json_in_both_branches`, `test_human_empty_unavailable_and_wholly_unmeasurable_remain_distinct`, `test_human_failures_retain_safe_metadata_and_omit_unsupported_text`, `test_human_source_reasons_are_contextual_and_safe`; X precedence. Paired single/mixed normal/verbose output, source labels, safe requirements and counts. |
 | AC-21 | O.`test_source_evidence_presence_and_null_format_across_unavailable_states`, `test_empty_scopes_keep_requested_inputs_and_recognition_state`, `test_missing_lock_and_missing_direct_omit_unknown_requirement`, `test_measured_evidence_keeps_full_memberships_requirement_order_and_artifacts`, `test_known_absent_requirement_is_null_on_success_local_and_registry_failure`, `test_f1_and_f2_preserve_safe_evidence_and_never_echo_unsafe_text`, `test_scoped_failures_retain_only_established_artifact_populations`, `test_mismatch_preserves_both_literal_values_without_version_artifacts`, `test_ordinary_ruby_shape_is_unchanged_and_scoped_serializer_is_explicit`. Exact schema-v3 dictionaries, omission/null distinctions, publication artifacts and ordinary omission; X precedence asserts verbose JSON equality. |
 | AC-22 | O.`test_human_measured_scope_and_evidence_match_json_in_both_branches`, `test_human_failures_retain_safe_metadata_and_omit_unsupported_text`; X root read allowlist test treats production as an ordinary group. Supplied-file and observable-publication limitations, no runtime/deployment/coherence claim. |
-| AC-23 | X.`test_root_read_allowlist_integrity_and_no_implicit_production_or_default` guards root descriptor/content reads, execution/archive entry points, config/credential/include/gemspec decoys, and before/after all target file bytes/names; P.`test_parser_does_not_access_files_network_or_execute_code`. No live HTTP, target execution or mutation. |
+| AC-23 | X.`test_root_read_allowlist_integrity` guards root descriptor/content reads, execution/archive entry points, config/credential/include/gemspec decoys, and before/after all target file bytes/names; P.`test_parser_does_not_access_files_network_or_execute_code`. No live HTTP, target execution or mutation. |
 | AC-24 | R.`test_missing_inputs_ignore_parent_nested_and_alternate_decoys`, `test_internal_links_read_only_resolved_contained_file`, `test_escaping_links_never_open_or_read_target`, `test_final_and_directory_symlink_replacements_reject_and_close`; BOTH R regular-to-FIFO and S composed FIFO tests; C.`test_scoped_direct_file_and_invalid_paths_are_usage_errors`; X read allowlist. Exact root names, containment and direct-file refusal. |
 | AC-25 | X real-adapter test; M.`test_scoped_default_adapter_retains_ca_bundle_and_trust`; G.`RegistryPopulationTests.test_explicit_ca_and_timeout_use_shared_policy`, `test_exact_limit_excess_and_truncation_through_restricted_transport`, `test_redirect_handler_rejects_every_supported_redirect_status`; G.`RateLimitTests`; `test_pypi.PyPITests.test_python_default_trust_is_kept_when_available`, `test_pip_fallback_only_when_default_has_no_trust_and_uses_verified_cafile`, `test_custom_ca_bundle_uses_verified_default_context`; `test_registry.BoundedTransportTests.test_restricted_opener_reuses_selected_context_timeout_and_user_agent`. Fixed authority, verified TLS/trust, redirect rejection, limits, pacing/cooldown. |
 | AC-26 | X real-adapter test; M.`test_same_version_zero_and_flagged_timestamp_clamping`; G.`PublicationTests` and `test_metric`. Earliest admissible platform dates, excluded invalid dates/prereleases, latest stable, exact arithmetic/zero and anomaly flag. |
@@ -69,3 +69,26 @@ S.`test_lock_fifo_replacement_composes_known_scope_and_no_rows`.
 They replace regular inputs at final open, assert nonblocking/no-follow flags,
 reject before content consumption, close descriptors and make zero lookups.
 Capability-refusal mocks remain separate; these witnesses are reused, not copied.
+
+
+## Post-convergence portability maintenance (005-0021)
+
+Semantic source, association, scan, output, CLI and acceptance tests use
+`tests.scoped_ruby_fixtures.fixture_scoped_reads` on every host. This snapshots
+only the synthetic Gemfile/lock fixture content and injects the existing private
+reader boundary; actual recognition, association, aggregation, adapters and
+reporting still execute. It provides no evidence about filesystem safety.
+
+Real reader tests in `test_ruby_groups` and the separate
+X.`test_root_read_allowlist_integrity` exercise production descriptor access,
+containment, bounded reads, replacement rejection and input integrity on capable
+hosts. Only those real-operation witnesses depend on capabilities; semantic
+source/association classes no longer skip wholesale. Four real FIFO replacement
+witnesses remain guarded by safe-open and FIFO capabilities.
+
+`test_scoped_portability.ScopedCapabilityTests` independently exercises production
+refusal without fixture injection at the refused input: no unsafe open/read,
+no Ruby lookup, unknown Gemfile scope versus known scope on lock refusal,
+completed CLI exit 0, safe human/JSON output and successful sibling survival.
+These capability witnesses run on every host. Portable semantic success is not
+an assertion of functional scoped Windows filesystem support.

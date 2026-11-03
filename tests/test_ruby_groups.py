@@ -13,6 +13,7 @@ from unittest.mock import patch
 from libyears import rubygems
 from libyears.gemfile import GemfileParseFailure, ParsedGemfile, parse_gemfile
 from libyears.rubygems import _ScopedReadFailure, _ScopedRubyReader
+from tests.scoped_ruby_fixtures import fixture_scoped_reads
 
 
 SAFE_OPEN = all(getattr(os, name, 0) for name in (
@@ -184,16 +185,18 @@ class ScopedRubyReadTests(unittest.TestCase):
             opened.assert_not_called()
 
     def test_missing_capabilities_fail_closed_without_open_or_read(self):
-        (self.root / 'Gemfile').write_text('content')
-        for name in ('O_DIRECTORY', 'O_NOFOLLOW', 'O_NONBLOCK'):
-            with self.subTest(capability=name), patch.object(os, name, 0, create=True), \
+        for name in ('Gemfile', 'Gemfile.lock'):
+            (self.root / name).write_text('content')
+        for capability in ('O_DIRECTORY', 'O_NOFOLLOW', 'O_NONBLOCK', 'supports_dir_fd'):
+            unavailable = set() if capability == 'supports_dir_fd' else 0
+            with patch.object(os, capability, unavailable, create=True), \
                     patch.object(os, 'open') as opened, patch.object(os, 'read') as read:
-                self.assert_reason('Gemfile', 'invalid_gemfile')
+                for name in ('Gemfile', 'Gemfile.lock'):
+                    with self.subTest(capability=capability, name=name):
+                        self.assert_reason(name, 'invalid_gemfile' if name == 'Gemfile'
+                                           else 'invalid_lockfile')
                 opened.assert_not_called()
                 read.assert_not_called()
-        with patch.object(os, 'supports_dir_fd', set()), patch.object(os, 'open') as opened:
-            self.assert_reason('Gemfile.lock', 'invalid_lockfile')
-            opened.assert_not_called()
 
     def test_unresolvable_root_fails_safely_without_open(self):
         reader = _ScopedRubyReader(self.root / 'absent')
@@ -401,7 +404,6 @@ LOCK = ('GEM\n  remote: https://rubygems.org\n  specs:\n    rack (1)\n'
         'PLATFORMS\n  ruby\nDEPENDENCIES\n  rack\n')
 
 
-@unittest.skipUnless(SAFE_OPEN, 'safe descriptor access unavailable')
 class ScopedSourceAvailabilityTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -416,7 +418,8 @@ class ScopedSourceAvailabilityTests(unittest.TestCase):
         (self.root / 'Gemfile').write_text(gemfile)
         if lock is not None:
             (self.root / 'Gemfile.lock').write_text(lock)
-        return rubygems.scoped_ruby_source_result(self.root, groups)
+        with fixture_scoped_reads(self.root):
+            return rubygems.scoped_ruby_source_result(self.root, groups)
 
     def test_union_deduplicates_and_retains_full_memberships_without_default(self):
         gemfile = SOURCE + ('gem "rack"\ngroup :test, :development, optional: true do\n'
@@ -457,7 +460,6 @@ class ScopedSourceAvailabilityTests(unittest.TestCase):
         self.assertFalse(result.unmeasurable[0].gemfile_evidence.include_lock_requirement)
 
     def test_complete_recognition_then_unknown_group_prevents_lock_read(self):
-        real_read = _ScopedRubyReader.read
         for gemfile, groups, reason in (
             (SOURCE + 'gem "rack"\nputs "bad"', ('unknown',), 'unsupported_gemfile_syntax'),
             (SOURCE + 'gem "rack"\ngem "rack"', ('default',), 'duplicate_gemfile_declaration'),
@@ -465,13 +467,11 @@ class ScopedSourceAvailabilityTests(unittest.TestCase):
             (SOURCE + 'gem "rack", group: :Test', ('test',), 'unknown_ruby_group'),
             ('gem\n' + '#' * (16 * 1024 + 1), ('default',), 'invalid_gemfile'),
         ):
-            reads = []
-            def read(reader, name):
-                reads.append(name)
-                return real_read(reader, name)
-            with self.subTest(reason=reason), patch.object(_ScopedRubyReader, 'read', read):
-                result = self.source(gemfile, 'bad lock', groups)
-            self.assertEqual(reads, ['Gemfile'])
+            (self.root / 'Gemfile').write_text(gemfile)
+            (self.root / 'Gemfile.lock').write_text('bad lock')
+            with self.subTest(reason=reason), fixture_scoped_reads(self.root) as reads:
+                result = rubygems.scoped_ruby_source_result(self.root, groups)
+            self.assertEqual([call.args[1] for call in reads.call_args_list], ['Gemfile'])
             self.assertEqual(len(result.source_errors), 1)
             self.assertEqual(result.source_errors[0].reason, reason)
             self.assertIsNone(result.dependencies_discovered)
@@ -516,11 +516,11 @@ class ScopedSourceAvailabilityTests(unittest.TestCase):
                 self.assertEqual(result.source_errors[0].source, 'Gemfile.lock')
                 self.assertIsNone(result.evidence.format)
 
-    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
+    @unittest.skipUnless(SAFE_OPEN and hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
     def test_gemfile_fifo_replacement_composes_unknown_scope_and_no_lock_read(self):
         self.run_source_fifo('Gemfile')
 
-    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
+    @unittest.skipUnless(SAFE_OPEN and hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
     def test_lock_fifo_replacement_composes_known_scope_and_no_rows(self):
         self.run_source_fifo('Gemfile.lock')
 
@@ -536,7 +536,6 @@ class ScopedSourceAvailabilityTests(unittest.TestCase):
         self.assertEqual(result.stdout.strip(), 'ok')
 
 
-@unittest.skipUnless(SAFE_OPEN, 'safe descriptor access unavailable')
 class ScopedLockAssociationTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -555,7 +554,8 @@ class ScopedLockAssociationTests(unittest.TestCase):
         text += ''.join('  ' + row + '\n' for row in direct.split('\n') if row)
         (self.root / 'Gemfile').write_text(source + declaration)
         (self.root / 'Gemfile.lock').write_text(text)
-        return rubygems.scoped_ruby_source_result(self.root, ('default',))
+        with fixture_scoped_reads(self.root):
+            return rubygems.scoped_ruby_source_result(self.root, ('default',))
 
     def assert_failure(self, result, reason):
         self.assertEqual(result.dependencies_discovered, 1)
@@ -687,10 +687,12 @@ class ScopedLockAssociationTests(unittest.TestCase):
     def test_nonpublic_gemfile_does_not_override_unavailable_lock_precedence(self):
         private = 'source "https://PRIVATE_MARKER.invalid"\ngem "rack"'
         (self.root / 'Gemfile').write_text(private)
-        absent = rubygems.scoped_ruby_source_result(self.root, ('default',))
+        with fixture_scoped_reads(self.root):
+            absent = rubygems.scoped_ruby_source_result(self.root, ('default',))
         self.assertEqual(absent.unmeasurable[0].reason, 'lockfile_missing')
         (self.root / 'Gemfile.lock').write_text('rejected')
-        rejected = rubygems.scoped_ruby_source_result(self.root, ('default',))
+        with fixture_scoped_reads(self.root):
+            rejected = rubygems.scoped_ruby_source_result(self.root, ('default',))
         self.assertFalse(rejected.measurement_available)
         self.assertEqual(rejected.dependencies_discovered, 1)
         self.assertEqual(rejected.unmeasurable, ())

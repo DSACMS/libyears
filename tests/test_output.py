@@ -12,6 +12,7 @@ from libyears.model import (Dependency, DependencyMeasurement, GemfileEvidence, 
 from libyears.requirements import UnmeasurableRequirement
 from libyears.output import format_human, format_json, report_to_dict
 from libyears.scan import MixedScanReport, ScanReport, scan_mixed_repository
+from tests.scoped_ruby_fixtures import fixture_scoped_reads
 
 
 def report_with_data():
@@ -360,10 +361,11 @@ class ScopedRubyJsonTests(unittest.TestCase):
             (root / 'requirements.txt').write_text('sibling==1\n')
         lookup = Mock(return_value=outcome or RegistryResult(
             'rack', '1', self.date, '1', self.date))
-        report = scan_mixed_repository(root, ruby_groups=groups,
-                                      rubygems_lookup=lookup,
-                                      pypi_lookup=lambda name, version: RegistryResult(
-                                          name, version, self.date, version, self.date))
+        with fixture_scoped_reads(root):
+            report = scan_mixed_repository(root, ruby_groups=groups,
+                                          rubygems_lookup=lookup,
+                                          pypi_lookup=lambda name, version: RegistryResult(
+                                              name, version, self.date, version, self.date))
         return report, lookup
 
     def evidence(self, groups, accepted):

@@ -1,6 +1,6 @@
 """Composed offline witnesses; the fixture README indexes all 28 criteria."""
 
-from contextlib import ExitStack, redirect_stderr, redirect_stdout
+from contextlib import ExitStack, nullcontext, redirect_stderr, redirect_stdout
 from datetime import datetime, timedelta, timezone
 import io
 import json
@@ -11,8 +11,10 @@ import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
+from libyears import rubygems
 from libyears.cli import main
 from libyears.model import RegistryFailure, RegistryResult
+from tests.scoped_ruby_fixtures import fixture_scoped_reads
 from tests.test_registry import BoundedResponse
 from tests.test_rubygems_registry import FakeClock, artifact
 
@@ -20,6 +22,9 @@ from tests.test_rubygems_registry import FakeClock, artifact
 SOURCE = 'source "https://rubygems.org"\n'
 PRIVATE = 'source "https://PRIVATE_AUTHORITY_MARKER.invalid"\n'
 USED = datetime(2020, 1, 1, tzinfo=timezone.utc)
+SAFE_OPEN = all(getattr(os, name, 0) for name in (
+    'O_DIRECTORY', 'O_NOFOLLOW', 'O_NONBLOCK',
+)) and rubygems._DIRECTORY_OPEN in os.supports_dir_fd
 
 
 def lock(direct='rack', specs=('rack (1)',), remote='https://rubygems.org'):
@@ -49,9 +54,10 @@ class RubyGroupAcceptanceTests(unittest.TestCase):
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(text, encoding='utf-8')
 
-    def invoke(self, *options):
+    def invoke(self, *options, fixture_reads=True):
         output, errors = io.StringIO(), io.StringIO()
-        with redirect_stdout(output), redirect_stderr(errors):
+        reads = fixture_scoped_reads(self.root) if fixture_reads else nullcontext()
+        with reads, redirect_stdout(output), redirect_stderr(errors):
             code = main([str(self.root), *options])
         self.assertEqual((code, errors.getvalue()), (0, ''))
         return output.getvalue()
@@ -184,12 +190,32 @@ class RubyGroupAcceptanceTests(unittest.TestCase):
         self.assertTrue(adapter.ssl_context.check_hostname)
         self.assertEqual(len(clock.sleeps), 1)
 
-    def test_root_read_allowlist_integrity_and_no_implicit_production_or_default(self):
+    def write_group_selection_inputs(self):
         self.write('Gemfile', SOURCE + 'gem "rack"\n'
                    'group :test, optional: false do\ngem "rake"\nend\n'
                    'gem "debug", group: :production\n')
         self.write('Gemfile.lock', lock('rack\nrake\ndebug',
                                        ('rack (1)', 'rake (1)', 'debug (1)')))
+
+    def assert_group_selection(self, *, fixture_reads=True):
+        for group, expected in (('test', 'rake'), ('production', 'debug'), ('default', 'rack')):
+            data = json.loads(self.invoke('--ruby-group', group, '--json',
+                                          fixture_reads=fixture_reads))
+            self.assertEqual([row['name'] for row in data['dependencies']], [expected])
+            self.assertEqual(data['summary']['dependencies_discovered'], 1)
+            self.assertEqual(data['dependencies'][0]['libyears'], 0.0)
+
+    def test_no_implicit_production_or_default(self):
+        self.write_group_selection_inputs()
+        with patch('libyears.scan.RubyGemsAdapter.lookup', side_effect=lambda name, version:
+                   RegistryResult(name, version, USED, version, USED)) as lookup:
+            self.assert_group_selection()
+        self.assertEqual([call.args for call in lookup.call_args_list],
+                         [('rake', '1'), ('debug', '1'), ('rack', '1')])
+
+    @unittest.skipUnless(SAFE_OPEN, 'safe descriptor access unavailable')
+    def test_root_read_allowlist_integrity(self):
+        self.write_group_selection_inputs()
         for name in ('.bundle/config', '.gem/credentials', '.env', 'project.gemspec',
                      'nested/Gemfile', 'nested/Gemfile.lock', 'gems.rb', 'payload.gem',
                      'included.Gemfile', 'project.rb'):
@@ -211,11 +237,7 @@ class RubyGroupAcceptanceTests(unittest.TestCase):
                 patch('io.open', side_effect=AssertionError('unexpected Path/config read')), \
                 patch('libyears.scan.RubyGemsAdapter.lookup', side_effect=lambda name, version:
                     RegistryResult(name, version, USED, version, USED)) as lookup:
-            for group, expected in (('test', 'rake'), ('production', 'debug'), ('default', 'rack')):
-                data = json.loads(self.invoke('--ruby-group', group, '--json'))
-                self.assertEqual([row['name'] for row in data['dependencies']], [expected])
-                self.assertEqual(data['summary']['dependencies_discovered'], 1)
-                self.assertEqual(data['dependencies'][0]['libyears'], 0.0)
+            self.assert_group_selection(fixture_reads=False)
             self.assertEqual([call.args for call in lookup.call_args_list],
                              [('rake', '1'), ('debug', '1'), ('rack', '1')])
         self.assertEqual(opened.count(Path('Gemfile')), 3)

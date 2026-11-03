@@ -2,7 +2,7 @@ import json
 import io
 import tempfile
 import unittest
-from contextlib import redirect_stderr, redirect_stdout
+from contextlib import nullcontext, redirect_stderr, redirect_stdout
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from unittest.mock import patch
@@ -11,6 +11,7 @@ from libyears.cli import main
 from libyears.model import MetricSummary, RegistryResult
 from libyears.pypi import PyPIResult
 from libyears.scan import RubyGroupRequestError, ScanReport
+from tests.scoped_ruby_fixtures import fixture_scoped_reads
 
 
 def empty_report():
@@ -372,7 +373,9 @@ class ScopedRubyCLITests(unittest.TestCase):
 
     def invoke(self, *args, scan=None, path=None):
         output, errors = io.StringIO(), io.StringIO()
-        with redirect_stdout(output), redirect_stderr(errors):
+        reads = (fixture_scoped_reads(self.root)
+                 if '--ruby-group' in args else nullcontext())
+        with reads, redirect_stdout(output), redirect_stderr(errors):
             code = main([str(path or self.root), *args], scan=scan)
         return code, output.getvalue(), errors.getvalue()
 
