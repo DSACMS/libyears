@@ -9,6 +9,7 @@ import unittest
 from unittest.mock import patch
 
 from libyears import nuget_input as inputs
+from tests.nuget_fixtures import SAFE_SCOPED_READ
 
 
 class InputAssertions(unittest.TestCase):
@@ -124,6 +125,7 @@ class JSONInputTests(InputAssertions):
                       {'key': 'x' * (inputs.MAX_STRING_LENGTH + 1)})
 
 
+@unittest.skipUnless(SAFE_SCOPED_READ, 'safe descriptor access unavailable')
 class ScopedNuGetReaderTests(InputAssertions):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
@@ -207,6 +209,7 @@ class ScopedNuGetReaderTests(InputAssertions):
         with self.reader() as reader:
             self.rejected('malformed', reader.read, 'Selected.csproj')
 
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
     def test_fifo_and_directory_rejected_before_open_or_read(self):
         self.project.unlink()
         os.mkfifo(self.project)
@@ -231,6 +234,7 @@ class ScopedNuGetReaderTests(InputAssertions):
                 self.rejected('malformed', reader.read, 'Selected.csproj')
             opened.assert_not_called()
 
+    @unittest.skipUnless(hasattr(os, 'mkfifo'), 'real FIFO operations unavailable')
     def test_replacement_between_inspection_and_open_rejected_before_read(self):
         original = os.open
         for replacement in ('regular', 'fifo', 'symlink'):
@@ -279,19 +283,7 @@ class ScopedNuGetReaderTests(InputAssertions):
             self.project.unlink()
             self.project.write_bytes(b'original')
 
-    def test_missing_safety_primitives_fail_closed(self):
-        for flag in ('O_DIRECTORY', 'O_NOFOLLOW', 'O_NONBLOCK'):
-            with patch.object(inputs.os, flag, 0):
-                self.rejected('malformed', self.reader().__enter__)
-        with patch.object(inputs.os, 'supports_dir_fd', set()):
-            self.rejected('malformed', self.reader().__enter__)
-        with patch.object(inputs.os, 'supports_follow_symlinks', set()):
-            self.rejected('malformed', self.reader().__enter__)
-
     def test_only_selected_immediate_filenames_are_admitted(self):
-        for name in ('../other.csproj', '/tmp/other.csproj', 'nested/a', 'a\\b', '', '.', '..'):
-            with self.assertRaises(ValueError):
-                inputs.ScopedNuGetReader(self.root, name)
         with self.reader() as reader, patch.object(inputs.os, 'open') as opened:
             for name in ('Gemfile', 'NuGet.Config', 'Directory.Build.props', 'other.csproj',
                          'project.assets.json', '.nupkg.metadata', '../packages.lock.json'):
@@ -306,6 +298,28 @@ class ScopedNuGetReaderTests(InputAssertions):
                 self.rejected('malformed', reader.read, 'Selected.csproj')
         with self.assertRaises(OSError):
             os.fstat(descriptor)
+
+
+class ScopedNuGetReaderPortableTests(InputAssertions):
+    def reader(self):
+        return inputs.ScopedNuGetReader(Path.cwd(), 'Selected.csproj', 'witness.json')
+
+    def test_missing_safety_primitives_fail_closed_without_open_or_read(self):
+        for capability in ('O_DIRECTORY', 'O_NOFOLLOW', 'O_NONBLOCK',
+                           'supports_dir_fd', 'supports_follow_symlinks'):
+            unavailable = set() if capability.startswith('supports_') else 0
+            with self.subTest(capability=capability), \
+                    patch.object(inputs.os, capability, unavailable, create=True), \
+                    patch.object(inputs.os, 'open') as opened, \
+                    patch.object(inputs.os, 'read') as read:
+                self.rejected('malformed', self.reader().__enter__)
+                opened.assert_not_called()
+                read.assert_not_called()
+
+    def test_only_immediate_filenames_are_admitted_without_filesystem_access(self):
+        for name in ('../other.csproj', '/tmp/other.csproj', 'nested/a', 'a\\b', '', '.', '..'):
+            with self.assertRaises(ValueError):
+                inputs.ScopedNuGetReader(Path.cwd(), name)
 
 
 if __name__ == '__main__':

@@ -1225,3 +1225,86 @@ run/children are not appended. Git writes required sandbox escalation and approv
 waits, retained as runtime confounding. Final authority/ledger integrity and diff
 checks pass. The complete 44-field current-run handoff is written outside Git at
 `/tmp/libyears-observations/006-0011.json` before final reporting.
+
+
+## Published Windows verification and bounded portability correction — 006-0012
+
+**Date:** 2026-11-03. Starting clean HEAD:
+`fa6a87334b72874cbe5e76266b48b16d866cb635`.
+The human confirms that exact published candidate at local main, github/main
+and cms/main. This run authorizes all remaining already-defined internal tasks
+and checkpoints, bounded correction/fresh review cycles, and follow-up pushes
+only to github/main and cms/main when needed for required CI evidence. Each push
+requires clean committed bytes, deterministic verification, independent approval
+and directly checked nondivergent remote refs; no force/history rewrite. Real-root
+access, new credentials/trust, package-manager/target execution and Feature 007
+remain outside authority. Approved spec/plan/tasks remain byte-frozen.
+
+### Observed published failure and classification
+
+[Python CI run 41726070279](https://github.com/DSACMS/libyears/actions/runs/41726070279)
+identifies the exact published SHA above. Public jobs/check API evidence shows
+Windows Python 3.11 (`126231048771`), 3.12 (`126231048816`) and 3.13
+(`126231048884`) all FAIL the offline suite after successful checkout/setup.
+Ubuntu Python 3.11–3.13 and the separate live PyPI smoke PASS. These results do
+not establish Windows lifecycle success. Public 3.12 annotations show ten
+`nuget_input.py:123` malformed rejections; the visible annotations are truncated
+failure evidence, not a full failure enumeration. Raw logs require authentication
+(HTTP 403); anonymous job HTML repeats the annotations and per-step log retrieval
+returns 404. No credentials or trust changes are used to recover them.
+
+A fresh read-only child `/root/windows_diagnosis`, fork_turns=none, independently
+reads the complete authority and inspects annotations, HTML and underlying tests.
+**Assigned diagnosis COMPLETE; original Windows lifecycle evidence INCOMPLETE.**
+Parent validation confirms the approved reader intentionally rejects unavailable
+O_DIRECTORY/O_NOFOLLOW/O_NONBLOCK and descriptor-relative safety primitives.
+New input tests nevertheless assume those primitives, including mkfifo, and new
+source semantic tests require actual successful reads on every host. The bounded
+classification is **Feature 006 test portability defect**, not demonstrated
+product/lifecycle defect, unrelated historical regression or infrastructure
+failure. Annotation limits mean no claim that these were the only failures.
+The child independently runs the three real-worker tests locally: 3 PASS on
+Darwin, supplying no Windows PASS. Historical F1/F2/P1/K1-F1/T008-V1 evidence
+and limitations remain retained.
+
+### Bounded correction candidate
+
+The correction preserves production bytes and fail-closed safety. Real descriptor
+reader witnesses require the exact safety capabilities. Separate unskipped tests
+prove absent-capability rejection without opening/reading content; portable source
+semantics consume only bounded exact synthetic bytes through the test seam.
+Production source refusal still establishes unknown denominator, unavailable
+measurement, safe project error and no rows/authority/read/network/process/write.
+F1/F2/K1-F1 semantic regressions remain runnable on unsupported hosts. LF/CRLF
+input binding is tested without normalization; the two static byte-bound fixture
+inputs receive narrow eol=lf attributes to preserve their committed witness hashes
+across checkout. No production normalization is introduced.
+
+The CI matrix now runs the explicit unskipped RealWorkerTests command before the
+full suite, making candidate-specific readiness, observed blocking-entry/cancel/
+reap/cleanup and discriminating no-command mutation observable as a separate step.
+T008 explicitly permits CI changes necessary for platform lifecycle coverage.
+The workflow bytes and public exact-SHA step status together can establish that
+execution; the current failed full-suite status cannot. Parent local lifecycle
+verification: 3 PASS. Candidate freeze, fresh focused verification and final
+platform evidence/disposition follow below; T008 remains incomplete until then.
+
+Prior observation 006-0011 is appended once in `006f4df`, retaining earlier ledger
+bytes, the 44-field schema, original runtime note and runtime_confounded=yes.
+Only authorized human /status fields and account continuity readings 26/27 enrich
+the handoff, with provenance identified and no derived credit delta. Current run
+006-0012 and children are not appended. Local Git writes require sandbox escalation;
+network read also requires escalation, retained as runtime confounding.
+
+Author child `/root/portability_correction` used a fresh context without overrides;
+actual child settings/resource telemetry are unavailable. Focused input/source
+45 PASS, NuGet 142 PASS. A missing-capability simulation deletes flags before
+module import and clears descriptor/follow support: 45 run PASS with exactly
+13 genuine filesystem-dependent skips; semantic F1/F2/K1-F1 and refusal tests
+execute. A supported-host real reader/source integration witness retains actual
+file whitelist, byte invariance and forbidden-access guards. Parent inspects the
+complete correction diff and verifies exact static fixture hashes and LF Git
+attributes. The corrected code/test/workflow candidate is frozen by its local
+commit before non-author commissioning; no candidate edits follow commissioning.
+
+Parent final full deterministic suite: **543 PASS**; diff check PASS.

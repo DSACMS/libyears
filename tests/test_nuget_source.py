@@ -12,8 +12,10 @@ import tempfile
 import unittest
 from unittest.mock import patch
 
+from libyears import nuget_input as inputs
 from libyears.nuget import read_nuget_source
 from libyears.nuget_provenance import LocalAuthority
+from tests.nuget_fixtures import SAFE_SCOPED_READ, fixture_nuget_reads
 
 
 FIXTURES = Path(__file__).parent / 'fixtures/nuget'
@@ -41,7 +43,7 @@ class NuGetSourceTests(unittest.TestCase):
 
     def run_source(self, project=None, lock=None, *, witness_change=None,
                    missing=None, selected_witness=True, guard=True,
-                   unrelated=False, stale=False):
+                   unrelated=False, stale=False, use_real_reader=False):
         if project is None:
             project = self.project()
         if lock is None:
@@ -73,16 +75,23 @@ class NuGetSourceTests(unittest.TestCase):
             allowed = {'Witness.csproj', 'packages.lock.json'}
             if selected_witness:
                 allowed.add('witness.json')
+            # Source semantics run independently of host descriptor support.
+            # Real reader containment/race behavior has its own filesystem tests.
+            fixture_files = {name: data for name, data in files.items() if name != missing}
             opened = []
             real_open = os.open
 
             def guarded_open(name, flags, *args, **kwargs):
+                self.assertTrue(use_real_reader, 'Semantic fixtures must not open files.')
                 opened.append(str(name))
                 self.assertTrue(Path(name) == root or str(name) in allowed, str(name))
                 self.assertFalse(flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT))
                 return real_open(name, flags, *args, **kwargs)
 
             with ExitStack() as stack:
+                reads = None
+                if not use_real_reader:
+                    reads = stack.enter_context(fixture_nuget_reads(root, fixture_files))
                 if guard:
                     stack.enter_context(patch('os.open', side_effect=guarded_open))
                     for target in ('subprocess.Popen', 'subprocess.run', 'os.system',
@@ -92,8 +101,11 @@ class NuGetSourceTests(unittest.TestCase):
                                            'witness.json' if selected_witness else None)
             after = {p.name: p.read_bytes() for p in root.iterdir() if p.is_file()}
             self.assertEqual(before, after)
-            if guard and not selected_witness:
-                self.assertNotIn('witness.json', opened)
+            requested_names = ([call.args[1] for call in reads.call_args_list]
+                               if reads is not None else opened)
+            self.assertTrue(set(requested_names) <= allowed | {str(root)})
+            if not selected_witness:
+                self.assertNotIn('witness.json', requested_names)
             return result
 
     def assert_reason(self, source, reason, *, count=1, level='dependency'):
@@ -108,6 +120,15 @@ class NuGetSourceTests(unittest.TestCase):
             self.assertEqual(result.unmeasurable, ())
         else:
             self.assertEqual(result.source_errors, ())
+
+    @unittest.skipUnless(SAFE_SCOPED_READ, 'safe descriptor access unavailable')
+    def test_real_reader_composes_bound_inputs_on_supported_hosts(self):
+        source = self.run_source(use_real_reader=True, unrelated=True)
+        self.assertEqual(source.result.source_errors, ())
+        self.assertEqual(source.result.unmeasurable, ())
+        self.assertTrue(source.result.measurement_available)
+        self.assertEqual(len(source.authorized_candidates), 1)
+        self.assertIsInstance(source.authorized_candidates[0].authority, LocalAuthority)
 
     def test_five_canonical_pairs_and_different_selected_version(self):
         for request, requested in (('1.0', '[1.0.0, )'), ('1.2.3', '[1.2.3, )'),
@@ -128,6 +149,16 @@ class NuGetSourceTests(unittest.TestCase):
                                  ('asserted_public', 'local_agreement'))
                 self.assertEqual(evidence.lock_requested, requested)
                 self.assertEqual(evidence.normalized_version, '2.0.0')
+
+    def test_exact_byte_binding_for_lf_and_crlf_without_normalization(self):
+        for newline in (b'\n', b'\r\n'):
+            with self.subTest(newline=newline):
+                project = self.project() + newline
+                lock = json.dumps(self.lock()).encode() + newline
+                source = self.run_source(project, lock)
+                self.assertEqual(len(source.authorized_candidates), 1)
+                self.assert_reason(self.run_source(project, lock, stale=True),
+                                   'nuget_context_mismatch', level='source')
 
     def test_all_s3_noncanonical_negative_requests_and_stage_omissions(self):
         negatives = ['[1.0.1, )', '[1.0, )', '[1.0.0.0, )', '[1.0.0,)',
@@ -413,6 +444,33 @@ class NuGetSourceTests(unittest.TestCase):
         triggered.add(('dependency', 'unsupported_dependency_source'))
         self.assertEqual(triggered, {(row['level'], row['reason']) for row in table})
         self.assertTrue(all(row['test'] == 'test_local_s6_reason_trigger_table' for row in table))
+
+
+class NuGetSourcePlatformRefusalTests(unittest.TestCase):
+    def test_missing_safety_primitives_reject_source_before_reads_or_authority(self):
+        # This uses the real production context manager, never the fixture seam.
+        for capability in ('O_DIRECTORY', 'O_NOFOLLOW', 'O_NONBLOCK',
+                           'supports_dir_fd', 'supports_follow_symlinks'):
+            unavailable = set() if capability.startswith('supports_') else 0
+            with self.subTest(capability=capability), ExitStack() as stack:
+                stack.enter_context(patch.object(inputs.os, capability, unavailable, create=True))
+                opened = stack.enter_context(patch.object(inputs.os, 'open'))
+                read_bytes = stack.enter_context(patch.object(inputs.os, 'read'))
+                scoped_read = stack.enter_context(patch.object(inputs.ScopedNuGetReader, 'read'))
+                authorize = stack.enter_context(patch('libyears.nuget.authorize_package'))
+                for target in ('subprocess.Popen', 'subprocess.run', 'os.system',
+                               'socket.socket', 'urllib.request.urlopen', 'os.write'):
+                    stack.enter_context(patch(target, side_effect=AssertionError(target)))
+                source = read_nuget_source(Path.cwd(), 'Witness.csproj', 'witness.json')
+                self.assertEqual(source.result.dependencies_discovered, None)
+                self.assertFalse(source.result.measurement_available)
+                self.assertEqual(source.result.candidates, ())
+                self.assertEqual(source.result.unmeasurable, ())
+                self.assertEqual(source.authorized_candidates, ())
+                self.assertEqual([(row.source, row.reason) for row in source.result.source_errors],
+                                 [('Witness.csproj', 'invalid_nuget_project')])
+                for operation in (opened, read_bytes, scoped_read, authorize):
+                    operation.assert_not_called()
 
 
 if __name__ == '__main__':
