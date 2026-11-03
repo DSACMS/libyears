@@ -1,0 +1,19 @@
+[
+  {"level": "source", "reason": "nuget_project_missing", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "invalid_nuget_project", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "unsupported_nuget_project", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "duplicate_nuget_declaration", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "lockfile_missing", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "invalid_lockfile", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "unsupported_lockfile_format", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "nuget_context_mismatch", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "nuget_provenance_missing", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "source", "reason": "invalid_nuget_provenance", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "dependency", "reason": "lock_dependency_missing", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "dependency", "reason": "declaration_lock_requirement_mismatch", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "dependency", "reason": "lock_version_missing", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "dependency", "reason": "unsupported_lock_evidence", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "dependency", "reason": "unsupported_dependency_source", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "dependency", "reason": "content_hash_unavailable", "test": "test_local_s6_reason_trigger_table"},
+  {"level": "dependency", "reason": "content_hash_mismatch", "test": "test_local_s6_reason_trigger_table"}
+]
