@@ -1120,3 +1120,108 @@ sandbox-blocked, requiring escalation/approval waits for authorized local commit
 this is runtime confounding, not product failure. Current run 006-0010 and its
 children are not appended. Its complete 44-field handoff is written outside Git
 at `/tmp/libyears-observations/006-0010.json` before final reporting.
+
+## T008-V1 correction and focused verification — 006-0011
+
+**Date:** 2026-11-03. **Focused audit: COMPLETE. Bounded correction: APPROVE.**
+**New material findings: NONE. T008: INCOMPLETE; Windows evidence pending.**
+**T009: NOT STARTED. K2: NOT DEPENDENCY-READY / NOT APPROVED.**
+Starting clean HEAD: `e84d3d3951c0ca30e7492f6a916e76e59f0cbe3f`.
+
+### Authority, correction and freeze
+
+The commissioning human authorizes T008-V1 correction, fresh verification and
+continuation through all already-authorized internal implementation/review gates,
+including bounded correction cycles. New product/scope/trust/target authority,
+producer execution, Feature 007 and push remain prohibited. `ac13716` makes the
+requested concise workflow clarification: internal quality gates do not themselves
+require new human authority. Required evidence and mandatory predecessors remain
+binding. This supersedes historical routine correction/phase-message stops only
+within the present execution authority; approved spec/plan/tasks stay byte-frozen.
+
+One fresh child author, `/root/t008_correction`, owned only
+`tests/test_nuget_worker.py` and the trusted `blocking_worker.py` fixture. The
+fixture publishes bounded handler-entry evidence containing its PID, decoded
+command authority and actual client deadlines, then waits on a never-set event
+without consulting deadlines or naturally completing. A returned-handler marker
+would expose unexpected completion. No product worker/supervisor bytes change.
+
+The real-worker witness obtains offline readiness, observes entry explicitly,
+then advances an injected metadata clock to the original working cutoff. The
+60/300-second deadlines and 0.5-second reserve are unchanged and never reset.
+Immediately before real termination it captures a live matching process, consumed
+command, entry facts, and absence of result/handler return. It asserts bounded
+real waits, cached exit status/reaping, process exit, removed temporary directory
+and an unfired outer watchdog. The five-second missing-evidence guard bounds test
+failure; elapsed startup time is not evidence of entry. A retained regression
+suppresses only parent `command.json` publication and requires the same positive
+witness to fail specifically at its missing-handler-entry assertion.
+
+Parent verification before freeze: worker **22 PASS**, full deterministic suite
+**539 PASS**, diff check PASS. A separate parent mutation executed the positive
+witness with one suppressed command: **one expected failure**, specifically
+`blocking handler was not entered`, no error. The former false-positive witness
+is now discriminating. These runs used Darwin / Python 3.11.0, offline.
+
+**Frozen correction:** `cb60f792fe1e041cf636926f5017b9ea5509908f`.
+**Immediate baseline:** `ac13716`; product baseline remains `ff65b02`.
+The correction commit explicitly retains incomplete Windows verification. It is
+a reviewable correction candidate, not a completed T008 task. No code/test bytes
+change after freeze.
+
+### Independent verification and parent reconciliation
+
+A fresh non-author reviewer, `/root/t008_focused_review`, was commissioned only
+after freeze with `fork_turns="none"` and no model/effort overrides. It read the
+complete current authority/history and underlying candidate/diff/control flow,
+verified approved digests, and independently ran worker **22 PASS**, NuGet
+**138 PASS** (including F1/F2/K1-F1 regressions), and full **539 PASS**. Its own
+command-suppression mutation failed the same positive witness for missing entry,
+with exactly one suppressed command and no deferred worker. Whitespace checks
+passed and reviewed bytes remained clean. **Completion: COMPLETE. Bounded
+correction verdict: APPROVE; material findings: NONE.** This is focused local
+verification, not full platform or feature acceptance.
+
+Parent validation reconciled the report with handler/command control flow, fixed
+cutoff arithmetic, live pre-termination observations, bounded waits/exit/cleanup
+and its independent mutation reproduction. The evidence supports the local
+T008-V1 correction; F1/F2/P1/K1-F1 remain preserved. Full platform closure of
+T008-V1 and T008 acceptance remain pending Windows execution. No new product or
+architecture decision is required or invented.
+
+### Windows evidence and first external authority gate
+
+A separate fresh read-only child, `/root/windows_gate_review`, independently
+completed the task/predecessor and repository CI authority audit. Its conclusion
+agrees with parent inspection: tasks.md's mandatory-predecessor rule, T008 done
+conditions and T009 dependency require observed Windows lifecycle evidence before
+T008 completion/T009, rather than deferring it solely to K2/K4.
+
+`.github/workflows/ci.yml` includes Windows Python 3.11–3.13 and the full offline
+suite, triggered by push, pull request or manual dispatch after checkout. It has
+no local patch input/transfer mechanism. Other workflows run Ubuntu hygiene and
+security checks. Dispatch alone cannot supply unpublished corrected bytes. No
+inspected repository mechanism can obtain the required candidate-specific Windows
+evidence without publication or a newly authorized execution/transfer target.
+No remote dispatch/access, credentials, push or Windows execution was attempted;
+**Windows evidence: PENDING EXTERNAL CI, never PASS.**
+
+**Stop: HUMAN/EXTERNAL AUTHORITY REQUIRED for Windows execution of the frozen
+candidate.** The needed authority is a concrete authorized Windows environment
+and candidate-transfer mechanism, or explicit authorization to publish the
+candidate to a named remote/ref and run its Windows CI. Passing evidence must be
+attributable to the frozen correction and reconciled before T008 can complete.
+This is an execution-evidence boundary, not a reopened product choice or a waiver.
+All currently possible correction/review work is complete. T009 and successors
+remain blocked; K2–K6 were not reached. No real-root/OASim access, package-manager/
+target execution, public activation, Feature 007 or push occurred.
+
+All three children used fresh contexts with no overrides; actual child settings
+and resource telemetry are unavailable. Reviewers made no changes or commits.
+Prior run 006-0010 was appended once in `ac13716` with authorized human /status
+and account continuity readings 23/26; original runtime note/confounding and
+earlier ledger bytes remain preserved, with no derived credit delta. Current
+run/children are not appended. Git writes required sandbox escalation and approval
+waits, retained as runtime confounding. Final authority/ledger integrity and diff
+checks pass. The complete 44-field current-run handoff is written outside Git at
+`/tmp/libyears-observations/006-0011.json` before final reporting.
