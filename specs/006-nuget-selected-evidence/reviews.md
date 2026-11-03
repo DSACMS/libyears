@@ -694,3 +694,161 @@ Only tasks.md and this appended review record enter one coherent local
 Conventional Commit. The complete 44-key run handoff is written outside Git at
 `/tmp/libyears-observations/006-0007.json`. No implementation, Feature 007,
 external validation/producer execution, forbidden filesystem access or push.
+
+
+## Foundation implementation and K1 freeze — 006-0008
+
+**Date:** 2026-11-03. **At freeze: independent K1 review PENDING.**
+Starting clean HEAD: `d5e9472644a4d5478ca0dcd45b1480278f18bd5e`.
+The commissioning human authorizes exactly T001–T006, local task commits and K1,
+with native decomposition where dependency readiness permits. Implementation
+remains internal; T007, external validation targets, Feature 007 and push are
+hard stops. The approved spec/plan/tasks remain byte-unchanged at their recorded
+digests. Historical task-file pending language is preserved with execution state
+recorded here.
+
+### Task execution and author verification
+
+Each mandatory predecessor completed before its successor began. The graph has
+no parallel-ready implementation nodes in this phase. Six fresh child authors
+(`author_t001` through `author_t006`, `fork_turns="none"`, no overrides) each
+owned one task's code/tests; the parent inspected their changes, ran verification
+and created one coherent local commit per task. They are authors, not independent
+K1 reviewers. Actual child model/effort/resource telemetry is unavailable.
+
+| Task | Local commit | Implemented surfaces and verification |
+|---|---|---|
+| T001 | `4b1ed83` | Optional safe NuGet model records, separate bounded request/selected/stable version helpers; version/model/metric/output: 55 tests PASS. |
+| T002 | `47233b0` | NuGet-local descriptor reader, exact bytes, bounded strict JSON/XML primitives; input plus scoped Ruby regressions: 75 tests PASS. |
+| T003 | `3717fa0` | Two-pass complete XML project parser, conservative literal scope and immutable declarations; project/input/version: 47 tests PASS. |
+| T004 | `ab54103` | Whole schema-1 lock framing and F2 structural rejection, closure separated from population; foundation suite: 69 tests PASS. |
+| T005 | `efa6950` | Version-1 supplied witness, exact byte/context/SDK binding, private origin/hash authority; foundation suite: 85 tests PASS. |
+| T006 | `677ded3` | Internal source composition, F1 canonical minimum association, staged evidence, availability and typed authority pairs; foundation suite: 98 tests PASS. |
+
+Behavioral tests accompany every task. Real cap/cap+1 witnesses include local
+bytes, JSON depth/values/strings/digits, XML depth/elements/attributes, 10,000
+references and 50,000 lock/witness entries. The synthetic fixture README explains
+supplier assertions and their limits. The local reason-trigger table enumerates
+17 source/dependency reasons and checks their reachable triggers; public reasons
+and composed final acceptance remain later-task obligations. Pre-freeze author
+inspection corrected empty present selection to unsupported syntax, distinct from
+absent selection, before the T006 commit.
+
+Phase-boundary command `python -m unittest discover -s tests`: **499 tests PASS**.
+Focused command `python -m unittest discover -s tests -p 'test_nuget*.py'`:
+**98 tests PASS**. `git diff --check` passes; tree clean at the implementation
+freeze. All tests are offline. No public activation, transport/worker, external
+target, producer/package-manager execution, archives, configuration/cache/credential
+inspection or push occurred. P1 remains preserved for its authorized later phase;
+no deadline-enforcement implementation is claimed here.
+
+### Frozen implementation checkpoint
+
+**Candidate commit:** `677ded3545b513d9b121ca6d1c9a70866059e6f2`.
+**Baseline:** `d5e9472644a4d5478ca0dcd45b1480278f18bd5e`.
+This commit preserves all reviewed implementation/test bytes. No code/test repair
+will occur after commissioning. This execution record is author evidence, not K1
+approval. Fresh non-author review will inspect F1/F2, complete scope, whole-source
+precedence, safe input limits, local authority/no-call proofs, evidence omission
+and T001 default-record compatibility. Parent reconciliation must cover interactions
+and validate findings rather than vote on slices. Under the approved task graph,
+REVISE requires separate bounded correction authorization; INCOMPLETE remains
+incomplete review evidence, not an inferred product defect.
+
+Prior run 006-0007 is recorded exactly once in `06e16ce` from its machine handoff,
+with authorized human status enrichment and account continuity readings 18/19.
+Its original runtime note and confounding classification and earlier ledger bytes
+are preserved; no credit delta is stored. Current run 006-0008 and children are
+not appended. Its complete handoff will be written outside Git before reporting.
+
+
+### Independent K1 review and parent reconciliation
+
+Three fresh non-author reviewers were commissioned only after freeze, with
+`fork_turns="none"`, no model/effort overrides, separate primary scopes and the
+exact candidate/baseline. They directly inspected authority/code/tests, recovered
+truncated reads and independently verified approved digests and frozen bytes.
+No current sibling conclusions were shared before all reports completed. None
+changed files, delegated, committed, used network, accessed external targets or
+executed producers. Actual child settings/resource telemetry remain unavailable.
+
+| Reviewer | Completed primary coverage | Completion / verdict |
+|---|---|---|
+| `/root/k1_scope_review` | Version concepts, complete project population, F1/F2, whole-lock structure, context/closure, precedence, evidence omission and local limits | COMPLETE / REVISE; one material finding |
+| `/root/k1_authority_review` | Safe reader and all local bounds, whole witness/context/baseline, origin/hash authority, denominator/privacy/no-call/no-execution protections | COMPLETE / REVISE; same material finding independently reproduced |
+| `/root/k1_contract_review` | Default model compatibility, source availability/empty states, local reason witnesses, staged evidence, candidate/authority pairing, internal activation boundary and maintainability | COMPLETE / APPROVE in assigned slice; no finding |
+
+Independent scope/authority reviews each ran the 98-test foundation suite; scope
+also ran 3 model, 13 metric and 30 output tests. Contract review independently ran
+the 98-test foundation and full 499-test suites. All passed, as did diff checks.
+Passing tests did not cover the boundary below and do not override its reproduction.
+The parent inspected all completed reports and independently reproduced Direct
+and Transitive variants. The two reports establish one overlapping finding, not
+two separate defects. The positive compatibility slice does not overrule it.
+No assigned review obligation remains unaudited; later-phase obligations remain
+pending by design rather than making this K1 review incomplete.
+
+#### K1-F1 — Lock version limits fail to reject the whole source
+
+**Disposition: VALIDATED MATERIAL FINDING; OPEN.**
+**Owners:** T004 whole-lock acceptance; T006 composed failure precedence.
+**Affected obligations:** local version/component bounds, AC-33 and local AC-31;
+whole-source availability/no-capability behavior.
+
+`libyears/nuget_lock.py` `_entry` checks `resolved` only for string type. It does
+not enforce the plan's 256-character version and 32-digit numeric-component
+limits. T001's selected helper correctly rejects overflow, but T006 then converts
+it into dependency-level `unsupported_lock_evidence`; Transitive entries do not
+reach that helper and can leave unrelated Direct authority available.
+
+Approved plan's local-bound table and whole-source classification, and spec S8,
+require lock resource overflow to reject the entire source as
+`unsupported_lockfile_format`. This differs from ordinary unsupported selected
+syntax, which remains an isolated `unsupported_lock_evidence` result. No new
+product decision is needed to identify that distinction.
+
+**Exact offline witnesses**, using an otherwise accepted project, schema-1 lock
+and correctly byte-bound supplied witness:
+
+- Direct `resolved = "1.2+" + "a" * 253` (257 characters), or
+  `resolved = "1." + "9" * 33`: actual source errors empty, one dependency
+  `unsupported_lock_evidence`, N=1, measurement available. Parent reproduced both.
+- Add a Transitive Helper with `resolved = "1.0-" + "a" * 253` or
+  `resolved = "1." + "1" * 33` and a string hash to the otherwise valid direct
+  fixture: actual source errors and dependency failures empty, one Direct
+  LocalAuthority retained, N=1, measurement available. Parent reproduced both.
+
+**Expected in all cases:** whole-source `unsupported_lockfile_format`, known N
+retained, measurement unavailable, no dependency rows or authority capabilities.
+Existing tests exercise general strings/counts/framework bounds but miss these
+stricter lock-selected-version limits and their composed source outcome. The
+candidate and tests remain unchanged so the failure evidence stays reproducible.
+
+A later bounded correction must enforce consuming lock-version resource bounds
+before association, add Direct and Transitive boundary/overflow witnesses and
+whole-source/precedence/no-capability assertions, preserve F1/F2 and isolated
+ordinary unsupported syntax, freeze the corrected candidate, and obtain fresh
+focused non-author verification plus relevant regressions. This describes the
+closure obligation; it does not authorize or perform the correction.
+
+### Final K1 disposition — current implementation gate
+
+**Review completion: COMPLETE. K1 verdict: REVISE.**
+**Validated material findings: 1, K1-F1 OPEN. Foundation checkpoint: NOT APPROVED.**
+T001–T006 have reviewable implementation commits and passing executed tests;
+the pre-freeze author completion claims above do not establish final acceptance.
+T004's consuming-version bound and T006's composed outcome require correction;
+AC-33/local AC-31 are not marked complete. No specification checkbox or approved
+spec/plan/task bytes are changed. Other assigned reviewed surfaces established
+no additional material finding; final feature acceptance is not claimed.
+
+**Next gate: SEPARATELY AUTHORIZED BOUNDED K1 CORRECTION AND FRESH VERIFICATION.**
+The approved task graph explicitly requires separate bounded correction
+authorization after REVISE. The commissioning prompt permits correction only
+when the workflow/task authority clearly allows it; it does not override that
+requirement. Therefore no correction cycle occurs in this run. Stop before T007;
+no adapter, P1 worker, external validation target, Feature 007 or push is begun.
+Historical F1/F2/P1 remain preserved; K1-F1 is a new implementation finding, not
+reopening the approved product decisions. Useful live yield/hash-domain fitness
+remain unverified non-findings. The full offline suite's 499 PASS and focused
+98 PASS remain valid test results, with the uncovered boundary explicitly retained.
