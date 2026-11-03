@@ -17,7 +17,8 @@ collaboration, but this repository record remains durable.
 
 ### SELECTED
 
-Approved for specification or active SDD work.
+Human-selected product direction in discovery, approved for specification, or
+active SDD work. Selection alone does not approve the next SDD gate.
 
 ### EXPLORE
 
@@ -60,7 +61,6 @@ An evidence-backed problem or learning opportunity is required.
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
-| [NuGet retained dependency evidence](#7-nuget-retained-dependency-evidence) | EXPLORE | .NET / NuGet | Bounded evidence-fitness discovery |
 
 ### 3. Project-root discovery/listing
 
@@ -172,13 +172,18 @@ aggregation semantics remain unclear.
 - [Feature 003 discovery](specs/003-yarn-lock-evidence/discovery.md)
 - [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
 
-### 7. NuGet retained dependency evidence
+## Selected Work Moved into SDD
 
-**State:** EXPLORE
+### 7. Bounded NuGet selected-version evidence
+
+**Selection state:** SELECTED as Feature 006 on 2026-11-03 by explicit human
+product authority; discovery only. Specification readiness is NO pending the
+product decisions in the canonical discovery. No specification, assets-versus-lock
+choice, planning, implementation, or product dotnet execution is approved.
 
 **Area:** .NET / NuGet
 
-**Contributor fit:** Bounded evidence-fitness discovery
+**Contributor fit:** Bounded product discovery and independent review
 
 **Opportunity:** Measure direct NuGet dependency age if supplied project/context
 evidence can establish exact selected versions and authorize public metadata.
@@ -193,11 +198,14 @@ selection artifacts alone do not establish source authority. No age/publication
 measurement was performed; date semantics and an accepted source trust contract
 remain unresolved.
 
-**Why this state:** A concrete workflow signal and documented retained-evidence
-paths now have empirical declaration/selection/context witnesses. A bounded
-static/supplied-evidence direction is a HUMAN FEATURE 006 SELECTION CANDIDATE,
-subject to human scope, provenance/trust and publication-policy decisions.
-EXPLORE is retained until human selection; Feature 006 remains unselected.
+**Why this state:** The human selected BOUNDED NUGET SELECTED-VERSION EVIDENCE,
+grounded in the completed ten-project Phase 2 comparison. Libyears consumes
+supported declaration and retained/supplied selection evidence; it does not
+perform restore or package resolution. This supersedes EXPLORE and the historical
+unselected disposition without rewriting the pre-selection experiment. Artifact,
+scope/coherence, source-trust and publication-policy recommendations still require
+human decisions before specification. Arbitrary generated artifacts and public
+package-name coincidence do not supply authority.
 
 **Success signal:** An authorized project/lock or project/assets pair with
 independently established direct population, producing context and safe
@@ -210,8 +218,7 @@ or unsupported assumptions about selection, source authority or dates.
 **References:**
 
 - [NuGet / OASim pre-selection discovery](discovery/nuget-oasim.md)
-
-## Selected Work Moved into SDD
+- [Feature 006 discovery](specs/006-nuget-selected-evidence/discovery.md)
 
 ### 1. Bounded RubyGems lock-snapshot support
 
