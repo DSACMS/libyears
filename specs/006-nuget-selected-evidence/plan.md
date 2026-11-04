@@ -1,5 +1,46 @@
 # Feature 006 Technical Plan: Bounded NuGet Selected-Version Evidence
 
+## Current H3 reconciliation — 006-0015
+
+The independently approved corrected specification is frozen at `2deb864`,
+SHA256 `57874690885a894f0ada14a263722e499add92c4cc7771d0862c2260d4d9cbe6`.
+This supplement governs H3; the original plan text and original specification
+hash below retain the reviewed architectural baseline and its history.
+H1/H2/H4, F1/F2/P1 and subsequent closed findings are unchanged.
+
+S4 requires native producer-time package identity/selected version/actual origin/
+content hash PLUS contemporaneous producer attestation binding that evidence to
+exact project/lock bytes, framework and the existing baseline assertions. In the
+unchanged version-1 envelope, `packages` carries native-derived package assertions;
+`coherent_snapshot`, context/digests, producer and baseline carry the accepted
+contemporaneous attestation. Package containment and ID/version/hash link them.
+The producer must retain auditable evidence for both classes and that linkage.
+A later faithful serialization may preserve an existing event attestation; it
+cannot create a missing historical attestation. No extra JSON fields, native
+artifact reader, event-authentication algorithm or trust mechanism is planned.
+The consumer validates supplied assertions, not chronology independently.
+
+AC-13 and AC-16 now have two verification layers: retain the existing offline
+schema/binding/origin/hash witnesses, then independently audit the prospective
+producer bundle and replay negative under [release-validation.md](release-validation.md).
+Those event obligations belong to required T016/K5 evidence, not synthetic parser
+proof. Historical K4 evidence remains valid for its original obligations.
+
+**Implementation impact:** local parsing, LocalAuthority, registry gates, worker,
+metric and schema-v3 mechanisms need no change under accepted testimony. Current
+full conformance is NOT established: `output.py` trust explanation and CLI option
+help omit the refined meaning required by S4. A bounded T012/T013 correction must
+explain native provenance plus contemporaneous attestation and replay prohibition,
+with corresponding output/help assertions, README/SPEC and fixture guidance.
+No temporal-proof parser, new failure reason or schema change is authorized.
+Freeze that correction and obtain focused independent review with relevant
+regressions before claiming closure. This run does not implement it.
+
+T016/K5 remain incomplete; T017/K6 cannot proceed. The next authority gate is
+explicit execution of that bounded reporting/documentation correction, followed
+by separately authorized prospective production and retained-evidence validation.
+No producer event is authorized by this supplement.
+
 ## Status and authority
 
 Candidate drafted in fresh run `006-0005`; P1 corrected in fresh run

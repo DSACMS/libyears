@@ -379,3 +379,30 @@ only with the explicitly authorized human post-run session/model/provider/effort
 agent-version, reported-runtime and two account-level credit readings. The
 runtime classification and runtime note remain verbatim; the readings are
 continuity observations, not per-run billing. No credit delta is stored.
+
+
+## Human H3 refinement and empirical reconciliation — 006-0015
+
+On 2026-11-04 the human approves two bound evidence classes for H3: native NuGet
+package provenance from the producing dependency operation/context (identity,
+selected version, actual origin and content hash), PLUS contemporaneous
+producer-side attestation binding that native evidence to supplied project and
+lock snapshots, framework/context and the bounded contract's required influence
+assertions. The attestation supplies event/context claims native metadata lacks.
+Retrospective replay alone MUST NOT satisfy H3, even with identical historical
+project/lock bytes; it proves neither original event/context equivalence nor
+absence of original unsupported influences. A new event can qualify prospectively
+only on its own evidence and attestation, never on behalf of a historical event.
+
+This refines only H3. H1/H2/H4, public namesake prohibition, local/public hash
+agreement, no resolution/runtime package-manager execution, metric and all scope
+exclusions remain binding. The corrected spec and independent disposition are
+in spec.md/reviews.md; original decisions and empirical records above remain.
+
+Historical OASim has no required contemporaneous producer attestation. 006-0013
+therefore correctly left T016 incomplete. 006-0014 demonstrates useful isolated
+native source/hash retention, but no equivalence to OASim's historical producer
+context. Its overall D/BLOCKED result and execution deviation remain; replay
+cannot make OASim retrospectively conformant. No historical records are rewritten.
+Prospective production requires new exact authority described in release-validation.md;
+no producer event or OASim access/modification occurs in this run.

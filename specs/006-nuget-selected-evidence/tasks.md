@@ -1,5 +1,43 @@
 # Feature 006 Implementation Task Graph
 
+## Current H3 obligations and execution state — 006-0015
+
+The corrected [specification](spec.md) at `2deb864` and the current H3 supplement
+in [plan.md](plan.md) govern the refinement; original frozen hashes and pending
+language below describe the original task-graph candidate. See [reviews.md](reviews.md)
+for completed implementation history and the current gate. Preserve all T/AC/K
+identifiers and historical task/checkpoint completions.
+
+- T005/T006: existing version-1 assertion, byte/context, origin and hash mechanisms
+  remain applicable. No native artifact reader or chronology authentication is
+  required. Their executed synthetic witnesses do not prove a real producer event.
+- T012/T013: supplemental bounded correction PENDING. Update `output.py` trust
+  explanation, `cli.py` provenance help, corresponding output/help assertions,
+  README.md, SPEC.md and synthetic fixture guidance to explain both evidence
+  classes, contemporaneity and replay prohibition. Preserve JSON/schema/reasons,
+  activation and all metric/security semantics. Freeze, focused non-author review,
+  parent validation and relevant output/CLI/compatibility regression checks are
+  required. Product code changes are not authorized in run 006-0015.
+- T014/K4: historical offline approval is preserved. Reconcile supplemental
+  reporting witnesses after the bounded correction; no newly claimed all-36
+  acceptance from old test counts.
+- T015: prospective preparation is extended in [release-validation.md](release-validation.md),
+  including exact production-vs-consumption authority, retained bundle and checks.
+- T016/K5: INCOMPLETE / NOT APPROVED. AC-13 adds independent audit of native
+  evidence plus contemporaneous attestation and their package/event/byte/context
+  binding. AC-16 adds retained 006-0014 as the historical replay negative; it may
+  not supply original-event attestation. Existing deterministic AC-13/16 witnesses
+  remain necessary but do not close these added event-evidence obligations.
+- T017/K6 remain blocked by required K5 and current correction/evidence gaps.
+  T018 and Feature 007 are not authorized.
+
+All original predecessors remain mandatory. A new prospective producer event
+requires separate exact target/tooling/source/input/write/capture authority;
+resuming T016 separately requires a conforming retained bundle, explicit supplier
+acceptance and consumer target/read/network/evidence-channel authority. No replay
+can retrospectively qualify historical OASim. This graph update grants neither
+execution permission nor a waiver of missing evidence.
+
 ## Status and governing authority
 
 Candidate drafted and self-audited in fresh run `006-0007`, 2026-11-03.

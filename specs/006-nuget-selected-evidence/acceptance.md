@@ -1,5 +1,31 @@
 # Feature 006 offline acceptance evidence — T014
 
+## Current-contract qualification — 006-0015
+
+The original executed T014/K4 record below remains historical evidence against
+its then-approved contract; no test result or review is erased or rerun by this
+reconciliation. Corrected S4/AC-13/AC-16 are independently approved at `2deb864`.
+All 36 AC identifiers remain; 34 AC wordings are unchanged.
+
+| Refined obligation | Existing evidence retained | Additional evidence still required |
+|---|---|---|
+| AC-13 | Explicit version-1 envelope, exact-byte/context/baseline and package binding tests below | Independently audited native producer-time package provenance plus contemporaneous attestation, bound to the event/project/lock/framework/influences; prospective bundle under release-validation.md |
+| AC-16 | Blanket/config/cache/mapping/identity/hash-only no-authority negatives below | Preserve 006-0014 D/BLOCKED as replay negative: useful native source/hash evidence cannot attest OASim's historical producing context; no fabricated replay-derived historical envelope |
+| S4 trust explanation / AC-30 collateral | Original correspondence and supplier-limitation tests below | Bounded T012/T013 reporting/help/docs correction and focused independent verification, pending explicit execution authority |
+
+The consumer's existing accepted-testimony checks remain applicable; they do not
+independently prove chronology. No synthetic fixture is promoted to an actual
+attestation. No new schema or product parser is required by this refinement.
+Current full implementation conformance and refreshed acceptance are pending
+the reporting correction and event evidence; historical offline 36/36 is not a
+claim of current-contract or live validation completion. H1/H2/H4, closed
+findings, metric and compatibility evidence remain intact.
+
+Historical OASim has no required contemporaneous attestation. 006-0013 correctly
+left T016 incomplete; 006-0014 established no original-context equivalence and
+remains the blocked negative empirical witness. T016/K5 remain incomplete and
+unapproved; T017/K6 cannot proceed. The prospective procedure is prepared only.
+
 Author evidence in run `006-0012`, based on approved K3 at `cdfef4c`.
 This record consolidates executed witnesses; it is not independent K4 approval,
 real-root validation, convergence, release approval or a live measurement claim.

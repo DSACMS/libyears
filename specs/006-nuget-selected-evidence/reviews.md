@@ -2156,3 +2156,162 @@ Final checks cover unchanged frozen authority/evidence, prior ledger prefix and
 44-field/unique-ID invariants, Markdown whitespace and git diff --check. No product
 test result is invented. Documentation/ledger edits remain uncommitted; no local
 commit or push is made under this experiment prompt.
+
+## H3 authority refinement and specification review — 006-0015
+
+**Date: 2026-11-04. Specification review COMPLETE / APPROVE.**
+Starting clean HEAD: `052f8b501da9d6b81efc02c047225aea2af47a9c`.
+The human expressly approves the two-class H3 model and replay prohibition,
+independent specification review, necessary downstream reconciliation, prospective
+procedure preparation and coherent local commits. No producer event, OASim access
+or modification, product-code implementation, push or Feature 007 is authorized.
+The human also identifies an intervening unnumbered recovery run; no account-credit
+continuity is inferred. 006-0014 is already recorded once and is not appended again.
+006-0015 itself is not appended.
+
+### Frozen specification and self-audit
+
+Corrected specification SHA256:
+`57874690885a894f0ada14a263722e499add92c4cc7771d0862c2260d4d9cbe6`.
+Frozen before non-author commissioning, then preserved unchanged in `2deb864`.
+Only AC-13 and AC-16 wording changes among 36 stable identifiers. Mechanical
+comparison to starting HEAD confirms S1/S2/S3/S5/S6/S7/S8 byte-identical; S4 and
+authority/outcome/self-audit prose express the approved refinement. The author
+re-audits all 36 obligations with coverage recorded in spec.md. This is not
+self-approval or a new executed acceptance claim.
+
+H3 now requires native evidence from the producing NuGet operation/context for
+package identity, selected version, actual origin and content hash PLUS a
+producer-side attestation created contemporaneously with that event, binding
+native package evidence to exact project/lock bytes, framework and required
+baseline/influence assertions. Native evidence and event testimony are distinct;
+their linkage must be independently auditable. Retrospective replay alone cannot
+supply original-event/context/absence-of-influence authority. The version-1
+accepted-testimony envelope remains, without chronology authentication, new raw
+native product input, signatures or new schema fields.
+
+### Fresh independent specification review and parent validation
+
+One fresh non-author `/root/h3_spec_review`, `fork_turns=none`, no model/effort
+overrides, reconstructs authority/evidence directly and recovers truncated reads.
+It verifies the frozen candidate and reads the relevant implementation for impact.
+No author conversation is inherited. No file mutation, test/producer execution,
+network, external target access or further delegation occurs. Actual child
+model/effort/resource telemetry is unavailable; no child observation row is made.
+
+**Review completion COMPLETE. Verdict APPROVE. Blocking specification findings: 0.**
+The reviewer examines all 36 ACs: 01–12 activation/scope/F1/F2/lock unchanged;
+13 supplies the two bound classes and retained-event audit; 14/15 source failure
+and no namesakes unchanged; 16 adds the replay negative; 17/18 preserve local/
+public hashes; 19–24 H4 dates/listing/versions unchanged; 25–28 metric/availability/
+siblings unchanged; 29/30 schema/output obligations retained; 31–36 reasons,
+no execution, P1/bounds/privacy/exclusions preserved. H1/H2/H4 and closed
+F1/F2/P1/K1-F1/T008-V1/K2-M1/K3-C1 remain intact.
+
+Parent validation checks S4's explicit event/package/byte/context linkage,
+replay rule and trust limitation against the human decision and the complete
+baseline diff. Existing `nuget_provenance.py` validates envelope/types/digests/
+context/baseline and constructs LocalAuthority only after exact singleton public
+origin and decoded local hash agreement. It does not authenticate chronology;
+S4 expressly preserves accepted testimony rather than demanding that mechanism.
+Public identity/hash verification still precedes dates. No new consequential
+product question or material implementation redesign is established.
+
+**Validated downstream finding:** output.py trust explanation at lines 451–454,
+cli.py provenance help at 46–47, README witness guidance, SPEC's NuGet authority
+paragraph and fixture guidance omit the newly explicit two classes/contemporaneity/
+replay meaning. S4 requires the CLI to explain this trust meaning. This is a
+bounded T012/T013 reporting/documentation correction, with corresponding tests
+and focused independent verification; it is not a defect in the corrected spec
+or authorization to implement product strings now. Parent directly reads those
+surfaces and validates the omission. Existing acceptance rows 13/16 prove original
+offline checks, not newly explicit real-event chronology; updated mappings must
+retain that distinction. Current full implementation conformance is pending,
+although existing parsing/local/public gates need no behavior change.
+
+### Downstream reconciliation and prospective candidate freeze
+
+Following specification APPROVE, discovery records the new human H3 decision;
+plan/tasks/acceptance/release-validation receive controlling supplements, preserving
+all original reviewed prose/digests as historical baselines and all T/AC/K IDs.
+Original validation-006-0013.md and producer-evidence-006-0014.md remain byte-unchanged.
+The prospective procedure requires event -> native evidence + contemporaneous
+attestation -> close/freeze -> later read-only consumer -> independent K5.
+It defines the minimum bundle, exact byte/native/event/context/hash linkage,
+required influence assertions, source-safety precondition, public hash/date checks,
+producer versus consumer authorities and truthful yield/absence accounting.
+Prepared only: no operation, capture plan execution or new target is selected.
+
+Historical OASim lacks contemporaneous attestation; 006-0013 correctly found T016
+incomplete. 006-0014 retains useful isolated native package source/hash evidence,
+not equivalence with historical producer semantics. Overall D/BLOCKED and its
+execution deviation remain a negative empirical witness; no retrospective envelope
+or attestation may make historical OASim conformant. Prospective OASim would need
+new exact event/context/tool/source/input/write/capture and later consumer authority.
+
+Downstream candidates frozen for independent consistency/procedure review:
+
+| Artifact | SHA256 |
+|---|---|
+| discovery.md | `23b6be427f2ec99e7680ecc6bbc5d1b6cfbd5047d9e0dcbcc33d29497afbabb9` |
+| plan.md | `63783bce6f0f661fc3fc73b0cb487a8bc796e070a8800491e62727494a748a30` |
+| tasks.md | `06b18582a7aa3cd107b52d9f6ff43bc3246e7dae3ee726c72f3dbde45a784802` |
+| acceptance.md | `546d6de4e0877b17a9ae895a2c52fbd49586e4c02ace0b588400db798f8d5f06` |
+| release-validation.md | `69aefee27feb9f79bdec5e5d41de8f2fbaf08f60676a80e54f4d4a720145f54c` |
+
+Parent focused regression: `python -m unittest tests.test_nuget_provenance`,
+**16 PASS**. This confirms existing mechanisms only; no real event/attestation or
+prospective validation is claimed. No product code/tests/public docs change in
+this run. Whitespace and AC/unchanged-section checks pass. Full suite is not rerun
+for authority/evidence documentation. Fresh downstream review disposition and
+final checks follow separately; no implementation/validation approval is inferred
+from this author reconciliation.
+
+### Independent downstream review and final gate disposition
+
+Fresh non-author `/root/h3_downstream_review`, `fork_turns=none` without overrides,
+independently verifies the frozen spec and five downstream digests, reads authority,
+supplements and prospective procedure, and returns **COMPLETE / APPROVE, no material
+findings and no new consequential question**. This is consistency/procedure review,
+not a second full specification/code audit. It changes no files, runs no tests or
+producers, accesses no target/network and does not delegate. Actual child settings
+and resource telemetry remain unavailable.
+
+Parent validates that the unchanged historical bodies remain present in all five
+supplemented artifacts; original review history remains an exact prefix. The
+0013/0014 empirical records and ledger remain byte-identical to starting HEAD.
+The prospective bundle links native records, contemporary testimony, exact inputs,
+context and content before event closure; later consumer use remains read-only.
+New exact production/source/input/write/capture and consumer authority are explicit,
+not granted here. The pending reporting correction and required K5 are not waived.
+All local Markdown file targets resolve; 36 AC identifiers remain unique, only
+13/16 wording changed, and the 44-column ledger has unique IDs with 006-0014 once
+and 006-0015 absent. Diff/whitespace checks pass. One initial integrity-check
+assertion expected entire files to remain contiguous across inserted supplements;
+the corrected check verifies unchanged title/body separately. No historical bytes
+were changed to satisfy it.
+
+**Corrected specification: APPROVED. Downstream reconciliation/procedure: APPROVED.**
+**Existing implementation: core acceptance/authority mechanisms preserved; full
+current conformance PENDING bounded T012/T013 trust-explanation correction and
+verification. No implementation redesign or schema change is required.**
+**T016/K5: historical and current evidence INCOMPLETE / NOT APPROVED.**
+**T017/K6: cannot proceed before required prospective validation/K5 approval.**
+No feature convergence, live yield, hash-domain fitness or retrospective OASim
+attestation is claimed. Historical F1/F2/P1 and all later closed findings remain.
+
+**Next genuine authority gate:** explicit bounded T012/T013 correction execution
+for output/help/docs and corresponding regression assertions, freeze and fresh
+focused verification. After that, separately authorize the precise new producer
+event/capture plan and later consumer-validation target/read/network/channel;
+retain both bound evidence classes contemporaneously, end/freeze the event, then
+perform required T016/K5 retained-evidence validation. This run stops here.
+
+The specification correction is committed as `2deb864`; a second coherent local
+Conventional Commit records reviewed downstream reconciliation and this disposition.
+The final commit is followed by clean-tree/digest/whitespace verification. No product
+code/test or unrelated maintenance changes, producer/target execution, OASim write,
+Feature 007, release/tag or push. The complete 44-field handoff is written outside
+Git to `/tmp/libyears-observations/006-0015.json` before final reporting, with
+unavailable run-start/model/credit/child telemetry blank. Git writes required
+sandbox escalation; no credits_before continuity or active runtime is inferred.
