@@ -2015,3 +2015,144 @@ exact. No credit delta is derived. Current006-0013 and its reviewer are not
 appended. Git index writes require sandbox escalation, retained as runtime context.
 The complete current-run handoff is written outside Git before final reporting.
 No push, release/tag, unrelated CLI table work or synthetic-canary maintenance.
+
+## Native producer experiment and authority correction — 006-0014
+
+**Overall outcome D — EXPERIMENT BLOCKED. T016 INCOMPLETE; K5 NOT APPROVED.**
+Starting clean HEAD `0ee799b3377ead78ace3aba07e0671b860f6d1ed`.
+The human authorizes a bounded installed-.NET-10 producer experiment for the same
+ten OASim candidates, public nuget.org, isolated temporary state and two fresh
+non-author reviews. This exception never transfers to the libyears product.
+No product/specification/plan/task or release-procedure change is authorized.
+
+[Producer evidence](producer-evidence-006-0014.md) preserves documentation URLs,
+frozen static expectations, selected leaf project/framework, exact commands and
+environment, native artifact structures, every witness-field mapping, integrity,
+limitations and the execution-scope deviation. Select MatchRunProfileUpdater,
+supported net10.0/N1 without project references; the supported Profiling candidate
+has two references. Other candidates remain as classified in 006-0013.
+
+### Actual execution, evidence and unmet precondition
+
+The source condition required determining source safety from bounded permitted
+configuration **before restore**, stopping if public-only constraint could not
+preserve target semantics/configuration. The agent instead restored exact-byte
+temporary project/lock copies with directory-import discovery disabled and an
+experiment-only public configuration. Original evaluated-context equivalence was
+unestablished. That substitution is an execution-scope deviation: original-input
+byte equality and unchanged target files do not prove original restore semantics.
+The agent should have stopped at that mandatory precondition. Useful replay
+output does not retroactively supply authority or complete the requested experiment.
+
+SDK10.0.403 / reported NuGet7.9.0-rc.2412 restored the temporary replay. Initial
+sandbox attempt failed DNS/NU1301; identical argv with network escalation exited0.
+The successful log reports one public GET/OK/installation. Native metadata v2
+retains canonical supplying source and a decoded64-byte SHA512 matching the
+pre-existing lock for Microsoft.Win32.Registry5.0.0. Assets4/dgspec1/cache2 link
+that extraction to the temporary sole-framework context. No complete native
+baseline/coherence testimony or original-context equivalence is established.
+No witness, product scan, public catalog/date/hash-domain validation or metric
+comparison ran. A partial native-evidence result does not supersede overall D.
+
+OASim revision stays `1e937015e1d242fee5597ea0fbdc4cd5c983f101`.
+Selected original project/lock exact-byte manifests and selected-directory Git
+status, including the pre-existing untracked lock, match before/after. The replay
+copies also match. No whole-tree invariance is claimed. No OASim configuration
+or source was written, application built/run/tested, private feed contacted or
+credential operation invoked. No workload install/update was invoked. SDK/log
+evidence is not an OS-wide trace of every side effect.
+
+### Freeze, two independent audits and parent finding validation
+
+Initial candidate SHA256
+`3c5b1eb9c6e043e0f709ead95ac18e02991ba873f09b054e07f787b767ea34a6`;
+private freeze.json SHA256
+`a3b7221a7380a6ba2c8b66ffe4c0b221141e53079fd18efea9171d1c2a81ff13`.
+Exact reviewed candidate bytes remain in the private frozen-candidate-1.md.
+Evidence root: `/tmp/libyears-observations/006-0014`, outside OASim and Git.
+
+| Fresh non-author reviewer | Independently completed coverage | Final initial-candidate verdict |
+|---|---|---|
+| /root/producer_semantics_review (A) | Microsoft/NuGet semantics, cache/extraction/hash/source meaning, isolation, commands/logs and witness inference; direct raw evidence and all frozen bindings | COMPLETE / REVISE, A1 authority precondition |
+| /root/witness_contract_review (B) | Complete Feature006 authority, every strict witness field, H3/T016 fidelity, raw native/context evidence and consumer schema/placement | COMPLETE / REVISE, B-A1 same authority/outcome finding |
+
+Both used fork_turns=none without model/effort overrides; actual child settings
+and resource telemetry are unavailable. They received no current sibling report.
+Their first assessments approved truthful partial-native accounting but did not
+have the verbatim commissioning source condition. Parent supplied that exact
+condition to each after A identified the missing-authority caveat. Both appended
+superseding REVISE supplements. The original assessments and supplements remain
+in reviewer-a.md/reviewer-b.md; they are not silently replaced with approvals.
+No review executed producers/scans/target code or inspected package payloads.
+
+Parent validates the overlapping finding as **one material experiment-authority
+finding**, not two product defects. The frozen expectations explicitly excluded
+original imported/ancestor defaults; neither that capture nor native output proves
+original source/evaluation semantics. The commissioning STOP condition therefore
+was unmet before execution. Both positive native-evidence slices remain valid
+within replay scope but cannot overrule the authority finding. This is not a
+majority-vote disposition or proof of actual private-feed access.
+
+### Bounded documentary correction and second freeze
+
+The corrected artifact identifies D as the overall outcome, records the actual
+deviation and should-have-stopped condition, confines B to narrower empirical
+yield, and stops all further producer work. No approved authority, raw evidence,
+consumer semantics or witness assertions change. The initial frozen version is
+preserved before correction; correction does not authorize prior execution.
+Corrected candidate SHA256:
+`827234703338388105a1559d50d25d1df6d0eea9c176714d05299feb29f2879e`.
+Private freeze-2.json SHA256:
+`3d4a18cb25cc534f47a2e93c27d88d6979fcf50a9f0b15670bd9ffa422447abc`.
+Fresh focused non-author documentary verification is commissioned only after
+this second freeze; its disposition follows separately below. No rerun follows.
+
+### Observation and remaining gate
+
+Prior006-0013 is appended exactly once from its44-field handoff, enriched with
+human-supplied post-run session/model/provider/effort/version, reported runtime511
+and account-level continuity readings38/41. Original runtime note/confounding and
+all prior ledger bytes are preserved; no derived credit delta is stored. Current
+006-0014 and children are not appended. Current handoff remains outside Git.
+
+T016/K5 remain incomplete/unapproved; T017/K6/T018 cannot follow this record.
+Stop at HUMAN PRODUCT/AUTHORITY DECISION for any further source/input/producer
+boundary or added supplier testimony. No spec repair, policy weakening, target
+modification, Feature007, side-issue maintenance, push, release or tag occurs.
+Product tests are not rerun for this evidence/documentation change; previous631
+offline tests and36/36 AC evidence remain historical, not live validation.
+
+### Fresh correction verification, cleanup and final disposition
+
+Fresh non-author /root/authority_correction_verification, fork_turns=none without
+overrides, receives the exact commissioning source STOP condition and D definition.
+It directly reads authority, both complete reports/supplements, original/corrected
+candidates and raw evidence; all28 second-freeze bindings match independently.
+**Focused documentary audit COMPLETE / APPROVE; no remaining material finding
+in this correction scope.** Report: private correction-verification.md. Actual
+child settings/resource telemetry are unavailable. No producer/target/product
+execution, network or payload inspection occurs during verification.
+
+Parent validates the narrow three-range correction against the verbatim user
+condition and frozen command/expectations, plus raw native identity/source/hash
+and original scoped integrity comparisons. **A1/B-A1 documentary representation
+CLOSED. The historical execution deviation remains; approval cannot undo it.**
+The native evidence audits remain complete within their original limited scope;
+the focused correction review does not claim a second complete native audit.
+
+After all reviews, the agent removes E/producer, including downloaded/extracted
+package payload, caches, obj and temporary SDK state. It preserves exact selected
+project/lock and experiment config bytes in E/captured-inputs, plus raw native JSON,
+logs, freezes, command/environment records and all reviewer reports. cleanup.json
+records removal and retained input hashes. No package payload/cache is retained
+or committed; no target cleanup/write occurs. Both frozen candidate versions and
+review history remain inspectable. The corrected durable candidate stays unchanged.
+
+**Final D — EXPERIMENT BLOCKED. Required original-context source/semantics
+precondition unmet. T016 INCOMPLETE; K5 INCOMPLETE / NOT APPROVED.** No subsequent
+Feature006 gate begins. Further execution needs a source/input boundary meeting
+the original condition or explicit new authority; the agent does not choose one.
+Final checks cover unchanged frozen authority/evidence, prior ledger prefix and
+44-field/unique-ID invariants, Markdown whitespace and git diff --check. No product
+test result is invented. Documentation/ledger edits remain uncommitted; no local
+commit or push is made under this experiment prompt.
