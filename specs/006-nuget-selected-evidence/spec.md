@@ -4,7 +4,8 @@
 
 **Specification approval and next gate:** see the latest disposition in
 [reviews.md](reviews.md). Written on 2026-11-03 in fresh run `006-0002`;
-F1/F2 corrected and frozen for focused independent verification in `006-0004`.
+F1/F2 corrected in `006-0004`; human-approved H3 refinement corrected and
+frozen for independent verification in `006-0015`.
 This product/behavioral contract grants no permission to begin implementation.
 The frozen specification is not edited to record the subsequent review verdict.
 
@@ -12,7 +13,8 @@ The human selected Feature 006, accepted H1–H4 and authorized this draft. The
 [canonical discovery](discovery.md#human-decisions-and-reconciliation--006-0002)
 retains the original questions and binding decisions. H1 selects lock-only
 selection; H2 accepts conservative declarations and qualified supplier coherence;
-H3 requires bound asserted public origin and public hash agreement; H4 accepts
+H3 requires native NuGet package provenance plus contemporaneous producer
+attestation, bound together as specified in S4, and public hash agreement; H4 accepts
 first nuget.org receipt and greatest currently listed stable. No additional
 consequential product question was identified by reconciliation.
 
@@ -23,7 +25,8 @@ producer/supplier evidence. Libyears measures supported explicit direct
 PackageReferences only when all necessary evidence is available:
 
 ```text
-supported SDK-style project + packages.lock.json + supplier/context/origin witness
+supported SDK-style project + packages.lock.json
+  + witness binding native NuGet provenance and contemporaneous producer attestation
   -> direct PackageReference -> exact selected version
   -> authorized public nuget.org identity and matching content hash
   -> authoritative publication timestamp -> existing libyears age metric
@@ -220,14 +223,48 @@ locked-mode success nor updates/generates a lock.
 
 ## S4 — Supplied source authority and content identity
 
+H3 requires two distinct, bound evidence classes:
+
+1. **Native NuGet package provenance:** evidence from the producing dependency
+   operation/context establishes the relevant package identity, selected version,
+   actual supplying source/origin and content identity/hash. Retain the native
+   semantics needed for the public-source and content-hash checks below. Source
+   eligibility or an independently matching public package is not actual origin.
+2. **Contemporaneous producer attestation:** producer-side testimony created
+   during that dependency production event binds the native package provenance
+   to the supplied project identity/exact bytes, lock identity/exact bytes, sole
+   framework/context and required influence assertions below. It supplies the
+   producer-event/context claims that native package metadata does not retain.
+
+Together these form the supplied provenance authority. Package ID/selected
+identity/hash must link native evidence to the attested event, and the attestation
+must bind that event to exact project/lock bytes and framework. A digest alone
+proves neither event identity nor contemporaneity. Retained producer evidence
+must allow an independent audit of both classes and their linkage; native
+package evidence alone or an ungrounded later envelope is insufficient.
+
+**Replay prohibition:** a later restore may yield useful native source/hash
+observations for its own event. Retrospective replay alone MUST NOT satisfy H3:
+it proves neither the original event nor equivalent original semantics/context,
+absence of unsupported influences, or production of the supplied historical
+project/lock snapshot under the replay context. A genuinely new event may qualify
+only with its own contemporaneous attestation; it cannot attest an earlier event.
+
+The version-1 witness carries the native-derived package assertions and the
+contemporaneous context attestation under explicit supplier acceptance. This is
+an evidence/attestation obligation, not a requirement for libyears to authenticate
+producing history, inspect native artifacts/caches or execute a producer. No new
+product input format or cryptographic trust mechanism is introduced.
+
 The explicitly accepted witness has a versioned, bounded nonsecret logical
 contract. Its serialization mechanics belong to planning; these required meanings
 and rejection rules may not be weakened there. Required context evidence is:
 
 - witness contract version 1; selected project filename and sole framework;
 - SHA-256 digests of exact supplied project and lock bytes;
-- producer name/version and an explicit coherence assertion that they belong
-  to one producing snapshot;
+- producer name/version and an explicit contemporaneous coherence assertion that
+  the bound native package evidence, project and lock belong to that producing
+  event/snapshot;
 - a baseline assertion covering SDK identity/version and relevant imported,
   generated, ancestor and central inputs: supported explicit declarations are
   the complete population claimed here, with no unsupported membership/version,
@@ -239,7 +276,7 @@ origin assertion identifying `https://api.nuget.org/v3/index.json` permits looku
 Records for unselected/transitive packages confer no measurement authority.
 A missing package record is not inferred from a blanket public default.
 
-This contract accepts supplier testimony, including producer-reported observations;
+This contract accepts supplier testimony grounded in both evidence classes;
 it does not authenticate arbitrary JSON or certify historical downloads. The
 CLI must explain this trust meaning. Raw `.nupkg.metadata`, global caches,
 NuGet.Config/source mapping, configured source counts, namesakes and hashes alone
@@ -483,10 +520,10 @@ and implementation. None is marked satisfied by drafting this specification.
 - [ ] **AC-10:** A unique same-ID Direct with S3's coherent normalized numeric minimum yields the retained resolved version, including a version differing from its request. All five positive S3 examples associate; different minimum bounds never associate merely because their selected outcome agrees. No resolution or satisfaction check occurs.
 - [ ] **AC-11:** Missing Direct, S3 request disagreement (including its negative examples), absent selected value and unsupported selected string syntax use their specified individual reasons without lookup or transitive fallback. Duplicate/case-aliased keys and non-string selections reject the whole lock as invalid_lockfile; additional frameworks use unsupported_lockfile_format, never a dependency ambiguity reason.
 - [ ] **AC-12:** Extra Direct identities, project/framework disagreement and stale project/lock digest bindings reject context; mtime and Git presence cannot repair it.
-- [ ] **AC-13:** Explicitly supplied version-1 witness with required context/producer/baseline assertions binds exact project/lock bytes; a found-but-unselected witness confers no authority.
+- [ ] **AC-13:** Explicitly supplied version-1 witness binds native producer-time package ID/selected version/actual origin/content hash to contemporaneous producer attestation of exact project/lock bytes, framework and required producer/baseline assertions. Independently retained event evidence must substantiate both classes and their binding; native evidence alone or retrospective replay alone does not satisfy H3. A found-but-unselected witness confers no authority.
 - [ ] **AC-14:** Missing/rejected whole witness produces unavailable-source behavior; a known unsupported membership influence also invalidates the denominator.
 - [ ] **AC-15:** Missing/unknown/private/alternate/conflicting per-package origin produces unsupported_dependency_source and zero requests for that identity, even with a matching public namesake.
-- [ ] **AC-16:** A blanket public switch, configured source list, source mapping, cache marker or ID/version/hash alone cannot authorize public lookup.
+- [ ] **AC-16:** A blanket public switch, configured source list, source mapping, cache marker or ID/version/hash alone cannot authorize public lookup. Later replay source/hash evidence cannot substitute for the original event's contemporaneous producer attestation, even when supplied historical project/lock bytes match.
 - [ ] **AC-17:** Local lock/witness SHA-512 disagreement prevents lookup and yields content_hash_mismatch; invalid/missing hashes yield content_hash_unavailable.
 - [ ] **AC-18:** Authorized origin/local agreement permits public metadata lookup, but measurement requires public catalog ID/version and SHA512 hash agreement; public mismatch or missing hash is unmeasurable.
 - [ ] **AC-19:** Selected and latest dates use identity-bound catalog created as first nuget.org receipt; listing, catalog commit/update, restore and snapshot times never replace it.
@@ -529,3 +566,29 @@ The `006-0004` correction audit preserves H1–H4, the exclusions and all 36 AC
 identifiers; only F1/F2 association/failure obligations and their acceptance
 wording changed. This self-audit is not independent approval. The latest disposition and next gate are recorded in [reviews.md](reviews.md).
 Technical planning and implementation remain unstarted.
+
+
+### H3 refinement self-audit — 006-0015
+
+The human approves the two-class H3 model and replay prohibition above. Stable
+AC-01–36 identifiers remain; only AC-13 and AC-16 wording changes. S4 defines
+native package provenance separately from contemporaneous producer testimony,
+their package/event/byte/context binding and the independently auditable replay
+negative. No new serialized field or consumer history-authentication claim is
+implied. S1 explicit acceptance and S3 lock selection/coherence remain intact.
+
+All 36 obligations were re-audited: AC-01–12 preserve activation, bounded scope,
+F1/F2 and lock association; AC-13/16 express the refinement; AC-14/15/17/18 retain
+source availability, no namesakes and local/public hash gates; AC-19–24 preserve
+H4 dates, enumeration and version semantics; AC-25–30 retain metric, coverage,
+sibling compatibility and output; AC-31–36 retain reasons, P1/no-resolution,
+limits, privacy and exclusions. H1/H2/H4 and all closed findings are unchanged.
+This audit is not independent approval or new executed acceptance evidence.
+
+Historical OASim lacks the required contemporaneous attestation. The
+[006-0013 preflight](validation-006-0013.md) correctly left T016 incomplete.
+[006-0014](producer-evidence-006-0014.md) demonstrates useful isolated native
+source/hash retention, not equivalence to OASim's historical producer context;
+its overall blocked result remains the negative empirical replay witness.
+OASim cannot become retrospectively conformant by relabeling that replay.
+Approval and downstream disposition belong in reviews.md after independent review.
