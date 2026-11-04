@@ -1922,3 +1922,96 @@ verification. Later authorized implementation/checkpoint commits remain local.
 The current run is not appended; its complete44-field handoff is written outside
 Git before final reporting. Final integrity/whitespace/tree checks follow the last
 authorized local commit.
+
+## Bounded T016 preflight and independent evidence disposition — 006-0013
+
+**Date:** 2026-11-04. Starting clean HEAD:
+`d7b0360a9205dcc4ee77d04ad98a9236397a4622`.
+The commissioning human authorizes read-only OASim validation within ten named
+candidate project directories, objective witness selection, public NuGet metadata
+for a qualifying selection and bounded read-only revision/integrity metadata.
+Already-authorized internal gates and bounded correction/review cycles may
+continue; no target modification/execution, unrelated content, private feeds,
+credentials, witness reconstruction, Feature 006 expansion or Feature 007.
+Existing narrow CI push authority is retained but unused.
+
+### Actual preflight, integrity and missing evidence
+
+[Validation record](validation-006-0013.md) retains the complete bounded result.
+The agent inspects immediate candidate input filenames and reads only the twenty
+authorized project/lock inputs through the production scoped reader. Every lock
+passes schema-1 framing; two projects establish supported declarations:
+MatchRunProfileUpdater N=1 and MatchRunProfiling N=2, both net10.0. The other eight
+are rejected by the approved conservative declaration rules. No denominator is
+invented from recognizable fragments, and no parser expansion is proposed.
+
+**No candidate has an immediate supplied provenance witness. Zero qualify.**
+The only immediate JSON names are packages.lock.json and application settings;
+settings contents are not read. No arbitrary filename, historical producer
+observation, lock hash or public namesake is substituted for S4 assertions.
+There is consequently no strongest qualifying witness to select and no human
+project-selection question to relay. No scanner invocation or public lookup runs.
+
+All twenty inspected project/lock byte counts and SHA-256 fingerprints match
+before/after. Target HEAD and Git status restricted to those twenty paths also
+match; Git is supplemental, not a replacement for byte comparison. Independent
+standard-library XML inventory uses the same bounded bytes without evaluation.
+Private evidence stays outside target/Git, including input fingerprints and raw
+metadata. This proves only the inspected boundary, not whole-tree invariance.
+
+No independent measurement expectations, paired CLI reports/stderr/exits,
+scope/selection/origin/public-hash/created comparisons, arithmetic recomputation
+or observed yield are fabricated. The record explicitly marks these required
+obligations UNAVAILABLE/NOT EXECUTED. Qualification parser calls preceded the
+freeze and are not recast as independently expected-versus-observed scanner
+evidence. Previous offline acceptance36/36 and631 tests remain historical offline
+results, not a substitute for required real-root evidence or new test execution.
+
+### Freeze, independent review and parent reconciliation
+
+Frozen validation-record SHA-256:
+`2f1d242930aaa1595106ba4e7343f0a0fff4439039f1f5a90315a01d7b8edd1f`.
+The private frozen manifest binds seven preflight records and this exact candidate.
+Fresh non-author `/root/t016_gap_review`, fork_turns=none without overrides,
+reads complete current authority and directly inspects all evidence. No current
+sibling report or author conversation is inherited. Actual child settings/resource
+telemetry are unavailable. Its report is retained privately as
+`/tmp/libyears-observations/006-0013/independent-review.md`.
+
+**Bounded evidence-gap audit COMPLETE / APPROVE; material findings NONE.**
+The reviewer verifies all eight frozen bindings and four authority/procedure
+digests, independently repeats ten-directory bounded filename enumeration,
+matches all twenty safely read input fingerprints, reproduces all project/lock
+classifications and XML inventories, and verifies retained manifest/metadata
+equality. Its own read boundary excludes settings, references, ancestors,
+configuration/cache/credentials and unrelated content. No network, CLI/worker,
+producer/target execution, target writes or Git mutation occurs. Product tests
+are not rerun for documentation-only qualification evidence. Whitespace passes.
+
+Parent reconciliation checks the underlying inventories/manifests, production
+qualification boundary and missing-obligation accounting. Independent repeated
+qualification supports the absence of a suitable witness; it does not reconstruct
+an execution trace or approve missing live evidence. Candidate and frozen
+authority/procedure bytes stay unchanged after commissioning. No product defect
+or bounded implementation correction is established.
+
+### Current gate and observation baton
+
+**T016 INCOMPLETE. K5 evidence INCOMPLETE / NOT APPROVED.** Approval applies to
+the truthful gap record only. Required real-root comparisons remain outstanding;
+T017/K6 cannot begin through an unsatisfied predecessor. T018 and Feature 007
+are not begun. The next genuine human/evidence gate is an existing correctly
+bound nonsecret supplied witness accepted for a supported authorized context,
+or separately authorized new evidence/input boundary if none exists. No witness
+is created, reconstructed or weakened and no producer/target execution is proposed
+under this grant. H3/H4 and live yield/hash-domain limitations remain unchanged.
+
+Prior006-0012 is appended exactly once in `21dd46d` from its existing44-field
+handoff. Human-resupplied post-run /status enriches session/model/provider/effort,
+agent version, local-background-server execution mode and account credits_after38.
+Reported runtime and confirmed before-credit continuity were not supplied and
+remain blank; original runtime note/confounding and earlier ledger bytes stay
+exact. No credit delta is derived. Current006-0013 and its reviewer are not
+appended. Git index writes require sandbox escalation, retained as runtime context.
+The complete current-run handoff is written outside Git before final reporting.
+No push, release/tag, unrelated CLI table work or synthetic-canary maintenance.
