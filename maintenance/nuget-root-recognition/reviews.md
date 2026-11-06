@@ -36,3 +36,13 @@ R1–R6 ownership, accompanying tests, freeze/review and separate task commits.
 Task graph APPROVED; execution proceeds under the commissioning prompt.
 These three reviews establish no actual Windows/hosted or acceptance results.
 Actual child configuration/resource telemetry is unavailable; no child ledger rows.
+
+## C1 execution
+
+Typed recognition and metadata-only descriptor traversal implemented in
+`libyears/nuget_discovery.py`; scan/model/adapters remain unchanged. Fourteen
+focused tests PASS, including production cap/cap+1 values, global budgets,
+exact depth/exclusions, malformed/unreadable project content without reads,
+link/FIFO/reparse exclusion, replacement/mutation, handle/iterator cleanup and
+unskipped capability refusal. Author verification, not independent convergence.
+`git diff --check` PASS. C1 COMPLETE; C2 dependency-ready.
