@@ -29,3 +29,20 @@ F1 closed, relevant acceptance/privacy/bounded behavior preserved. Parent reads
 both reports and validates closure against the frozen bytes. Focused report:
 /tmp/libyears-observations/006-0022-spec-recheck.md. Specification APPROVED.
 Actual child settings/resources are unavailable; no separate child ledger rows.
+
+## Technical plan
+
+Frozen plan SHA256 69f5e937f58864691698e797678891dfbfec76b24ffaa0628eee355f3220c769.
+Fresh non-author plan_review, fork_turns=none without overrides: COMPLETE / APPROVE,
+no material findings. Parent reads the report and validates the stated reader,
+FIFO occurrence join, singleton compatibility and shared-batch seams. R1–R6
+architecture covered. Report /tmp/libyears-observations/006-0022-plan-review.md.
+Plan APPROVED; task decomposition may proceed under the commissioning authority.
+
+## Task graph
+
+Frozen graph SHA256 6cd1ee2360a963bc710b5ad5619522bc30c671beaec6909894c950ebba9e21ae.
+Fresh non-author tasks_review, fork_turns=none without overrides: COMPLETE / APPROVE,
+no material findings. Parent verifies sequential readiness, R1–R6 ownership,
+required verification and no extra authority. Report retained privately at
+/tmp/libyears-observations/006-0022-tasks-review.md. Graph APPROVED; N1 may execute.
