@@ -84,6 +84,7 @@ class NuGetEvidence:
     publication_basis: str = "nuget_org_first_receipt_created"
     used_publication: NuGetPublication | None = None
     latest_publication: NuGetPublication | None = None
+    source_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -170,6 +171,7 @@ class SourceError:
     ecosystem: str
     source: str
     reason: str
+    source_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -199,6 +201,7 @@ class SourceResult:
     measurement_available: bool
     source_present: bool = True
     diagnostics: tuple[tuple[str, str], ...] = ()
+    source_id: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

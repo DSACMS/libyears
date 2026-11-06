@@ -137,6 +137,10 @@ class ScopedNuGetReader:
             os.close(self.directory)
             self.directory = None
 
+    def _root_unchanged(self) -> bool:
+        return (_identity(self.root.stat()) == self.root_identity
+                and _identity(self.root_spelling.stat()) == self.root_identity)
+
     def _resolve_target(self, name: str) -> tuple[Path, os.stat_result]:
         """Follow contained symlinks without inspecting an outside target."""
         pending = [name]
@@ -229,8 +233,7 @@ class ScopedNuGetReader:
                     or _identity(final_info) != _identity(inspected)
                     or _identity(os.stat(name, dir_fd=self.directory, follow_symlinks=False))
                     != _identity(inspected_link)
-                    or _identity(self.root.stat()) != self.root_identity
-                    or _identity(self.root_spelling.stat()) != self.root_identity):
+                    or not self._root_unchanged()):
                 raise NuGetInputFailure('malformed')
         except (OSError, RuntimeError, ValueError, NotImplementedError) as error:
             if isinstance(error, NuGetInputFailure):

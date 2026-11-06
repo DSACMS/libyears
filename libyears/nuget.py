@@ -60,7 +60,8 @@ def _source_reason(stage: str, category: str) -> str:
 
 
 def read_nuget_source(root: Path, project_name: str,
-                      provenance_name: str | None = None) -> NuGetSource:
+                      provenance_name: str | None = None, *,
+                      reader: ScopedNuGetReader | None = None) -> NuGetSource:
     """Read only explicit local inputs and stage safe evidence before lookup.
 
     Filenames are immediate names validated by the caller (future CLI usage
@@ -83,7 +84,7 @@ def read_nuget_source(root: Path, project_name: str,
         return NuGetSource(result)
 
     try:
-        with ScopedNuGetReader(root, project_name, provenance_name) as reader:
+        with (reader or ScopedNuGetReader(root, project_name, provenance_name)) as reader:
             project_source = reader.read(project_name)
             project = parse_project(project_source)
             count = len(project.declarations)

@@ -4,7 +4,7 @@ Approved spec/plan digests and independent dispositions: reviews.md. Candidate
 graph; approval in that record. Execute sequentially, one local commit per task;
 no push. Existing Feature006 and recognition task IDs are unchanged.
 
-- [ ] **N1 — Anchored independent sources.** Predecessor: graph approval.
+- [x] **N1 — Anchored independent sources.** Predecessor: graph approval.
   R1/R2/R3/R6: add repository source module, anchored scoped-reader hook/subclass,
   optional source-reader injection and source identity fields. Complete/missing/
   unknown source inventories and unmatched mappings; unchanged parser/H3. Implement
@@ -58,3 +58,7 @@ Every R1–R6 obligation is jointly owned by N1/N2 behavior/tests and N3 evidenc
 then reconciled at N4. Real OASim witness is required under explicit current access
 authority; useful positive live yield, numeric coverage and hosted CI are not
 local acceptance predecessors. No implementation can loosen H3 or infer population.
+
+N1 verification: 97 focused tests PASS (sources/source/input/project/provenance/
+discovery); no skips. Added portable semantics and real anchored ancestor/reparse/
+replacement/cleanup plus unskipped capability refusal. Diff check PASS.
