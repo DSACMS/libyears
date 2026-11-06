@@ -1,0 +1,7 @@
+# Human-approved historical synthetic test/canary findings only (006-0019).
+# Neither is known to contain a real credential; current text was corrected.
+# Exact commit/file/rule/line exceptions retain detection of new findings.
+# History rewriting is prohibited. Rationale, controls and review:
+# maintenance/gitleaks-exact-exceptions-006-0019.md
+943d5de022a13103a2657a3be6b10f711565047a:specs/006-nuget-selected-evidence/reviews.md:generic-api-key:1557
+8377163f6e8396c3f089a5cb54dc476d5bbff7fe:tests/test_nuget_registry.py:generic-api-key:491
