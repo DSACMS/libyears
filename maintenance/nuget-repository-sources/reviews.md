@@ -84,3 +84,31 @@ Corrected exact OASim ordinary smoke repeats exit0/empty stderr and byte-identic
 stdout; corrected-after manifest exactly equals original baseline. Original and
 corrected raw records coexist privately. Fresh focused non-author closure remains
 required before N4 can complete.
+
+## Fresh correction review and fixture portability follow-up
+
+Fresh non-author closure_review, fork_turns=none/no overrides, reviews frozen
+corrective `99baacf518c06b3ffd865bc5c71a01ca72e8c0ae`: COMPLETE / REVISE.
+**F1 and F2 CLOSED**; collateral source identity, H3, resource, output and sibling
+contracts remain intact. Independently ran100 focused PASS/no skips plus2 targeted
+capability-disabled refusal/semantic tests PASS/no skips. Verified corrected raw
+smoke stdout and manifests byte-identical to baseline; inspected197/685/capability
+and273-commit zero-leak history logs. Original focused report retained at
+/tmp/libyears-observations/006-0022-closure-review.md.
+
+Additional F3, identified by parent self-audit and independently validated:
+repository_inputs used native str(Path) for fixture lookup keys while project
+inventories are POSIX source IDs. Native Windows separators would raise KeyError
+in nested semantic fixtures; this is a test-layer defect, not an observed hosted
+Windows/product failure. Correct only that relative path expression to as_posix;
+no platform skips or product workaround. Parent also clarifies AGENTS' wording:
+project path identifies a source; adding normalized package ID identifies an
+occurrence. This aligns the instruction with the already approved R3, without
+changing behavior or authority.
+
+Fixture-focused26 PASS; final full685 PASS/no skips; final capability-disabled685
+successful with49 actual filesystem skips. PureWindowsPath demonstration confirms
+normalization removes the native/POSIX key mismatch; this is not hosted evidence.
+The product implementation and corrected OASim smoke/integrity bytes remain
+unchanged. Diff check PASS. Fresh non-author verification of this final bounded
+follow-up remains required for N4 completion.

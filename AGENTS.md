@@ -485,7 +485,7 @@ candidates in the existing depth0–4/256-directory/10,000-entry/100-project bou
 with existing exclusions and no ancestor links/reparse traversal. Each project
 owns independently supported direct external occurrences; never deduplicate
 across projects, use solution population or merge through ProjectReference edges.
-Source identity is root-relative project path plus case-insensitive package ID;
+Occurrence identity combines root-relative project path with case-insensitive package ID;
 unknown source population makes repository N/coverage unknown. Known unavailable
 whole evidence retains N and null measurement/coverage; individual failures allow
 M/N only after whole-source acceptance. Successful sibling rows survive.

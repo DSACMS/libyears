@@ -23,8 +23,8 @@ def repository_inputs(root, projects, *, status='complete'):
     def enter(reader):
         return reader
     def read(reader, name):
-        project = str(reader.root.relative_to(root) / next(
-            key for key in reader.limits if key.endswith('.csproj')))
+        project = (reader.root.relative_to(root) / next(
+            key for key in reader.limits if key.endswith('.csproj'))).as_posix()
         reads.append((project, name))
         files = projects[project]
         if name not in files:

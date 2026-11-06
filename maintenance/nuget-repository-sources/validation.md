@@ -118,3 +118,12 @@ SHA256. Corrected-after manifest equals original baseline byte for byte at the
 same recorded SHA256. Original and corrected records remain side by side privately.
 Fresh non-author focused closure and final history checks are still pending here;
 current approval disposition belongs to reviews.md.
+
+The subsequent fresh focused review closes F1/F2, then validates a fixture-only
+Windows path-key defect F3. Switching the existing relative fixture key to
+as_posix preserves platform-independent semantic identity; no production or
+platform-refusal change. AGENTS wording is aligned to project source versus
+package occurrence identity. Final fixture26 PASS; full685 PASS/zero skips;
+capability-disabled685 successful/49 genuine filesystem skips (636 executed).
+These are the latest final test bytes. Actual hosted Windows remains unobserved.
+Product and ordinary smoke output remain the corrected candidate recorded above.
