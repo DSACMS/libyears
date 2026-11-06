@@ -134,7 +134,13 @@ def read_repository_sources(root: Path, witnesses=()) -> tuple[NuGetSource, ...]
         parent = root.joinpath(*project.split('/')[:-1])
         name = project.rsplit('/', 1)[-1]
         witness = mapping.get(project)
-        reader = RepositoryNuGetReader(root, project, witness)
+        try:
+            reader = RepositoryNuGetReader(root, project, witness)
+        except (NuGetInputFailure, ValueError):
+            # Discovery observes filesystem names, which can be outside the
+            # scoped reader's filename contract. Refusal belongs to this source.
+            sources.append(_unavailable(project, 'invalid_nuget_project'))
+            continue
         source = read_nuget_source(parent, name, witness, reader=reader)
         sources.append(_attribute_source(source, project))
     for project in sorted(mapping.keys() - set(inventory.candidates)):

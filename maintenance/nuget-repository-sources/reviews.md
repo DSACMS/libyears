@@ -46,3 +46,41 @@ Fresh non-author tasks_review, fork_turns=none without overrides: COMPLETE / APP
 no material findings. Parent verifies sequential readiness, R1–R6 ownership,
 required verification and no extra authority. Report retained privately at
 /tmp/libyears-observations/006-0022-tasks-review.md. Graph APPROVED; N1 may execute.
+
+## N3 security witness and initial N4 audit
+
+Committed N3 `2d0a4a22d478f721f55568d0885752c993e6b364`: canonical
+`python3 tools/check_gitleaks.py` exit0, GitLeaks8.30.1, complete configured history,
+272 commits scanned, zero leaks. Raw private log: 006-0022/gitleaks-n3.log.
+
+Fresh non-author convergence, fork_turns=none without overrides, audits frozen
+clean N3 candidate: **COMPLETE / REVISE / NOT CONVERGED**, two findings. Full
+R1–R6/code/tests/docs/evidence reconciliation completed; original baseline serializer,
+current explicit JSON and fixture independently match. Reviewer independently ran
+683 full tests PASS/no skips, checked raw stdout and exact target manifests, and
+inspected focused/capability/worker/history evidence. No reviewer target/network
+access or repository edits. Report: /tmp/libyears-observations/006-0022-convergence.md.
+
+- F1 material: a regular Unix candidate containing backslash (or such a parent)
+  is discovered but reader construction refuses outside source error handling,
+  aborting repository scan and losing siblings. Parent validates constructor and
+  inherited ValueError boundary. Correction classifies these refusals as an
+  attributed invalid_nuget_project unknown/unavailable source, then continues;
+  it does not accept path interpretation or omit the source. Portable regression
+  proves good NuGet plus PyPI success/aggregates survive, no refused source read,
+  null N/coverage and escaped human/JSON identity. Separate actual capable-host
+  filename witness proves production discovery and source handling.
+- F2 documentation: SPEC's unqualified null NuGet counts/numerics sentence could
+  conflate a rejected individual source with combined available sibling output.
+  Parent validates and qualifies individual/explicit singleton rules, then states
+  combined unknown N/coverage with preserved available M/numerics.
+
+Both corrections are determined by approved R1/R3/R5/R6; no new product/schema/
+security authority is needed. Original audit and findings are retained. Corrective
+focused197 PASS, full685 PASS/no skips, capability-disabled685 successful with49
+actual filesystem skips (636 executed). The extra skip is the new actual Unix
+filename/descriptor witness; portable source-refusal composition remains active.
+Corrected exact OASim ordinary smoke repeats exit0/empty stderr and byte-identical
+stdout; corrected-after manifest exactly equals original baseline. Original and
+corrected raw records coexist privately. Fresh focused non-author closure remains
+required before N4 can complete.

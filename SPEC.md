@@ -932,13 +932,17 @@ batch shares all scan budgets across sources; repeated equal capabilities retain
 independent results. Per-source summaries compose known/unknown N and any/all
 availability without overwriting sibling facts.
 
-Unknown population yields null NuGet counts, coverage and numeric aggregates.
-Known N with rejected lock/witness retains N, even zero, but null measurement,
-coverage and numerics without fabricated rows. Accepted nonempty populations
+For each individual NuGet source (also the explicit single-source report), unknown
+population yields null counts, coverage and numeric aggregates. Known N with
+rejected lock/witness retains N, even zero, but null measurement, coverage and
+numerics without fabricated rows. Accepted nonempty populations
 use M/N including zero coverage; accepted empty uses 0/0, null coverage, total
 0.0 and other numerics null. Repository discovered is unknown if any denominator
 is unknown; coverage is unavailable if any source is unavailable; measured is
-null only when every detected source is unavailable. Available sibling rows and
+null only when every detected source is unavailable. The combined NuGet summary
+likewise has null N/coverage if any project population is unknown, but retains
+measured count and numeric aggregates from available sibling projects; M and
+NuGet numerics are null only if all NuGet sources are unavailable. Available sibling rows and
 repository numeric aggregates survive all NuGet failures.
 
 Finite local bounds reject complete sources without partial salvage. Metadata

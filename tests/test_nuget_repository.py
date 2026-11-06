@@ -148,6 +148,31 @@ class RepositoryTests(unittest.TestCase):
         self.assertIsNone(report.summary.coverage)
         self.assertIsNone(report.summary.dependencies_measured)
 
+    def test_constructor_refusal_is_unknown_and_preserves_project_and_root_sibling(self):
+        (self.root / 'requirements.txt').write_text('alpha==1.0\n')
+        for refused in ('bad\\name.csproj', 'bad\\parent/Witness.csproj'):
+            projects = {'a/Witness.csproj': nuget_inputs(), refused: {}}
+            with repository_inputs(self.root, projects) as reads:
+                report = scan_mixed_repository(self.root, nuget_repository=True,
+                    nuget_witnesses=(('a/Witness.csproj', 'witness.json'),),
+                    nuget_lookup=self.lookup,
+                    pypi_lookup=lambda n, v: RegistryResult(n, v, USED, '3.0.0', LATEST))
+            self.assertEqual((report.summary.dependencies_discovered,
+                              report.summary.dependencies_measured, report.summary.coverage), (None, 2, None))
+            self.assertEqual(report.summary.total_libyears, 2.0)
+            self.assertEqual(report.by_ecosystem['nuget'].dependencies_measured, 1)
+            self.assertEqual(report.by_ecosystem['pypi'].coverage, 1.0)
+            self.assertTrue(all(project == 'a/Witness.csproj' for project, _ in reads))
+            data = report_to_dict(report, '')
+            self.assertEqual(data['source_errors'], [{'ecosystem': 'nuget',
+                'source': refused.rsplit('/', 1)[-1], 'reason': 'invalid_nuget_project',
+                'source_id': refused}])
+            self.assertEqual(data['nuget_sources'][1]['summary'],
+                             {key: None for key in data['nuget_sources'][1]['summary']})
+            human = format_human(report, 'SECRET_ROOT')
+            self.assertIn(json.dumps(refused), human)
+            self.assertNotIn('SECRET_ROOT', human)
+
     def test_empty_all_failed_partial_full_and_whole_unavailable_are_distinct(self):
         for names, failures in (((), 0), (('alpha', 'beta'), 2),
                                 (('alpha', 'beta'), 1), (('alpha', 'beta'), 0)):

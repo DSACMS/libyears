@@ -173,3 +173,14 @@ class AnchoredReaderTests(unittest.TestCase):
         for descriptor in descriptors:
             with self.assertRaises(OSError):
                 os.fstat(descriptor)
+
+    def test_actual_backslash_filename_is_an_attributed_error_and_sibling_survives(self):
+        files = nuget_inputs()
+        (self.root / 'a/A.csproj').write_bytes(files['Witness.csproj'])
+        (self.root / 'a/packages.lock.json').write_bytes(files['packages.lock.json'])
+        (self.root / 'bad\\name.csproj').write_bytes(b'<Project/>')
+        actual = sources.read_repository_sources(self.root)
+        self.assertEqual([item.result.source_id for item in actual], ['a/A.csproj', 'bad\\name.csproj'])
+        self.assertEqual([item.result.dependencies_discovered for item in actual], [1, None])
+        self.assertEqual([item.result.source_errors[0].reason for item in actual],
+                         ['nuget_provenance_missing', 'invalid_nuget_project'])

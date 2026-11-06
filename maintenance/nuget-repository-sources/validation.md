@@ -97,3 +97,24 @@ Independent N4 convergence must reconcile R1–R6 and security scan evidence.
 Push/publication is not authorized. Once local convergence completes, the exact
 next human gate is publication authorization, then actual hosted Windows/other
 CI/security observations. No useful-coverage requirement or weakened H3 follows.
+
+## N4 bounded correction evidence
+
+Initial independent full audit of frozen N3 completes with REVISE: F1 source reader
+construction refusal escaped source isolation; F2 public SPEC wording conflated
+individual and aggregate availability. Original report and disposition are retained
+in reviews.md. The bounded correction catches only safe constructor refusal as
+invalid_nuget_project/unknown N and continues; mapping grammar, parser/H3, metric,
+worker budgets and schema are unchanged. Two new tests cover portable successful
+NuGet/PyPI sibling preservation and actual capable-host Unix filename discovery.
+SPEC now distinguishes individual-source nulls from combined sibling aggregates.
+
+Corrective verification: **197 focused PASS; full685 PASS, zero skips;
+capability-disabled685 successful,49 filesystem skips (636 executed)**. Existing
+worker lifecycle is unchanged and included in full/focused suites; prior separate
+3-test witness remains. Diff check PASS. The corrected exact ordinary OASim command
+again exits0/empty stderr, with stdout byte-identical to the original recorded
+SHA256. Corrected-after manifest equals original baseline byte for byte at the
+same recorded SHA256. Original and corrected records remain side by side privately.
+Fresh non-author focused closure and final history checks are still pending here;
+current approval disposition belongs to reviews.md.
