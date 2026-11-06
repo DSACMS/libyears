@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, replace
+from collections import defaultdict, deque
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 import re
 from typing import Callable
@@ -31,6 +32,8 @@ from .nuget import NuGetSource, read_nuget_source
 from .nuget_provenance import LocalAuthority
 from .nuget_registry import NuGetRegistryAdapter
 from .nuget_supervisor import PackageResult
+from .nuget_sources import (NuGetRepositoryRequestError, read_repository_sources,
+                            validate_witnesses)
 from .pypi import PyPIAdapter, PyPIResult
 from .requirements import (
     ExactRequirement,
@@ -256,6 +259,8 @@ class MixedScanReport:
     by_ecosystem: dict[str, MetricSummary]
     diagnostics: tuple[tuple[str, str], ...] = ()
     tls_trust: str | None = None
+    nuget_repository: bool = False
+    by_nuget_source: dict[str | None, MetricSummary] = field(default_factory=dict)
 
     @property
     def dependencies(self) -> tuple[DependencyMeasurement, ...]:
@@ -461,11 +466,17 @@ def scan_mixed_repository(
     ca_bundle: str | None = None,
     ruby_groups: tuple[str, ...] | None = None,
     nuget_request: NuGetRequest | None = None,
+    nuget_repository: bool = False,
+    nuget_witnesses: tuple[tuple[str, str], ...] = (),
     nuget_adapter: NuGetRegistryAdapter | None = None,
     nuget_lookup: Callable[[tuple[LocalAuthority, ...]],
                            tuple[tuple[LocalAuthority, PackageResult], ...]] | None = None,
 ) -> MixedScanReport:
-    """Discover supported sources, with NuGet behind an explicit internal request."""
+    """Discover supported sources, with explicit internal NuGet mode requests."""
+    validate_witnesses(nuget_witnesses)
+    if ((nuget_repository and (nuget_request is not None or not Path(path).is_dir()))
+            or (nuget_witnesses and not nuget_repository)):
+        raise NuGetRepositoryRequestError('invalid NuGet repository request')
     if ruby_groups is not None:
         ruby_groups = validate_ruby_groups(path, ruby_groups)
     if nuget_request is not None and not Path(path).is_dir():
@@ -499,14 +510,29 @@ def scan_mixed_repository(
         (npm_result, npm_registry_lookup),
         (ruby_result, ruby_registry_lookup),
     )
-    nuget_source = None
+    nuget_sources = ()
     if nuget_request is not None:
-        nuget_source = read_nuget_source(root, nuget_request.project, nuget_request.provenance)
+        nuget_sources = (read_nuget_source(root, nuget_request.project, nuget_request.provenance),)
+    elif nuget_repository:
+        nuget_sources = read_repository_sources(root, nuget_witnesses)
+    authorities = tuple(item.authority for source in nuget_sources
+                        for item in source.authorized_candidates)
+    package_results = defaultdict(deque)
+    if authorities:
         active_nuget_adapter = nuget_adapter or (
             None if nuget_lookup is not None else NuGetRegistryAdapter()
         )
         nuget_registry_lookup = nuget_lookup or active_nuget_adapter.lookup_all
-        source_pairs += ((nuget_source.result, nuget_registry_lookup),)
+        for authority, result in nuget_registry_lookup(authorities):
+            package_results[authority].append(result)
+    for source in nuget_sources:
+        # Equal capabilities still get separate results and their own staged
+        # source evidence. Stable adapter ordering preserves equal-key order.
+        def queued_results(requested):
+            return tuple((authority, package_results[authority].popleft())
+                         for authority in requested)
+        results = _nuget_registry_results(source, queued_results)
+        source_pairs += ((source.result, lambda name, version, rows=results: rows[(name, version)]),)
     sources = tuple(source for source, _ in source_pairs)
     measurements: list[DependencyMeasurement] = []
     unmeasurable = [
@@ -527,10 +553,6 @@ def scan_mixed_repository(
 
     for source, registry_lookup in source_pairs:
         candidates = source.candidates
-        if source.ecosystem == 'nuget':
-            # One batch owns the supervised worker and its scan-wide budgets.
-            results = _nuget_registry_results(nuget_source, registry_lookup) if candidates else {}
-            registry_lookup = lambda name, version: results[(name, version)]
         if source.ecosystem == "rubygems":
             candidates = schedule_ruby_candidates(candidates)
         for candidate in candidates:
@@ -596,24 +618,32 @@ def scan_mixed_repository(
             source.measurement_available for source in detected_sources
         ),
     )
-    by_ecosystem = {
-        source.ecosystem: _available_summary(
-            [
-                measurement
-                for measurement in measurements
-                if measurement.dependency.ecosystem == source.ecosystem
-            ],
-            discovered=source.dependencies_discovered,
-            measurement_available=source.measurement_available,
-            coverage_available=source.measurement_available,
-            discovery_failed=source.dependencies_discovered is None,
-            unavailable_numeric=(
-                (source.ecosystem == 'nuget' or source.evidence.requested_groups is not None)
-                and not source.measurement_available
-            ),
+    by_ecosystem = {}
+    for ecosystem in sorted({source.ecosystem for source in detected_sources}):
+        members = [source for source in detected_sources if source.ecosystem == ecosystem]
+        available = any(source.measurement_available for source in members)
+        unknown = any(source.dependencies_discovered is None for source in members)
+        by_ecosystem[ecosystem] = _available_summary(
+            [item for item in measurements if item.dependency.ecosystem == ecosystem],
+            discovered=None if unknown else sum(source.dependencies_discovered for source in members),
+            measurement_available=available,
+            coverage_available=all(source.measurement_available for source in members),
+            discovery_failed=unknown and not available,
+            unavailable_numeric=not available and (
+                ecosystem == 'nuget' or members[0].evidence.requested_groups is not None),
         )
-        for source in sorted(detected_sources, key=lambda item: item.ecosystem)
-    }
+    by_nuget_source = {}
+    if nuget_repository:
+        for source in nuget_sources:
+            member = source.result
+            rows = [item for item in measurements if item.dependency.ecosystem == 'nuget'
+                    and item.dependency.nuget_evidence.source_id == member.source_id]
+            by_nuget_source[member.source_id] = _available_summary(
+                rows, discovered=member.dependencies_discovered,
+                measurement_available=member.measurement_available,
+                coverage_available=member.measurement_available,
+                discovery_failed=member.dependencies_discovered is None,
+                unavailable_numeric=not member.measurement_available)
 
     tls_trust = None
     for source, active_adapter in (
@@ -634,6 +664,8 @@ def scan_mixed_repository(
         by_ecosystem,
         tuple(diagnostics),
         tls_trust,
+        nuget_repository,
+        by_nuget_source,
     )
 
 __all__ = [

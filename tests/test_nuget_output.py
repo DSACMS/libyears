@@ -116,7 +116,7 @@ class NuGetJSONTests(unittest.TestCase):
                     self.assertEqual(data['version_evidence'], {'nuget': expected})
                     self.assertEqual(data['dependencies'], [])
                     self.assertEqual(data['unmeasurable'], [])
-                    self.assertEqual(data['source_errors'], [asdict(source.source_errors[0])])
+                    self.assertEqual(data['source_errors'], [{key: value for key, value in asdict(source.source_errors[0]).items() if key != 'source_id'}])
                     self.assertEqual(data['source_errors'][0]['reason'], reason)
                     self.assertEqual(data['summary']['by_ecosystem'], {'nuget': {
                         'dependencies_discovered': count, 'dependencies_measured': None,

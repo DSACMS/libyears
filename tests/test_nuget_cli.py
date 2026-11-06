@@ -209,16 +209,18 @@ class NuGetCLITests(unittest.TestCase):
         self.assertEqual(json.loads(stdout)['source_errors'][0]['reason'], 'nuget_provenance_missing')
         self.assertNotIn('witness.json', [call.args[1] for call in reads.call_args_list])
 
-    def test_ordinary_scan_omits_colocated_nuget_and_preserves_other_abbreviations(self):
-        for name in ('Witness.csproj', 'Other.csproj', 'packages.lock.json', 'witness.json',
-                     'project.assets.json', 'packages.config'):
-            (self.root / name).write_text('SECRET-unselected')
-        with patch('libyears.scan.read_nuget_source') as source:
+    def test_ordinary_scan_attempts_colocated_projects_without_implicit_witness(self):
+        from tests.test_nuget_sources import repository_inputs
+        projects = {'Witness.csproj': nuget_inputs(), 'nested/Witness.csproj': nuget_inputs()}
+        with repository_inputs(self.root, projects) as reads:
             status, stdout, stderr = self.call([str(self.root), '--js'], scan=self.composed_scan)
         self.assertEqual((status, stderr), (0, ''))
-        self.assertNotIn('nuget', stdout)
+        data = json.loads(stdout)
+        self.assertEqual(data['ecosystems'], ['nuget'])
+        self.assertEqual(len(data['nuget_sources']), 2)
+        self.assertTrue(all(row['reason'] == 'nuget_provenance_missing' for row in data['source_errors']))
         self.assertNotIn('SECRET', stdout)
-        source.assert_not_called()
+        self.assertTrue(all(name != 'witness.json' for _, name in reads))
 
     def test_one_selected_project_and_python_ruby_options_keep_their_scopes(self):
         (self.root / 'Other.csproj').write_text('SECRET-unselected-project')

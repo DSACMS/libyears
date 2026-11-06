@@ -48,32 +48,31 @@ def _summary_dict(summary: Any) -> dict[str, Any]:
     return asdict(summary)
 
 
+def _source_evidence_dict(source) -> dict[str, Any]:
+    evidence = source.evidence
+    result = {"declaration_source": evidence.declaration_source,
+              "snapshot_source": evidence.snapshot_source}
+    if evidence.include_format:
+        result["format"] = evidence.format
+    if evidence.scope is not None:
+        result["scope"] = evidence.scope
+    if evidence.publication_basis is not None:
+        result["publication_basis"] = evidence.publication_basis
+    if evidence.requested_groups is not None:
+        result["requested_groups"] = sorted(set(evidence.requested_groups))
+    if source.ecosystem == "nuget":
+        result.update(provenance_source=evidence.provenance_source,
+                      framework=evidence.framework, trust_basis=evidence.trust_basis)
+    return result
+
+
 def _report_parts(report: ScanReport | MixedScanReport) -> tuple[Any, dict[str, Any], list[str], list[Any], list[Any], list[Any], dict[str, Any]]:
     if isinstance(report, MixedScanReport):
         sources = [source for source in report.source_results if source.source_present]
-        evidence = {
-            source.ecosystem: {
-                "declaration_source": source.evidence.declaration_source,
-                "snapshot_source": source.evidence.snapshot_source,
-            }
-            for source in sources
-        }
-        for source in sources:
-            if source.evidence.include_format:
-                evidence[source.ecosystem]["format"] = source.evidence.format
-            if source.evidence.scope is not None:
-                evidence[source.ecosystem]["scope"] = source.evidence.scope
-            if source.evidence.publication_basis is not None:
-                evidence[source.ecosystem]["publication_basis"] = source.evidence.publication_basis
-            if source.evidence.requested_groups is not None:
-                evidence[source.ecosystem]["requested_groups"] = sorted(set(source.evidence.requested_groups))
-            if source.ecosystem == "nuget":
-                evidence["nuget"].update(
-                    provenance_source=source.evidence.provenance_source,
-                    framework=source.evidence.framework,
-                    trust_basis=source.evidence.trust_basis,
-                )
-        ecosystems = sorted(set(evidence) | {error.ecosystem for error in report.source_errors})
+        evidence = {source.ecosystem: _source_evidence_dict(source) for source in sources
+                    if not (report.nuget_repository and source.ecosystem == "nuget")}
+        ecosystems = sorted({source.ecosystem for source in sources}
+                            | {error.ecosystem for error in report.source_errors})
         summaries = {key: _summary_dict(value) for key, value in report.by_ecosystem.items()}
         return report.summary, evidence, ecosystems, list(report.measurements), list(report.unmeasurable), list(report.source_errors), summaries
 
@@ -173,6 +172,8 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
             dependencies[-1]["gemfile_evidence"] = _gemfile_evidence_dict(dependency.gemfile_evidence)
         if dependency.nuget_evidence is not None:
             dependencies[-1]["nuget_evidence"] = _nuget_evidence_dict(dependency.nuget_evidence)
+            if dependency.nuget_evidence.source_id is not None:
+                dependencies[-1]["source_id"] = dependency.nuget_evidence.source_id
     failures = []
     for item in unmeasurable:
         row = {"ecosystem": item.ecosystem, "name": item.name,
@@ -183,8 +184,17 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
             row["gemfile_evidence"] = _gemfile_evidence_dict(item.gemfile_evidence)
         if getattr(item, "nuget_evidence", None) is not None:
             row["nuget_evidence"] = _nuget_evidence_dict(item.nuget_evidence)
+            if item.nuget_evidence.source_id is not None:
+                row["source_id"] = item.nuget_evidence.source_id
         failures.append(row)
-    return {
+    errors = []
+    repository_mode = isinstance(report, MixedScanReport) and report.nuget_repository
+    for error in source_errors:
+        row = {"ecosystem": error.ecosystem, "source": error.source, "reason": error.reason}
+        if repository_mode and error.ecosystem == "nuget":
+            row["source_id"] = error.source_id
+        errors.append(row)
+    result = {
         "schema_version": 3,
         "metric": "libyears",
         "dependency_scope": "direct",
@@ -193,8 +203,16 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
         "summary": {**asdict(summary), "by_ecosystem": by_ecosystem},
         "dependencies": dependencies,
         "unmeasurable": failures,
-        "source_errors": [asdict(item) for item in source_errors],
+        "source_errors": errors,
     }
+    if repository_mode and "nuget" in ecosystems:
+        result["nuget_sources"] = [
+            {"source_id": source.source_id,
+             "version_evidence": _source_evidence_dict(source),
+             "summary": _summary_dict(report.by_nuget_source[source.source_id]),
+             "measurement_available": source.measurement_available}
+            for source in report.source_results if source.ecosystem == "nuget"]
+    return result
 
 
 def format_json(report: ScanReport, path: str) -> str:
@@ -360,7 +378,7 @@ def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bo
 
 def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
                         nuget_recognition: NuGetRecognition | None = None) -> str:
-    ecosystems = sorted(source.ecosystem for source in report.source_results if source.source_present)
+    ecosystems = sorted({source.ecosystem for source in report.source_results if source.source_present})
     labels = ", ".join(ecosystems) if ecosystems else "none"
     recognition_lines = _nuget_recognition_lines(nuget_recognition)
     summary = report.summary
@@ -390,7 +408,10 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
         # The root and raw diagnostics can contain private paths. NuGet reports
         # identify inputs by the safe selected filenames and stable facts only.
         heading = "Libyears: selected repository"
-        nuget_disclosure = _nuget_disclosure(nuget_source, report.by_ecosystem["nuget"])
+        if report.nuget_repository:
+            nuget_disclosure = _nuget_repository_disclosure(report)
+        else:
+            nuget_disclosure = _nuget_disclosure(nuget_source, report.by_ecosystem["nuget"])
     if len(ecosystems) == 1 and not report.source_errors:
         ecosystem = ecosystems[0]
         ecosystem_label = 'Ecosystem scanned for measurement' if recognition_lines else 'Ecosystem'
@@ -489,7 +510,10 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
                 context = None if nuget_source is not None else dict(report.diagnostics).get("yarn.lock")
                 explanation = context or _reason_text(error.reason)
                 explanation += "; npm dependencies could not be measured from this evidence source"
-            lines.append(f"  {error.ecosystem} {error.source}: {explanation}")
+            source_name = error.source
+            if report.nuget_repository and error.ecosystem == "nuget":
+                source_name = f"{json.dumps(error.source_id, ensure_ascii=True)} {json.dumps(error.source, ensure_ascii=True)}"
+            lines.append(f"  {error.ecosystem} {source_name}: {explanation}")
     if verbose and nuget_source is None:
         if report.tls_trust:
             lines.extend(["", f"TLS trust: {report.tls_trust}"])
@@ -498,12 +522,38 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
     return "\n".join(lines) + "\n"
 
 
-def _nuget_disclosure(source, summary) -> list[str]:
-    evidence = source.evidence
+def _nuget_repository_disclosure(report) -> list[str]:
+    sources = [source for source in report.source_results if source.ecosystem == "nuget"]
     lines = [
-        f"NuGet project: {evidence.declaration_source}; framework: {evidence.framework or 'unavailable'}.",
-        f"NuGet declaration source: {evidence.declaration_source}; version snapshot: {evidence.snapshot_source}; "
-        f"provenance source: {evidence.provenance_source or 'not supplied'}.",
+        "NuGet repository sources: independent direct-dependency occurrences; no cross-project deduplication.",
+        "Search covers root through depth 4; hidden/generated/dependency directories and links/reparse points are excluded.",
+        "ProjectReference edges add no external dependency rows; solutions do not define the population.",
+        "Witnesses are accepted only through explicit --nuget-witness PROJECT=NAME.json mappings.",
+    ]
+    # Reuse the established trust/date/scope explanation once, without claiming
+    # a representative project or whole-ecosystem availability for one source.
+    lines.extend(_nuget_policy_lines())
+    for source in sources:
+        summary = report.by_nuget_source[source.source_id]
+        evidence = source.evidence
+        label = json.dumps(source.source_id, ensure_ascii=True)
+        population = 'unknown' if summary.dependencies_discovered is None else str(summary.dependencies_discovered)
+        measured = 'null' if summary.dependencies_measured is None else str(summary.dependencies_measured)
+        available = 'available' if source.measurement_available else 'unavailable'
+        lines.append(f"NuGet source {label}: population {population}; measurement {available}; "
+                     f"{measured} / {population} measured; {_coverage(summary.coverage)} coverage; "
+                     f"total {_number(summary.total_libyears)}, mean {_number(summary.mean_libyears)}, "
+                     f"median {_number(summary.median_libyears)}, max {_number(summary.max_libyears)} libyears.")
+        lines.append(f"  Project: {json.dumps(evidence.declaration_source, ensure_ascii=True)}; "
+                     f"framework: {evidence.framework or 'unavailable'}; "
+                     f"snapshot: {json.dumps(evidence.snapshot_source, ensure_ascii=True)}; "
+                     f"witness: {json.dumps(evidence.provenance_source, ensure_ascii=True)}; "
+                     f"lock: {'accepted' if evidence.format == 'packages_lock_v1' else 'unavailable'}.")
+    return lines
+
+
+def _nuget_policy_lines() -> list[str]:
+    return [
         "Scope: all supported explicit direct PackageReferences, including test, tool, analyzer and PrivateAssets references.",
         "Trust basis: supplied producer/supplier assertions, accepted only through an explicitly supplied witness.",
         "H3 requires native NuGet package provenance plus contemporaneous producer attestation, bound to the same event, "
@@ -516,6 +566,16 @@ def _nuget_disclosure(source, summary) -> list[str]:
         "Latest comparator: greatest currently listed stable version; no framework, request or compatibility filter.",
         "Missing public records do not establish never-existence; changed listing or records may change future measurements.",
     ]
+
+
+def _nuget_disclosure(source, summary) -> list[str]:
+    evidence = source.evidence
+    lines = [
+        f"NuGet project: {evidence.declaration_source}; framework: {evidence.framework or 'unavailable'}.",
+        f"NuGet declaration source: {evidence.declaration_source}; version snapshot: {evidence.snapshot_source}; "
+        f"provenance source: {evidence.provenance_source or 'not supplied'}.",
+    ]
+    lines.extend(_nuget_policy_lines())
     lock_state = 'accepted' if evidence.format == 'packages_lock_v1' else 'unavailable'
     lines.append(f"NuGet packages.lock.json recognition: {lock_state}.")
     if source.dependencies_discovered is None:
@@ -537,7 +597,12 @@ def _nuget_disclosure(source, summary) -> list[str]:
 def _nuget_detail_lines(evidence: NuGetEvidence | None) -> list[str]:
     if evidence is None:
         return []
-    lines = [f"    NuGet project: {evidence.project}; framework: {evidence.framework}; requested: {evidence.requested}."]
+    project = evidence.project
+    lines = []
+    if evidence.source_id is not None:
+        lines.append(f"    NuGet source: {json.dumps(evidence.source_id, ensure_ascii=True)}.")
+        project = json.dumps(project, ensure_ascii=True)
+    lines.append(f"    NuGet project: {project}; framework: {evidence.framework}; requested: {evidence.requested}.")
     if evidence.lock_requested is not None:
         lines.append(f"    Lock requested: {evidence.lock_requested}")
     if evidence.selected_version is not None:
@@ -560,6 +625,9 @@ def _nuget_anomaly_line(anomaly: bool) -> str:
 
 def _nuget_reason_text(reason: str) -> str:
     explanation = {
+        'nuget_discovery_incomplete': 'bounded project discovery incomplete; repository population unknown',
+        'nuget_discovery_unavailable': 'safe bounded project discovery unavailable; repository population unknown',
+        'nuget_witness_project_missing': 'mapped project absent from bounded discovery; population unknown',
         'nuget_project_missing': 'selected project is missing; declaration population unavailable',
         'invalid_nuget_project': 'selected project is unreadable, unsafe or malformed; declaration population unavailable',
         'unsupported_nuget_project': 'unsupported project, context or population influence; declaration population unavailable',

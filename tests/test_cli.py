@@ -14,6 +14,20 @@ from libyears.scan import RubyGroupRequestError, ScanReport
 from tests.scoped_ruby_fixtures import fixture_scoped_reads
 
 
+# These are Python/Ruby CLI semantics; project inventory availability is supplied
+# independently of the host. Production discovery/refusal has separate witnesses.
+def setUpModule():
+    from libyears.nuget_discovery import NuGetRecognition
+    global inventory_patch
+    inventory_patch = patch('libyears.nuget_sources.discover_nuget_candidates',
+                            return_value=NuGetRecognition())
+    inventory_patch.start()
+
+
+def tearDownModule():
+    inventory_patch.stop()
+
+
 def empty_report():
     return ScanReport(MetricSummary(0, 0, None, 0.0, None, None, None), (), ())
 
@@ -99,12 +113,12 @@ zipp==4.1.0
         with patch("libyears.cli.scan_mixed_repository", return_value=empty_report()) as scan, redirect_stdout(output):
             code = main([])
         self.assertEqual(code, 0)
-        scan.assert_called_once_with(".")
+        scan.assert_called_once_with(".", nuget_repository=True)
 
     def test_ca_bundle_is_threaded_to_scan(self):
         with patch("libyears.cli.ssl.create_default_context"), patch("libyears.cli.scan_mixed_repository", return_value=empty_report()) as scan:
             self.assertEqual(main([".", "--ca-bundle", "/tmp/ca.pem"]), 0)
-        scan.assert_called_once_with(".", ca_bundle="/tmp/ca.pem")
+        scan.assert_called_once_with(".", nuget_repository=True, ca_bundle="/tmp/ca.pem")
 
     def test_missing_ca_bundle_is_filesystem_error(self):
         errors = io.StringIO()
@@ -210,18 +224,18 @@ zipp==4.1.0
     def test_scan_failure_returns_systemic_error(self):
         errors = io.StringIO()
         with redirect_stderr(errors):
-            code = main([], scan=lambda path: (_ for _ in ()).throw(RuntimeError("boom")))
+            code = main([], scan=lambda path, **kwargs: (_ for _ in ()).throw(RuntimeError("boom")))
         self.assertEqual(code, 2)
         self.assertIn("systemic", errors.getvalue())
 
     def test_domain_value_error_returns_systemic_error(self):
         with redirect_stderr(io.StringIO()):
-            code = main([], scan=lambda path: (_ for _ in ()).throw(ValueError("invalid domain data")))
+            code = main([], scan=lambda path, **kwargs: (_ for _ in ()).throw(ValueError("invalid domain data")))
         self.assertEqual(code, 2)
 
     def test_filesystem_failure_returns_one(self):
         with redirect_stderr(io.StringIO()):
-            code = main([], scan=lambda path: (_ for _ in ()).throw(FileNotFoundError("missing")))
+            code = main([], scan=lambda path, **kwargs: (_ for _ in ()).throw(FileNotFoundError("missing")))
         self.assertEqual(code, 1)
 
     def test_usage_error_returns_one(self):
@@ -418,10 +432,10 @@ class ScopedRubyCLITests(unittest.TestCase):
         code, _, errors = self.invoke('--ruby-group', 'test', '--ruby-group', 'Test',
                                       '--ruby-group', 'test', scan=scan)
         self.assertEqual((code, errors), (0, ''))
-        scan.assert_called_once_with(str(self.root), ruby_groups=('Test', 'test'))
+        scan.assert_called_once_with(str(self.root), nuget_repository=True, ruby_groups=('Test', 'test'))
         scan.reset_mock()
         self.invoke(scan=scan)
-        scan.assert_called_once_with(str(self.root))
+        scan.assert_called_once_with(str(self.root), nuget_repository=True)
 
     def test_malformed_missing_empty_and_comma_values_are_usage_errors_before_scan(self):
         from unittest.mock import Mock
@@ -459,7 +473,7 @@ class ScopedRubyCLITests(unittest.TestCase):
                 code, output, errors = self.invoke(*options, scan=scan)
                 self.assertEqual((code, errors), (0, ''))
                 self.assertEqual(json.loads(output)['schema_version'], 3)
-                scan.assert_called_once_with(str(self.root))
+                scan.assert_called_once_with(str(self.root), nuget_repository=True)
 
     def test_scoped_direct_file_and_invalid_paths_are_usage_errors(self):
         from unittest.mock import Mock
@@ -506,7 +520,8 @@ class ScopedRubyCLITests(unittest.TestCase):
             code, output, errors = self.invoke('--ruby-group', 'default',
                                                scan=Mock(side_effect=exception))
             self.assertEqual((code, output), (expected, ''))
-            self.assertIn(str(exception), errors)
+            self.assertNotIn(str(exception), errors)
+            self.assertIn('invalid scoped request' if expected == 1 else 'NuGet scan unavailable', errors)
 
     def test_resolved_remains_python_only_and_verbose_json_is_identical(self):
         self.write_inputs()

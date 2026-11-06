@@ -48,7 +48,8 @@ class ScopedCapabilityTests(unittest.TestCase):
                 data = json.loads(reports[0])
                 self.assertEqual(data['source_errors'], [{
                     'ecosystem': 'rubygems', 'source': 'Gemfile', 'reason': 'invalid_gemfile',
-                }])
+                }, {'ecosystem': 'nuget', 'source': 'repository',
+                    'reason': 'nuget_discovery_unavailable', 'source_id': None}])
                 self.assertEqual(data['unmeasurable'], [])
                 self.assertEqual([row['name'] for row in data['dependencies']],
                                  ['sibling'] if siblings else [])
@@ -58,7 +59,8 @@ class ScopedCapabilityTests(unittest.TestCase):
                 ruby_summary = data['summary']['by_ecosystem']['rubygems']
                 self.assertTrue(all(value is None for value in ruby_summary.values()))
                 self.assertIsNone(data['version_evidence']['rubygems']['format'])
-                self.assertIn('Safe scoped access is unavailable.', reports[1])
+                self.assertIn('Gemfile unavailable: unreadable, nonregular or malformed declaration evidence', reports[1])
+                self.assertIn('nuget_discovery_unavailable', reports[1])
                 self.assertNotIn('must not be consumed', ''.join(reports))
 
     def test_lock_capability_refusal_retains_independently_established_scope(self):

@@ -1,0 +1,77 @@
+{
+  "schema_version": 3,
+  "metric": "libyears",
+  "dependency_scope": "direct",
+  "ecosystems": [
+    "nuget"
+  ],
+  "version_evidence": {
+    "nuget": {
+      "declaration_source": "Witness.csproj",
+      "snapshot_source": "packages.lock.json",
+      "format": "packages_lock_v1",
+      "scope": "explicit_direct_packagereference",
+      "publication_basis": "nuget_org_first_receipt_created",
+      "provenance_source": "witness.json",
+      "framework": "net10.0",
+      "trust_basis": "supplied_producer_assertion"
+    }
+  },
+  "summary": {
+    "dependencies_discovered": 1,
+    "dependencies_measured": 1,
+    "coverage": 1.0,
+    "total_libyears": 1.0,
+    "mean_libyears": 1.0,
+    "median_libyears": 1.0,
+    "max_libyears": 1.0,
+    "by_ecosystem": {
+      "nuget": {
+        "dependencies_discovered": 1,
+        "dependencies_measured": 1,
+        "coverage": 1.0,
+        "total_libyears": 1.0,
+        "mean_libyears": 1.0,
+        "median_libyears": 1.0,
+        "max_libyears": 1.0
+      }
+    }
+  },
+  "dependencies": [
+    {
+      "ecosystem": "nuget",
+      "name": "alpha",
+      "used_version": "1.0.0",
+      "used_release_time": "2020-01-01T00:00:00Z",
+      "latest_stable_version": "2.0.0",
+      "latest_stable_release_time": "2020-12-31T06:00:00Z",
+      "libyears": 1.0,
+      "timestamp_anomaly": false,
+      "version_source": "packages_lock",
+      "nuget_evidence": {
+        "project": "Witness.csproj",
+        "framework": "net10.0",
+        "requested": "1.0",
+        "origin_state": "public_content_verified",
+        "content_hash_state": "public_agreement",
+        "publication_basis": "nuget_org_first_receipt_created",
+        "lock_requested": "[1.0.0, )",
+        "selected_version": "1.0.0",
+        "normalized_version": "1.0.0",
+        "selection_source": "packages.lock.json",
+        "used_publication": {
+          "version": "1.0.0",
+          "created": "2020-01-01T00:00:00Z",
+          "listed": true
+        },
+        "latest_publication": {
+          "version": "2.0.0",
+          "created": "2020-12-31T06:00:00Z",
+          "listed": true
+        }
+      }
+    }
+  ],
+  "unmeasurable": [],
+  "source_errors": []
+}

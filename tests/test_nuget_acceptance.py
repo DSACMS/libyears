@@ -141,6 +141,9 @@ class NuGetAcceptanceTests(unittest.TestCase):
             reads = None
             if not real_reader:
                 reads = stack.enter_context(fixture_nuget_reads(self.root, files))
+                if not selected:
+                    from tests.test_nuget_sources import repository_inputs
+                    stack.enter_context(repository_inputs(self.root, {'Witness.csproj': files}))
             for target in ('builtins.open', 'io.open', 'os.write', 'os.system',
                            'os.execve', 'os.spawnv', 'subprocess.Popen', 'subprocess.run',
                            'socket.socket', 'socket.create_connection', 'socket.getaddrinfo',
@@ -315,7 +318,8 @@ class NuGetAcceptanceTests(unittest.TestCase):
                           else 'nuget_provenance_missing', result[1])
         result = self.exercise(nuget_inputs(), selected=False)
         self.assertEqual((result[0], result[2], result[3]), (0, '', []))
-        self.assertNotIn('nuget', result[1])
+        self.assertIn('nuget_provenance_missing', result[1])
+        self.assertEqual(json.loads(result[1])['dependencies'], [])
 
     @unittest.skipUnless(SAFE_SCOPED_READ, 'safe descriptor access unavailable')
     def test_actual_reader_public_path_preserves_bytes_and_never_traverses_references(self):

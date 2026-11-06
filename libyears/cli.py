@@ -8,9 +8,9 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
-from .nuget_discovery import NuGetRecognition, discover_nuget_candidates
 from .output import format_human, format_json
 from .scan import NuGetRequest, RubyGroupRequestError, scan_mixed_repository, validate_ruby_groups
+from .nuget_sources import NuGetRepositoryRequestError, validate_witnesses
 from .snapshot import parse_snapshot
 
 
@@ -24,7 +24,7 @@ class _ArgumentParser(argparse.ArgumentParser):
         # Exact options bypass this abbreviation hook. Keep ordinary option
         # abbreviations compatible while requiring exact scoped spellings.
         matches = super()._get_option_tuples(option_string)
-        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance")
+        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance", "--nuget-witness")
                for match in matches):
             return []
         return matches
@@ -48,6 +48,9 @@ def build_parser() -> argparse.ArgumentParser:
                         help="accept one immediate witness binding native NuGet package provenance to contemporaneous "
                              "producer attestation of exact project/lock bytes, framework and input influences; "
                              "retrospective replay cannot substitute for original-event attestation")
+    parser.add_argument("--nuget-witness", metavar="PROJECT=NAME.json", action="append",
+                        help="accept one explicit supplier witness per root-relative project in ordinary "
+                             "repository mode (repeatable; exactly one =; H3 requirements unchanged)")
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
     parser.add_argument("--ca-bundle", metavar="FILE", help="verified CA bundle for PyPI HTTPS")
     parser.add_argument("--verbose", action="store_true", help="show concise registry failure diagnostics")
@@ -55,7 +58,7 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def _nuget_arguments_present(arguments) -> bool:
-    options = ('nuget-project', 'nuget-provenance')
+    options = ('nuget-project', 'nuget-provenance', 'nuget-witness')
     for argument in arguments:
         # Fold malformed spellings only for privacy; argparse still accepts
         # exclusively the exact lowercase option names registered above.
@@ -97,13 +100,31 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
     try:
         args = parser.parse_args(argv)
         nuget_request = _nuget_request(args, parser)
+        witnesses = ()
+        if args.nuget_witness is not None:
+            if nuget_request is not None or not Path(args.path).is_dir():
+                parser.error('invalid NuGet witness mapping')
+            if any(value.count('=') != 1 for value in args.nuget_witness):
+                parser.error('invalid NuGet witness mapping')
+            witnesses = tuple(tuple(value.split('=')) for value in args.nuget_witness)
+            try:
+                validate_witnesses(witnesses)
+            except NuGetRepositoryRequestError:
+                parser.error('invalid NuGet witness mapping')
     except SystemExit as error:
         return int(error.code)
+    except (OSError, ValueError):
+        print('libyears: invalid NuGet request', file=sys.stderr)
+        return 1
     scan_function = scan or scan_mixed_repository
     try:
         kwargs = {}
         if nuget_request is not None:
             kwargs['nuget_request'] = nuget_request
+        elif Path(args.path).is_dir():
+            kwargs['nuget_repository'] = True
+            if witnesses:
+                kwargs['nuget_witnesses'] = witnesses
         if args.ruby_group is not None:
             kwargs["ruby_groups"] = validate_ruby_groups(args.path, args.ruby_group)
         if args.ca_bundle:
@@ -113,16 +134,16 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         if args.resolved is not None:
             kwargs["snapshot"] = parse_snapshot(args.resolved)
         report = scan_function(args.path, **kwargs)
-    except RubyGroupRequestError as error:
-        message = 'invalid scoped request' if nuget_request is not None else str(error)
+    except (RubyGroupRequestError, NuGetRepositoryRequestError) as error:
+        message = 'invalid scoped request' if nuget_request is not None or kwargs.get('nuget_repository') else str(error)
         print(f"libyears: {message}", file=sys.stderr)
         return 1
     except OSError as error:
-        message = 'input unavailable' if nuget_request is not None else str(error)
+        message = 'input unavailable' if nuget_request is not None or kwargs.get('nuget_repository') else str(error)
         print(f"libyears: {message}", file=sys.stderr)
         return 1
     except Exception as error:
-        message = 'NuGet scan unavailable' if nuget_request is not None else str(error)
+        message = 'NuGet scan unavailable' if nuget_request is not None or kwargs.get('nuget_repository') else str(error)
         print(f"libyears: systemic scan failure: {message}", file=sys.stderr)
         return 2
 
@@ -130,19 +151,9 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         if args.json_output:
             rendered = format_json(report, args.path)
         else:
-            human_options = {'verbose': args.verbose}
-            if nuget_request is None:
-                try:
-                    recognition = NuGetRecognition()
-                    if Path(args.path).is_dir():
-                        recognition = discover_nuget_candidates(args.path)
-                except (OSError, ValueError, NotImplementedError):
-                    recognition = NuGetRecognition('incomplete')
-                if recognition.candidates or recognition.status != 'complete':
-                    human_options['nuget_recognition'] = recognition
-            rendered = format_human(report, args.path, **human_options)
+            rendered = format_human(report, args.path, verbose=args.verbose)
     except Exception:
-        if nuget_request is None:
+        if nuget_request is None and not kwargs.get('nuget_repository'):
             raise
         print('libyears: systemic scan failure: NuGet report unavailable', file=sys.stderr)
         return 2

@@ -36,6 +36,13 @@ def lock(direct='rack', specs=('rack (1)',), remote='https://rubygems.org'):
 
 class RubyGroupAcceptanceTests(unittest.TestCase):
     def setUp(self):
+        # Ruby semantic/allowlist tests supply an empty NuGet inventory; actual
+        # project discovery and capability refusal are independently witnessed.
+        from libyears.nuget_discovery import NuGetRecognition
+        inventory = patch('libyears.nuget_sources.discover_nuget_candidates',
+                          return_value=NuGetRecognition())
+        inventory.start()
+        self.addCleanup(inventory.stop)
         temporary = tempfile.TemporaryDirectory()
         self.addCleanup(temporary.cleanup)
         self.root = Path(temporary.name).resolve()

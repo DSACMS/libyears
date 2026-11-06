@@ -15,7 +15,7 @@ no push. Existing Feature006 and recognition task IDs are unchanged.
   repository-source/source/input/project/provenance/discovery tests. Check diff,
   commit. No CLI automatic activation until N2.
 
-- [ ] **N2 — Occurrence composition and public output.** Predecessor: N1.
+- [x] **N2 — Occurrence composition and public output.** Predecessor: N1.
   R1–R6: repository scan activation and early request validation; one batch with
   FIFO per-capability results; per-source/combined NuGet summaries; exact CLI
   witness option and automatic human/JSON directory mode; safe failures and
@@ -62,3 +62,11 @@ local acceptance predecessors. No implementation can loosen H3 or infer populati
 N1 verification: 97 focused tests PASS (sources/source/input/project/provenance/
 discovery); no skips. Added portable semantics and real anchored ancestor/reparse/
 replacement/cleanup plus unskipped capability refusal. Diff check PASS.
+
+N2 verification: 195 focused tests PASS; full 683 PASS, no skips; full
+capability-disabled 683 successful, 48 genuine filesystem skips. Semantic tests
+use injected inventories/readers; unskipped refusal and real filesystem/worker
+witnesses remain. Exact pre-implementation explicit JSON fixture matches.
+Integration found/fixed measured-count loss with unknown sibling population;
+obsolete nonactivation expectations and Ruby CLI inventory assumptions corrected
+without weakening actual primitive-refusal witnesses. Diff check PASS.
