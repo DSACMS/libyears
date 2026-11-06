@@ -2457,3 +2457,89 @@ publication or per-row age.** This supersedes only the pending K5 state, preserv
 all historical findings and does not weaken H3. K1–K4 remain approved with the
 reporting supplement; T017/K6 are now dependency-ready and continue automatically.
 No positive-yield/signing-domain generalization, Feature007, release/tag or push.
+
+### T017 fresh read-only convergence and K6 disposition — 006-0016
+
+Frozen convergence candidate: `80f9d2d44959f04c1f0aed496c1da126a5d5b588`,
+clean before commissioning. K1–K4 and supplemental H3 reporting are approved;
+required prospective T016/K5 is approved above. No implementation or evidence
+repair occurs during T017. Three fresh non-author contexts, fork_turns=none
+without overrides, directly reconstruct authority/code/tests/docs and underlying
+retained evidence. Current sibling conclusions are not shared before completion.
+They make no repository changes, invoke no producer/consumer/live network or
+external target, inspect no payload/cache/credentials and do not delegate.
+Actual child model/effort/resource telemetry remains unavailable.
+
+| Accountable convergence slice | Complete AC coverage | Fresh verification | Verdict |
+|---|---|---|---|
+| /root/convergence_local |03–17,24,33,36:18/18; local31/32/35 contributions |116 focused plus2 H3 assertions PASS; candidate+85/29/9 bindings and native/event/context linkage independently checked | COMPLETE / CONVERGED-in-slice; no material finding |
+| /root/convergence_registry |18–23,34:7/7; public24/31/32/35 contributions |106 focused offline PASS; raw55-entry public latest/hash reconstruction; unchanged published worker/import graph verified | COMPLETE / CONVERGED-in-slice; no material finding |
+| /root/convergence_contract |01,02,25–32,35:11/11;36 contribution |140 focused plus3 reason-reconciliation tests PASS;85 bindings and raw report/context/hash/chronology/integrity independently checked | COMPLETE / CONVERGED-in-slice; no material finding |
+
+Reports remain privately retained as convergence-local-review.md,
+convergence-registry-review.md and convergence-contract-review.md under the
+006-0016 evidence directory. The local reviewer records an initially misnamed
+targeted test class; its corrected actual class passes. No product failure or
+missing verification is hidden by that invocation correction. These focused
+results do not claim new full-suite, live or Windows execution.
+
+Parent validates all reports against underlying authority, candidate diff/code,
+raw local/public content evidence and comparison. The accountable sets are
+disjoint and cover exactly36/36. Positive slices alone do not establish approval;
+parent reconciliation checks the boundaries:
+
+- Complete bounded declarations and whole-lock/witness acceptance determine known
+  versus unknown population before association. F1 normalization and F2 malformed
+  whole-lock rejection, K1-F1 closure-wide bounds and deterministic precedence
+  remain intact. No transitive/project/implicit population or fallback is added.
+- Native actual origin/content plus contemporaneous event/project/lock/framework/
+  influence testimony supply accepted local authority; historical replay alone
+  never does. Four local hashes agree for the new event. Unsupported origin/local
+  disagreement cannot query public namesakes. Public identity/hash checks precede
+  publication. K2-M1 alias-material and P1/T008-V1 deadline/lifecycle closures remain.
+- Request disagreement omits selected provenance; public content disagreement
+  retains already-established selection but omits verified content/publications/age.
+  These are different stages, not conflicting evidence-omission requirements.
+  Actual0016 content mismatch exactly follows the latter. Raw public dates/latest
+  cannot repair it or create a measured0-age row.
+- Existing365.25-day metric, normalized equal-identity zero and anomaly flag remain
+  witnessed offline. Measured-only aggregates and all S6 availability states feed
+  unchanged schema3 and corresponding safe human facts; ordinary/same-name sibling
+  behavior, exact activation/exits, K3-C1 privacy and23 reachable S6 pairs remain.
+- Runtime has no dotnet/NuGet/MSBuild/target/archive/cache/config/credential path;
+  only trusted isolated Python metadata execution is permitted. The separate
+  authorized producer exception ends before retained-only consumer validation.
+  Scope, source, resource, platform and privacy limits remain explicit.
+
+Parent mechanical checks confirm36 stable specification IDs,36 original acceptance
+rows and36 task-owner rows. An initial overbroad row matcher included the two
+supplementary AC13/16 rows; restricting it to the original named tables confirms
+correct accounting without changing any artifact. Frozen validation candidate and
+all85 bindings still match. Product/test bytes are unchanged since the full
+**632-test deterministic PASS** at the H3 correction; reporting-focused88 PASS
+and all fresh convergence regressions supplement that evidence. `git diff --check`
+passes. No repeat full suite is needed for review prose alone.
+
+Relevant worker/registry/transport/version/lifecycle/workflow bytes match the
+published77d66b9 platform baseline with retained Windows3.11–3.13 and six POSIX
+lifecycle/offline/whitespace PASS. No later CLI Windows execution or new CI run is
+claimed. This reporting/evidence correction requires no new platform witness,
+so narrow follow-up push authority is unused. The unrelated hosted secret-check
+failure/local synthetic reproduction and unavailable hosted full cause remain
+unchanged; no suppression, policy exception or false clearance is introduced.
+
+**T017 COMPLETE. K6 COMPLETE / CONVERGED. Feature006 reaches convergence under
+existing authority, with36/36 acceptance reconciliation and no unresolved material
+finding.** This is conformance to the approved conservative contract, not release
+publication, useful positive live yield or universal signing/hash-domain fitness.
+Observed prospective live yield remains0/1 due actual public/native content-hash
+disagreement; local-content publication and per-row age remain unavailable.
+
+All authorized run006-0016 work is complete through convergence. T018 retains its
+separate authorization and human roadmap-handoff gate; it is not begun. No roadmap
+selection, Feature007, unrelated maintenance, release/tag, history rewrite or push.
+The approved specification/plan and historical acceptance/task/review bodies remain
+preserved; current disposition supersedes historical pending state without
+rewriting frozen authority. Final local disposition commit is followed by clean-tree,
+ledger/digest/whitespace checks and the complete44-field handoff at the requested
+private006-0016.json path. Current run and children are never appended to the ledger.
