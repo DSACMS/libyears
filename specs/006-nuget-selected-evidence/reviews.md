@@ -1554,7 +1554,8 @@ artifacts absent. It is not dismissed as infrastructure or reported as passed.
 Existing local Gitleaks8.30.1 with explicit repository configuration and fully
 redacted output, scanning exact221f048..77d66b9, reproduces one generic-api-key
 finding at published8377163, `tests/test_nuget_registry.py:491`. The entire source
-line constructs a synthetic `TransportFailure(404, 'SECRET', bounded_failure='body_limit')`.
+line constructs a synthetic TransportFailure with status404, diagnostic marker
+SECRET and bounded_failure body_limit (original literal retained at8377163).
 Parent directly inspects its provenance. Fresh read-only `/root/secret_canary_audit`
 independently reproduces the same single fingerprint, inspects the synthetic
 fixture/recording transport and verifies redaction. **Assigned triage COMPLETE:

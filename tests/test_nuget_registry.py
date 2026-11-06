@@ -616,7 +616,7 @@ class ComposedSupervisionTests(unittest.TestCase):
 
     def test_bounded_404_is_invalid_response_not_absence(self):
         docs = fixture()
-        docs[INDEX] = TransportFailure(404, 'SECRET', bounded_failure='body_limit')
+        docs[INDEX] = TransportFailure(404, 'synthetic diagnostic', bounded_failure='body_limit')
         transport = Transport(docs)
         client = registry.NuGetMetadataClient(transport=transport, clock=lambda: 100)
         client.begin_package('example')
