@@ -2358,3 +2358,102 @@ pending; no K5/convergence approval follows from reporting closure.
 enrichment and provenance notes. Its original runtime note/confounding remains;
 credits_before stays blank because intervening unnumbered work broke continuity.
 006-0016 and children are not appended. No unrelated work or push occurs.
+
+### Prospective original-root production and evidence freeze
+
+The human's NEW event authority does not require historical-context equivalence.
+The parent prepares an original-project operation with redirected generated state,
+public-only experiment config and explicit new-event influence controls; no copied
+project/consumer root is substituted. Selected MatchRunProfileUpdater/net10.0 is
+the durable supported leaf candidate with one direct Registry5.0.0 and no project
+references. Target revision is1e937015 before/after. Selected source/lock bytes
+remain exact. Sole target write is one exclusive generated immediate witness,
+necessary for unchanged same-root activation, not source/configuration modification.
+
+Fresh `/root/producer_preflight_review`, fork_turns=none without overrides,
+first distinguishes copied-context authority from this original-root route, then
+finds PP1: inherited host PATH permits NuGet plugin discovery. Parent validates
+against primary NuGet discovery semantics; before any producer execution, PATH
+is replaced by a fresh empty directory and DOTNET_HOST_PATH is absolute. Fresh
+DOTNET_CLI_HOME isolates NuGet CoreCLR home. Corrected plan is frozen and receives
+focused COMPLETE / APPROVE-to-execute; PP1 CLOSED. No new human authority needed.
+
+One prospective locked-mode restore succeeds using installed SDK10.0.403 and
+NuGet7.9.0-rc.2412. A capture-script import error happened before event/.NET start
+and was corrected/re-frozen. Restore native metadata/assets/dgspec/cache/logs bind
+fresh public acquisition to this original project and sole framework/package.
+Separate contemporaneous testimony binds native evidence, exact project/lock,
+producer/baseline and all influence assertions. Witness faithfully serializes it.
+Attestation precedes event close, cleanup and29-artifact freeze. Cache/payload/obj
+state is deleted before consumer use. The version command's workload-verification
+warning remains recorded; no install/update/build/application/test command runs.
+
+Fresh non-author A `/root/producer_event_audit` independently verifies all29
+bindings, native/lock/assets/witness decoded64-byte agreement, exact expected and
+produced population/context, assertions and chronology: **COMPLETE / APPROVE,
+no material finding**. Parent validates raw native Installed/source/hash linkage,
+controlled plan, source/lock invariance and explicit testimony limitations.
+This qualifies only the NEW event, never historical/default OASim provenance.
+Historical006-0014 remains D/BLOCKED and the replay negative. Full details and
+safe limitations are in [validation-006-0016.md](validation-006-0016.md).
+
+### Consumer preparation correction, execution and independent K5 review
+
+Initial bare-default-TLS expectation helper fails sandbox DNS then certificate
+validation before any response. Initial local expectations are frozen with public
+facts unavailable. Initial JSON/human captures both exit0 and report public content
+mismatch; their partial expectations and all original evidence are preserved.
+The consumer itself successfully uses its existing verified trust selection.
+
+A separate public audit reuses ONLY that pre-existing verified trust selector
+(pip-bundled CA fallback, certificate/hostname verification required), independently
+parsing complete55-entry registration and selected catalog. Native/local SHA512
+differs from public catalog SHA512. Greatest listed stable is5.0.0; raw catalog
+created is2020-11-09T23:41:41.503Z. Neither observation authorizes dates for local
+content after disagreement; cause/generality of mismatch is unestablished.
+No new trust, bypass, archive, source-policy or product change is introduced.
+
+Parent validates missing prospective public expectations as a bounded preparation
+defect. Complete independent expectations and one corrected pair script are frozen,
+with original pair retained and chronology unaltered. Fresh non-author
+`/root/consumer_preparation_verify` verifies9 correction and29 producer bindings,
+raw expectations, authority for the current prompt's affected-evidence rerun and
+safe output paths: **COMPLETE / APPROVE-to-rerun**. The helper's stale docstring
+is explicitly qualified, not used to claim no shared trust code or blinding.
+
+Exactly one corrected JSON/human pair follows that approval, both exit0/empty
+stderr.14 machine comparison checks PASS, including direct population/selection,
+context/acceptance, fail-closed mismatch/omission, independently computed empty
+measured aggregates, human/JSON/privacy and three exact input bytes/revision.
+No further producer or scan rerun occurs. Validation candidate SHA256
+`23e2dceadbee27780b497183c734a71d40ffffe98227878a08766b4b2c4a2b83`
+and85 private files are frozen before final B/C commissioning.
+
+| Fresh final audit | Independent complete coverage | Verdict |
+|---|---|---|
+| B /root/validation_security_b |85+candidate/29/9 bindings; native/testimony/event linkage; producer-ended/cleaned separation; retained-only scanner inputs; source/hash authority, no namesakes, privacy and truthful scope | COMPLETE / APPROVE, no material findings |
+| C /root/validation_acceptance_c |85+candidate/29/9 bindings; independent55-identity latest/public-hash reconstruction; initial/corrected expected/observed chronology; exact context/population/selection/content rejection, metric/output and input integrity | COMPLETE / APPROVE, no material findings |
+
+Both use fork_turns=none without overrides, inspect underlying evidence directly
+and withhold current sibling/preliminary conclusions until independent assessment.
+No producer, consumer, target, live network, payload/cache/credential access or
+repository mutation occurs in final review. Pure retained-data checks are allowed.
+Actual child model/effort/resource telemetry is unavailable. Reports remain private
+under the006-0016 evidence directory, alongside producer/preparation reports.
+
+Parent validates all material issues directly rather than counting votes: four
+local hashes agree, public hash actually differs, complete raw enumeration identifies
+latest5.0.0, product correctly withholds publications/row age, N1/M0/coverage0.0
+and empty-sum total0.0/null other aggregates match both reports, and all scoped
+input/chronology bindings pass. Existing authority specifies no positive live-yield
+threshold. Required date/age checks disposition the correct absence after H3
+rejection; no measured row needs invented arithmetic. This is a completed real-root
+failure-path validation, not unavailable evidence hidden as zero or a proof of
+public content agreement/useful positive yield. No new product decision is needed.
+
+**T016 COMPLETE. K5 COMPLETE / APPROVE for the bounded prospective evidence.**
+**Live outcome0/1 measured, content_hash_mismatch; no authoritative local-content
+publication or per-row age.** This supersedes only the pending K5 state, preserves
+all historical findings and does not weaken H3. K1–K4 remain approved with the
+reporting supplement; T017/K6 are now dependency-ready and continue automatically.
+No positive-yield/signing-domain generalization, Feature007, release/tag or push.
