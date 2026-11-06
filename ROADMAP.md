@@ -61,6 +61,10 @@ An evidence-backed problem or learning opportunity is required.
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
+| [Ecosystem analyzer boundary](#8-ecosystem-analyzer-boundary) | EXPLORE | Architecture evidence | Bounded maintainability investigation |
+| [Dependency-metadata providers](#9-dependency-metadata-providers) | EXPLORE | Evidence sources | Provider landscape investigation |
+| [Human-centered agentic-development harness](#10-human-centered-agentic-development-harness) | EXPLORE | Methodology | Cross-project evidence and distribution study |
+| [Java ecosystem repodive](#11-java-ecosystem-repodive) | EXPLORE | Java discovery | Human-requested bounded investigation |
 
 ### 3. Project-root discovery/listing
 
@@ -172,15 +176,124 @@ aggregation semantics remain unclear.
 - [Feature 003 discovery](specs/003-yarn-lock-evidence/discovery.md)
 - [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
 
+### 8. Ecosystem analyzer boundary
+
+**State:** EXPLORE
+
+**Area:** Architecture evidence
+
+**Contributor fit:** Bounded maintainability investigation
+
+**Opportunity:** Investigate an explicit ecosystem-analyzer seam inside the current
+modular monolith, alongside keeping the existing explicit source pairs.
+
+**Evidence:** Feature 006 adds staged authority, worker lifecycle and shared
+scan/output branches; cumulative tests and cross-platform fixtures expose testing
+and integration pressure. Maintenance hours or a scaling law were not measured.
+
+**Why this state:** The approved retrospective recommends evidence gathering;
+no interface, migration or generic plugin framework is selected. This run performs
+no exploration.
+
+**Success signal:** A concrete change-history/test-cost map and bounded comparison
+show lower maintenance burden with equivalent domain, privacy and failure witnesses.
+
+**Stop condition:** Indirection hides ecosystem rules or supplies no demonstrated
+benefit over current explicit boundaries.
+
+**References:** [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md#architectural-complexity).
+
+### 9. Dependency-metadata providers
+
+**State:** EXPLORE
+
+**Area:** Evidence sources
+
+**Contributor fit:** Provider landscape investigation
+
+**Opportunity:** Compare dependency-metadata providers, including ecosyste.ms,
+against direct-registry evidence requirements.
+
+**Evidence:** Feature 006's completed prospective validation yielded a native/public
+hash mismatch and no measurable age. Registry identity, source authority, dates
+and provider fidelity are separate questions; no alternative provider was tested.
+
+**Why this state:** Human-requested future evidence gathering, not adoption or a
+selected solution to the observed mismatch. No provider research occurs here.
+
+**Success signal:** Concrete comparative evidence on coverage, source/content/date
+fidelity, reproducibility and operational cost under the existing metric boundary.
+
+**Stop condition:** A provider obscures authority, cannot substantiate required
+claims, or requires an unapproved dependency/trust/semantic change.
+
+**References:** [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md#what-we-would-do-differently-and-human-handoff).
+
+### 10. Human-centered agentic-development harness
+
+**State:** EXPLORE
+
+**Area:** Methodology
+
+**Contributor fit:** Cross-project evidence and distribution study
+
+**Opportunity:** Investigate a generalized development harness and possible
+SKILL.md distribution of demonstrated lifecycle/review/baton practices.
+
+**Evidence:** Features 004–006 retain frozen review/correction patterns;005/006
+use internal orchestration and prospective observations. The qualitative17K prompt
+signal motivated durable information architecture; measured attention savings and
+cross-project generality remain absent.
+
+**Why this state:** Reusable practice merits evaluation, not a selected tool,
+mandatory premium-model workflow or immediate skill implementation.
+
+**Success signal:** Another authorized project preserves equivalent quality and
+human authority with measured coordination/maintenance burden and accessible routing.
+
+**Stop condition:** Packaging adds more administration than value, cannot preserve
+repository-specific authority, or relies on unobserved resource claims.
+
+**References:** [SDD_WORKFLOW.md](SDD_WORKFLOW.md), [Feature 005 retrospective](specs/005-gemfile-group-scope/retrospective.md), [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md).
+
+### 11. Java ecosystem repodive
+
+**State:** EXPLORE
+
+**Area:** Java discovery
+
+**Contributor fit:** Human-requested bounded investigation
+
+**Opportunity:** A future bounded Java ecosystem repository investigation to identify
+actual direct declarations, retained selection and source/publication evidence.
+
+**Evidence:** The human explicitly requests preserving this opportunity in the
+006-0017 closure commission. This closure supplies no new Java repository evidence.
+
+**Why this state:** Human demand supports future evidence gathering; no Feature007,
+Java support or external repository access is selected/authorized here.
+
+**Success signal:** Separately authorized real repository evidence establishes a
+useful bounded workflow without executing a resolver inside libyears.
+
+**Stop condition:** Evidence requires unapproved target access, execution, unsupported
+selection assumptions or ecosystem implementation before product selection.
+
+**References:** [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md#what-we-would-do-differently-and-human-handoff).
+
 ## Selected Work Moved into SDD
 
 ### 7. Bounded NuGet selected-version evidence
 
-**Selection state:** SELECTED as Feature 006 on 2026-11-03 by explicit human
-product authority. H1–H4 accepted in run `006-0002`: discovery is READY FOR
-SPECIFICATION and specification drafting is authorized. The draft awaits
-independent specification review. Planning, implementation and product
-dotnet/NuGet execution remain unauthorized.
+**Selection state:** SELECTED; completed Feature 006 through T018 in run
+`006-0017`. This is a completion reference, not active discovery or a new release.
+
+**Outcome:** T017/K6 CONVERGED with36/36 acceptance reconciliation; canonical
+retrospective independently APPROVED. Explicit one-project lock/witness support
+is implemented. Prospective real-root validation completed with **0/1 measured,
+content_hash_mismatch**, correctly withholding publication/age. Useful positive
+live yield and general hash-domain fitness remain unestablished. No producer
+execution authority transfers to the CLI. Human roadmap selection remains separate.
 
 **Area:** .NET / NuGet
 
@@ -221,6 +334,9 @@ or unsupported assumptions about selection, source authority or dates.
 
 - [NuGet / OASim pre-selection discovery](discovery/nuget-oasim.md)
 - [Feature 006 discovery](specs/006-nuget-selected-evidence/discovery.md)
+- [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md)
+- [Convergence and closure](specs/006-nuget-selected-evidence/reviews.md#t018-retrospective-and-closure--006-0017)
+- [Prospective validation](specs/006-nuget-selected-evidence/validation-006-0016.md)
 
 ### 1. Bounded RubyGems lock-snapshot support
 

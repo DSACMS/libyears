@@ -2543,3 +2543,55 @@ preserved; current disposition supersedes historical pending state without
 rewriting frozen authority. Final local disposition commit is followed by clean-tree,
 ledger/digest/whitespace checks and the complete44-field handoff at the requested
 private006-0016.json path. Current run and children are never appended to the ledger.
+
+
+## T018 retrospective and closure — 006-0017
+
+Starting clean baseline `33726aa5375c872b4e6267134378496090f754f7`.
+The human authorizes T018, canonical retrospective, independent review, bounded
+documentation corrections, roadmap reconciliation after approval and two separately
+reviewed maintenance items. No Feature 007, Java research, provider adoption,
+analyzer migration, semantic change, weakened scanning or push is authorized.
+
+Frozen retrospective SHA256
+`6778bb9161c6bb8bd177218e25fde288abed7d2c8ec639eff0f900589446643a`
+(2,578 whitespace-separated words); small SDD_WORKFLOW correction SHA256
+`60be3f6bdc60b820513fc281e62803519a42ad68a83e8a51eb9605e8b9bd5612`.
+Fresh non-author `/root/retro_review`, fork_turns=none without overrides, directly
+reads repository authority, complete Feature 006 core contracts, review history,
+acceptance/discovery/validation evidence, relevant 004/005 retrospectives and ledger.
+Exact current commissioning text corroborates the qualitative 17K signal,
+opportunities and maintenance grant; these are not reconstructed measurements.
+No current sibling review exists. Actual child settings/resource telemetry are
+unavailable. Report retained outside Git at
+`/tmp/libyears-observations/006-0017-retro-review.md`.
+
+**Independent review COMPLETE / APPROVE; material findings NONE.** Candidate and
+workflow bytes remain frozen after commissioning. Reviewer independently verifies
+ledger16 unique, completion12/3/1, runtime15 confounded/1 unknown, blank prompt
+measurements; actual0/1 mismatch, H3 native/testimony/replay distinction, exact-SHA
+Windows evidence limits and conservative resource/causal claims. No code/test,
+network or external target execution occurs in the retrospective review.
+
+Parent validates those counts directly, checks claims against underlying durable
+records, specifically0014's retained deviation and0016's correctly omitted age,
+and confirms both digests, local links and whitespace. The methodology correction
+requires verbatim exceptional preconditions/STOP conditions in review assignments;
+it addresses0014 without changing product authority or routing tiers. No further
+methodology change is justified. Product tests are not repeated for prose alone;
+632 PASS remains the observed prior full-suite result, not a new execution.
+
+**T018 COMPLETE / APPROVED. Feature 006 artifact lifecycle CLOSED.** T017/K6
+convergence and36/36 accounting remain unchanged. Positive live yield, mismatch
+cause/generality and universal hash-domain fitness remain unestablished. ROADMAP
+and pre-selection opportunity pointers are reconciled from this approved synthesis;
+future modularity/providers/harness/Java opportunities remain unselected and
+uninvestigated. Human product roadmap selection remains a separate gate.
+The two queued maintenance items may now proceed under their explicit existing
+authority, with separate change/review history and no inherited CI push grant.
+
+Prior006-0016 is recorded exactly once in `9440fab`, from its44-key handoff with
+only authorized /status enrichment and provenance notes. Original runtime note
+and confounding classifications remain exact;45/49 are account continuity readings,
+no derived delta. Current006-0017 and children are not appended. The current baton
+will cover closure and subsequent maintenance as one human-launched run.

@@ -1,5 +1,15 @@
 # NuGet / OASim opportunity discovery
 
+## Post-convergence closure pointer — 006-0017
+
+Feature 006 is CONVERGED through T017/K6 and its T018 retrospective is independently
+APPROVED. [ROADMAP](../ROADMAP.md) and the
+[canonical retrospective](../specs/006-nuget-selected-evidence/retrospective.md)
+record completion and future evidence opportunities. Prospective validation yielded
+0/1 measured with content_hash_mismatch; useful positive live yield remains
+unestablished. The pre-selection dispositions below are historical and grant no
+current execution or new ecosystem authority. No experiment is reclassified.
+
 **Current disposition: Phase 2 resume COMPLETE; HUMAN FEATURE 006 SELECTION CANDIDATE.**
 The [resumed evidence record](#phase-2-resume--observed-retained-evidence) supersedes
 the historical SDK gate. Radar state remains EXPLORE; Feature 006 is unselected

@@ -87,8 +87,10 @@ inspectable without an approval-only edit.
 
 Use fresh non-author reviewer contexts where available. Give reviewers the
 question, authority, frozen candidate, evidence locations and completion
-obligations. They inspect authority and evidence directly rather than relying
-on an author's summary. Recover truncated reads before claiming coverage.
+obligations. Include verbatim exceptional authority preconditions and STOP conditions
+when compliance with them is part of the review; an artifact summary can omit a
+controlling restriction (Feature 006, run 006-0014). They inspect authority and
+evidence directly rather than relying on an author's summary. Recover truncated reads before claiming coverage.
 Do not share current sibling conclusions before reviewers complete their work.
 Retained historical reviews remain available as historical evidence.
 
