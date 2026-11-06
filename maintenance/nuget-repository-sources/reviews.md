@@ -112,3 +112,44 @@ normalization removes the native/POSIX key mismatch; this is not hosted evidence
 The product implementation and corrected OASim smoke/integrity bytes remain
 unchanged. Diff check PASS. Fresh non-author verification of this final bounded
 follow-up remains required for N4 completion.
+
+## Final focused closure and parent convergence
+
+Frozen `078eac3`: fresh non-author fixture_recheck, fork_turns=none/no overrides,
+**COMPLETE / APPROVE; F3 CLOSED**, no new material findings. Independently ran26
+focused tests and21 capability-disabled semantic/refusal tests, zero skips in the
+latter; verified POSIX normalization and unchanged product/platform refusal/skip
+behavior. AGENTS' source/occurrence distinction matches approved R3. Report:
+/tmp/libyears-observations/006-0022-fixture-recheck.md. Parent reads full report,
+checks the one-expression fixture correction and documentation alignment, and
+reconciles it with the complete original R1–R6 audit and fresh F1/F2 closure.
+No review result is backdated; initial REVISE findings and all reports remain.
+Actual child configuration/resource telemetry is unavailable.
+
+**N1–N4 COMPLETE / CONVERGED.** Specification, plan and graph independently
+approved; additive schema-v3 compatibility established; all three implementation/
+documentation/fixture findings closed without changing product authority. Each
+supported project is a source; its direct external references are independent
+occurrences, without cross-project deduplication, solution population or graph
+aggregation. Strict H3, supported parser, metric and null semantics remain.
+
+Final test bytes: full685 PASS/no skips; capability-disabled685 successful with49
+real filesystem skips; focused197 PASS plus fixture26 PASS; dedicated real-worker3
+PASS (also retained in full/focused). Exact explicit baseline remains compatible.
+Committed-history GitLeaks8.30.1 exit0/zero leaks at `078eac3`,274 commits scanned;
+final closure-commit history scan is repeated after committing this disposition.
+Whitespace checks PASS; target final-after manifest again equals original baseline
+exactly. Final ordinary smoke remains exit0/empty stderr/identical stdout: ten
+attempts, eight unknown populations, two known N=1/N=2 with missing accepted
+provenance, null repository coverage. No target changes/execution/evidence producer,
+implicit witness, numerical coverage requirement or positive live-yield claim.
+
+This is local contract convergence, not publication or actual hosted evidence for
+new code. **Exact next human gate: authorize publication/push; after publication,
+observe actual hosted Windows3.11–3.13 and other CI/security checks before claiming
+operational closure.** No push/release/tag/history rewrite/Feature007/Java/analyzer
+migration is performed. Current observation handoff is written outside Git at
+/tmp/libyears-observations/006-0022.json, not appended to the ledger. Prior006-0021
+was recorded exactly once with authorized status enrichment and original runtime
+provenance/confounding retained; credits remain account continuity observations,
+with no derived delta. Final clean-tree/security/handoff checks follow this commit.

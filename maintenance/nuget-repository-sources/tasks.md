@@ -43,7 +43,7 @@ no push. Existing Feature006 and recognition task IDs are unchanged.
   validation.md. Diff/check, commit; run canonical GitLeaks history gate on
   committed candidate. Freeze candidate code/tests/docs/evidence for N4.
 
-- [ ] **N4 — Independent implementation/convergence.** Predecessor: N3.
+- [x] **N4 — Independent implementation/convergence.** Predecessor: N3.
   Fresh read-only non-author review of R1–R6, authority/digests, implementation,
   tests/docs, schema compatibility, operational output/integrity and verification.
   Parent reconciles findings and all obligations. Bounded determined corrections
@@ -76,3 +76,10 @@ separate real-worker 3 PASS. Exact ordinary OASim exit0/empty stderr, ten automa
 attempts, eight unknown and two known-but-unavailable populations; repository
 null coverage. Exact captured target before/after equality PASS. Documentation
 checkpoint complete; GitLeaks executed on N3 commit and recorded in reviews.md.
+
+N4 COMPLETE / CONVERGED: original complete independent audit REVISE(F1/F2),
+corrective fresh review closes both then REVISE(F3 fixture portability), final
+fresh focused verification APPROVE/F3 closed. Parent reconciles R1–R6 and all
+collateral obligations; latest test and operational/security results are retained
+in validation.md/reviews.md. Next human gate is publication authorization then
+actual hosted platform/security observation. No push.
