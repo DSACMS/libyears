@@ -7,7 +7,7 @@ from datetime import datetime, timezone
 import json
 from typing import Any
 
-from .model import GemfileEvidence, NuGetEvidence, RubyGemsEvidence
+from .model import DependencyMeasurement, GemfileEvidence, NuGetEvidence, RubyGemsEvidence
 from .scan import MixedScanReport, ScanReport
 from .snapshot import SNAPSHOT_FORMAT
 
@@ -201,6 +201,47 @@ def format_json(report: ScanReport, path: str) -> str:
     return json.dumps(report_to_dict(report, path), indent=2) + "\n"
 
 
+def _measurement_table(
+    measurements: list[DependencyMeasurement], *,
+    ecosystem_column: bool = False, source_column: bool = False,
+) -> list[str]:
+    """Align rendered cells, including headers, using plain-text padding."""
+    headers = ["DEPENDENCY"]
+    if ecosystem_column:
+        headers.append("ECOSYSTEM")
+    headers.extend(["USED", "LATEST", "LIBYEARS"])
+    numeric_column = headers.index("LIBYEARS")
+    if source_column:
+        headers.append("SOURCE")
+
+    rows = []
+    for measurement in measurements:
+        dependency = measurement.dependency
+        cells = [dependency.name]
+        if ecosystem_column:
+            cells.append(dependency.ecosystem)
+        cells.extend([dependency.used_version, dependency.latest_stable_version,
+                      f"{measurement.libyears:.2f}"])
+        if source_column:
+            cells.append(_source_text(dependency.version_source))
+        rows.append(cells)
+
+    widths = [len(header) for header in headers]
+    for cells in rows:
+        for index, cell in enumerate(cells):
+            widths[index] = max(widths[index], len(cell))
+    lines = []
+    for cells in [headers, *rows]:
+        padded = []
+        for index, cell in enumerate(cells):
+            if index == numeric_column:
+                padded.append(cell.rjust(widths[index]))
+            else:
+                padded.append(cell.ljust(widths[index]))
+        lines.append("  ".join(padded).rstrip())
+    return lines
+
+
 def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bool = False) -> str:
     """Format a scan report for terminal readers."""
     if isinstance(report, MixedScanReport):
@@ -269,19 +310,8 @@ def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bo
         measurement.dependency.version_source for measurement in report.measurements
     }
     source_column = len(mixed_sources) > 1
-    header = "DEPENDENCY       USED       LATEST       LIBYEARS"
-    if source_column:
-        header += "  SOURCE"
-    lines.extend(["", header])
-    for measurement in sorted(report.measurements, key=lambda item: item.libyears, reverse=True):
-        dependency = measurement.dependency
-        line = (
-            f"{dependency.name:<16} {dependency.used_version:<10} "
-            f"{dependency.latest_stable_version:<12} {measurement.libyears:.2f}"
-        )
-        if source_column:
-            line += f"  {_source_text(dependency.version_source)}"
-        lines.append(line)
+    ordered = sorted(report.measurements, key=lambda item: item.libyears, reverse=True)
+    lines.extend(["", *_measurement_table(ordered, source_column=source_column)])
     lines.extend(
         [
             "",
@@ -343,13 +373,12 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
         if yarn_evidence:
             lines.append("Version evidence: yarn.lock")
         if report.measurements:
-            lines.extend(["DEPENDENCY       USED       LATEST       LIBYEARS"])
-            for measurement in sorted(report.measurements, key=lambda item: item.libyears, reverse=True):
+            ordered = sorted(report.measurements, key=lambda item: item.libyears, reverse=True)
+            table = _measurement_table(ordered)
+            lines.append(table[0])
+            for measurement, row in zip(ordered, table[1:]):
                 dependency = measurement.dependency
-                lines.append(
-                    f"{dependency.name:<16} {dependency.used_version:<10} "
-                    f"{dependency.latest_stable_version:<12} {measurement.libyears:.2f}"
-                )
+                lines.append(row)
                 lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
                 lines.extend(_nuget_detail_lines(dependency.nuget_evidence))
                 if dependency.nuget_evidence is not None:
@@ -398,14 +427,12 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
             f"median {_number(item.median_libyears)}, max {_number(item.max_libyears)} libyears"
         )
     if report.measurements:
-        lines.extend(["", "DEPENDENCY       ECOSYSTEM  USED       LATEST       LIBYEARS  SOURCE"])
-        for measurement in sorted(report.measurements, key=lambda item: item.libyears, reverse=True):
+        ordered = sorted(report.measurements, key=lambda item: item.libyears, reverse=True)
+        table = _measurement_table(ordered, ecosystem_column=True, source_column=True)
+        lines.extend(["", table[0]])
+        for measurement, row in zip(ordered, table[1:]):
             dependency = measurement.dependency
-            lines.append(
-                f"{dependency.name:<16} {dependency.ecosystem:<10} "
-                f"{dependency.used_version:<10} {dependency.latest_stable_version:<12} "
-                f"{measurement.libyears:.2f}  {_source_text(dependency.version_source)}"
-            )
+            lines.append(row)
             lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
             lines.extend(_nuget_detail_lines(dependency.nuget_evidence))
             if dependency.nuget_evidence is not None:

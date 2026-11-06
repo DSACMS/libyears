@@ -4,6 +4,11 @@ Notable changes to Libyears are documented here.
 
 ## [Unreleased]
 
+### Fixed
+
+- Align human-readable dependency tables using the displayed headers and values,
+  including long package names and versions, with right-aligned libyears values.
+
 ### Security
 
 - Prevent pathological backtracking when classifying npm registry versions,
