@@ -1,5 +1,13 @@
 # Feature 006 Implementation Task Graph
 
+## Execution supplement — 006-0016
+
+The supplemental bounded T012/T013 reporting/help/documentation correction is
+COMPLETE / APPROVED; reviews.md records frozen candidate `a383440`, fresh focused
+non-author verification and parent focused88/full632 PASS. This supersedes only
+the reporting PENDING state in the historical 006-0015 supplement below.
+T016/K5 remain incomplete until prospective event and consumer evidence approve.
+
 ## Current H3 obligations and execution state — 006-0015
 
 The corrected [specification](spec.md) at `2deb864` and the current H3 supplement

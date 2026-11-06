@@ -1,5 +1,16 @@
 # Feature 006 offline acceptance evidence — T014
 
+## Reporting supplement — 006-0016
+
+The bounded T012/T013 H3 disclosure/help/docs correction is independently
+APPROVED in reviews.md at local correction `a383440`. The new help witness
+`test_help_explains_bound_provenance_and_contemporaneous_attestation` and expanded
+`test_human_success_corresponds_to_json_and_explains_evidence_limits` assert both
+evidence classes, event/byte/framework/influence binding and replay prohibition.
+Focused88 and full deterministic632 PASS. This closes only the reporting row
+below; prospective real-event AC-13/16 and T016/K5 evidence remain required.
+Historical results/wording below retain their original provenance.
+
 ## Current-contract qualification — 006-0015
 
 The original executed T014/K4 record below remains historical evidence against

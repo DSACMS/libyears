@@ -2315,3 +2315,46 @@ Feature 007, release/tag or push. The complete 44-field handoff is written outsi
 Git to `/tmp/libyears-observations/006-0015.json` before final reporting, with
 unavailable run-start/model/credit/child telemetry blank. Git writes required
 sandbox escalation; no credits_before continuity or active runtime is inferred.
+
+## H3 reporting correction — 006-0016
+
+Starting clean HEAD `b941c77658d394312aec2984f2dc79fb04d8465c`.
+The human authorizes the bounded T012/T013 correction, fresh verification,
+prospective producer/capture/consumer validation and continuation through existing
+internal gates. No historical OASim provenance, target source/configuration
+modification, application build/run/tests, private feed/credential use, scope
+expansion or Feature 007 is authorized.
+
+### Frozen correction and focused approval
+
+Local correction `a383440` changes only human disclosure, provenance option help,
+README/SPEC, synthetic fixture guidance and corresponding assertions. It explains
+native NuGet package provenance PLUS contemporaneous producer attestation, binding
+to event/exact project/lock/framework/influence assertions and the replay
+prohibition. The version-1 envelope, schema3, CLI activation, parser/LocalAuthority,
+public identity/hash/date gates, metric and ordinary/sibling behavior are unchanged.
+
+Seven candidate file digests were frozen in private h3-freeze.json before fresh
+non-author `/root/h3_reporting_review`, fork_turns=none without overrides. The
+reviewer independently verifies all seven, reads controlling authority and the
+complete diff, and runs focused output/CLI/compatibility **88 PASS**, whitespace
+PASS. **Focused review COMPLETE / APPROVE; material findings NONE.** Private
+report: `/tmp/libyears-observations/006-0016/h3-review.md`. Actual child model,
+effort and resource telemetry are unavailable.
+
+Parent validates the changed strings/doc meanings against S4, unchanged schema
+and activation branches, fixture limitations and normal/verbose reporting
+assertions. Parent focused88 and full deterministic **632 PASS**; whitespace
+PASS. The first help test incorrectly expected SystemExit from main; it was
+corrected before freeze to assert main's returned status and captured output.
+No frozen candidate repair follows review.
+
+**Bounded T012/T013 H3 reporting omission CLOSED / APPROVED.** This supplements
+historical K3/K4 evidence, not a new synthetic proof of real-event AC-13/16.
+All36 AC identities and H1/H2/H4 remain. Required T016/K5 event evidence remains
+pending; no K5/convergence approval follows from reporting closure.
+
+006-0015 is appended exactly once from its handoff with only authorized /status
+enrichment and provenance notes. Its original runtime note/confounding remains;
+credits_before stays blank because intervening unnumbered work broke continuity.
+006-0016 and children are not appended. No unrelated work or push occurs.
