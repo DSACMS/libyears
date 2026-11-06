@@ -58,7 +58,7 @@ An evidence-backed problem or learning opportunity is required.
 | Opportunity | State | Area | Contributor fit |
 |---|---|---|---|
 | [Project-root discovery/listing](#3-project-root-discoverylisting) | SELECTED (bounded NuGet correction) | CLI / repository discovery | Bounded product correction |
-| [NuGet repository project sources](#12-nuget-repository-project-sources) | EXPLORE (human decision pending) | NuGet / repository population | Bounded product discovery |
+| [NuGet repository project sources](#12-nuget-repository-project-sources) | SELECTED (source occurrences) | NuGet / repository population | Bounded product correction |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
@@ -307,8 +307,9 @@ selection assumptions or ecosystem implementation before product selection.
 
 ### 12. NuGet repository project sources
 
-**State:** EXPLORE; human-commissioned discovery complete, consequential population
-decision pending. Conditional autonomous implementation authority was not reached.
+**State:** SELECTED in run `006-0022`. The human approves source-qualified
+project occurrence weighting and autonomous SDD under the separate
+[repository-source correction](maintenance/nuget-repository-sources/spec.md).
 
 **Area:** NuGet / repository population and output
 
@@ -323,13 +324,13 @@ three references. Eight populations are unknown; the two accepted declarations
 lack explicitly supplied witnesses in the no-acceptance probe. The historical
 51-reference inventory cannot become current numeric coverage by assumption.
 
-**Why this state:** Existing mixed ecosystems establish separate package identity
-and summed ecosystem populations, not repeated same-ecosystem project weighting.
-Feature006 also fixes explicit witness acceptance and null unavailable-source
-coverage. Independent project occurrences are recommended, but specification must
-follow explicit population and source-output authority. A found witness remains
-unaccepted; neither locks nor discovery weaken H3. This is separate from completed
-recognition and from portfolio orchestration across independent repositories.
+**Why this state:** The explicit human decision now authorizes repeated direct
+membership across independently supported projects, without deduplication, solution
+or reference-graph population authority. H3, explicit witness acceptance, unknown
+population and unavailable-source null semantics remain binding. Additive schema3
+representation requires independent review; incompatible output needs a human
+schema decision. This is separate from completed recognition and from portfolio
+orchestration across independent repositories.
 
 **Success signal:** A human-approved source/population contract makes ordinary
 repository measurement truthful without choosing a project, preserves source
@@ -337,8 +338,8 @@ identity and failures, and keeps unknown or unavailable coverage honest.
 
 **Stop condition:** Unresolved occurrence weighting, source/schema contract,
 implicit testimony, deduplication, solution/graph authority, changed metric or
-generated-evidence requirements. No implementation or broader ecosystem discovery
-is selected by this entry.
+generated-evidence requirements. Implementation is authorized only through the approved correction lifecycle;
+no broader ecosystem discovery is selected by this entry.
 
 **References:** [Discovery and alternatives](discovery/nuget-repository-sources.md),
 [independent review](discovery/nuget-repository-sources-review.md),
