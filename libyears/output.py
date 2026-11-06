@@ -449,6 +449,9 @@ def _nuget_disclosure(source, summary) -> list[str]:
         f"provenance source: {evidence.provenance_source or 'not supplied'}.",
         "Scope: all supported explicit direct PackageReferences, including test, tool, analyzer and PrivateAssets references.",
         "Trust basis: supplied producer/supplier assertions, accepted only through an explicitly supplied witness.",
+        "H3 requires native NuGet package provenance plus contemporaneous producer attestation, bound to the same event, "
+        "exact project/lock bytes, framework and required input-influence assertions.",
+        "Retrospective replay does not substitute for producer attestation of the original event.",
         "asserted_public is supplier testimony; public_content_verified and public_agreement require public identity and SHA512 correspondence.",
         "This supplied snapshot does not establish evaluated MSBuild completeness, installed/deployed/runtime scope, "
         "restore success, compatibility or cryptographic provenance; hashes establish content correspondence, not producing history.",

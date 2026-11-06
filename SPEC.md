@@ -847,6 +847,16 @@ strings are isolated failures; duplicate identities, non-string selections,
 unknown semantic fields and extra contexts reject the entire lock. Transitive
 and Project entries provide closure framing, not measured population.
 
+H3 requires native NuGet package provenance (identity, selected version, actual
+supplying origin and content hash) plus contemporaneous producer attestation.
+The attestation binds that native evidence to the same producing event, exact
+project/lock bytes, framework and required baseline/input-influence assertions.
+Both evidence classes and their linkage must be independently auditable.
+Retrospective replay cannot substitute for original-event producer attestation;
+a new event can attest only its own context, not historical production. Later
+serialization may preserve existing testimony, never create missing testimony.
+The consumer accepts supplied assertions rather than authenticating chronology.
+
 Strict version-1 witness context binds project/framework, exact project/lock
 SHA256 bytes, producer/coherent snapshot and SDK/baseline assertions. Unsupported
 population influences invalidate the denominator. Per-package evidence binds

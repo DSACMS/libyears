@@ -13,6 +13,16 @@ witness's SHA-256 fields bind the exact fixture bytes, including final newlines.
 No file found by convention confers witness acceptance: only an explicitly
 selected witness may be supplied to the provenance parser.
 
+H3 requires native NuGet package provenance plus contemporaneous producer
+attestation binding it to the same event, exact project/lock bytes, framework
+and required baseline/input-influence assertions. In the unchanged version-1
+envelope, `packages` carries native-derived assertions; context/digests, producer,
+coherence and baseline carry the attestation. Independently retained producer
+evidence must substantiate both classes and their linkage. These synthetic
+fixtures prove parser/gate behavior, not a real event or contemporaneity.
+Retrospective replay cannot replace original-event attestation; a new event may
+attest only itself. Later serialization cannot create missing event testimony.
+
 The version-1 witness is a strict UTF-8 JSON object with required `version`,
 `project`, `framework`, `project_sha256`, `lock_sha256`, `producer`,
 `coherent_snapshot`, `baseline` and `packages` fields. Version is integer 1,

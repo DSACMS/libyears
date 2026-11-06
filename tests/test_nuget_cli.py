@@ -49,6 +49,15 @@ class NuGetCLITests(unittest.TestCase):
         return [str(self.root), '--nuget-project', 'Witness.csproj',
                 '--nuget-provenance', 'witness.json', *extra]
 
+    def test_help_explains_bound_provenance_and_contemporaneous_attestation(self):
+        status, stdout, stderr = self.call(['--help'])
+        self.assertEqual((status, stderr), (0, ''))
+        help_text = ' '.join(stdout.split())
+        for text in ('native NuGet package provenance', 'contemporaneous producer attestation',
+                     'exact project/lock bytes, framework and input influences',
+                     'retrospective replay cannot substitute for original-event attestation'):
+            self.assertIn(text, help_text)
+
     def test_explicit_selection_composes_scan_and_both_reports_with_exit_zero(self):
         for extra in ((), ('--verbose',), ('--json',), ('--json', '--verbose')):
             with self.subTest(extra=extra), fixture_nuget_reads(self.root, nuget_inputs()):

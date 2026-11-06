@@ -44,7 +44,9 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--nuget-project", metavar="NAME.csproj", action="append",
                         help="select one immediate C# project (directory scans only)")
     parser.add_argument("--nuget-provenance", metavar="NAME.json", action="append",
-                        help="accept supplied producer/supplier assertions in one immediate witness file")
+                        help="accept one immediate witness binding native NuGet package provenance to contemporaneous "
+                             "producer attestation of exact project/lock bytes, framework and input influences; "
+                             "retrospective replay cannot substitute for original-event attestation")
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
     parser.add_argument("--ca-bundle", metavar="FILE", help="verified CA bundle for PyPI HTTPS")
     parser.add_argument("--verbose", action="store_true", help="show concise registry failure diagnostics")

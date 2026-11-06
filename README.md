@@ -486,6 +486,20 @@ lookup, after decoded lock/witness SHA512 agreement. Public catalog identity and
 SHA512 agreement must then pass before dates authorize measurement. No archive,
 cache, NuGet.Config, source mapping or credential lookup repairs missing evidence.
 
+H3 requires two bound evidence classes: **native NuGet package provenance** from
+the producing operation establishes package identity, selected version, actual
+supplying origin and content hash; **contemporaneous producer attestation** binds
+that evidence to the same event, exact project/lock bytes, framework and required
+baseline/input-influence assertions. Retain independently auditable evidence for
+both classes and their linkage. In the unchanged version-1 witness, `packages`
+carries native-derived assertions; context/digests, `producer`,
+`coherent_snapshot` and `baseline` carry the accepted attestation.
+
+Retrospective replay does not substitute for producer attestation of the original
+event. A new production event may qualify with its own contemporaneous attestation;
+it cannot establish historical provenance. Later serialization may preserve an
+existing attestation, but cannot create missing event-time testimony.
+
 These are accepted supplier assertions, not authenticated producing history.
 Matching hashes establish content correspondence. The snapshot does not prove
 evaluated MSBuild completeness, successful restore, installed/deployed/runtime
