@@ -926,7 +926,11 @@ class NuGetMixedScanTests(unittest.TestCase):
                 nuget_lookup=nuget_lookup, **kwargs)
 
     def test_each_nuget_source_failure_preserves_siblings_in_both_ruby_modes(self):
-        # Reconcile the shared aggregation seam against real accepted sources.
+        # This tests sibling composition when Ruby is semantically available.
+        # Real safe-reader capability/refusal is covered in test_ruby_groups.
+        from tests.scoped_ruby_fixtures import fixture_scoped_reads
+        self.enterContext(fixture_scoped_reads(self.root))
+        self.enterContext(patch('os.supports_dir_fd', set()))
         from tests.test_nuget_scan import nuget_unavailable_cases
         cases = nuget_unavailable_cases()
         for ruby_groups in (None, ('default',)):

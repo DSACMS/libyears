@@ -77,6 +77,34 @@ external-target access or package-manager/target execution, push/release/publica
 or a gate explicitly designated HUMAN by durable authority. Required evidence
 and mandatory task predecessors still apply.
 
+## Operational smoke and publication evidence
+
+Convergence records contract conformance on its inspected evidence. For work
+intended for publication, check the obvious human CLI invocation against the
+authorized real validation target, as well as any explicit expert options used
+in validation. Classify surprises against the contract before changing behavior.
+Target access/execution and publication still require their own authority.
+
+Before an authorized push expected to satisfy hosted checks, run the locally
+reproducible relevant equivalents on the committed candidate. Use the
+[pre-push checklist](maintenance/pre-push-checks.md), including GitLeaks HISTORY
+scanning with the actual repository configuration. A clean current checkout is
+not a clean history. Keep local results distinct from actual hosted evidence.
+After authorized publication, observe required CI/security platforms and classify
+and correct discrepancies before claiming operational closure. Without publication
+or platform evidence, report that remaining gate; preserve the historical
+convergence result. This adds no release authority or mandatory optional smoke
+predecessor to an existing approved task graph.
+
+Semantic/composition tests should state their assumed input availability and use
+existing injected reader/evidence seams when safe host primitives are not the
+property under test. Keep real filesystem/platform witnesses, unskipped
+fail-closed capability-refusal tests and the full cross-platform CI matrix.
+A local capability-disabled run can expose accidental coupling; it cannot prove
+actual Windows behavior. Feature 005 portability maintenance and
+[006-0018](maintenance/operational-smoke-006-0018.md) reproduce this specific
+coupling; they do not justify broad test replacement or platform skips.
+
 ## Freeze, independent review and correction
 
 An author's self-audit prepares a candidate; it is not independent approval.

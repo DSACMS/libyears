@@ -57,7 +57,7 @@ An evidence-backed problem or learning opportunity is required.
 
 | Opportunity | State | Area | Contributor fit |
 |---|---|---|---|
-| [Project-root discovery/listing](#3-project-root-discoverylisting) | WATCH | CLI / repository discovery | Rotation / product-discovery candidate |
+| [Project-root discovery/listing](#3-project-root-discoverylisting) | EXPLORE | CLI / repository discovery | Rotation / product-discovery candidate |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
@@ -68,7 +68,7 @@ An evidence-backed problem or learning opportunity is required.
 
 ### 3. Project-root discovery/listing
 
-**State:** WATCH
+**State:** EXPLORE
 
 **Area:** CLI / repository discovery
 
@@ -78,10 +78,15 @@ An evidence-backed problem or learning opportunity is required.
 cross-project aggregates.
 
 **Evidence:** Feature 004 discovery observed multiple structurally meaningful
-roots and build systems that enumerate them.
+roots and build systems that enumerate them. Post-convergence run 006-0018
+reproduced a human's ordinary OASim repository-root invocation reporting no
+ecosystems despite ten known nested C# projects. Feature 006 intentionally
+requires an explicit immediate project; this is a real root-selection UX gap.
 
-**Why this state:** Structural opportunity is real, but no recurring libyears
-root-selection pain has been demonstrated.
+**Why this state:** One observed human workflow now justifies bounded discovery
+of listing/help alternatives. Recurring demand and the value of a listing remain
+unproven. EXPLORE selects no feature, recursive scan, automatic project choice or
+cross-project aggregation.
 
 **Success signal:** Evidence shows users repeatedly miss roots or spend meaningful
 effort locating them, and a static listing materially reduces that burden.
@@ -92,6 +97,7 @@ already solve the workflow adequately.
 **References:**
 
 - [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
+- [Operational smoke maintenance](maintenance/operational-smoke-006-0018.md)
 
 ### 4. Go selected-version support
 

@@ -77,6 +77,13 @@ python3 -m libyears PATH
 python3 -m libyears PATH --json
 ```
 
+A directory scan examines supported sources at that directory; it does not
+search nested project roots. `Ecosystems: none` means no supported source was
+activated there, not that the repository has no dependencies. For a .NET
+repository, point PATH at the directory containing the chosen project and use
+`--nuget-project NAME.csproj` (see [NuGet snapshots](#explicit-nuget-project-snapshots)).
+A repository or solution root containing projects below it is not a combined scan.
+
 ## Exact-pinned requirements
 
 Exact pins in `requirements.txt` can be measured directly:
