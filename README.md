@@ -91,8 +91,9 @@ Recognition examines only names/types: exact lowercase `.csproj` regular files,
 root depth zero through four directory levels, at most 256 directories, 10,000
 entries and 100 candidates. It skips dot-prefixed directories and exact `bin`,
 `obj`, `node_modules`, `packages`, `vendor`, `venv`, `__pycache__` directories,
-and follows no links/reparse points. Deeper remaining directories, exceeded
-limits or filesystem errors give **incomplete**, without a partial list or exact
+and follows no links/reparse points. Deeper subtrees are intentionally excluded;
+completed counts describe only this bounded search. Exceeded count limits or
+filesystem errors give **incomplete**, without a partial list or exact
 count. Missing safe directory primitives give **unavailable** (including hosts
 without descriptor-relative traversal); this is not evidence of project absence.
 Both states explain manual explicit selection. Lists are bounded observations,

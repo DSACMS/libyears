@@ -91,7 +91,7 @@ def discover_nuget_candidates(root: str | Path) -> NuGetRecognition:
                 if name.startswith('.') or name in EXCLUDED_DIRECTORIES:
                     continue
                 if depth == MAX_DEPTH:
-                    raise _IncompleteRecognition
+                    continue
                 child = os.open(name, flags, dir_fd=descriptor)
                 try:
                     if _identity(metadata) != _identity(os.fstat(child)):

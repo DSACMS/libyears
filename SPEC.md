@@ -820,7 +820,10 @@ Ordinary human directory reports recognize regular lowercase `.csproj` filename
 candidates without opening their contents or activating measurement. Search is
 bounded to depth four, 256 directories, 10,000 entries and 100 candidates, skipping
 hidden/generated/dependency directories and links/reparse points as specified in
-that contract. Incomplete/unavailable traversal reports uncertainty, never false
+that contract and its approved
+[depth-boundary correction](maintenance/nuget-root-recognition/depth-spec-correction.md).
+Deeper subtrees are excluded; completed counts cover only the stated search
+boundary. Incomplete/unavailable traversal reports uncertainty, never false
 absence or a partial exact total. Human guidance requires explicit selection even
 for a sole candidate. Existing root ecosystems continue unchanged; JSON performs
 no recognition and schema-v3 counts/evidence/metrics remain measurement-only.

@@ -49,6 +49,8 @@ class RecognitionCompositionTests(unittest.TestCase):
                 evidence = NuGetRecognition(candidates=names)
                 output, scan, _ = self.call(evidence)
                 self.assertIn(f'NuGet / C# project candidates: {len(names)} (bounded search).', output)
+                self.assertIn('Search covers root through depth 4;', output)
+                self.assertIn('hidden/generated/dependency directories are excluded', output)
                 self.assertNotIn('Ecosystems: none', output)
                 self.assertIn('Ecosystems scanned for measurement: none', output)
                 self.assertIn('No NuGet measurement was performed.', output)

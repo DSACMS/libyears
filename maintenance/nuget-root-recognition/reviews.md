@@ -65,3 +65,50 @@ Tests inject recognition for semantic composition, including three real measurab
 sibling sources with dir_fd disabled and exact counts/rows; JSON bytes, empty
 human output and explicit/direct-file bypass remain covered. `git diff --check`
 PASS. C2 COMPLETE, pending independent convergence; C3 dependency-ready.
+
+## Initial C3 smoke — specification defect, acceptance not complete
+
+At frozen code candidate `dae94b2`, full committed suite **663 PASS**, canonical
+GitLeaks history gate **PASS / zero findings / 263 commits**. The exact OASim root
+invocation exits zero with empty stderr and correctly refuses to measure NuGet,
+but reports recognition incomplete instead of the required ten candidates.
+R6 is **NOT satisfied** and C3 is **NOT complete**. The comparison assertion fails;
+no successful smoke or convergence is claimed. All 223 tracked bytes/modes,
+revision and full status nevertheless remain identical.
+
+Metadata-only diagnosis identifies an unrelated assets subtree beyond depth four.
+Code conforms to the approved deeper-directory rule, so correction returns to
+specification before any code change. Original frozen spec/plan/tasks and failed
+smoke remain inspectable. `depth-spec-correction.md` proposes an explicit search
+exclusion at the existing depth boundary, with bounded-count disclosure; it does
+not expand traversal or change any measurement boundary. Fresh independent
+approval is required before corresponding architecture/task reconciliation.
+
+Fresh `/root/depth_spec_review`, fork_turns=none without overrides, verifies
+amendment SHA256 `eb9cc925d715c9da18a32831d1765a5a888bf94294eb9e43f993adad18f97048`
+and independently inspects original authority, implementation and private failed
+smoke/diagnosis/integrity evidence. COMPLETE / APPROVE, no material findings or
+new human authority requirement. Parent validates that the amendment preserves
+the existing traversal extent, changes only completeness claims at its deliberate
+boundary, and requires human disclosure. Depth specification supplement APPROVED;
+original approved files remain frozen. Architecture/task reconciliation follows.
+
+Fresh `/root/depth_plan_review`, fork_turns=none without overrides, verifies
+approved supplement and architecture/task correction SHA256
+`2196aef697a345adaba3ba6bdf048119a83ee3fb068b3d12b3a4b8a7b0c0e6b7`.
+COMPLETE / APPROVE, no material findings. Parent validates prune-before-open,
+unchanged limits/error/refusal/measurement handling and D1 verification/freeze
+dependencies. Architecture/task supplement APPROVED; D1 may execute. C3/R6 remain
+incomplete until corrected actual smoke passes.
+
+## D1 execution
+
+Depth-five directories are now pruned before opening. The depth-four inclusion/
+depth-five exclusion test asserts the exact five directory opens/scans; all other
+traversal/error/capability behavior remains unchanged. Human output explicitly
+states depth/exclusion extent; corresponding injected-evidence assertions and
+README/SPEC are updated. Original spec/plan/tasks remain unchanged, governed by
+their independently approved supplements. Focused **129 PASS**, full **663 PASS**,
+capability-disabled-before-discovery **663 PASS / 44 skips**; diff check PASS.
+D1 COMPLETE, pending final independent convergence. No R6 success is claimed
+until corrected exact-command smoke runs.

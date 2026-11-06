@@ -70,8 +70,13 @@ class DiscoveryFilesystemTests(unittest.TestCase):
             self.candidate(f'{name}/Ignored.csproj')
             self.candidate(f'a/b/c/d/{name}/Ignored.csproj')
         self.assertEqual(discover_nuget_candidates(self.root).candidates, ('a/b/c/d/Deep.csproj',))
-        (self.root / 'a/b/c/d/e').mkdir()
-        self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete'))
+        self.candidate('a/b/c/d/e/Pruned.csproj')
+        with patch.object(os, 'open', wraps=os.open) as opened, \
+                patch.object(os, 'scandir', wraps=os.scandir) as scanned:
+            self.assertEqual(discover_nuget_candidates(self.root).candidates, ('a/b/c/d/Deep.csproj',))
+            self.assertEqual([call.args[0] for call in opened.call_args_list],
+                             [self.root, 'a', 'b', 'c', 'd'])
+            self.assertEqual(scanned.call_count, 5)
 
     def test_candidate_cap_and_cap_plus_one(self):
         for index in range(discovery.MAX_CANDIDATES):

@@ -247,7 +247,8 @@ def _nuget_recognition_lines(recognition: NuGetRecognition | None) -> list[str]:
     if recognition is None or (recognition.status == 'complete' and not recognition.candidates):
         return []
     if recognition.status == 'complete':
-        lines = [f'NuGet / C# project candidates: {len(recognition.candidates)} (bounded search).']
+        lines = [f'NuGet / C# project candidates: {len(recognition.candidates)} (bounded search).',
+                 'Search covers root through depth 4; hidden/generated/dependency directories are excluded.']
         lines.extend(f'  {json.dumps(name, ensure_ascii=True)}' for name in recognition.candidates)
     else:
         label = 'incomplete' if recognition.status == 'incomplete' else 'unavailable'
