@@ -31,7 +31,7 @@ no push. Existing Feature006 and recognition task IDs are unchanged.
   deterministic suite and full capability-disabled simulation at integration
   boundary; inspect diff/check and commit.
 
-- [ ] **N3 — Documentation and operational validation.** Predecessor: N2.
+- [x] **N3 — Documentation and operational validation.** Predecessor: N2.
   R1–R6: update README/SPEC/AGENTS/CHANGELOG/ROADMAP at this checkpoint, with
   additive v3 contract, bounds, occurrence weighting, explicit acceptance and
   null semantics; preserve frozen original feature artifacts. Run focused/full
@@ -70,3 +70,9 @@ witnesses remain. Exact pre-implementation explicit JSON fixture matches.
 Integration found/fixed measured-count loss with unknown sibling population;
 obsolete nonactivation expectations and Ruby CLI inventory assumptions corrected
 without weakening actual primitive-refusal witnesses. Diff check PASS.
+
+N3 code/test verification reuses unchanged N2 final 683/683 capability results;
+separate real-worker 3 PASS. Exact ordinary OASim exit0/empty stderr, ten automatic
+attempts, eight unknown and two known-but-unavailable populations; repository
+null coverage. Exact captured target before/after equality PASS. Documentation
+checkpoint complete; GitLeaks executed on N3 commit and recorded in reviews.md.

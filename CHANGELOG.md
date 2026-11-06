@@ -6,11 +6,6 @@ Notable changes to Libyears are documented here.
 
 ### Fixed
 
-- Recognize bounded C# project candidates in ordinary human repository-root
-  reports and explain explicit NuGet selection, so unselected projects are not
-  mistaken for absent ecosystems. No automatic selection, NuGet aggregation or
-  JSON/measurement contract change.
-
 - Align human-readable dependency tables using the displayed headers and values,
   including long package names and versions, with right-aligned libyears values.
 
@@ -19,14 +14,26 @@ Notable changes to Libyears are documented here.
 - Prevent pathological backtracking when classifying npm registry versions,
   preserving the accepted SemVer forms and release-selection behavior.
 
+### Changed
+
+- Ordinary directory scans automatically attempt bounded NuGet project sources.
+  Direct package occurrences count independently per project; successful siblings
+  survive failures and unknown populations keep repository coverage null. Add
+  source-qualified schema-v3 evidence and human project summaries; retain explicit
+  single-project selection and unchanged strict provenance requirements.
+
 ### Added
+
+- Accept explicit per-project supplier witnesses with repeatable
+  `--nuget-witness PROJECT=NAME.json` during ordinary repository scans.
+
 
 - Measure explicitly selected NuGet project snapshots with `--nuget-project`
   and an explicitly accepted producer/supplier witness via `--nuget-provenance`.
   Require coherent lock evidence and local/public content agreement; use nuget.org
   first-receipt dates and greatest listed stable versions. Add safe schema-v3
   evidence and availability reporting without executing dotnet, NuGet or MSBuild.
-  NuGet measurement remains opt-in; unsupported filesystem safety primitives fail closed.
+  Unsupported filesystem safety primitives fail closed.
 
 - Measure explicitly selected declared Ruby groups with repeatable
   `--ruby-group GROUP` on directory scans, using a conservative static Gemfile

@@ -421,8 +421,8 @@ Source-level failures should remain distinct from dependency-level unmeasurable 
 
 The current implementation supports direct Python packages from PyPI and
 direct npm production dependencies under Feature 002, Yarn Classic evidence under
-Feature 003, direct RubyGems lock snapshots under Feature 004, and explicitly
-selected bounded NuGet snapshots under Feature 006. Public JSON output uses
+Feature 003, direct RubyGems lock snapshots under Feature 004, and bounded NuGet project
+snapshots under Feature 006 and its repository-source correction. Public JSON output uses
 schema version 3, with ecosystem-keyed evidence and repository plus
 per-ecosystem summaries. Keep source-discovery failures in `source_errors` and
 dependency-level failures in `unmeasurable`.
@@ -456,14 +456,14 @@ measurements. Ruby JSON provenance is additive in schema v3. Never execute
 Ruby/Bundler, install/resolve gems, fetch archives/private content, or inspect
 credentials. Gemfile interpretation/group reconstruction remains out of scope.
 
-Feature 006 authorizes NuGet only according to its approved `spec.md`, `plan.md`
+Feature 006 authorizes the base NuGet contract according to its approved `spec.md`, `plan.md`
 and `tasks.md` under `specs/006-nuget-selected-evidence/`. Exact directory-only
 `--nuget-project NAME.csproj` activation selects one immediate SDK C# project;
 root packages.lock.json schema 1 alone supplies selection. Explicit
 `--nuget-provenance NAME.json` accepts supplied producer assertions with exact
 byte/context binding and supported baseline. All supported explicit direct
-PackageReferences count, including test/tool/analyzer/PrivateAssets. No implicit
-activation or project/solution traversal; Python --resolved supplies no NuGet
+PackageReferences count, including test/tool/analyzer/PrivateAssets. Explicit
+selection never expands through project/solution traversal; Python --resolved supplies no NuGet
 authority. Request/lock minimum coherence is bounded normalization, not resolution.
 Only LocalAuthority from singleton asserted public origin plus decoded local
 SHA512 agreement permits supervised public metadata lookup; identity/public hash
@@ -478,11 +478,26 @@ or use assets/export/CPM/multi-framework/RID/private-feed/portfolio fallback.
 Only the installed trusted isolated Python metadata worker is permitted. Live
 yield/hash-domain fitness remains unverified; no policy workaround is authorized.
 
-The separate approved bounded product correction under
-`maintenance/nuget-root-recognition/` adds human-only filename candidate recognition
-to ordinary directory invocations. It never activates NuGet measurement, reads
-project contents for recognition, changes JSON/counts/metrics, or selects/combines
-projects. Explicit-selection measurement boundaries above remain binding.
+The approved correction under `maintenance/nuget-repository-sources/` governs
+ordinary directory NuGet measurement and supersedes explicit-only activation and
+006-0020's human-only recognition. Automatically attempt all regular .csproj
+candidates in the existing depth0–4/256-directory/10,000-entry/100-project bound,
+with existing exclusions and no ancestor links/reparse traversal. Each project
+owns independently supported direct external occurrences; never deduplicate
+across projects, use solution population or merge through ProjectReference edges.
+Source identity is root-relative project path plus case-insensitive package ID;
+unknown source population makes repository N/coverage unknown. Known unavailable
+whole evidence retains N and null measurement/coverage; individual failures allow
+M/N only after whole-source acceptance. Successful sibling rows survive.
+Repeatable --nuget-witness PROJECT=NAME.json explicitly accepts testimony per
+ordinary source; no discovered witness is implicitly trusted. Existing explicit
+--nuget-project/--nuget-provenance remains a single-source precision interface.
+Schema3 ordinary output adds nuget_sources and source_id to NuGet rows/errors,
+without converting the explicit singleton or changing its output. One supervised
+metadata batch retains scan-wide budgets. H3, parser/privacy/metric and no-target-
+execution boundaries remain binding. See approved correction spec/plan/tasks and
+reviews for exact mapping/output/failure semantics. Original Feature006/006-0020
+artifacts remain historical evidence.
 
 Do not infer authorization for Maven, Go, Cargo, additional npm dependency scopes, or other registries from the existence of npm support.
 

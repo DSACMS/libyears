@@ -814,20 +814,31 @@ authorized real-root evidence and optional separately authorized live smoke.
 
 ### Explicit NuGet selected-version snapshots (Feature 006)
 
-Subsequent bounded product correction:
-[NuGet repository-root recognition](maintenance/nuget-root-recognition/spec.md).
-Ordinary human directory reports recognize regular lowercase `.csproj` filename
-candidates without opening their contents or activating measurement. Search is
-bounded to depth four, 256 directories, 10,000 entries and 100 candidates, skipping
-hidden/generated/dependency directories and links/reparse points as specified in
-that contract and its approved
-[depth-boundary correction](maintenance/nuget-root-recognition/depth-spec-correction.md).
-Deeper subtrees are excluded; completed counts cover only the stated search
-boundary. Incomplete/unavailable traversal reports uncertainty, never false
-absence or a partial exact total. Human guidance requires explicit selection even
-for a sole candidate. Existing root ecosystems continue unchanged; JSON performs
-no recognition and schema-v3 counts/evidence/metrics remain measurement-only.
-This follow-up does not retroactively change Feature 006's acceptance/history.
+Current ordinary directory behavior is governed by the independently approved
+[repository-source correction](maintenance/nuget-repository-sources/spec.md),
+[plan](maintenance/nuget-repository-sources/plan.md) and
+[review record](maintenance/nuget-repository-sources/reviews.md). It supersedes
+Feature006's explicit-only activation and the prior human-only
+[root recognition](maintenance/nuget-root-recognition/spec.md), preserving their
+frozen historical artifacts. Ordinary human/JSON scans automatically attempt all
+bounded independently admissible projects: depth0–4, 256 directories/10,000 entries/
+100 candidates; existing hidden/named exclusions, no link/reparse traversal.
+Depth5 is intentionally excluded; incomplete/unavailable discovery makes the
+population unknown. Direct-file and explicit selection bypass this discovery.
+Each source is independently attributable by root-relative project identity;
+external direct PackageReference occurrences count separately across projects.
+No package deduplication, solution population or ProjectReference aggregation.
+All supported direct test/tool/analyzer/PrivateAssets references remain included.
+
+Repeatable exact --nuget-witness PROJECT=NAME.json explicitly accepts per-project
+supplier testimony in ordinary mode. Exactly one equals delimiter; neither operand
+contains equals. PROJECT is exact root-relative POSIX identity with no empty/dot/
+dotdot/absolute/glob/control/backslash components; NAME.json is immediate in that
+project's parent, never packages.lock.json. Duplicate mappings and mixing with
+explicit selection or direct-file paths are usage errors before input reads.
+Unmatched mappings produce nuget_witness_project_missing/unknown population;
+failed discovery instead reports nuget_discovery_incomplete/unavailable, with no
+invented mapping errors. No implicit acceptance or H3 relaxation occurs.
 
 The approved [Feature 006 specification](specs/006-nuget-selected-evidence/spec.md),
 [plan](specs/006-nuget-selected-evidence/plan.md) and
@@ -836,13 +847,15 @@ The approved [Feature 006 specification](specs/006-nuget-selected-evidence/spec.
 witness schema, supported inputs and enforced numeric limits. This extension
 does not change Python/npm/Yarn/Ruby policy or the 365.25-day metric.
 
-Only exact directory-only `--nuget-project NAME.csproj` activates NuGet. Optional
+Exact directory-only `--nuget-project NAME.csproj` selects one immediate source
+and bypasses ordinary repository discovery. Optional
 exact `--nuget-provenance NAME.json` accepts the supplied producer/supplier
 assertions; no found witness is implicitly trusted. Both occur at most once.
 Witness-only, repeated/abbreviated flags, non-filename/path/glob/list values,
 direct-file PATH and invalid roots fail usage before source content is read.
 Missing explicitly selected projects instead yield completed source-error reports.
-There is no recursive or automatic project choice, solution or portfolio scope.
+Explicit selection adds no other projects. Solutions/references supply no
+population authority and portfolio scope remains excluded.
 
 Bounded static scope is one supported namespace-free UTF-8 SDK-style project,
 one unconditional literal framework, and all immediate unconditional literal
@@ -894,7 +907,7 @@ invalid, sentinel-1900 or conflicting dates never use published/commit/local tim
 or an older dated comparator. Missing records are not reconstructed from archives.
 Used=latest is exactly 0.0; negative deltas clamp to zero and remain flagged.
 
-Schema 3/direct scope is retained. Activated NuGet adds required
+Schema 3/direct scope is retained. Explicitly selected NuGet adds required
 version_evidence.nuget source keys (including null witness/framework/format where
 specified), packages_lock version_source on measured rows and staged safe
 nuget_evidence on measured/unmeasurable rows. Unmeasurable rows retain name,
@@ -906,7 +919,18 @@ Human reporting consumes the same typed facts, explains supplier/snapshot and
 publication/comparator limits, and preserves anomaly flags. Raw XML, witness,
 origins, hashes, baseline, unsafe paths and diagnostics are never disclosed;
 NuGet-active root headers are abstracted and raw verbose diagnostics omitted.
-Ordinary reports remain unchanged; verbose JSON is identical.
+Reports without NuGet sources remain unchanged; verbose JSON is identical.
+Ordinary mode adds top-level nuget_sources entries (source_id, existing per-source
+version_evidence, existing nullable summary, measurement_available). Root-relative
+source_id is also added to ordinary NuGet rows and source errors; discovery-wide
+failure uses null. Per-row project stays the immediate witness-bound filename.
+The selected-only version_evidence.nuget singleton is omitted in ordinary mode;
+other ecosystems and explicit output retain existing shapes. Failed/empty sources
+are retained, equal basenames are distinct, and no representative is selected.
+All occurrences enter existing arithmetic independently. One supervised metadata
+batch shares all scan budgets across sources; repeated equal capabilities retain
+independent results. Per-source summaries compose known/unknown N and any/all
+availability without overwriting sibling facts.
 
 Unknown population yields null NuGet counts, coverage and numeric aggregates.
 Known N with rejected lock/witness retains N, even zero, but null measurement,

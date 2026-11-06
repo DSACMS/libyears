@@ -97,3 +97,8 @@ and checks exact equality with the union of both trigger tables; each table's
 own executable test reaches every listed reason. The complete AC, limit,
 privacy, ordering and platform evidence reconciliation lives in
 `specs/006-nuget-selected-evidence/acceptance.md`.
+
+`explicit-report-v3.json` is the exact successful explicit-selection JSON captured
+before the repository-source implementation, using existing synthetic inputs and
+fixed timestamps. It witnesses byte-compatible explicit output independently of
+the new ordinary source collection; it contains only safe public report fields.

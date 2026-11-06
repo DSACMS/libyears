@@ -3,7 +3,7 @@
 ## About the Project
 
 Libyears is a local Python CLI that measures the age of direct Python, npm, RubyGems,
-and explicitly selected NuGet
+and bounded NuGet
 dependencies using release timestamps from their public registries.
 It uses only the Python standard library at runtime.
 
@@ -77,31 +77,42 @@ python3 -m libyears PATH
 python3 -m libyears PATH --json
 ```
 
-A directory scan measures supported sources at that directory. Ordinary human
-reports also list bounded NuGet / C# project filename candidates below it, with
-an explicit notice that no NuGet measurement was performed. Even one candidate
-requires selection: point PATH at the chosen project's parent directory and use
-`--nuget-project NAME.csproj` (see [NuGet snapshots](#explicit-nuget-project-snapshots)).
-Candidate names establish neither supported declarations nor lock/provenance
-authority. Other root ecosystems continue measuring normally; candidate counts
-never enter dependency counts, coverage or totals. A repository/solution root is
-not a combined NuGet scan.
+A directory scan measures supported root PyPI/npm/Ruby sources and automatically
+attempts bounded NuGet project sources below it. Each supported project has its
+own direct external dependency population. The same package in two projects
+counts as two occurrences, with independent versions and libyears measurements.
+ProjectReference edges add no external rows; solutions do not define population.
+Test/tool/analyzer/PrivateAssets references remain included. No restore or build runs.
 
-Recognition examines only names/types: exact lowercase `.csproj` regular files,
-root depth zero through four directory levels, at most 256 directories, 10,000
-entries and 100 candidates. It skips dot-prefixed directories and exact `bin`,
-`obj`, `node_modules`, `packages`, `vendor`, `venv`, `__pycache__` directories,
-and follows no links/reparse points. Deeper subtrees are intentionally excluded;
-completed counts describe only this bounded search. Exceeded count limits or
-filesystem errors give **incomplete**, without a partial list or exact
-count. Missing safe directory primitives give **unavailable** (including hosts
-without descriptor-relative traversal); this is not evidence of project absence.
-Both states explain manual explicit selection. Lists are bounded observations,
-not atomic filesystem snapshots. Project/solution contents are never read for
-recognition. JSON, explicit NuGet selections and direct-file scans bypass this
-human guidance and retain their existing measurement contracts. An empty bounded
-search keeps the existing human report; `Ecosystems: none` describes no activated
-measurement source there, not repository-wide absence of dependencies.
+NuGet discovery covers exact lowercase `.csproj` regular files, root depth zero
+through four directory levels, at most 256 directories, 10,000 entries and 100
+projects. It excludes dot-prefixed directories and exact `bin`, `obj`,
+`node_modules`, `packages`, `vendor`, `venv`, `__pycache__`, and follows no
+links/reparse points. Deeper subtrees are intentionally excluded. Count overflow,
+errors or unavailable safe primitives produce an unknown population, never a
+partial denominator or false absence. A complete empty search leaves NuGet absent.
+Both human and JSON directory reports attempt these sources. Direct-file scans
+and explicit single-project selection bypass repository discovery.
+
+Discovery and locks never confer provenance authority. To explicitly accept a
+retained supplier witness for one source, use repeatable mappings:
+
+```bash
+python3 -m libyears PATH --nuget-witness src/App/App.csproj=witness.json
+```
+
+Each project uses its own parent's `packages.lock.json` and the named immediate
+witness there. PROJECT is its exact POSIX root-relative identity; the mapping has
+exactly one `=`, with no `=` in either filename. Absolute/dot/dotdot/empty path
+components, backslashes, globs, controls and duplicate mappings are rejected.
+A valid mapped project absent from bounded discovery is a source error. Mapping
+cannot combine with `--nuget-project`/`--nuget-provenance` or direct-file PATH.
+A found witness is never accepted automatically; unchanged H3 requirements below
+still apply. Missing required whole-source evidence preserves a known population
+but gives null measurement/coverage. An unsupported project gives unknown
+population. Any unknown source prevents repository-wide N/coverage; successful
+sibling projects and ecosystems remain visible. No coverage percentage is promised.
+Use [explicit selection](#explicit-nuget-project-snapshots) for precision/debugging.
 
 ## Exact-pinned requirements
 
@@ -426,8 +437,8 @@ separates offline correctness from pending authorized real-root validation.
 
 ## Explicit NuGet project snapshots
 
-NuGet is opt-in on directory scans. Select exactly one immediate C# project;
-even a sole project, lock or assets file does not activate NuGet automatically:
+For precision/debugging or a single source, select exactly one immediate C#
+project. This bypasses ordinary repository discovery:
 
 ```bash
 python -m libyears PATH --nuget-project Example.csproj
@@ -547,7 +558,7 @@ with zero to seven fractional digits, normalize UTC and truncate to microseconds
 The unchanged 365.25-day metric returns exact zero for used=latest and flags
 negative timestamp deltas clamped to zero.
 
-Schema 3 adds `version_evidence.nuget` only on activation. It records declaration,
+Explicit selection retains its schema-3 `version_evidence.nuget` singleton. It records declaration,
 lock and optional witness filenames, literal framework, accepted lock format,
 explicit direct scope, supplied-assertion trust and first-receipt publication
 basis. Measured NuGet rows use `version_source: "packages_lock"` and
@@ -560,7 +571,25 @@ public_content_verified; hash states are unavailable, mismatch, local_agreement
 and public_agreement. The last states require public identity/hash correspondence.
 Raw hashes, origins, baseline, XML and diagnostics are omitted. NuGet-active human
 reports abstract the root path and omit raw verbose diagnostics/TLS paths;
-ordinary reports retain their established output. Verbose JSON is identical.
+reports without NuGet sources retain their established output. Verbose JSON is identical.
+
+Ordinary repository mode instead adds top-level `nuget_sources`: a sorted array
+of `{source_id, version_evidence, summary, measurement_available}`. Each entry
+represents a project, including failed and empty sources. `source_id` is its
+POSIX root-relative project path; discovery-wide failure has null identity and
+null declaration source. Entry evidence uses the existing NuGet fields with
+filenames relative to that project's parent; `summary` uses existing nullable
+summary fields. Ordinary measured/unmeasurable NuGet rows and source errors add
+`source_id`; row `nuget_evidence.project` remains the immediate bound filename.
+The ordinary mode omits the selected-only `version_evidence.nuget` singleton;
+other ecosystems' evidence/rows/errors and explicit selection remain unchanged.
+This additive schema-v3 representation preserves same-name packages and same
+project basenames without choosing a representative or deduplicating occurrences.
+The NuGet aggregate sums source populations only when all are known; measured
+count is null only if all its sources are unavailable, and numeric aggregates
+retain available rows. Human output quotes source identities and reports per-
+project population/availability alongside combined facts. See the independently
+reviewed [repository-source contract](maintenance/nuget-repository-sources/spec.md).
 
 Project/population rejection gives an unknown denominator. Accepted declarations
 plus an unavailable lock/witness retain known N (even zero), with null measured,
@@ -620,7 +649,7 @@ The worker uses shared default verified TLS trust selection; the explicit
   `Gemfile.lock` DEPENDENCIES unless `--ruby-group` explicitly selects declared
   Gemfile groups within the closed static subset.
 - Direct dependencies only.
-- NuGet requires the explicit supported project/lock/witness snapshot above;
+- NuGet requires a supported per-project declaration/lock/explicit-witness snapshot;
   there is no solution, portfolio, general MSBuild or private-feed interpretation.
 - The resolved snapshot format is a narrow list of exact `NAME==VERSION`
   entries; repository declarations determine which entries are in scope.

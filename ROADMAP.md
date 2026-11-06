@@ -332,6 +332,15 @@ representation requires independent review; incompatible output needs a human
 schema decision. This is separate from completed recognition and from portfolio
 orchestration across independent repositories.
 
+**Implementation evidence:** The separate correction implements automatic bounded
+source attempts with additive schema3 identity. Run006-0022 ordinary OASim smoke
+attempts ten sources without a project-selection decision: eight unknown populations,
+two known populations totaling three occurrences with missing accepted provenance,
+and null repository coverage. Captured before/after state matches exactly. See
+[validation](maintenance/nuget-repository-sources/validation.md) and current
+[review disposition](maintenance/nuget-repository-sources/reviews.md); hosted
+Windows/other CI remains a post-publication witness, not inferred here.
+
 **Success signal:** A human-approved source/population contract makes ordinary
 repository measurement truthful without choosing a project, preserves source
 identity and failures, and keeps unknown or unavailable coverage honest.
