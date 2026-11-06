@@ -8,6 +8,7 @@ import json
 from typing import Any
 
 from .model import DependencyMeasurement, GemfileEvidence, NuGetEvidence, RubyGemsEvidence
+from .nuget_discovery import NuGetRecognition
 from .scan import MixedScanReport, ScanReport
 from .snapshot import SNAPSHOT_FORMAT
 
@@ -242,15 +243,37 @@ def _measurement_table(
     return lines
 
 
-def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bool = False) -> str:
+def _nuget_recognition_lines(recognition: NuGetRecognition | None) -> list[str]:
+    if recognition is None or (recognition.status == 'complete' and not recognition.candidates):
+        return []
+    if recognition.status == 'complete':
+        lines = [f'NuGet / C# project candidates: {len(recognition.candidates)} (bounded search).']
+        lines.extend(f'  {json.dumps(name, ensure_ascii=True)}' for name in recognition.candidates)
+    else:
+        label = 'incomplete' if recognition.status == 'incomplete' else 'unavailable'
+        lines = [f'NuGet project recognition {label}; presence and candidate count are undetermined.']
+    lines.extend([
+        'No NuGet measurement was performed. Explicit project selection is required.',
+        'Use the chosen project\'s parent directory as PATH and its filename as NAME.csproj:',
+        '  python3 -m libyears PATH --nuget-project NAME.csproj',
+        'Measurement still requires an eligible project, packages.lock.json and an explicitly',
+        'accepted --nuget-provenance NAME.json witness. Candidate names alone establish none of these.',
+        '',
+    ])
+    return lines
+
+
+def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bool = False,
+                 nuget_recognition: NuGetRecognition | None = None) -> str:
     """Format a scan report for terminal readers."""
     if isinstance(report, MixedScanReport):
-        return _format_mixed_human(report, path, verbose=verbose)
+        return _format_mixed_human(report, path, verbose=verbose, nuget_recognition=nuget_recognition)
     summary = report.summary
     evidence = "Version evidence: requirements.txt"
     if report.snapshot_source is not None:
         evidence += f"; resolved snapshot: {report.snapshot_source}"
     lines = [f"Libyears: {path}", evidence, ""]
+    lines.extend(_nuget_recognition_lines(nuget_recognition))
     if summary.dependencies_discovered == 0:
         lines.extend(
             [
@@ -334,9 +357,11 @@ def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bo
     return "\n".join(lines) + "\n"
 
 
-def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) -> str:
+def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
+                        nuget_recognition: NuGetRecognition | None = None) -> str:
     ecosystems = sorted(source.ecosystem for source in report.source_results if source.source_present)
     labels = ", ".join(ecosystems) if ecosystems else "none"
+    recognition_lines = _nuget_recognition_lines(nuget_recognition)
     summary = report.summary
     yarn_evidence = any(
         source.evidence.snapshot_source == "yarn.lock"
@@ -367,7 +392,9 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
         nuget_disclosure = _nuget_disclosure(nuget_source, report.by_ecosystem["nuget"])
     if len(ecosystems) == 1 and not report.source_errors:
         ecosystem = ecosystems[0]
-        lines = [heading, f"Ecosystem: {ecosystem}", ""]
+        ecosystem_label = 'Ecosystem scanned for measurement' if recognition_lines else 'Ecosystem'
+        lines = [heading, f"{ecosystem_label}: {ecosystem}", ""]
+        lines.extend(recognition_lines)
         lines.extend(ruby_disclosure)
         lines.extend(nuget_disclosure)
         if yarn_evidence:
@@ -409,7 +436,9 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool) ->
             lines.extend(["", "Registry diagnostics:", *(f"  {name}: {message}" for name, message in report.diagnostics)])
         return "\n".join(lines) + "\n"
 
-    lines = [heading, f"Ecosystems: {labels}", ""]
+    ecosystem_label = 'Ecosystems scanned for measurement' if recognition_lines else 'Ecosystems'
+    lines = [heading, f"{ecosystem_label}: {labels}", ""]
+    lines.extend(recognition_lines)
     lines.extend(ruby_disclosure)
     lines.extend(nuget_disclosure)
     lines.append(

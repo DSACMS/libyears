@@ -77,12 +77,30 @@ python3 -m libyears PATH
 python3 -m libyears PATH --json
 ```
 
-A directory scan examines supported sources at that directory; it does not
-search nested project roots. `Ecosystems: none` means no supported source was
-activated there, not that the repository has no dependencies. For a .NET
-repository, point PATH at the directory containing the chosen project and use
+A directory scan measures supported sources at that directory. Ordinary human
+reports also list bounded NuGet / C# project filename candidates below it, with
+an explicit notice that no NuGet measurement was performed. Even one candidate
+requires selection: point PATH at the chosen project's parent directory and use
 `--nuget-project NAME.csproj` (see [NuGet snapshots](#explicit-nuget-project-snapshots)).
-A repository or solution root containing projects below it is not a combined scan.
+Candidate names establish neither supported declarations nor lock/provenance
+authority. Other root ecosystems continue measuring normally; candidate counts
+never enter dependency counts, coverage or totals. A repository/solution root is
+not a combined NuGet scan.
+
+Recognition examines only names/types: exact lowercase `.csproj` regular files,
+root depth zero through four directory levels, at most 256 directories, 10,000
+entries and 100 candidates. It skips dot-prefixed directories and exact `bin`,
+`obj`, `node_modules`, `packages`, `vendor`, `venv`, `__pycache__` directories,
+and follows no links/reparse points. Deeper remaining directories, exceeded
+limits or filesystem errors give **incomplete**, without a partial list or exact
+count. Missing safe directory primitives give **unavailable** (including hosts
+without descriptor-relative traversal); this is not evidence of project absence.
+Both states explain manual explicit selection. Lists are bounded observations,
+not atomic filesystem snapshots. Project/solution contents are never read for
+recognition. JSON, explicit NuGet selections and direct-file scans bypass this
+human guidance and retain their existing measurement contracts. An empty bounded
+search keeps the existing human report; `Ecosystems: none` describes no activated
+measurement source there, not repository-wide absence of dependencies.
 
 ## Exact-pinned requirements
 

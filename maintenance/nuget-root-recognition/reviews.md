@@ -46,3 +46,22 @@ exact depth/exclusions, malformed/unreadable project content without reads,
 link/FIFO/reparse exclusion, replacement/mutation, handle/iterator cleanup and
 unskipped capability refusal. Author verification, not independent convergence.
 `git diff --check` PASS. C1 COMPLETE; C2 dependency-ready.
+
+## C2 execution
+
+CLI invokes recognition only for unselected human directory reports. Optional
+human evidence is separate from measurement sources and JSON. Output lists
+escaped candidate paths or explicit uncertainty, no NuGet measurement, parent/
+filename selection and remaining lock/provenance eligibility requirements.
+README/SPEC/AGENTS/CHANGELOG and the existing ROADMAP opportunity are reconciled;
+Feature 006 artifacts and historical operational closure remain unchanged.
+
+Focused CLI/output/mixed/recognition regressions: **115 PASS**. Full deterministic
+suite: **663 PASS**, zero skips. Full discovery with dir_fd disabled beforehand:
+**663 PASS / 44 genuine filesystem skips**. This is local simulation, not Windows.
+After a behavior-equivalent explicit-control-flow readability edit, focused
+discovery/recognition is rerun; final committed-candidate checks follow C3.
+Tests inject recognition for semantic composition, including three real measurable
+sibling sources with dir_fd disabled and exact counts/rows; JSON bytes, empty
+human output and explicit/direct-file bypass remain covered. `git diff --check`
+PASS. C2 COMPLETE, pending independent convergence; C3 dependency-ready.

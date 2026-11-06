@@ -8,6 +8,7 @@ import sys
 from collections.abc import Sequence
 from pathlib import Path
 
+from .nuget_discovery import NuGetRecognition, discover_nuget_candidates
 from .output import format_human, format_json
 from .scan import NuGetRequest, RubyGroupRequestError, scan_mixed_repository, validate_ruby_groups
 from .snapshot import parse_snapshot
@@ -126,7 +127,20 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         return 2
 
     try:
-        rendered = format_json(report, args.path) if args.json_output else format_human(report, args.path, verbose=args.verbose)
+        if args.json_output:
+            rendered = format_json(report, args.path)
+        else:
+            human_options = {'verbose': args.verbose}
+            if nuget_request is None:
+                try:
+                    recognition = NuGetRecognition()
+                    if Path(args.path).is_dir():
+                        recognition = discover_nuget_candidates(args.path)
+                except (OSError, ValueError, NotImplementedError):
+                    recognition = NuGetRecognition('incomplete')
+                if recognition.candidates or recognition.status != 'complete':
+                    human_options['nuget_recognition'] = recognition
+            rendered = format_human(report, args.path, **human_options)
     except Exception:
         if nuget_request is None:
             raise

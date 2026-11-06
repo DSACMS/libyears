@@ -478,6 +478,12 @@ or use assets/export/CPM/multi-framework/RID/private-feed/portfolio fallback.
 Only the installed trusted isolated Python metadata worker is permitted. Live
 yield/hash-domain fitness remains unverified; no policy workaround is authorized.
 
+The separate approved bounded product correction under
+`maintenance/nuget-root-recognition/` adds human-only filename candidate recognition
+to ordinary directory invocations. It never activates NuGet measurement, reads
+project contents for recognition, changes JSON/counts/metrics, or selects/combines
+projects. Explicit-selection measurement boundaries above remain binding.
+
 Do not infer authorization for Maven, Go, Cargo, additional npm dependency scopes, or other registries from the existence of npm support.
 
 For ecosystem behavior, the approved feature specification takes precedence over generic assumptions in this file.

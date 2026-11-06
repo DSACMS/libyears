@@ -6,6 +6,11 @@ Notable changes to Libyears are documented here.
 
 ### Fixed
 
+- Recognize bounded C# project candidates in ordinary human repository-root
+  reports and explain explicit NuGet selection, so unselected projects are not
+  mistaken for absent ecosystems. No automatic selection, NuGet aggregation or
+  JSON/measurement contract change.
+
 - Align human-readable dependency tables using the displayed headers and values,
   including long package names and versions, with right-aligned libyears values.
 
@@ -21,7 +26,7 @@ Notable changes to Libyears are documented here.
   Require coherent lock evidence and local/public content agreement; use nuget.org
   first-receipt dates and greatest listed stable versions. Add safe schema-v3
   evidence and availability reporting without executing dotnet, NuGet or MSBuild.
-  Ordinary scans remain unchanged; unsupported filesystem safety primitives fail closed.
+  NuGet measurement remains opt-in; unsupported filesystem safety primitives fail closed.
 
 - Measure explicitly selected declared Ruby groups with repeatable
   `--ruby-group GROUP` on directory scans, using a conservative static Gemfile

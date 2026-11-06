@@ -814,6 +814,18 @@ authorized real-root evidence and optional separately authorized live smoke.
 
 ### Explicit NuGet selected-version snapshots (Feature 006)
 
+Subsequent bounded product correction:
+[NuGet repository-root recognition](maintenance/nuget-root-recognition/spec.md).
+Ordinary human directory reports recognize regular lowercase `.csproj` filename
+candidates without opening their contents or activating measurement. Search is
+bounded to depth four, 256 directories, 10,000 entries and 100 candidates, skipping
+hidden/generated/dependency directories and links/reparse points as specified in
+that contract. Incomplete/unavailable traversal reports uncertainty, never false
+absence or a partial exact total. Human guidance requires explicit selection even
+for a sole candidate. Existing root ecosystems continue unchanged; JSON performs
+no recognition and schema-v3 counts/evidence/metrics remain measurement-only.
+This follow-up does not retroactively change Feature 006's acceptance/history.
+
 The approved [Feature 006 specification](specs/006-nuget-selected-evidence/spec.md),
 [plan](specs/006-nuget-selected-evidence/plan.md) and
 [tasks](specs/006-nuget-selected-evidence/tasks.md) govern NuGet. The
