@@ -112,3 +112,79 @@ their independently approved supplements. Focused **129 PASS**, full **663 PASS*
 capability-disabled-before-discovery **663 PASS / 44 skips**; diff check PASS.
 D1 COMPLETE, pending final independent convergence. No R6 success is claimed
 until corrected exact-command smoke runs.
+
+## C3 corrected operational evidence and K1 freeze
+
+At corrected committed code `45c455e`, the exact authorized absolute OASim root
+command exits **0**, empty stderr, ten sorted filename candidates, explicit
+depth/exclusion disclosure and no NuGet measurement. The exact misleading
+`Ecosystems: none` line is absent. All **223 tracked file bytes/modes**, revision
+and full porcelain status still match the original baseline; no target write or
+execution occurs. The original failed smoke remains preserved separately.
+
+Focused129/full663/capability663-with44-skips/real-worker3 PASS. Canonical
+GitLeaks8.30.1 full-history gate at `45c455e`: exit0, zero findings,264 commits.
+Full R1–R6 reconciliation, operational evidence limits, concise retrospective
+and publication/Windows gates are frozen in validation.md before independent
+implementation/convergence commissioning. C3 author evidence COMPLETE; K1 PENDING.
+The private freeze manifest binds changed substantive repository files and raw
+smoke/integrity/test evidence. This review record may receive later dispositions;
+its pre-commission bytes are retained separately. No further code/test/doc edit
+occurs during review unless a validated finding triggers a new correction freeze.
+
+## Independent implementation/convergence and parent reconciliation
+
+Freeze manifest SHA256
+`23eab1b3b2f90e4eff73cffe6d84999f2c4c145c9c2f2d45e6eec54965c3059f`
+binds **17 substantive repository files and 32 private evidence files**, all
+independently read and hash/length verified by both reviewers. Code candidate
+`45c455e6ff51067328028681d18f801c71170a3f`, baseline `13c6a66`. Later disposition
+changes only this review record; its frozen pre-commission version is retained.
+
+| Fresh non-author reviewer | Accountable completed coverage | Independent result |
+|---|---|---|
+| `/root/convergence_safety` | R1–R3; safety/authority contributions to R4–R6 | COMPLETE / APPROVE, no material findings; focused129 PASS; extra post-descent replacement and iterator-error cleanup probes PASS |
+| `/root/convergence_contract` | R4–R6; cross-boundary contributions to R1–R3 | COMPLETE / APPROVE, no material findings; focused129 and diff check PASS; exact raw smoke/initial-failure and complete223-file integrity comparisons PASS |
+
+Both used fork_turns=none without requested overrides and received exact hard
+stops, authority, candidate and evidence locations. Current sibling conclusions
+were withheld until independent completion. Neither modified the repository,
+accessed/replayed OASim, used network/package managers/target code or delegated.
+Reports remain private as `convergence-safety.md` and `convergence-contract.md`.
+Actual child configuration/resource telemetry is unavailable; no child ledger row.
+
+The parent read both complete reports and validated underlying evidence rather
+than counting verdicts. R1–R3 metadata-only/type/descriptor/cap/error/refusal
+behavior joins optional CLI recognition without constructing NuGetRequest or
+SourceResult. R4 human disclosure uses escaped candidate names and fixed generic
+selection guidance; one/many and unavailable states cannot claim measurement.
+R5 source/metric/schema meaning survives: ordinary JSON bypasses recognition,
+serializers/scan/model/adapter bytes remain unchanged, direct-file/explicit
+selection behavior is preserved, and available three-ecosystem sibling facts
+remain explicitly asserted under disabled capability. R6 raw corrected smoke
+shows exactly ten bounded candidates/no NuGet measurement and all223 tracked
+bytes/modes/revision/full-status equality. Initial failure and specification-phase
+correction remain truthful and independently approved; no traversal expansion,
+authority weakening or historical acceptance rewrite occurred.
+
+Parent reverified all frozen bindings, original Feature006/operational closure,
+scan/model/security/workflow and observation-ledger baseline invariance. An
+in-memory restoration of the original depth-rejection rule makes the corrected
+depth witness fail with exactly one assertion failure/zero errors, confirming
+defect discrimination without repository edits. No collateral or unresolved
+material finding remains. Existing full663/capability663-with44-skips/worker3
+and canonical history264 PASS remain bounded local evidence, not hosted results.
+
+**C1, C2, D1, C3 COMPLETE. K1 COMPLETE / CONVERGED, R1–R6 reconciled.**
+The bounded product correction is independently APPROVED; original Feature006
+CONVERGED/operationally closed history is unchanged. Specification, architecture
+and task gates (including depth correction) are approved. Final evidence/disposition
+commit is followed by the canonical history gate and staged/range/working diff
+and clean-tree checks before reporting publication-candidate readiness.
+
+**Next human gate: publication authorization for the final local candidate.**
+Actual candidate Windows/hosted checks remain UNOBSERVED until then. No push,
+release/tag, target execution/modification, Feature007/Java, provider adoption,
+generic framework or new measurement/provenance/schema semantics are authorized.
+The current substantive observation is handed off once as `006-0020.json` outside
+Git and is not appended to the ledger. Internal gates create no clerical runs.

@@ -96,6 +96,11 @@ automatic choice, solution/reference interpretation or aggregation is authorized
 candidates, states none were measured as NuGet, and explains explicit selection.
 No measured attention-saving or broad adoption claim follows from one smoke.
 
+**Bounded outcome:** Run `006-0020` implements the human-only correction and its
+required root smoke recognizes ten candidates without NuGet measurement. See
+[validation](maintenance/nuget-root-recognition/validation.md) and the linked review
+record for completion/convergence disposition and pending publication evidence.
+
 **Stop condition:** Existing build/workspace metadata or simple external wrappers
 already solve the workflow adequately.
 
