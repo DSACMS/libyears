@@ -1,5 +1,10 @@
 # Independent review and parent disposition — 006-0018
 
+Subsequent disposition: the [post-publication closure](operational-smoke-closure.md)
+records actual Windows, hosted GitLeaks and Tier 2 PASS for exact published commit
+`c3ef8e78b14cdf19fbcb66187e9925f0fd06a889`; operational-smoke loop **COMPLETE**.
+The review and pending gates below describe the historical 006-0018 state.
+
 Baseline: `db24c03a03085d684b207d9f9a1b57de4d877f10`, initially clean.
 Eight substantive files were frozen before review by SHA256 in
 `/tmp/libyears-observations/006-0018/freeze.json`: README.md, ROADMAP.md,

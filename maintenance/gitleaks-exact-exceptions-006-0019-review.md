@@ -1,5 +1,10 @@
 # Independent security review and parent validation — 006-0019
 
+Subsequent disposition: the [post-publication closure](operational-smoke-closure.md)
+records actual Windows, hosted GitLeaks and Tier 2 PASS for exact published commit
+`c3ef8e78b14cdf19fbcb66187e9925f0fd06a889`; operational-smoke loop **COMPLETE**.
+The review and publication boundary below describe the historical 006-0019 state.
+
 **COMPLETE / APPROVE. No material findings.**
 
 Fresh non-author reviewer `/root/security_review` was commissioned with
