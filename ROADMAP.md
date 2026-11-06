@@ -58,6 +58,7 @@ An evidence-backed problem or learning opportunity is required.
 | Opportunity | State | Area | Contributor fit |
 |---|---|---|---|
 | [Project-root discovery/listing](#3-project-root-discoverylisting) | SELECTED (bounded NuGet correction) | CLI / repository discovery | Bounded product correction |
+| [NuGet repository project sources](#12-nuget-repository-project-sources) | EXPLORE (human decision pending) | NuGet / repository population | Bounded product discovery |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
@@ -89,8 +90,10 @@ smallest truthful recognition correction in run `006-0020`. The separate
 [maintenance SDD artifacts](maintenance/nuget-root-recognition/discovery.md)
 govern that bounded follow-up, not a new numbered feature or original Feature 006
 acceptance. Implementation and review disposition live in its review record.
-Broader cross-ecosystem project listing remains unselected; no generic indexing,
-automatic choice, solution/reference interpretation or aggregation is authorized.
+Broader cross-ecosystem project listing remains unselected; this correction
+authorized no generic indexing, automatic choice, solution/reference interpretation
+or aggregation. The distinct subsequent repository-measurement question is
+tracked in opportunity 12 below.
 
 **Success signal:** The obvious authorized OASim root command lists ten filename
 candidates, states none were measured as NuGet, and explains explicit selection.
@@ -99,7 +102,11 @@ No measured attention-saving or broad adoption claim follows from one smoke.
 **Bounded outcome:** Run `006-0020` implements the human-only correction and its
 required root smoke recognizes ten candidates without NuGet measurement. See
 [validation](maintenance/nuget-root-recognition/validation.md) and the linked review
-record for completion/convergence disposition and pending publication evidence.
+record for completion/convergence disposition. The commissioning human subsequently
+observed all nine OS/Python matrix jobs, Live PyPI smoke, secrets/hygiene/CodeQL
+and pages workflows GREEN on published `cce5e6a`; the separate
+[operational closure](maintenance/nuget-root-recognition/operational-closure.md)
+records actual Windows 3.11/3.12/3.13 PASS and the complete hosted evidence.
 
 **Stop condition:** Existing build/workspace metadata or simple external wrappers
 already solve the workflow adequately.
@@ -297,6 +304,45 @@ useful bounded workflow without executing a resolver inside libyears.
 selection assumptions or ecosystem implementation before product selection.
 
 **References:** [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md#what-we-would-do-differently-and-human-handoff).
+
+### 12. NuGet repository project sources
+
+**State:** EXPLORE; human-commissioned discovery complete, consequential population
+decision pending. Conditional autonomous implementation authority was not reached.
+
+**Area:** NuGet / repository population and output
+
+**Opportunity:** Let ordinary repository measurement discover independently
+admissible bounded project sources while retaining explicit project selection.
+
+**Evidence:** After completed 006-0020 recognition, repeated ordinary OASim use
+still requires a project-selection decision. Run `006-0021` corroborates ten
+projects/51 literal external-reference occurrences/24 package IDs/15 project
+edges, but the current conservative parser accepts only two populations totaling
+three references. Eight populations are unknown; the two accepted declarations
+lack explicitly supplied witnesses in the no-acceptance probe. The historical
+51-reference inventory cannot become current numeric coverage by assumption.
+
+**Why this state:** Existing mixed ecosystems establish separate package identity
+and summed ecosystem populations, not repeated same-ecosystem project weighting.
+Feature006 also fixes explicit witness acceptance and null unavailable-source
+coverage. Independent project occurrences are recommended, but specification must
+follow explicit population and source-output authority. A found witness remains
+unaccepted; neither locks nor discovery weaken H3. This is separate from completed
+recognition and from portfolio orchestration across independent repositories.
+
+**Success signal:** A human-approved source/population contract makes ordinary
+repository measurement truthful without choosing a project, preserves source
+identity and failures, and keeps unknown or unavailable coverage honest.
+
+**Stop condition:** Unresolved occurrence weighting, source/schema contract,
+implicit testimony, deduplication, solution/graph authority, changed metric or
+generated-evidence requirements. No implementation or broader ecosystem discovery
+is selected by this entry.
+
+**References:** [Discovery and alternatives](discovery/nuget-repository-sources.md),
+[independent review](discovery/nuget-repository-sources-review.md),
+[006-0020 operational closure](maintenance/nuget-root-recognition/operational-closure.md).
 
 ## Selected Work Moved into SDD
 
