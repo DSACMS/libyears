@@ -500,33 +500,44 @@ def _catalog(client, record):
 
 
 def _reconcile_material(records, documents):
-    hashes, dates = set(), set()
-    alias_material = set()
+    # Identity/listing were checked during traversal. Dates must agree even when
+    # optional content hashes are missing or contradictory.
+    dates = set()
     for record in records:
         document = documents[record.catalog_url]
         if document is None:
             if len(records) > 1:
                 raise NuGetRegistryFailure()
             continue
-        digest = _hash(document)
         created = _created(document.get('created'))
-        # Unavailable values cannot establish agreement between aliases.
-        # Single records retain their later hash/date-specific failure reasons.
-        if len(records) > 1 and (digest is None or created is None):
+        if len(records) > 1 and created is None:
             raise NuGetRegistryFailure()
-        alias_material.add((digest, created))
         for assertion in (*record.assertions, document):
             if 'created' in assertion:
                 dates.add(_created(assertion['created']))
-            if 'packageHash' in assertion or 'packageHashAlgorithm' in assertion:
-                hashes.add(_hash(assertion))
-    if len(hashes) > 1 or len(dates) > 1 or len(alias_material) > 1:
+    if len(dates) > 1:
         raise NuGetRegistryFailure()
+
+
+def _public_content_state(authority, records, documents):
+    if authority.content_hash is None:
+        return authority.local_content_state
+    hashes = []
+    for record in records:
+        hashes.append(_hash(documents[record.catalog_url]))
+        for assertion in record.assertions:
+            if 'packageHash' in assertion or 'packageHashAlgorithm' in assertion:
+                hashes.append(_hash(assertion))
+    if any(digest is not None and digest != authority.content_hash for digest in hashes):
+        return 'mismatch'
+    if any(digest is None for digest in hashes):
+        return 'unavailable'
+    return 'public_agreement'
 
 
 def lookup_authorized_package(authority, client):
     """Worker-only handler: complete enumeration before any measurement claim."""
-    from .nuget_supervisor import PackageResult, authority_message
+    from .nuget_supervisor import PackageResult, authority_message, failed_package
     authority_message(authority)
     if client.package_id != authority.package_key:
         raise NuGetRegistryFailure()
@@ -534,7 +545,7 @@ def lookup_authorized_package(authority, client):
     grouped = _registration(client, authority.package_key)
     used = grouped.get(authority.normalized_version)
     if used is None:
-        return PackageResult(reason='version_not_found')
+        return failed_package(authority, 'version_not_found')
     stable = [key for key, aliases in grouped.items()
               if aliases[0].listed and aliases[0].identity.prerelease is None]
     latest_key = max(stable, key=lambda key: grouped[key][0].identity.components) if stable else None
@@ -551,16 +562,18 @@ def lookup_authorized_package(authority, client):
             by_url[record.catalog_url] = record
     documents = {url: _catalog(client, by_url[url]) for url in sorted(by_url)}
     if any(documents[record.catalog_url] is None for record in used):
-        return PackageResult(reason='version_not_found')
+        return failed_package(authority, 'version_not_found')
     for key in sorted(needed):
         _reconcile_material(grouped[key], documents)
-    # Catalog hash authority cannot be supplied by a registration assertion.
-    hashes = [_hash(documents[record.catalog_url]) for record in used]
-    if any(digest is None for digest in hashes):
-        return PackageResult(reason='content_hash_unavailable', content_hash_state='unavailable')
-    if any(digest != authority.content_hash for digest in hashes):
-        return PackageResult(reason='content_hash_mismatch', content_hash_state='mismatch')
-    verified = dict(origin_state='public_content_verified', content_hash_state='public_agreement')
+    state = _public_content_state(authority, used, documents)
+    if state == 'public_agreement':
+        origin = 'public_content_verified'
+    elif authority.namespace_basis == 'accepted_producer_origin':
+        origin = 'asserted_public'
+    else:
+        origin = 'unavailable'
+    verified = dict(origin_state=origin, content_hash_state=state,
+                    namespace_basis=authority.namespace_basis)
     used_dates = [_created(documents[record.catalog_url].get('created')) for record in used]
     if any(date is None for date in used_dates):
         return PackageResult(reason='release_date_missing', **verified)

@@ -437,7 +437,14 @@ class NuGetSourceTests(unittest.TestCase):
         ):
             lock = self.lock('[1.0.0, )')
             change(lock['dependencies']['net10.0'])
-            self.assert_reason(self.run_source(lock=lock), reason)
+            source = self.run_source(lock=lock)
+            if reason.startswith('content_hash_'):
+                # Historical S6 fixture retained; these now describe assurance.
+                self.assertEqual(len(source.authorized_candidates), 1)
+                state = 'mismatch' if reason.endswith('mismatch') else 'unavailable'
+                self.assertEqual(source.authorized_candidates[0].authority.local_content_state, state)
+            else:
+                self.assert_reason(source, reason)
             triggered.add(('dependency', reason))
         source = self.run_source(witness_change=lambda w: w['packages'][0].update(origins=[]))
         self.assert_reason(source, 'unsupported_dependency_source')
@@ -457,7 +464,7 @@ class NuGetSourcePlatformRefusalTests(unittest.TestCase):
                 opened = stack.enter_context(patch.object(inputs.os, 'open'))
                 read_bytes = stack.enter_context(patch.object(inputs.os, 'read'))
                 scoped_read = stack.enter_context(patch.object(inputs.ScopedNuGetReader, 'read'))
-                authorize = stack.enter_context(patch('libyears.nuget.authorize_package'))
+                authorize = stack.enter_context(patch('libyears.nuget.authorize_measurement'))
                 for target in ('subprocess.Popen', 'subprocess.run', 'os.system',
                                'socket.socket', 'urllib.request.urlopen', 'os.write'):
                     stack.enter_context(patch(target, side_effect=AssertionError(target)))

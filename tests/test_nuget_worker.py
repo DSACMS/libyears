@@ -1,5 +1,6 @@
 """Offline process/controller witnesses for the P1 NuGet boundary."""
 
+from dataclasses import replace
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -122,6 +123,34 @@ class ControllerTests(unittest.TestCase):
         write_message(self.path / 'result.json', {
             'sequence': command['sequence'], 'result': FAILURE})
         return command
+
+    def test_namespace_only_result_and_forged_assurance_are_bound_to_capability(self):
+        publication = NuGetPublication('1.0.0', datetime(2020, 1, 1, tzinfo=timezone.utc), True)
+        snapshot = replace(AUTHORITY, content_hash=None,
+                           namespace_basis='accepted_snapshot_namespace', local_content_state='unavailable')
+        minimum_producer = replace(AUTHORITY, content_hash=None, local_content_state='mismatch')
+        valid = PackageResult(origin_state='unavailable', content_hash_state='unavailable',
+                              used_publication=publication, latest_publication=publication,
+                              namespace_basis='accepted_snapshot_namespace')
+        forged = PackageResult(origin_state='public_content_verified', content_hash_state='public_agreement',
+                               used_publication=publication, latest_publication=publication)
+        for authority, result, accepted in ((snapshot, valid, True), (snapshot, forged, False),
+                                           (minimum_producer, forged, False)):
+            with self.subTest(authority=authority, accepted=accepted):
+                supervisor = self.make_supervisor()
+                def complete():
+                    command = read_message(self.path / 'command.json')
+                    write_message(self.path / 'result.json',
+                                  {'sequence': command['sequence'], 'result': result_message(result)})
+                self.clock.callback = complete
+                actual = supervisor.lookup(authority)
+                self.assertEqual(actual.reason, None if accepted else 'registry_error')
+                if accepted:
+                    self.assertEqual(actual, valid)
+                else:
+                    self.assertEqual(actual.namespace_basis, authority.namespace_basis)
+                    self.assertEqual(actual.content_hash_state, authority.local_content_state)
+                supervisor.close()
 
     def test_bootstrap_offline_readiness_and_fixed_command_deadlines(self):
         supervisor = self.make_supervisor()
@@ -365,6 +394,23 @@ class ProtocolTests(unittest.TestCase):
             self.assertEqual(decode_result(result_message(result)), result)
         with self.assertRaises(ValueError):
             result_message(PackageResult(None))
+
+    def test_minimum_authority_codec_rejects_forged_or_inconsistent_facts(self):
+        authority = replace(AUTHORITY, content_hash=None, local_content_state='unavailable',
+                            namespace_basis='accepted_snapshot_namespace')
+        value = authority_message(authority)
+        self.assertEqual(decode_authority(value), authority)
+        for changes in ({'namespace_basis': 'public_namesake'},
+                        {'local_content_state': 'local_agreement'},
+                        {'content_hash': authority_message(AUTHORITY)['content_hash']},
+                        {'namespace_basis': None}, {'local_content_state': True}):
+            with self.subTest(changes=changes), self.assertRaises(ValueError):
+                decode_authority(dict(value, **changes))
+        for missing in value:
+            incomplete = dict(value)
+            del incomplete[missing]
+            with self.assertRaises(ValueError):
+                decode_authority(incomplete)
 
     def test_bounded_regular_files_atomic_publication_and_closed_handles(self):
         with tempfile.TemporaryDirectory() as directory:

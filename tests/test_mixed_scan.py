@@ -982,9 +982,6 @@ class NuGetMixedScanTests(unittest.TestCase):
             ('unsupported_lock_evidence', self.inputs(lock_change=change_entry(resolved='1'))),
             ('unsupported_dependency_source', self.inputs(witness_change=lambda value:
                 value['packages'][0].update(origins=['https://private.invalid/index.json']))),
-            ('content_hash_unavailable', self.inputs(lock_change=change_entry(contentHash='bad'))),
-            ('content_hash_mismatch', self.inputs(lock_change=change_entry(
-                contentHash=base64.b64encode(b'x' * 64).decode()))),
         )
         baseline = self.scan()
         for reason, files in cases:

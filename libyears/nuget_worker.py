@@ -12,7 +12,7 @@ import time
 
 from libyears.nuget_registry import NuGetMetadataClient, NuGetRegistryFailure
 from libyears.nuget_supervisor import (
-    PackageResult, decode_authority, read_message, result_message, write_message,
+    failed_package, decode_authority, read_message, result_message, write_message,
 )
 
 
@@ -52,7 +52,7 @@ def run_worker(handler=_lookup):
                 raise NuGetRegistryFailure('registry_error')
             result = handler(authority, client)
         except NuGetRegistryFailure as failure:
-            result = PackageResult(reason=failure.reason)
+            result = failed_package(authority, failure.reason)
         write_message(directory / 'result.json', {
             'sequence': sequence, 'result': result_message(result)})
 

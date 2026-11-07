@@ -155,5 +155,208 @@ class CascadeLocalTests(unittest.TestCase):
             self.reject(self.v2, 'limit')
 
 
+class CascadeMeasurementTests(unittest.TestCase):
+    def setUp(self):
+        import tempfile
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.lookups = []
+        self.urls = []
+        for name in ('socket.socket', 'subprocess.Popen', 'urllib.request.urlopen'):
+            guard = patch(name, side_effect=AssertionError('unexpected network/process'))
+            guard.start()
+            self.addCleanup(guard.stop)
+
+    def files(self, *, version=2, **changes):
+        from tests.test_nuget_scan import nuget_inputs
+        files = nuget_inputs(**changes)
+        if version == 2:
+            files['witness.json'] = json.dumps(snapshot_witness(
+                json.loads(files['witness.json']))).encode()
+        return files
+
+    def scan(self, files, documents=None):
+        from libyears import nuget_registry as registry
+        from libyears.nuget_supervisor import (failed_package, authority_message, decode_authority,
+                                              result_message, decode_result)
+        from libyears.scan import NuGetRequest, scan_mixed_repository
+        from tests.nuget_fixtures import fixture_nuget_reads
+        from tests.test_nuget_acceptance import metadata
+        documents = metadata(('alpha',)) if documents is None else documents
+        urls = self.urls
+        class Transport:
+            def get(self, url):
+                urls.append(url)
+                value = documents[url]
+                if isinstance(value, Exception):
+                    raise value
+                return json.dumps(value).encode()
+        def lookup(authorities):
+            result = []
+            client = registry.NuGetMetadataClient(transport=Transport(), clock=lambda: 100)
+            for authority in authorities:
+                self.lookups.append(authority)
+                authority = decode_authority(authority_message(authority))
+                client.begin_package(authority.package_key)
+                try:
+                    row = registry.lookup_authorized_package(authority, client)
+                except registry.NuGetRegistryFailure as failure:
+                    row = failed_package(authority, failure.reason)
+                result.append((authority, decode_result(result_message(row))))
+            return result
+        with fixture_nuget_reads(self.root, files):
+            return scan_mixed_repository(self.root,
+                nuget_request=NuGetRequest('Witness.csproj', 'witness.json'), nuget_lookup=lookup)
+
+    def test_v2_measures_age_without_acquisition_event_or_content_claim(self):
+        from libyears.output import report_to_dict, format_human
+        report = self.scan(self.files())
+        data = report_to_dict(report, '')
+        self.assertEqual(data['schema_version'], 3)
+        self.assertEqual(data['summary']['coverage'], 1.0)
+        row, = data['dependencies']
+        self.assertEqual((row['used_version'], row['latest_stable_version'], row['libyears']),
+                         ('1.0.0', '2.0.0', 1.0))
+        evidence = row['nuget_evidence']
+        self.assertEqual(evidence['origin_state'], 'unavailable')
+        self.assertEqual(evidence['content_hash_state'], 'unavailable')
+        self.assertEqual(evidence['measurement_basis'], 'bound_snapshot_namespace')
+        self.assertEqual(evidence['namespace_basis'], 'accepted_snapshot_namespace')
+        self.assertEqual(evidence['assurance']['producer_event'], 'unavailable')
+        self.assertEqual(evidence['assurance']['local_content'], 'unavailable')
+        self.assertEqual(evidence['assurance']['public_content'], 'not_checked')
+        self.assertEqual(data['version_evidence']['nuget']['trust_basis'], 'supplied_snapshot_assertion')
+        ordinary = format_human(report, '')
+        detailed = format_human(report, '', verbose=True)
+        self.assertIn('explicitly accepted public namespace', ordinary)
+        self.assertNotIn('Origin state:', ordinary)
+        self.assertIn('namespace basis: accepted_snapshot_namespace', detailed)
+        self.assertIn('acquisition_not_established', detailed)
+        for secret in (PUBLIC_ORIGIN, 'project_sha256', 'lock_sha256', 'sdk_version'):
+            self.assertNotIn(secret, json.dumps(data))
+            self.assertNotIn(secret, detailed)
+
+    def test_v1_strong_and_missing_local_public_hashes_retain_true_assurance(self):
+        from libyears.output import report_to_dict
+        from tests.test_nuget_acceptance import metadata
+        cases = [('strong', 'local_agreement', 'public_agreement'),
+                 ('missing_local', 'unavailable', 'not_checked'),
+                 ('mismatch_local', 'mismatch', 'not_checked'),
+                 ('missing_public', 'local_agreement', 'unavailable'),
+                 ('mismatch_public', 'local_agreement', 'mismatch')]
+        for kind, local, public in cases:
+            with self.subTest(kind=kind):
+                changes = {}
+                if kind == 'missing_local':
+                    changes['lock_change'] = lambda d: d['dependencies']['net10.0']['alpha'].pop('contentHash')
+                if kind == 'mismatch_local':
+                    changes['lock_change'] = lambda d: d['dependencies']['net10.0']['alpha'].update(
+                        contentHash=base64.b64encode(b'x'*64).decode())
+                docs = metadata(('alpha',))
+                used = next(v for k,v in docs.items() if '/catalog0/' in k and '1.0.0' in k)
+                if kind == 'missing_public':
+                    del used['packageHash']
+                if kind == 'mismatch_public':
+                    used['packageHash'] = base64.b64encode(b'x'*64).decode()
+                report = self.scan(self.files(version=1, **changes), docs)
+                data = report_to_dict(report, '')
+                row, = data['dependencies']
+                self.assertEqual(row['libyears'], 1.0)
+                evidence = row['nuget_evidence']
+                self.assertEqual(evidence['assurance']['producer_event'], 'asserted')
+                self.assertEqual(evidence['assurance']['local_content'], local)
+                self.assertEqual(evidence['assurance']['public_content'], public)
+                self.assertEqual(evidence['origin_state'],
+                                 'public_content_verified' if kind == 'strong' else 'asserted_public')
+                self.assertEqual(data['summary']['coverage'], 1.0)
+
+    def test_unknown_private_missing_and_mismatched_namespace_make_no_public_requests(self):
+        for version in (1, 2):
+            for change in ('private', 'missing', 'wrong_version'):
+                with self.subTest(version=version, change=change):
+                    files = self.files(version=version)
+                    witness = json.loads(files['witness.json'])
+                    if change == 'missing':
+                        witness['packages'] = []
+                    elif change == 'wrong_version':
+                        witness['packages'][0]['version'] = '3.0'
+                    elif version == 1:
+                        witness['packages'][0]['origins'] = ['https://private.invalid/SECRET']
+                    else:
+                        witness['packages'][0]['namespace'] = 'https://private.invalid/SECRET'
+                    files['witness.json'] = json.dumps(witness).encode()
+                    report = self.scan(files)
+                    self.assertEqual(report.unmeasurable[0].reason, 'unsupported_dependency_source')
+                    if version == 2:
+                        self.assertEqual(report.unmeasurable[0].nuget_evidence.origin_state, 'unavailable')
+                    self.assertEqual(report.summary.coverage, 0.0)
+                    self.assertEqual(self.lookups, [])
+                    self.assertEqual(self.urls, [])
+
+    def test_v2_cannot_repair_stale_context_request_or_unsupported_population(self):
+        for change, reason, count in (('stale', 'nuget_context_mismatch', 1),
+                                     ('framework', 'nuget_context_mismatch', 1),
+                                     ('influence', 'unsupported_nuget_project', None),
+                                     ('request', 'declaration_lock_requirement_mismatch', 1),
+                                     ('project', 'unsupported_nuget_project', None)):
+            with self.subTest(change=change):
+                files = self.files()
+                witness = json.loads(files['witness.json'])
+                if change == 'stale':
+                    files['Witness.csproj'] += b'\n'
+                elif change == 'framework':
+                    witness['framework'] = 'net9.0'
+                elif change == 'influence':
+                    witness['baseline']['unsupported_membership_version_influences'] = True
+                elif change == 'request':
+                    files = self.files(lock_change=lambda d:
+                        d['dependencies']['net10.0']['alpha'].update(requested='[2.0.0, )'))
+                    witness = json.loads(files['witness.json'])
+                else:
+                    files['Witness.csproj'] = b'<Project />'
+                files['witness.json'] = json.dumps(witness).encode()
+                report = self.scan(files)
+                rows = report.source_errors or report.unmeasurable
+                self.assertEqual(rows[0].reason, reason)
+                if change in ('stale', 'framework', 'influence'):
+                    self.assertEqual(report.source_results[-1].evidence.trust_basis,
+                                     'supplied_snapshot_assertion')
+                self.assertEqual(report.summary.dependencies_discovered, count)
+                self.assertEqual(self.lookups, [])
+                self.assertEqual(self.urls, [])
+
+    def test_missing_latest_date_is_measurement_blocker_and_retains_assurance(self):
+        from libyears.output import report_to_dict
+        from tests.test_nuget_acceptance import metadata
+        for version in (1, 2):
+            docs = metadata(('alpha',))
+            latest = next(v for k,v in docs.items() if '/catalog0/' in k and '2.0.0' in k)
+            latest['created'] = None
+            report = self.scan(self.files(version=version), docs)
+            data = report_to_dict(report, '')
+            row, = data['unmeasurable']
+            self.assertEqual(row['reason'], 'release_date_missing')
+            self.assertIn('used_publication', row['nuget_evidence'])
+            self.assertNotIn('latest_publication', row['nuget_evidence'])
+            self.assertEqual(row['nuget_evidence']['assurance']['public_content'],
+                             'public_agreement' if version == 1 else 'not_checked')
+            self.assertEqual(data['summary']['coverage'], 0.0)
+
+    def test_namespace_only_worker_failure_never_inherits_producer_facts(self):
+        from libyears import nuget_registry as registry
+        from libyears.output import report_to_dict
+        from tests.test_nuget_acceptance import metadata
+        docs = metadata(('alpha',))
+        docs[registry.REGISTRATION_BASE+'alpha/index.json'] = TimeoutError('SECRET')
+        data = report_to_dict(self.scan(self.files(), docs), '')
+        evidence = data['unmeasurable'][0]['nuget_evidence']
+        self.assertEqual(data['unmeasurable'][0]['reason'], 'registry_error')
+        self.assertEqual(evidence['origin_state'], 'unavailable')
+        self.assertEqual(evidence['assurance']['producer_event'], 'unavailable')
+        self.assertEqual(evidence['assurance']['local_content'], 'unavailable')
+        self.assertNotIn('SECRET', json.dumps(data))
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -31,8 +31,9 @@ _DIGITS = re.compile(r'[0-9]+')
 class NuGetInputFailure(ValueError):
     """A private classification, mapped to the consuming source's S6 reason."""
 
-    def __init__(self, category: str):
+    def __init__(self, category: str, *, witness_version: int | None = None):
         self.category = category
+        self.witness_version = witness_version
         super().__init__('NuGet input rejected: ' + category + '.')
 
 

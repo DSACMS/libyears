@@ -10,7 +10,7 @@ from .nuget_input import NuGetInputFailure, ScopedNuGetReader
 from .nuget_lock import parse_lock
 from .nuget_project import parse_project
 from .nuget_provenance import (LocalAuthority, LocalAuthorityFailure,
-                               authorize_package, parse_provenance)
+                               authorize_measurement, parse_provenance)
 from .nuget_version import MAX_VERSION_LENGTH, parse_selected_identity
 
 
@@ -111,7 +111,11 @@ def read_nuget_source(root: Path, project_name: str,
             context = parse_provenance(
                 witness_source, project_name=project_name,
                 project_source=project_source, lock_source=lock_source, project=project)
+            if context.contract_version == 2:
+                evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
     except NuGetInputFailure as failure:
+        if stage == 'witness' and failure.witness_version == 2:
+            evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
         if stage == 'witness' and failure.category == 'unsupported':
             count = None
         return rejected(_source_reason(stage, failure.category))
@@ -146,15 +150,20 @@ def read_nuget_source(root: Path, project_name: str,
                         row_evidence, selected_version=selected.original_version,
                         normalized_version=selected.normalized_version,
                         selection_source='packages.lock.json')
-                    authority = authorize_package(context, declaration.package_key,
+                    authority = authorize_measurement(context, declaration.package_key,
                                                   selected, entry.content_hash)
                     if isinstance(authority, LocalAuthorityFailure):
                         reason = authority.reason
                         row_evidence = replace(row_evidence, origin_state=authority.origin_state,
                                                content_hash_state=authority.content_hash_state)
                     else:
-                        row_evidence = replace(row_evidence, origin_state='asserted_public',
-                                               content_hash_state='local_agreement')
+                        row_evidence = replace(
+                            row_evidence, measurement_basis='bound_snapshot_namespace',
+                            namespace_basis=authority.namespace_basis,
+                            local_content_state=authority.local_content_state,
+                            origin_state=('asserted_public' if context.contract_version == 1
+                                          else 'unavailable'),
+                            content_hash_state=authority.local_content_state)
         declared = declaration.package_name + ' (' + declaration.declared_version + ')'
         if reason is not None:
             failures.append(UnmeasurableDependency('nuget', declaration.package_name,

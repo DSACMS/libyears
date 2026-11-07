@@ -46,6 +46,7 @@ class PackageResult:
     content_hash_state: str = 'local_agreement'
     used_publication: NuGetPublication | None = None
     latest_publication: NuGetPublication | None = None
+    namespace_basis: str = 'accepted_producer_origin'
 
 
 def write_message(path, value):
@@ -100,17 +101,20 @@ def authority_message(authority):
              'lock_sha256': authority.lock_sha256,
              'package_key': authority.package_key,
              'normalized_version': authority.normalized_version,
-             'content_hash': base64.b64encode(authority.content_hash).decode('ascii')}
+             'content_hash': (base64.b64encode(authority.content_hash).decode('ascii')
+                              if authority.content_hash is not None else None),
+             'namespace_basis': authority.namespace_basis,
+             'local_content_state': authority.local_content_state}
     decode_authority(value)
     return value
 
 
 def decode_authority(value):
     fields = {'project_sha256', 'lock_sha256', 'package_key',
-              'normalized_version', 'content_hash'}
+              'normalized_version', 'content_hash', 'namespace_basis', 'local_content_state'}
     if not isinstance(value, dict) or set(value) != fields:
         raise ValueError('authority')
-    if any(not isinstance(item, str) for item in value.values()):
+    if any(not isinstance(value[key], str) for key in fields - {'content_hash'}):
         raise ValueError('authority')
     if any(not re.fullmatch('[0-9a-f]{64}', value[key])
            for key in ('project_sha256', 'lock_sha256')):
@@ -120,11 +124,34 @@ def decode_authority(value):
     identity = parse_selected_identity(value['normalized_version'])
     if identity is None or identity.normalized_version != value['normalized_version']:
         raise ValueError('authority')
-    digest = base64.b64decode(value['content_hash'], validate=True)
-    if len(digest) != 64:
+    basis = value['namespace_basis']
+    state = value['local_content_state']
+    if basis not in ('accepted_producer_origin', 'accepted_snapshot_namespace'):
+        raise ValueError('authority')
+    if state not in ('local_agreement', 'mismatch', 'unavailable'):
+        raise ValueError('authority')
+    digest = None
+    if value['content_hash'] is not None:
+        if not isinstance(value['content_hash'], str):
+            raise ValueError('authority')
+        digest = base64.b64decode(value['content_hash'], validate=True)
+        if len(digest) != 64:
+            raise ValueError('authority')
+    if (state == 'local_agreement') != (digest is not None):
+        raise ValueError('authority')
+    if basis == 'accepted_snapshot_namespace' and state != 'unavailable':
         raise ValueError('authority')
     return LocalAuthority(value['project_sha256'], value['lock_sha256'],
-                          value['package_key'], value['normalized_version'], digest)
+                          value['package_key'], value['normalized_version'], digest, basis, state)
+
+
+def failed_package(authority, reason='registry_error'):
+    """Failure cannot manufacture producer or content facts for a weaker input."""
+    origin = ('asserted_public' if authority.namespace_basis == 'accepted_producer_origin'
+              else 'unavailable')
+    return PackageResult(reason=reason, origin_state=origin,
+                         content_hash_state=authority.local_content_state,
+                         namespace_basis=authority.namespace_basis)
 
 
 def _publication(value):
@@ -146,33 +173,39 @@ def _publication(value):
 
 def decode_result(value):
     fields = {'reason', 'origin_state', 'content_hash_state',
-              'used_publication', 'latest_publication'}
+              'used_publication', 'latest_publication', 'namespace_basis'}
     if not isinstance(value, dict) or set(value) != fields:
         raise ValueError('protocol')
     if value['reason'] is not None and (not isinstance(value['reason'], str) or value['reason'] not in REASONS):
         raise ValueError('protocol')
-    if value['origin_state'] not in ('asserted_public', 'public_content_verified'):
+    basis = value['namespace_basis']
+    if basis not in ('accepted_producer_origin', 'accepted_snapshot_namespace'):
+        raise ValueError('protocol')
+    origins = (('unavailable',) if basis == 'accepted_snapshot_namespace'
+               else ('asserted_public', 'public_content_verified'))
+    if value['origin_state'] not in origins:
         raise ValueError('protocol')
     if value['content_hash_state'] not in ('local_agreement', 'unavailable', 'mismatch', 'public_agreement'):
         raise ValueError('protocol')
     verified = value['origin_state'] == 'public_content_verified'
+    if basis == 'accepted_snapshot_namespace' and value['content_hash_state'] != 'unavailable':
+        raise ValueError('protocol')
     if verified != (value['content_hash_state'] == 'public_agreement'):
         raise ValueError('protocol')
     publications = {}
     for key in ('used_publication', 'latest_publication'):
         publications[key] = _publication(value[key]) if value[key] is not None else None
-        if publications[key] is not None and not verified:
-            raise ValueError('protocol')
-    if value['reason'] is None and (not verified or any(v is None for v in publications.values())):
+    if value['reason'] is None and any(v is None for v in publications.values()):
         raise ValueError('protocol')
-    return PackageResult(value['reason'], value['origin_state'], value['content_hash_state'], **publications)
+    return PackageResult(value['reason'], value['origin_state'], value['content_hash_state'],
+                         namespace_basis=basis, **publications)
 
 
 def result_message(result):
     if not isinstance(result, PackageResult):
         raise ValueError('protocol')
     value = {'reason': result.reason, 'origin_state': result.origin_state,
-             'content_hash_state': result.content_hash_state}
+             'content_hash_state': result.content_hash_state, 'namespace_basis': result.namespace_basis}
     for key in ('used_publication', 'latest_publication'):
         publication = getattr(result, key)
         value[key] = None if publication is None else {
@@ -235,7 +268,7 @@ class NuGetSupervisor:
     def lookup(self, authority):
         facts = authority_message(authority)
         if self.closed or self.cancelled:
-            return PackageResult(reason='registry_error')
+            return failed_package(authority)
         if self.process is None:
             self._start()
         now = self.clock()
@@ -246,7 +279,7 @@ class NuGetSupervisor:
         try:
             if now >= cutoff:
                 self._cancel(deadline)
-                return PackageResult(reason='registry_error')
+                return failed_package(authority)
             self.sequence += 1
             write_message(self.path / 'command.json', {
                 'sequence': self.sequence, 'authority': facts,
@@ -259,6 +292,17 @@ class NuGetSupervisor:
                     if set(value) != {'sequence', 'result'} or type(value['sequence']) is not int or value['sequence'] != self.sequence:
                         raise ValueError('protocol')
                     result = decode_result(value['result'])
+                    if result.namespace_basis != authority.namespace_basis:
+                        raise ValueError('protocol')
+                    if (result.origin_state == 'public_content_verified'
+                            and authority.local_content_state != 'local_agreement'):
+                        raise ValueError('protocol')
+                    if (authority.local_content_state != 'local_agreement'
+                            and result.content_hash_state != authority.local_content_state):
+                        raise ValueError('protocol')
+                    if (result.used_publication is not None
+                            and result.used_publication.version != authority.normalized_version):
+                        raise ValueError('protocol')
                     if self.clock() >= cutoff:
                         break
                     result_path.unlink()
@@ -267,10 +311,10 @@ class NuGetSupervisor:
                     raise ValueError('protocol')
                 self.pause(min(POLL_SECONDS, max(0, cutoff - self.clock())))
             self._cancel(deadline)
-            return PackageResult(reason='registry_error')
+            return failed_package(authority)
         except (OSError, ValueError, RecursionError):
             self._cancel(min(deadline, self.clock() + CLEANUP_SECONDS))
-            return PackageResult(reason='registry_error')
+            return failed_package(authority)
         except BaseException:
             self._cancel(min(deadline, self.clock() + CLEANUP_SECONDS))
             raise

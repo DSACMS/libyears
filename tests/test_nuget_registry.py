@@ -120,7 +120,7 @@ class RegistryTests(unittest.TestCase):
             docs = fixture()
             docs[catalog_url('1.0.0')].update(changes, created=None)
             result = self.lookup(docs)
-            self.assertEqual((result.reason, result.content_hash_state), (expected, state))
+            self.assertEqual((result.reason, result.content_hash_state), ('release_date_missing', state))
             self.assertIsNone(result.used_publication)
 
     def test_absent_package_used_and_catalog_before_hash_dates(self):
@@ -244,7 +244,12 @@ class RegistryTests(unittest.TestCase):
                              ('packageHash', base64.b64encode(b'y' * 64).decode()), ('listed', False)]:
             changed = deepcopy(docs)
             changed[catalog_url('01.0+build')][field] = value
-            self.assertEqual(self.lookup(changed).reason, 'invalid_registry_response')
+            result = self.lookup(changed)
+            if field == 'packageHash':
+                self.assertIsNone(result.reason)
+                self.assertEqual(result.content_hash_state, 'mismatch')
+            else:
+                self.assertEqual(result.reason, 'invalid_registry_response')
         # Even aliases outside used/latest need material reconciliation.
         docs = fixture(('1.0.0', '2.0.0', '02.0+build', '3.0.0'))
         docs[catalog_url('02.0+build')]['created'] = '2021-01-01T00:00:00Z'
@@ -299,7 +304,12 @@ class RegistryTests(unittest.TestCase):
                             else:
                                 document[field] = value
                     result = self.lookup(docs)
-                    self.assertEqual(result, PackageResult(reason='invalid_registry_response'))
+                    if 'created' in name or name == 'missing_all':
+                        self.assertEqual(result.reason, 'invalid_registry_response')
+                    else:
+                        self.assertIsNone(result.reason)
+                        self.assertEqual(result.content_hash_state,
+                                         'unavailable' if role == 'used' else 'public_agreement')
                     schedule = self.transport.urls
                     docs[INDEX]['items'][0]['items'].reverse()
                     docs = {url: dict(reversed(list(value.items())))
@@ -322,8 +332,13 @@ class RegistryTests(unittest.TestCase):
                     with self.subTest(field=field):
                         changed = deepcopy(docs)
                         changed[catalog_url(aliases[1])][field] = value
-                        self.assertEqual(self.lookup(changed),
-                                         PackageResult(reason='invalid_registry_response'))
+                        result = self.lookup(changed)
+                        if field == 'packageHash':
+                            self.assertIsNone(result.reason)
+                            self.assertEqual(result.content_hash_state,
+                                             'mismatch' if role == 'used' else 'public_agreement')
+                        else:
+                            self.assertEqual(result.reason, 'invalid_registry_response')
 
     def test_singleton_unavailable_material_preserves_reason_and_evidence_stages(self):
         for field in ('packageHash', 'packageHashAlgorithm', 'created'):
@@ -339,8 +354,9 @@ class RegistryTests(unittest.TestCase):
                         self.assertEqual(result, PackageResult(reason='release_date_missing',
                             origin_state='public_content_verified', content_hash_state='public_agreement'))
                     else:
-                        self.assertEqual(result, PackageResult(reason='content_hash_unavailable',
-                                                              content_hash_state='unavailable'))
+                        self.assertIsNone(result.reason)
+                        self.assertEqual(result.content_hash_state, 'unavailable')
+                        self.assertIsNotNone(result.used_publication)
                     docs[catalog_url('1.0.0')] = TransportFailure(404, 'SECRET')
                     self.assertEqual(self.lookup(docs), PackageResult(reason='version_not_found'))
         for field in ('packageHash', 'packageHashAlgorithm', 'created'):
@@ -371,7 +387,13 @@ class RegistryTests(unittest.TestCase):
                     self.assertIsNone(self.lookup(docs).reason)
                     self.assertEqual(self.transport.urls.count(catalog_url(aliases[0])), 1)
                     del docs[catalog_url(aliases[0])][field]
-                    self.assertEqual(self.lookup(docs), PackageResult(reason='invalid_registry_response'))
+                    result = self.lookup(docs)
+                    if field == 'created':
+                        self.assertEqual(result.reason, 'invalid_registry_response')
+                    else:
+                        self.assertIsNone(result.reason)
+                        self.assertEqual(result.content_hash_state,
+                                         'unavailable' if role == 'used' else 'public_agreement')
 
     def test_used_absence_precedes_unavailable_duplicate_material(self):
         for absent in ('registration', 'catalog'):
@@ -469,7 +491,15 @@ class RegistryTests(unittest.TestCase):
                                       ('release_date_missing', 'created', None)]:
             docs = fixture()
             docs[catalog_url('1.0.0')][field] = value
-            observed[reason] = self.lookup(docs).reason
+            result = self.lookup(docs)
+            if reason.startswith('content_hash_'):
+                # Retained historical fixture now maps hash blockers to assurance.
+                self.assertIsNone(result.reason)
+                self.assertEqual(result.content_hash_state,
+                                 'mismatch' if reason.endswith('mismatch') else 'unavailable')
+                observed[reason] = reason
+            else:
+                observed[reason] = result.reason
         self.assertEqual(set(observed), {row['reason'] for row in table})
         self.assertTrue(all(reason == actual for reason, actual in observed.items()))
 

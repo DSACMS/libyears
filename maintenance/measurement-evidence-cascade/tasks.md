@@ -16,7 +16,7 @@ approval belongs there. One local commit per completed task. No push.
   hash agreement/mismatch/unavailability; no lookup or target execution/privacy.
   Focused provenance/input/project/lock tests, diff check, local commit.
 
-- [ ] **E2 — Coherent worker, metadata, output migration.** Predecessor: E1.
+- [x] **E2 — Coherent worker, metadata, output migration.** Predecessor: E1.
   C1–C6: migrate private authority/result codecs and authority-derived failures;
   namespace/result consistency and forged-assurance refusal; metadata hash facts
   separate from required identity/date/alias checks; switch source admission to
@@ -63,3 +63,9 @@ precondition. No population parser expansion or new accepted testimony generatio
 E1 complete: 86 focused provenance/cascade/input/project/lock tests PASS. Strong
 source admission remains unchanged until E2; new minimum capability is internal.
 Diff check PASS; no network or target execution.
+
+E2 complete: focused231 PASS; full699 PASS/no skips; capability-disabled699
+successful with49 genuine filesystem skips; dedicated real-worker3 PASS. Existing
+historical reason fixtures/Feature006/discovery bytes unchanged. Exact legacy
+explicit JSON remains equal after removing only the three additive evidence fields;
+non-NuGet output unchanged. Diff check PASS.

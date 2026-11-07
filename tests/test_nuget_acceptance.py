@@ -204,8 +204,10 @@ class NuGetAcceptanceTests(unittest.TestCase):
                 if '--json' in extra:
                     self.assertEqual(json.loads(result[1]), data)
                 else:
-                    for fact in ('alpha', 'beta', '2020-12-31', 'public_content_verified',
-                                 'public_agreement', 'supplied producer/supplier assertions'):
+                    facts = ['alpha', 'beta', 'explicitly accepted public namespace']
+                    if '--verbose' in extra:
+                        facts += ['2020-12-31', 'public_content_verified', 'public_agreement']
+                    for fact in facts:
                         self.assertIn(fact, result[1])
 
     def test_combined_earliest_stages_retain_only_safe_established_evidence(self):
@@ -262,7 +264,7 @@ class NuGetAcceptanceTests(unittest.TestCase):
             rows = {row['name']: row for row in data['unmeasurable']}
             self.assertEqual({name: row['reason'] for name, row in rows.items()}, {
                 'alpha': 'declaration_lock_requirement_mismatch',
-                'beta': 'unsupported_dependency_source', 'gamma': 'content_hash_mismatch'})
+                'beta': 'unsupported_dependency_source', 'gamma': 'release_date_missing'})
             self.assertNotIn('selected_version', rows['alpha']['nuget_evidence'])
             self.assertNotIn('used_publication', rows['gamma']['nuget_evidence'])
             self.assertEqual(data['summary']['coverage'], 0.0)

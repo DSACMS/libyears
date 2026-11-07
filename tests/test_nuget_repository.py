@@ -241,7 +241,12 @@ class RepositoryTests(unittest.TestCase):
             report = scan_mixed_repository(self.root, nuget_request=NuGetRequest('Witness.csproj', 'witness.json'),
                                            nuget_lookup=lookup)
         baseline = (Path(__file__).parent / 'fixtures/nuget/explicit-report-v3.json').read_text()
-        self.assertEqual(format_json(report, ''), baseline)
+        current = json.loads(format_json(report, ''))
+        evidence = current['dependencies'][0]['nuget_evidence']
+        self.assertEqual(evidence.pop('measurement_basis'), 'bound_snapshot_namespace')
+        self.assertEqual(evidence.pop('namespace_basis'), 'accepted_producer_origin')
+        self.assertEqual(evidence.pop('assurance')['public_content'], 'public_agreement')
+        self.assertEqual(current, json.loads(baseline))
         self.assertNotIn('source_id', baseline)
         self.assertNotIn('nuget_sources', baseline)
 

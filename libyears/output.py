@@ -136,6 +136,10 @@ def _nuget_evidence_dict(evidence: NuGetEvidence) -> dict[str, Any]:
         value = getattr(evidence, field)
         if value is not None:
             result[field] = value
+    if evidence.measurement_basis is not None:
+        result['measurement_basis'] = evidence.measurement_basis
+        result['namespace_basis'] = evidence.namespace_basis
+        result['assurance'] = _nuget_assurance(evidence)
     for field in ("used_publication", "latest_publication"):
         publication = getattr(evidence, field)
         if publication is not None:
@@ -145,6 +149,24 @@ def _nuget_evidence_dict(evidence: NuGetEvidence) -> dict[str, Any]:
                 "listed": publication.listed,
             }
     return result
+
+
+def _nuget_assurance(evidence: NuGetEvidence) -> dict[str, Any]:
+    local = evidence.local_content_state
+    if evidence.content_hash_state == 'public_agreement':
+        public = 'public_agreement'
+    elif local == 'local_agreement' and evidence.content_hash_state in ('mismatch', 'unavailable'):
+        public = evidence.content_hash_state
+    else:
+        public = 'not_checked'
+    producer = evidence.namespace_basis == 'accepted_producer_origin'
+    limitations = ['accepted_snapshot_not_evaluated_runtime',
+                   'acquisition_testimony_not_authenticated' if producer else 'acquisition_not_established',
+                   'reproducibility_not_established', 'deployment_not_established']
+    if public != 'public_agreement':
+        limitations.append('content_correspondence_not_established')
+    return {'producer_event': 'asserted' if producer else 'unavailable',
+            'local_content': local, 'public_content': public, 'limitations': limitations}
 
 
 def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str, Any]:
@@ -409,9 +431,9 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
         # identify inputs by the safe selected filenames and stable facts only.
         heading = "Libyears: selected repository"
         if report.nuget_repository:
-            nuget_disclosure = _nuget_repository_disclosure(report)
+            nuget_disclosure = _nuget_repository_disclosure(report, verbose=verbose)
         else:
-            nuget_disclosure = _nuget_disclosure(nuget_source, report.by_ecosystem["nuget"])
+            nuget_disclosure = _nuget_disclosure(nuget_source, report.by_ecosystem["nuget"], verbose=verbose)
     if len(ecosystems) == 1 and not report.source_errors:
         ecosystem = ecosystems[0]
         ecosystem_label = 'Ecosystem scanned for measurement' if recognition_lines else 'Ecosystem'
@@ -429,8 +451,8 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
                 dependency = measurement.dependency
                 lines.append(row)
                 lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
-                lines.extend(_nuget_detail_lines(dependency.nuget_evidence))
-                if dependency.nuget_evidence is not None:
+                lines.extend(_nuget_detail_lines(dependency.nuget_evidence, verbose=verbose))
+                if dependency.nuget_evidence is not None and (verbose or measurement.timestamp_anomaly):
                     lines.append(_nuget_anomaly_line(measurement.timestamp_anomaly))
         lines.extend([
             "", f"Measured: {summary.dependencies_measured} / {summary.dependencies_discovered} dependencies",
@@ -451,7 +473,7 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
                     reason = _scoped_dependency_reason(item.reason)
                 lines.append(f"  {declaration}    {reason}")
                 lines.extend(_gemfile_detail_lines(item.gemfile_evidence))
-                lines.extend(_nuget_detail_lines(item.nuget_evidence))
+                lines.extend(_nuget_detail_lines(item.nuget_evidence, verbose=verbose))
         if verbose and nuget_source is None and report.tls_trust:
             lines.extend(["", f"TLS trust: {report.tls_trust}"])
         if verbose and nuget_source is None and report.diagnostics:
@@ -485,8 +507,8 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
             dependency = measurement.dependency
             lines.append(row)
             lines.extend(_gemfile_detail_lines(dependency.gemfile_evidence))
-            lines.extend(_nuget_detail_lines(dependency.nuget_evidence))
-            if dependency.nuget_evidence is not None:
+            lines.extend(_nuget_detail_lines(dependency.nuget_evidence, verbose=verbose))
+            if dependency.nuget_evidence is not None and (verbose or measurement.timestamp_anomaly):
                 lines.append(_nuget_anomaly_line(measurement.timestamp_anomaly))
     if report.unmeasurable:
         lines.extend(["", "Unmeasurable:"])
@@ -497,7 +519,7 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
             declaration = item.declared if item.ecosystem == 'nuget' else f"{item.name} ({item.declared})"
             lines.append(f"  {item.ecosystem}: {declaration}    {reason}")
             lines.extend(_gemfile_detail_lines(item.gemfile_evidence))
-            lines.extend(_nuget_detail_lines(item.nuget_evidence))
+            lines.extend(_nuget_detail_lines(item.nuget_evidence, verbose=verbose))
     if report.source_errors:
         lines.extend(["", "Source errors:"])
         for error in report.source_errors:
@@ -522,7 +544,7 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
     return "\n".join(lines) + "\n"
 
 
-def _nuget_repository_disclosure(report) -> list[str]:
+def _nuget_repository_disclosure(report, *, verbose=False) -> list[str]:
     sources = [source for source in report.source_results if source.ecosystem == "nuget"]
     lines = [
         "NuGet repository sources: independent direct-dependency occurrences; no cross-project deduplication.",
@@ -532,7 +554,7 @@ def _nuget_repository_disclosure(report) -> list[str]:
     ]
     # Reuse the established trust/date/scope explanation once, without claiming
     # a representative project or whole-ecosystem availability for one source.
-    lines.extend(_nuget_policy_lines())
+    lines.extend(_nuget_policy_lines(verbose=verbose))
     for source in sources:
         summary = report.by_nuget_source[source.source_id]
         evidence = source.evidence
@@ -544,6 +566,8 @@ def _nuget_repository_disclosure(report) -> list[str]:
                      f"{measured} / {population} measured; {_coverage(summary.coverage)} coverage; "
                      f"total {_number(summary.total_libyears)}, mean {_number(summary.mean_libyears)}, "
                      f"median {_number(summary.median_libyears)}, max {_number(summary.max_libyears)} libyears.")
+        if not verbose:
+            continue
         lines.append(f"  Project: {json.dumps(evidence.declaration_source, ensure_ascii=True)}; "
                      f"framework: {evidence.framework or 'unavailable'}; "
                      f"snapshot: {json.dumps(evidence.snapshot_source, ensure_ascii=True)}; "
@@ -552,30 +576,38 @@ def _nuget_repository_disclosure(report) -> list[str]:
     return lines
 
 
-def _nuget_policy_lines() -> list[str]:
-    return [
+def _nuget_policy_lines(*, verbose=False) -> list[str]:
+    lines = [
+        "NuGet measures accepted project/lock snapshot versions in an explicitly accepted public namespace.",
+        "Stronger assurance is separate; use --verbose or JSON to inspect evidence and limitations.",
+    ]
+    if not verbose:
+        return lines
+    return lines + [
         "Scope: all supported explicit direct PackageReferences, including test, tool, analyzer and PrivateAssets references.",
-        "Trust basis: supplied producer/supplier assertions, accepted only through an explicitly supplied witness.",
-        "H3 requires native NuGet package provenance plus contemporaneous producer attestation, bound to the same event, "
+        "Trust basis: explicit version-1 producer testimony or version-2 retained snapshot/namespace testimony.",
+        "Version 1 retains native NuGet package provenance plus contemporaneous producer attestation, bound to the same event, "
         "exact project/lock bytes, framework and required input-influence assertions.",
         "Retrospective replay does not substitute for producer attestation of the original event.",
+        "Version 2 asserts snapshot association and applicable namespace, without acquisition-origin or event evidence.",
         "asserted_public is supplier testimony; public_content_verified and public_agreement require public identity and SHA512 correspondence.",
+        "Missing or mismatched optional hashes narrow assurance; unknown/private/conflicting namespace prevents lookup.",
         "This supplied snapshot does not establish evaluated MSBuild completeness, installed/deployed/runtime scope, "
-        "restore success, compatibility or cryptographic provenance; hashes establish content correspondence, not producing history.",
+        "restore success, compatibility or cryptographic provenance; hashes compare supplied content assertions, not producing history.",
         "Publication basis: first receipt by nuget.org from catalog created, not original upstream release.",
         "Latest comparator: greatest currently listed stable version; no framework, request or compatibility filter.",
         "Missing public records do not establish never-existence; changed listing or records may change future measurements.",
     ]
 
 
-def _nuget_disclosure(source, summary) -> list[str]:
+def _nuget_disclosure(source, summary, *, verbose=False) -> list[str]:
     evidence = source.evidence
     lines = [
         f"NuGet project: {evidence.declaration_source}; framework: {evidence.framework or 'unavailable'}.",
         f"NuGet declaration source: {evidence.declaration_source}; version snapshot: {evidence.snapshot_source}; "
         f"provenance source: {evidence.provenance_source or 'not supplied'}.",
     ]
-    lines.extend(_nuget_policy_lines())
+    lines.extend(_nuget_policy_lines(verbose=verbose))
     lock_state = 'accepted' if evidence.format == 'packages_lock_v1' else 'unavailable'
     lines.append(f"NuGet packages.lock.json recognition: {lock_state}.")
     if source.dependencies_discovered is None:
@@ -594,7 +626,7 @@ def _nuget_disclosure(source, summary) -> list[str]:
     return lines
 
 
-def _nuget_detail_lines(evidence: NuGetEvidence | None) -> list[str]:
+def _nuget_detail_lines(evidence: NuGetEvidence | None, *, verbose=True) -> list[str]:
     if evidence is None:
         return []
     project = evidence.project
@@ -602,6 +634,8 @@ def _nuget_detail_lines(evidence: NuGetEvidence | None) -> list[str]:
     if evidence.source_id is not None:
         lines.append(f"    NuGet source: {json.dumps(evidence.source_id, ensure_ascii=True)}.")
         project = json.dumps(project, ensure_ascii=True)
+    if not verbose:
+        return lines
     lines.append(f"    NuGet project: {project}; framework: {evidence.framework}; requested: {evidence.requested}.")
     if evidence.lock_requested is not None:
         lines.append(f"    Lock requested: {evidence.lock_requested}")
@@ -610,6 +644,12 @@ def _nuget_detail_lines(evidence: NuGetEvidence | None) -> list[str]:
     if evidence.normalized_version is not None:
         lines.append(f"    Normalized selected version: {evidence.normalized_version}")
     lines.append(f"    Origin state: {evidence.origin_state}; content hash state: {evidence.content_hash_state}.")
+    if evidence.measurement_basis is not None:
+        assurance = _nuget_assurance(evidence)
+        lines.append(f"    Measurement basis: {evidence.measurement_basis}; namespace basis: {evidence.namespace_basis}.")
+        lines.append(f"    Stronger assurance: producer event {assurance['producer_event']}; "
+                     f"local content {assurance['local_content']}; public content {assurance['public_content']}.")
+        lines.append("    Limitations: " + ', '.join(assurance['limitations']) + '.')
     for label, publication in (("Used", evidence.used_publication), ("Latest", evidence.latest_publication)):
         if publication is not None:
             listed = 'true' if publication.listed else 'false'

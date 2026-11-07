@@ -85,6 +85,9 @@ class NuGetEvidence:
     used_publication: NuGetPublication | None = None
     latest_publication: NuGetPublication | None = None
     source_id: str | None = None
+    measurement_basis: str | None = None
+    namespace_basis: str | None = None
+    local_content_state: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

@@ -178,9 +178,9 @@ def parse_provenance(source: LocalInput, *, project_name: str,
             or sdk != project.sdk
             or project_digest != hashlib.sha256(project_source.data).hexdigest()
             or lock_digest != hashlib.sha256(lock_source.data).hexdigest()):
-        raise NuGetInputFailure('context_mismatch')
+        raise NuGetInputFailure('context_mismatch', witness_version=version)
     if not complete or any(influences):
-        raise NuGetInputFailure('unsupported')
+        raise NuGetInputFailure('unsupported', witness_version=version)
     return SupplierContext(project_digest, lock_digest, tuple(packages), version)
 
 
@@ -231,7 +231,7 @@ def authorize_measurement(context: SupplierContext, package_key: str,
                     if package.package_key == key
                     and package.normalized_version == selected.normalized_version]
         if len(matching) != 1 or matching[0].namespace != PUBLIC_ORIGIN:
-            return LocalAuthorityFailure('unsupported_dependency_source', 'unsupported')
+            return LocalAuthorityFailure('unsupported_dependency_source')
         return LocalAuthority(context.project_sha256, context.lock_sha256, key,
                               selected.normalized_version, None,
                               'accepted_snapshot_namespace', 'unavailable')

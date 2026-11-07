@@ -53,9 +53,8 @@ class NuGetCLITests(unittest.TestCase):
         status, stdout, stderr = self.call(['--help'])
         self.assertEqual((status, stderr), (0, ''))
         help_text = ' '.join(stdout.split())
-        for text in ('native NuGet package provenance', 'contemporaneous producer attestation',
-                     'exact project/lock bytes, framework and input influences',
-                     'retrospective replay cannot substitute for original-event attestation'):
+        for text in ('v1 producer-event', 'v2 bound snapshot/namespace witness',
+                     'stronger event/content assurance is reported separately'):
             self.assertIn(text, help_text)
 
     def test_explicit_selection_composes_scan_and_both_reports_with_exit_zero(self):
@@ -70,7 +69,7 @@ class NuGetCLITests(unittest.TestCase):
                     self.assertEqual(data['dependencies'][0]['version_source'], 'packages_lock')
                 else:
                     self.assertIn('Witness.csproj; framework: net10.0', stdout)
-                    self.assertIn('supplied producer/supplier assertions', stdout)
+                    self.assertIn('explicitly accepted public namespace', stdout)
         with fixture_nuget_reads(self.root, nuget_inputs()):
             ordinary = self.call(self.options('--json'), scan=self.composed_scan)[1]
             verbose = self.call(self.options('--json', '--verbose'), scan=self.composed_scan)[1]

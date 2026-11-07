@@ -39,6 +39,22 @@ USED_PUBLICATION = {'version': '1.0.0', 'created': '2020-01-01T00:00:00Z', 'list
 LATEST_PUBLICATION = {'version': '2.0.0', 'created': '2020-12-31T06:00:00Z', 'listed': True}
 
 
+def admitted_evidence(evidence, local='local_agreement'):
+    result = dict(evidence, measurement_basis='bound_snapshot_namespace',
+                  namespace_basis='accepted_producer_origin')
+    final = evidence['content_hash_state']
+    public = (final if final == 'public_agreement' or
+              (local == 'local_agreement' and final in ('mismatch', 'unavailable'))
+              else 'not_checked')
+    limits = ['accepted_snapshot_not_evaluated_runtime', 'acquisition_testimony_not_authenticated',
+              'reproducibility_not_established', 'deployment_not_established']
+    if public != 'public_agreement':
+        limits.append('content_correspondence_not_established')
+    result['assurance'] = dict(producer_event='asserted', local_content=local,
+                               public_content=public, limitations=limits)
+    return result
+
+
 class NuGetJSONTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory()
@@ -51,8 +67,9 @@ class NuGetJSONTests(unittest.TestCase):
             self.addCleanup(guard.stop)
 
     def success(self, authority):
-        return PackageResult(origin_state='public_content_verified',
-            content_hash_state='public_agreement',
+        strong = authority.local_content_state == 'local_agreement'
+        return PackageResult(origin_state='public_content_verified' if strong else 'asserted_public',
+            content_hash_state='public_agreement' if strong else authority.local_content_state,
             used_publication=NuGetPublication(authority.normalized_version, USED, True),
             latest_publication=NuGetPublication('2.0.0', LATEST, True))
 
@@ -88,6 +105,7 @@ class NuGetJSONTests(unittest.TestCase):
         evidence = dict(BASE_ROW, **SELECTION, origin_state='public_content_verified',
                         content_hash_state='public_agreement', used_publication=USED_PUBLICATION,
                         latest_publication=LATEST_PUBLICATION)
+        evidence = admitted_evidence(evidence)
         self.assertEqual(data, {
             'schema_version': 3, 'metric': 'libyears', 'dependency_scope': 'direct',
             'ecosystems': ['nuget'], 'version_evidence': {'nuget': SOURCE},
@@ -160,23 +178,23 @@ class NuGetJSONTests(unittest.TestCase):
                 self.assertEqual(data['source_errors'], [])
                 self.assertEqual(data['summary']['coverage'], 0.0)
 
-    def test_origin_and_local_hash_failure_snapshots(self):
-        for reason, files, origin, state in (
-                ('unsupported_dependency_source', nuget_inputs(witness_change=lambda value:
-                    value['packages'][0].update(origins=['https://user:SECRET@private.invalid/feed'])),
-                 'unsupported', 'unavailable'),
-                ('content_hash_unavailable', nuget_inputs(lock_change=lambda value:
-                    value['dependencies']['net10.0']['alpha'].update(contentHash='SECRET')),
-                 'asserted_public', 'unavailable'),
-                ('content_hash_mismatch', nuget_inputs(witness_change=lambda value:
-                    value['packages'][0].update(content_hash=base64.b64encode(b'x' * 64).decode())),
-                 'asserted_public', 'mismatch')):
-            with self.subTest(reason=reason):
-                data = self.data(self.scan(files))
-                self.assertEqual(data['unmeasurable'][0], {'ecosystem': 'nuget', 'name': 'alpha',
-                    'declared': 'alpha (1.0)', 'reason': reason,
-                    'nuget_evidence': dict(BASE_ROW, **SELECTION, origin_state=origin,
-                                           content_hash_state=state)})
+    def test_origin_failure_and_local_hash_assurance_snapshots(self):
+        private = nuget_inputs(witness_change=lambda value:
+            value['packages'][0].update(origins=['https://user:SECRET@private.invalid/feed']))
+        data = self.data(self.scan(private))
+        self.assertEqual(data['unmeasurable'][0]['reason'], 'unsupported_dependency_source')
+        self.assertNotIn('measurement_basis', data['unmeasurable'][0]['nuget_evidence'])
+        for content, state in (('SECRET', 'unavailable'),
+                               (base64.b64encode(b'x'*64).decode(), 'mismatch')):
+            files = nuget_inputs(lock_change=lambda value:
+                value['dependencies']['net10.0']['alpha'].update(contentHash=content))
+            data = self.data(self.scan(files))
+            self.assertEqual(data['unmeasurable'], [])
+            evidence = data['dependencies'][0]['nuget_evidence']
+            self.assertEqual(evidence['content_hash_state'], state)
+            self.assertEqual(evidence['assurance']['local_content'], state)
+            self.assertEqual(evidence['assurance']['public_content'], 'not_checked')
+            self.assertEqual(data['dependencies'][0]['libyears'], 1.0)
 
     def test_registry_stages_preserve_only_established_publications(self):
         stages = (
@@ -196,6 +214,7 @@ class NuGetJSONTests(unittest.TestCase):
                                 content_hash_state=result.content_hash_state)
                 if result.used_publication is not None:
                     expected['used_publication'] = dict(USED_PUBLICATION, listed=False)
+                expected = admitted_evidence(expected)
                 self.assertEqual(data['unmeasurable'][0]['nuget_evidence'], expected)
                 self.assertEqual(data['unmeasurable'][0]['reason'], result.reason)
 
@@ -245,8 +264,16 @@ class NuGetJSONTests(unittest.TestCase):
         self.assertEqual(data['version_evidence']['pypi'],
                          {'declaration_source': 'requirements.txt', 'snapshot_source': None})
 
-    def assert_human_row(self, human, row):
+    def assert_human_row(self, human, row, *, verbose=True):
         evidence = row['nuget_evidence']
+        if not verbose:
+            self.assertIn(row['name'], human)
+            if 'reason' in row:
+                self.assertIn(row['reason'] + ':', human)
+            else:
+                self.assertIn(f"{row['libyears']:.2f}", human)
+            self.assertNotIn('    Origin state:', human)
+            return
         for value in (row['name'], evidence['project'], evidence['framework'], evidence['requested'],
                       evidence['origin_state'], evidence['content_hash_state']):
             self.assertIn(value, human)
@@ -276,10 +303,13 @@ class NuGetJSONTests(unittest.TestCase):
         data = self.data(report)
         for verbose in (False, True):
             human = format_human(report, '.', verbose=verbose)
-            self.assert_human_row(human, data['dependencies'][0])
+            self.assert_human_row(human, data['dependencies'][0], verbose=verbose)
+            if not verbose:
+                self.assertIn('explicitly accepted public namespace', human)
+                continue
             for text in ('Witness.csproj', 'packages.lock.json', 'witness.json', 'net10.0',
                          'explicit direct PackageReferences', 'test, tool, analyzer and PrivateAssets',
-                         'producer/supplier assertions', 'explicitly supplied witness',
+                         'version-1 producer testimony', 'version-2 retained snapshot/namespace testimony',
                          'native NuGet package provenance plus contemporaneous producer attestation',
                          'same event, exact project/lock bytes, framework and required input-influence assertions',
                          'Retrospective replay does not substitute for producer attestation of the original event',
@@ -287,7 +317,7 @@ class NuGetJSONTests(unittest.TestCase):
                          'restore success', 'compatibility or cryptographic provenance',
                          'first receipt by nuget.org from catalog created', 'not original upstream release',
                          'greatest currently listed stable version', 'no framework, request or compatibility filter',
-                         'hashes establish content correspondence, not producing history',
+                         'hashes compare supplied content assertions, not producing history',
                          'changed listing or records may change future measurements',
                          '1 / 1 measured; 100.0% coverage', 'Total:    1.00 libyears'):
                 self.assertIn(text, human)
@@ -332,7 +362,7 @@ class NuGetJSONTests(unittest.TestCase):
                 for row in data['dependencies'] + data['unmeasurable']:
                     # Multiple rows can establish different optional facts.
                     if len(data['dependencies']) + len(data['unmeasurable']) == 1:
-                        self.assert_human_row(human, row)
+                        self.assert_human_row(human, row, verbose=False)
         files = nuget_inputs(())
         del files['witness.json']
         human = format_human(self.scan(files), '.')
@@ -365,12 +395,13 @@ class NuGetJSONTests(unittest.TestCase):
                 value['packages'][0].update(origins=['https://user:SECRET@private.invalid/feed']))),
         ))
         for report in reports:
-            row, = self.data(report)['unmeasurable']
+            data = self.data(report)
+            row, = data['unmeasurable'] or data['dependencies']
             for verbose in (False, True):
-                with self.subTest(reason=row['reason'], verbose=verbose):
+                with self.subTest(reason=row.get('reason', 'measured'), verbose=verbose):
                     human = format_human(replace(report, diagnostics=(('SECRET', 'SECRET-response'),)),
                                          '/private/SECRET-path', verbose=verbose)
-                    self.assert_human_row(human, row)
+                    self.assert_human_row(human, row, verbose=verbose)
                     for private in ('SECRET', 'private.invalid', 'project_sha256', HASH, 'sdk_version'):
                         self.assertNotIn(private, human)
 
@@ -380,7 +411,7 @@ class NuGetJSONTests(unittest.TestCase):
             latest_publication=NuGetPublication('2.0.0', USED - timedelta(days=1), True))
         (self.root / 'requirements.txt').write_text('alpha==1.0\n')
         report = self.scan(package_result=result)
-        human = format_human(report, '.')
+        human = format_human(report, '.', verbose=True)
         data = self.data(report)
         nuget = next(row for row in data['dependencies'] if row['ecosystem'] == 'nuget')
         self.assert_human_row(human, nuget)
