@@ -44,7 +44,7 @@ approval belongs there. One local commit per completed task. No push.
   check documentation links and diff; commit. Run canonical GitLeaks history check
   on committed candidate and freeze for fresh independent convergence review.
 
-- [ ] **E4 — Independent implementation/convergence and closure.** Predecessor:
+- [x] **E4 — Independent implementation/convergence and closure.** Predecessor:
   E3. Fresh non-author decomposed reviews: (a) project/lock/context/population and
   OASim; (b) namespace/private-name/assurance/protocol/privacy; (c) schema/output/
   sibling migration and verification. Parent validates all findings against frozen
@@ -75,3 +75,10 @@ empty stderr,10 sources,8 unknown populations,2 known populations totaling3 with
 missing accepted testimony; no new measured row, null coverage. Every blocker is
 recorded in validation.md; exact target manifest equality PASS. History GitLeaks
 follows the E3 commit; independent convergence remains E4.
+
+E4 COMPLETE / locally CONVERGED: original three complete independent audits,
+TRUST-F1 material retention defect and C-N1 roadmap index finding validated and
+corrected in f39bc83, then fresh focused review APPROVE with116 tests and7 probes.
+Final runtime full702/no skips, capability702/49 filesystem skips, worker3 PASS;
+canonical correction history zero leaks284 commits. Final closure-only history/
+clean-tree/target-equality checks and current external handoff follow. No push.

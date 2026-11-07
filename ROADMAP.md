@@ -361,8 +361,8 @@ no broader ecosystem discovery is selected by this entry.
 
 **State:** SELECTED in `006-0024`; the human approves a progressive measurement
 cascade. Specification, plan and sequential graph independently approved;
-implementation and operational evidence are under independent convergence review
-in [the correction](maintenance/measurement-evidence-cascade/reviews.md).
+implementation and operational evidence are locally CONVERGED after independent
+review and bounded correction in [the correction](maintenance/measurement-evidence-cascade/reviews.md).
 
 **Area:** Product semantics / public publication-history authority
 

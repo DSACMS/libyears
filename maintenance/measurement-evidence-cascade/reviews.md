@@ -107,3 +107,63 @@ JSON retention without age. Corrected OASim ordinary/JSON stdout/stderr/exits ar
 byte-identical to E3; corrected-after target manifest equals original baseline.
 Diff check PASS. These are determined bounded corrections under C5/E4, not new
 trust/schema authority. Fresh focused non-author closure remains required.
+
+## Fresh correction closure and parent convergence
+
+Frozen corrective f39bc83193651d806531e0e7b0362d160117dc86. Fresh non-author
+correction_review, fork_turns=none/no overrides: COMPLETE / APPROVE; TRUST-F1 and
+C-N1 CLOSED, no new material findings. Independently116 focused PASS and seven
+additional offline probes (later unrelated-alias503/timeout/identity failures;
+selected alias listing/date/identity/type conflicts). It verifies correction
+full702/capability702-with49-skips/real-worker3 logs,284-commit clean GitLeaks,
+corrected ordinary/JSON byte equality and target manifest equality. Full report:
+/tmp/libyears-observations/006-0024-correction-review.md. Actual child configuration
+and resource telemetry remain unavailable; no child ledger rows are invented.
+
+Parent reads full closure report, validates the complete-selected-group staging
+and failure-preserving result path, and reconciles original complete A/B/C audits
+with fresh focused closure. C1/C2 claim separation and strongest accepted facts,
+C3 population/context, C4 namespace/explicit testimony, C5 output/date/assurance
+and C6 safety/verification all have implementation, behavioral tests and independent
+review coverage. Neither initial positive slices nor test counts overrule the
+original material finding; that finding is resolved by code and fresh verification.
+
+**E1–E4 COMPLETE / locally CONVERGED.** Specification, plan and graph independently
+approved; additive schema3 sufficiency established without a human schema stop.
+Minimum measurement and stronger assurance are distinct. V1 event/content facts
+retain their meanings; v2 accepts accountable later bound snapshot/namespace
+assertions. Measurement still requires supported attributable direct population,
+exact context/request/lock association, applicable public namespace BEFORE lookup
+and required authoritative identities/dates. No private/unknown namespace fallback,
+public namesake assumption, metric change, parser expansion or population invention.
+Historical H3 evidence is unchanged. Python/npm attribution limitations and lock-
+population alternatives remain separately recorded future work.
+
+Final runtime verification: focused231 at E2 plus corrective110 and fresh116/probes;
+full702 PASS/no skips; capability702 successful with49 genuine filesystem skips;
+real-worker3 PASS. Canonical correction history gate exit0/zero leaks284 commits;
+closure-commit history scan follows. Whitespace/range/local-link checks PASS.
+Current documentation links and task/roadmap states are reconciled at closure.
+
+Exact ordinary OASim result remains exit0/empty stderr, ten source errors, eight
+unknown populations and two known populations totaling3 blocked by absent accepted
+snapshot/context/namespace witnesses. No real public dates or ages newly established.
+This is no longer an event/hash prerequisite; optional stronger assurance is
+separate. Corrected output equals E3 exactly; final target equality is repeated
+at closure. No target writes/execution, generated testimony or producer run.
+
+**Exact next human gate: publication/push authorization, then actual hosted
+Windows/security/CI observation for the new runtime candidate.** Local capability
+simulation is not that witness. No push/release/tag/history rewrite/Feature007/
+Java/generic analyzer/provider adoption occurs. No further product/trust/schema
+question remains open for this bounded migration. Optional future acceptance of
+accountable real witness evidence and population/parser product work are separate
+from this completed lifecycle, not silently granted here.
+
+006-0023 was appended exactly once with authorized post-run telemetry; prior bytes,
+original runtime/confounding and artifact provenance are preserved. credits_before
+stays blank because documented no-intervening-activity continuity was not confirmed;
+credits_after67 is an account observation, not exact task billing. No credit delta
+or current/child run is appended. Current44-key handoff is written outside Git at
+/tmp/libyears-observations/006-0024.json. Final local commit/tree/history/integrity
+checks are captured in that handoff and final report.

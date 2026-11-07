@@ -141,3 +141,14 @@ Corrected human/JSON OASim stdout/stderr/exits equal E3 byte-for-byte; manifest
 again equals original baseline. Private logs: correction-*.log and
  oasim-corrected* / oasim-after-correction.json. Fresh focused review and final
 history/closure checks are recorded in reviews.md.
+
+## Final disposition
+
+Fresh focused non-author closure on corrective f39bc83: COMPLETE / APPROVE,
+TRUST-F1/C-N1 closed;116 focused PASS and seven collateral probes. Parent
+reconciles the original complete three-scope audit and focused closure against
+C1–C6: E1–E4 locally CONVERGED. Full702/no skips, capability702/49 skips and
+real-worker3 are the final runtime checks; no later runtime/test change follows.
+GitLeaks correction gate exit0/no leaks284 commits; final closure history/tree/
+integrity checks follow the documentation-only closure commit. Details and exact
+next human publication/hosted gate are in reviews.md. No push performed.
