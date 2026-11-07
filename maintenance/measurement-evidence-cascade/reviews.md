@@ -40,3 +40,17 @@ reviews/history, producer/validation/retrospective/task/acceptance and current
 repository-source artifacts inspected. Parent reconciles all six requested
 scrutiny areas across these three slices. Specification APPROVED; final dfce63d
 candidate and fresh COMPAT-N1 closure govern planning. No schema/human gate remains.
+
+## Technical plan
+
+Frozen plan SHA256 8b7be4432d167fc6b1c092873f71679dd343757c23b34216309fb8c735a7b533.
+Fresh non-author plan_review: COMPLETE / APPROVE, zero material findings. C1–C6,
+namespace-before-lookup, optional content vs required identity/date, capability/
+result framing, v1/v2 assurance separation, source/row compatibility, coverage,
+default output and verification audited. Parent validates against current codecs,
+registry alias handling and source FIFO composition. Task-boundary refinement is
+consistent: retain strong local authorize_package check as an assurance mechanism;
+introduce authorize_measurement fallback internally in E1, switch source admission
+only with protocol/registry/output integration in E2. Fallback relaxes hash failures
+only; unsupported namespace/context/selection never falls back. Report retained
+privately at /tmp/libyears-observations/006-0024-plan-review.md. Plan APPROVED.
