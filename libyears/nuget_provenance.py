@@ -25,10 +25,13 @@ _DIGEST = re.compile(r'[0-9a-f]{64}')
 _ENVELOPE = frozenset({'version', 'project', 'framework', 'project_sha256',
                        'lock_sha256', 'producer', 'coherent_snapshot',
                        'baseline', 'packages'})
+_ENVELOPE_V2 = _ENVELOPE - {'producer'}
 _BASELINE = frozenset({'sdk', 'sdk_version', 'explicit_population_complete',
                        'unsupported_membership_version_influences',
                        'unsupported_framework_rid_influences',
                        'unsupported_source_influences'})
+
+_BASELINE_V2 = _BASELINE - {'sdk_version'}
 
 
 @dataclass(frozen=True)
@@ -37,6 +40,7 @@ class PackageOrigin:
     normalized_version: str
     content_hash: str | None = field(repr=False)
     origins: tuple[str, ...] = field(repr=False)
+    namespace: str | None = field(default=None, repr=False)
 
 
 @dataclass(frozen=True)
@@ -44,6 +48,7 @@ class SupplierContext:
     project_sha256: str = field(repr=False)
     lock_sha256: str = field(repr=False)
     packages: tuple[PackageOrigin, ...] = field(repr=False)
+    contract_version: int = 1
 
 
 @dataclass(frozen=True)
@@ -54,7 +59,9 @@ class LocalAuthority:
     lock_sha256: str = field(repr=False)
     package_key: str
     normalized_version: str
-    content_hash: bytes = field(repr=False)
+    content_hash: bytes | None = field(repr=False)
+    namespace_basis: str = 'accepted_producer_origin'
+    local_content_state: str = 'local_agreement'
 
 
 @dataclass(frozen=True)
@@ -90,9 +97,14 @@ def _digest(value: object) -> str:
     return value
 
 
-def _package(value: object) -> PackageOrigin:
-    record = _object(value, frozenset({'id', 'version'}),
-                     frozenset({'content_hash', 'origins'}))
+def _package(value: object, version: int = 1) -> PackageOrigin:
+    if version == 2:
+        record = _object(value, frozenset({'id', 'version', 'namespace'}))
+        namespace = _string(record['namespace'])
+    else:
+        record = _object(value, frozenset({'id', 'version'}),
+                         frozenset({'content_hash', 'origins'}))
+        namespace = None
     name = record['id']
     if not isinstance(name, str) or _PACKAGE_ID.fullmatch(name) is None:
         raise NuGetInputFailure('malformed')
@@ -105,7 +117,7 @@ def _package(value: object) -> PackageOrigin:
     if not isinstance(origins, list) or any(not isinstance(origin, str) for origin in origins):
         raise NuGetInputFailure('malformed')
     return PackageOrigin(name.lower(), identity.normalized_version,
-                         record.get('content_hash'), tuple(origins))
+                         record.get('content_hash'), tuple(origins), namespace)
 
 
 def parse_provenance(source: LocalInput, *, project_name: str,
@@ -124,20 +136,25 @@ def parse_provenance(source: LocalInput, *, project_name: str,
         text = source.data.decode('utf-8', errors='strict')
     except UnicodeError:
         raise NuGetInputFailure('malformed') from None
-    value = _object(decode_json(text), _ENVELOPE)
-    if type(value['version']) is not int or value['version'] != 1:
+    value = decode_json(text)
+    if (not isinstance(value, dict) or type(value.get('version')) is not int
+            or value['version'] not in (1, 2)):
         raise NuGetInputFailure('malformed')
+    version = value['version']
+    value = _object(value, _ENVELOPE if version == 1 else _ENVELOPE_V2)
     name = _string(value['project'])
     framework = _string(value['framework'], MAX_FRAMEWORK_LENGTH)
     project_digest = _digest(value['project_sha256'])
     lock_digest = _digest(value['lock_sha256'])
-    producer = _object(value['producer'], frozenset({'name', 'version'}))
-    _string(producer['name'])
-    _string(producer['version'])
+    if version == 1:
+        producer = _object(value['producer'], frozenset({'name', 'version'}))
+        _string(producer['name'])
+        _string(producer['version'])
     coherent = _boolean(value['coherent_snapshot'])
-    baseline = _object(value['baseline'], _BASELINE)
+    baseline = _object(value['baseline'], _BASELINE if version == 1 else _BASELINE_V2)
     sdk = _string(baseline['sdk'])
-    _string(baseline['sdk_version'])
+    if version == 1:
+        _string(baseline['sdk_version'])
     complete = _boolean(baseline['explicit_population_complete'])
     influences = [_boolean(baseline[key]) for key in (
         'unsupported_membership_version_influences',
@@ -149,7 +166,7 @@ def parse_provenance(source: LocalInput, *, project_name: str,
     packages = []
     seen = set()
     for record in records:
-        package = _package(record)
+        package = _package(record, version)
         identity = (package.package_key, package.normalized_version)
         if identity in seen:
             raise NuGetInputFailure('malformed')
@@ -164,7 +181,7 @@ def parse_provenance(source: LocalInput, *, project_name: str,
         raise NuGetInputFailure('context_mismatch')
     if not complete or any(influences):
         raise NuGetInputFailure('unsupported')
-    return SupplierContext(project_digest, lock_digest, tuple(packages))
+    return SupplierContext(project_digest, lock_digest, tuple(packages), version)
 
 
 def decode_content_hash(value: object) -> bytes | None:
@@ -198,3 +215,30 @@ def authorize_package(context: SupplierContext, package_key: str,
         return LocalAuthorityFailure('content_hash_mismatch', 'asserted_public', 'mismatch')
     return LocalAuthority(context.project_sha256, context.lock_sha256, key,
                           selected.normalized_version, lock_content)
+
+
+def authorize_measurement(context: SupplierContext, package_key: str,
+                          selected: SelectedIdentity,
+                          lock_hash: str | None) -> LocalAuthority | LocalAuthorityFailure:
+    """Require bound public namespace; retain stronger local comparisons separately.
+
+    V1 keeps actual-origin/event testimony. V2 asserts only the applicable
+    publication namespace. Neither a public namesake nor a hash supplies it.
+    """
+    key = package_key.lower()
+    if context.contract_version == 2:
+        matching = [package for package in context.packages
+                    if package.package_key == key
+                    and package.normalized_version == selected.normalized_version]
+        if len(matching) != 1 or matching[0].namespace != PUBLIC_ORIGIN:
+            return LocalAuthorityFailure('unsupported_dependency_source', 'unsupported')
+        return LocalAuthority(context.project_sha256, context.lock_sha256, key,
+                              selected.normalized_version, None,
+                              'accepted_snapshot_namespace', 'unavailable')
+    strong = authorize_package(context, key, selected, lock_hash)
+    if isinstance(strong, LocalAuthority) or strong.reason == 'unsupported_dependency_source':
+        return strong
+    # Only the optional content gate failed; namespace was independently accepted.
+    return LocalAuthority(context.project_sha256, context.lock_sha256, key,
+                          selected.normalized_version, None,
+                          'accepted_producer_origin', strong.content_hash_state)

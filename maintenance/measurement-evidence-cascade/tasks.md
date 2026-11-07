@@ -3,7 +3,7 @@
 Approved specification and plan digests/dispositions: reviews.md. Candidate graph;
 approval belongs there. One local commit per completed task. No push.
 
-- [ ] **E1 — Local minimum authority and retained stronger facts.** Predecessor:
+- [x] **E1 — Local minimum authority and retained stronger facts.** Predecessor:
   graph approval. C1–C4/C6: exact version2 framing with later snapshot/namespace
   meanings, whole-input precedence and same bounds/byte/context/baseline binding;
   preserve version1 meaning and framing. Extend private context/capability with
@@ -59,3 +59,7 @@ approval belongs there. One local commit per completed task. No push.
 All C1–C6 obligations are owned by E1/E2 implementation/tests, E3 docs/operational
 verification and E4 independent reconciliation. No positive OASim age/yield is a
 precondition. No population parser expansion or new accepted testimony generation.
+
+E1 complete: 86 focused provenance/cascade/input/project/lock tests PASS. Strong
+source admission remains unchanged until E2; new minimum capability is internal.
+Diff check PASS; no network or target execution.
