@@ -167,3 +167,66 @@ credits_after67 is an account observation, not exact task billing. No credit del
 or current/child run is appended. Current44-key handoff is written outside Git at
 /tmp/libyears-observations/006-0024.json. Final local commit/tree/history/integrity
 checks are captured in that handoff and final report.
+
+## Post-publication Windows test-portability correction
+
+Human-supplied hosted evidence for published candidate
+`1b834d225f2ac3ce506cdb0aa15acd5344f2b7cf`: Microsoft Windows Server 2025,
+`windows-2025-vs2026`, Python 3.11; dedicated real-worker suite 3 PASS;
+full suite 702 tests, 3 errors, 49 expected skips. All errors are subtests of
+`RepositorySourceTests.test_each_required_capability_refuses_before_any_open`:
+`O_NOFOLLOW`, `O_DIRECTORY`, `O_NONBLOCK`. These attributes are natively absent
+on that host. This is supplied hosted evidence, not a locally observed CI run.
+The earlier locally CONVERGED 006-0024 result above remains historical evidence;
+it never established a hosted Windows pass.
+
+Classification: test setup portability defect. Independently reproduced locally
+by deleting all three OS flags: exact published baseline raises three subtest
+AttributeErrors from `patch.object(os, name, value)` before entering production.
+Production `discovery_available()`
+already uses `getattr(os, name, 0)` and the repository reader refuses before
+stat/open when it returns false. Its saved operation identities keep filesystem
+spies from accidentally causing capability refusal.
+
+Bounded test-only correction: allow patching absent attributes with `create=True`
+and an unavailable value (zero), never a fabricated usable POSIX primitive.
+Add explicit deleted-attribute cases, restoring original host state. Both paths
+assert the real capability predicate is false, the reader raises the expected
+private malformed classification, and stat/open/read are never called. Existing
+actual filesystem witnesses retain capability-based skips; no production fallback
+or platform skip is added to the semantic refusal tests. Production, cascade/H3,
+schema, metrics and target population/parser behavior are unchanged.
+
+Final frozen test SHA256:
+`d50daec2245e668f222f5b379525b35b02f6f06592ffd2ac8c07d7c29d4bda6a`.
+Local Python 3.11 verification: original focused test plus absent-flag test
+2 PASS; relevant source/repository/discovery/input suites 86 PASS; all portable
+repository-source semantic tests with all three flags removed 6 PASS and no
+attribute leakage. Full deterministic suite 703 PASS/no skips; full discovery
+with `os.supports_dir_fd=set()` before discovery 703 successful, 49 genuine
+filesystem skips; dedicated real-worker suite 3 PASS. This is capability
+simulation, not actual Windows execution. During construction, a mistaken
+exception-field assertion and absent-attribute patch cleanup were caught and
+corrected before the final freeze; final tests cover both starting states.
+
+Fresh non-author `portability_review`, fork_turns=none/no overrides:
+**COMPLETE / APPROVE**, no unresolved material findings against the frozen test
+digest above. Independently reproduced exactly three baseline setup errors;
+candidate module 11 PASS, related sources/discovery/input 51 PASS, all six portable
+source tests with all flags absent PASS. Confirmed native capable-host predicate
+remains true with stat/open spies. In-memory premature-stat/open/read mutations
+each yield six assertion failures, demonstrating boundary violations are detected.
+Parent validates the full report against the real predicate and reader ordering,
+unchanged production diff and matching frozen digest. Review also inspected this
+post-publication evidence and confirmed scope and historical provenance. Actual
+child configuration/resource telemetry is unavailable; no child row is invented.
+
+Canonical GitLeaks 8.30.1 baseline history gate exit0, 285 commits, zero leaks;
+the repair commit's history gate is required after committing. Diff check PASS.
+No changelog entry is needed for this test-only repair. The pending 006-0024
+handoff and canonical observation ledger are unchanged; no telemetry is invented.
+No OASim access/change/investigation, target execution, push or publication.
+
+**Exact next gate: HUMAN PRE-PUSH / PUBLICATION AUTHORIZATION**, then actual
+hosted Windows and required CI/security observation on the repaired published
+candidate before operational closure. Corrected hosted Windows remains UNOBSERVED.

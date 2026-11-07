@@ -98,12 +98,34 @@ class RepositorySourceTests(unittest.TestCase):
         for name, value in (('supports_dir_fd', set()), ('supports_fd', set()),
                             ('supports_follow_symlinks', set()), ('O_NOFOLLOW', 0),
                             ('O_DIRECTORY', 0), ('O_NONBLOCK', 0)):
-            with self.subTest(name=name), patch.object(os, name, value), \
-                    patch('os.open') as opened:
-                with self.assertRaises(NuGetInputFailure):
-                    with sources.RepositoryNuGetReader(self.root, 'a/A.csproj', None):
-                        pass
-                opened.assert_not_called()
+            # Zero means unavailable even when the host has no such attribute.
+            with self.subTest(name=name), patch.object(os, name, value, create=True):
+                self.assert_capability_refusal()
+
+    def test_absent_required_flags_refuse_before_any_open(self):
+        for name in ('O_NOFOLLOW', 'O_DIRECTORY', 'O_NONBLOCK'):
+            with self.subTest(name=name):
+                original = getattr(os, name, None)
+                try:
+                    if original is not None:
+                        delattr(os, name)
+                    self.assert_capability_refusal()
+                finally:
+                    if original is not None:
+                        setattr(os, name, original)
+
+    def assert_capability_refusal(self):
+        # Check the real predicate before wrapping any filesystem operations.
+        self.assertFalse(discovery_available())
+        with patch('os.open') as opened, patch('os.stat') as inspected, \
+                patch.object(ScopedNuGetReader, 'read') as read:
+            with self.assertRaises(NuGetInputFailure) as refused:
+                with sources.RepositoryNuGetReader(self.root, 'a/A.csproj', None):
+                    self.fail('entered reader without required capabilities')
+            self.assertEqual(refused.exception.category, 'malformed')
+            opened.assert_not_called()
+            inspected.assert_not_called()
+            read.assert_not_called()
 
 
 @unittest.skipUnless(discovery_available() and SAFE_SCOPED_READ, 'safe anchored filesystem unavailable')
