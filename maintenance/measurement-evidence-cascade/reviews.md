@@ -1,0 +1,42 @@
+# Evidence cascade review record — 006-0024
+
+Human authority and scope are recorded in spec.md. Original Feature006/H3 and
+repository-source artifacts are historical and remain unedited.
+
+## Specification review
+
+Original frozen specification SHA256
+edd7fefdefd4cee4ed2b43bcca01f1732e6b9def635e57327875cff72c16af0b;
+exact original bytes retained at /tmp/libyears-observations/006-0024/spec-v1.md.
+Fresh non-author contexts, fork_turns=none/no overrides, review decomposed scopes:
+
+- spec_scope_review: NuGet project/lock/context, population A/B and historical OASim.
+- spec_trust_review: COMPLETE / APPROVE, zero blocking findings. Namespace before
+  lookup, explicit snapshot testimony, separate claim/assurance, and v1 historical
+  event meanings are coherent; no new consequential trust decision required.
+- spec_compat_review: COMPLETE / APPROVE, zero blocking findings. Additive schema3
+  is sufficient: new v2 trust-basis describes a new requested testimony contract,
+  not a redefinition of v1. Namespace-only rows retain unavailable origin/content
+  facts plus explicit separate namespace basis. Admission invariants change under
+  human authority; existing literal state meanings do not.
+
+COMPAT-N1 nonblocking wording clarification: scope the prohibition on new state
+values to existing origin_state/content_hash_state. Parent validates against S7,
+serializer and v1 source trust meaning. Corrected spec digest
+ dfce63d13a964c16b0ea72aa1178202a0e86a2dd955ffa9362f202db1445a15f.
+Fresh focused non-author spec_clarification: COMPLETE / APPROVE, exact one-sentence
+diff, COMPAT-N1 closed and no collateral change. Reports are retained privately
+under /tmp/libyears-observations/006-0024-spec-*.md. No child telemetry inferred.
+
+Parent validates reviewed truthfulness against actual code: old local and public
+hash gates are stronger admission checks; request/context/namespace/date remain
+measurement prerequisites. V2 cannot borrow acquisition-origin labels. A is the
+smallest retained population contract; eight unsupported OASim populations stay
+unknown. No majority vote supplies approval. Final scope disposition follows.
+
+spec_scope_review: COMPLETE / APPROVE, zero material findings against original
+freeze, verified preserved original bytes after clarification. Full Feature006
+reviews/history, producer/validation/retrospective/task/acceptance and current
+repository-source artifacts inspected. Parent reconciles all six requested
+scrutiny areas across these three slices. Specification APPROVED; final dfce63d
+candidate and fresh COMPAT-N1 closure govern planning. No schema/human gate remains.
