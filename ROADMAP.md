@@ -59,6 +59,7 @@ An evidence-backed problem or learning opportunity is required.
 |---|---|---|---|
 | [Project-root discovery/listing](#3-project-root-discoverylisting) | SELECTED (bounded NuGet correction) | CLI / repository discovery | Bounded product correction |
 | [NuGet repository project sources](#12-nuget-repository-project-sources) | SELECTED (source occurrences) | NuGet / repository population | Bounded product correction |
+| [Cross-ecosystem measurement-evidence parity](#13-cross-ecosystem-measurement-evidence-parity) | EXPLORE (human trust decision pending) | Product semantics | Evidence and trust-boundary investigation |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
@@ -353,6 +354,48 @@ no broader ecosystem discovery is selected by this entry.
 **References:** [Discovery and alternatives](discovery/nuget-repository-sources.md),
 [independent review](discovery/nuget-repository-sources-review.md),
 [006-0020 operational closure](maintenance/nuget-root-recognition/operational-closure.md).
+
+### 13. Cross-ecosystem measurement-evidence parity
+
+**State:** EXPLORE; investigation commissioned in `006-0023`, prospective product /
+trust-boundary decision pending. No replacement H3 or assurance tier is selected.
+
+**Area:** Product semantics / public publication-history authority
+
+**Contributor fit:** Cross-ecosystem factual and trust-boundary investigation
+
+**Opportunity:** Require comparable evidence for truthful dependency-version age
+without making historical package-acquisition provenance an implicit prerequisite.
+
+**Evidence:** Current Python accepts exact declarations or supplied freeze entries;
+npm accepts supported lock selections without origin/content-hash verification;
+Ruby requires attributable public lock source but no contemporary Bundler testimony.
+NuGet additionally requires native producer-time provenance, contemporaneous
+context attestation and local/public content agreement. Feature006's prospective
+0/1 public-hash mismatch and 006-0022's two known / eight unsupported OASim project
+populations distinguish provenance barriers from parser/context barriers.
+
+**Why this state:** The published `1ba915f` faithfully implements approved H3 and
+source-qualified occurrences; the commissioning human reports it synchronized
+to both canonical remotes. This investigation recommends a bound snapshot/public
+namespace version-age contract for human consideration, retaining fail-closed
+source attribution and context. It neither changes current authority nor proves
+positive measurement yield. Python/npm's weaker positive source checks are a
+limitation to acknowledge, not permission for namesake-only NuGet measurement.
+
+**Success signal:** A human-selected claim distinguishes selected snapshot P/V
+and applicable public publication history from exact acquisition-event/content
+assurance, with reviewed output/migration semantics before runtime work.
+
+**Stop condition:** HUMAN PRODUCT / TRUST-BOUNDARY DECISION. No weakened H3,
+parser/schema/metric/source-policy changes, implicit testimony, target execution,
+provider adoption, generic analyzer work or Feature007 follows from discovery.
+
+**References:** [Evidence matrix and alternatives](discovery/measurement-evidence-parity.md),
+[independent review](discovery/measurement-evidence-parity-review.md),
+[repository-source convergence](maintenance/nuget-repository-sources/reviews.md).
+Other radar states remain unchanged; actual hosted CI for `1ba915f` is not
+observed here and does not block this product investigation.
 
 ## Selected Work Moved into SDD
 
