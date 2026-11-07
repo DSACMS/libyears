@@ -63,3 +63,47 @@ Parent validates sequential E1–E4, inert E1 authority then coherent E2 activat
 C1–C6 ownership, historical reason-fixture preservation, explicit operational
 integrity and decomposed independent convergence. Private report:
 /tmp/libyears-observations/006-0024-tasks-review.md. Graph APPROVED; E1 ready.
+
+## Initial E4 independent convergence and validated findings
+
+Frozen clean E3 eda6a6b35f4394cb17267dae8acac4fc0b3d907e, runtime c4a9e64.
+Canonical GitLeaks8.30.1 history gate exit0,283 commits, no unsuppressed findings.
+Three fresh non-author contexts, fork_turns=none/no overrides, independently read
+frozen authority/code/tests/docs and retained verification evidence:
+
+- convergence_scope: COMPLETE / CONVERGED-in-slice, no material findings;
+ 145 focused PASS and independent retained OASim manifest/output reconciliation.
+- convergence_trust: COMPLETE / REVISE, one material TRUST-F1;176 focused PASS
+ plus two adversarial end-to-end reproductions. Scope includes namespace/private
+ namesakes, claim separation, protocol, metadata, safety and privacy.
+- convergence_compat: COMPLETE / APPROVE with nonblocking C-N1 roadmap summary
+ contradiction; independently full699 PASS and capability699/49 skips. Schema3,
+ sibling isolation, output/assurance, history and append discipline inspected.
+
+Reports retained at /tmp/libyears-observations/006-0024-convergence-*.md. Parent
+reads complete reports and validates underlying evidence. Positive slices do not
+overrule TRUST-F1; convergence is NOT approved at this freeze.
+
+TRUST-F1: all required catalogs were fetched before selected hash/publication
+facts were staged. A later latest-catalog503/timeout/invalid identity discarded
+already available selected agreement/mismatch, returning only local facts.
+Parent directly reproduces both valid agreement and mismatch cases. This violates
+C5/plan retention, while numerical measurement correctly remains unavailable.
+Correction stages only the complete accepted selected alias group as sorted
+catalogs arrive, preserves those facts across later failures, and keeps incomplete
+or conflicting selected groups unverified. Complete registration, identity/listing/
+dates/latest/no-older-fallback and protocol/privacy gates remain. No progress is
+invented after absolute worker cancellation.
+
+C-N1: parent verifies ROADMAP summary still EXPLORE despite selected body. Update
+summary to selected cascade and index already recorded population/namespace future
+opportunities, without selecting their implementation.
+
+Corrective focused110 PASS; full702 PASS/no skips; capability702 successful/49
+filesystem skips; dedicated real-worker3 PASS. New regressions cover selected
+agreement/mismatch/unavailability with later503/timeout/malformed catalogs,
+singleton/complete aliases, incomplete/conflicting aliases, and end-to-end v1/v2
+JSON retention without age. Corrected OASim ordinary/JSON stdout/stderr/exits are
+byte-identical to E3; corrected-after target manifest equals original baseline.
+Diff check PASS. These are determined bounded corrections under C5/E4, not new
+trust/schema authority. Fresh focused non-author closure remains required.

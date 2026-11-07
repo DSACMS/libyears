@@ -59,7 +59,9 @@ An evidence-backed problem or learning opportunity is required.
 |---|---|---|---|
 | [Project-root discovery/listing](#3-project-root-discoverylisting) | SELECTED (bounded NuGet correction) | CLI / repository discovery | Bounded product correction |
 | [NuGet repository project sources](#12-nuget-repository-project-sources) | SELECTED (source occurrences) | NuGet / repository population | Bounded product correction |
-| [Cross-ecosystem measurement-evidence parity](#13-cross-ecosystem-measurement-evidence-parity) | EXPLORE (human trust decision pending) | Product semantics | Evidence and trust-boundary investigation |
+| [Cross-ecosystem measurement-evidence parity](#13-cross-ecosystem-measurement-evidence-parity) | SELECTED (006-0024 cascade) | Product semantics | Bounded measurement/assurance migration |
+| [NuGet project/lock population](#14-nuget-project-population-and-retained-lock-population) | EXPLORE | NuGet population/context | Separately bounded product investigation |
+| [Python/npm public namespace](#15-pythonnpm-positive-public-namespace-authority) | EXPLORE | Cross-ecosystem truthfulness | Separate source-authority investigation |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |

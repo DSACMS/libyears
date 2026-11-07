@@ -123,6 +123,43 @@ class RegistryTests(unittest.TestCase):
             self.assertEqual((result.reason, result.content_hash_state), ('release_date_missing', state))
             self.assertIsNone(result.used_publication)
 
+    def test_selected_assurance_survives_later_catalog_failure(self):
+        for aliases in (False, True):
+            versions = ('1.0.0', '01.0+build', '2.0.0') if aliases else ('1.0.0', '2.0.0')
+            for state in ('public_agreement', 'mismatch', 'unavailable'):
+                for later, reason in ((TransportFailure(503, 'SECRET'), 'registry_error'),
+                                      (TimeoutError('SECRET'), 'registry_error'),
+                                      ({'id': 'wrong'}, 'invalid_registry_response')):
+                    with self.subTest(aliases=aliases, state=state, reason=reason):
+                        docs = fixture(versions)
+                        for version in versions[:-1]:
+                            if state == 'mismatch':
+                                docs[catalog_url(version)]['packageHash'] = base64.b64encode(b'y'*64).decode()
+                            elif state == 'unavailable':
+                                del docs[catalog_url(version)]['packageHash']
+                        docs[catalog_url('2.0.0')] = later
+                        result = self.lookup(docs)
+                        self.assertEqual(result.reason, reason)
+                        self.assertEqual(result.content_hash_state, state)
+                        self.assertIsNotNone(result.used_publication)
+                        self.assertIsNone(result.latest_publication)
+                        self.assertEqual(result.origin_state,
+                            'public_content_verified' if state == 'public_agreement' else 'asserted_public')
+
+    def test_incomplete_or_conflicting_selected_aliases_do_not_claim_public_assurance(self):
+        for change, reason in (('incomplete', 'registry_error'),
+                               ('conflict', 'invalid_registry_response')):
+            docs = fixture(('1.0.0', '01.0+build', '2.0.0'))
+            if change == 'incomplete':
+                docs[catalog_url('1.0.0')] = TransportFailure(503, 'SECRET')
+            else:
+                docs[catalog_url('1.0.0')]['created'] = '2021-01-01T00:00:00Z'
+            result = self.lookup(docs)
+            self.assertEqual(result.reason, reason)
+            self.assertEqual(result.content_hash_state, 'local_agreement')
+            self.assertIsNone(result.used_publication)
+            self.assertEqual(result.origin_state, 'asserted_public')
+
     def test_absent_package_used_and_catalog_before_hash_dates(self):
         for location, expected in [(INDEX, 'package_not_found'),
                                    (catalog_url('1.0.0'), 'version_not_found')]:

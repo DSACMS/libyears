@@ -119,3 +119,25 @@ Use the strongest accepted evidence, requiring only what the actual claim needs.
 That principle does not authorize silent fallback below namespace/selection/
 context/population/date prerequisites. Next human gate after convergence is
 publication authorization and actual hosted evidence; no push is performed.
+
+## E4 correction verification
+
+Initial frozen E3 audit returned TRUST-F1 REVISE (assurance lost on later throwing
+metadata failure) plus C-N1 nonblocking stale roadmap index. Full independent
+scope/compatibility audits and original outcomes remain in reviews.md; no result
+is backdated. Parent validated both findings. Corrected code stages selected
+facts only after a complete accepted selected alias group, retains them through
+later comparator/catalog failure, and does not claim public assurance from an
+incomplete/conflicting selected group. Acquisition/namespace/metric semantics do
+not change. Roadmap index now agrees with selected body and indexes its two
+already recorded future opportunities.
+
+Corrective focused110 PASS; full702 PASS/no skips; capability-disabled702
+successful with49 genuine filesystem skips (653 executed); real-worker3 PASS.
+New tests include singleton/alias selected public agreement, mismatch and absent
+hashes followed by503/timeout/bad catalog identity, selected-group incompleteness/
+conflict and end-to-end v1/v2 safe JSON. No latest publication/age is fabricated.
+Corrected human/JSON OASim stdout/stderr/exits equal E3 byte-for-byte; manifest
+again equals original baseline. Private logs: correction-*.log and
+ oasim-corrected* / oasim-after-correction.json. Fresh focused review and final
+history/closure checks are recorded in reviews.md.

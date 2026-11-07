@@ -189,6 +189,9 @@ class CascadeMeasurementTests(unittest.TestCase):
             def get(self, url):
                 urls.append(url)
                 value = documents[url]
+                from libyears.registry import TransportFailure
+                if isinstance(value, TransportFailure):
+                    return value
                 if isinstance(value, Exception):
                     raise value
                 return json.dumps(value).encode()
@@ -342,6 +345,24 @@ class CascadeMeasurementTests(unittest.TestCase):
             self.assertEqual(row['nuget_evidence']['assurance']['public_content'],
                              'public_agreement' if version == 1 else 'not_checked')
             self.assertEqual(data['summary']['coverage'], 0.0)
+
+    def test_throwing_latest_failure_retains_selected_assurance_in_json(self):
+        from libyears.output import report_to_dict
+        from libyears.registry import TransportFailure
+        from tests.test_nuget_acceptance import metadata
+        for version, expected in ((1, 'public_agreement'), (2, 'not_checked')):
+            docs = metadata(('alpha',))
+            url = next(k for k in docs if '/catalog0/' in k and '2.0.0' in k)
+            docs[url] = TransportFailure(503, 'SECRET')
+            data = report_to_dict(self.scan(self.files(version=version), docs), '')
+            row, = data['unmeasurable']
+            self.assertEqual(row['reason'], 'registry_error')
+            self.assertEqual(row['nuget_evidence']['assurance']['public_content'], expected)
+            self.assertIn('used_publication', row['nuget_evidence'])
+            self.assertNotIn('latest_publication', row['nuget_evidence'])
+            self.assertEqual(data['dependencies'], [])
+            self.assertEqual(data['summary']['coverage'], 0.0)
+            self.assertNotIn('SECRET', json.dumps(data))
 
     def test_namespace_only_worker_failure_never_inherits_producer_facts(self):
         from libyears import nuget_registry as registry

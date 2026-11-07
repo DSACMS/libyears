@@ -535,6 +535,25 @@ def _public_content_state(authority, records, documents):
     return 'public_agreement'
 
 
+def _selected_evidence(authority, records, documents):
+    """Stage facts only after the complete selected alias group is accepted."""
+    _reconcile_material(records, documents)
+    state = _public_content_state(authority, records, documents)
+    if state == 'public_agreement':
+        origin = 'public_content_verified'
+    elif authority.namespace_basis == 'accepted_producer_origin':
+        origin = 'asserted_public'
+    else:
+        origin = 'unavailable'
+    evidence = dict(origin_state=origin, content_hash_state=state,
+                    namespace_basis=authority.namespace_basis)
+    dates = [_created(documents[record.catalog_url].get('created')) for record in records]
+    if all(date is not None for date in dates):
+        evidence['used_publication'] = NuGetPublication(
+            authority.normalized_version, dates[0], records[0].listed)
+    return evidence
+
+
 def lookup_authorized_package(authority, client):
     """Worker-only handler: complete enumeration before any measurement claim."""
     from .nuget_supervisor import PackageResult, authority_message, failed_package
@@ -560,33 +579,37 @@ def lookup_authorized_package(authority, client):
             if previous and previous.identity.normalized_version != key:
                 raise NuGetRegistryFailure()
             by_url[record.catalog_url] = record
-    documents = {url: _catalog(client, by_url[url]) for url in sorted(by_url)}
-    if any(documents[record.catalog_url] is None for record in used):
-        return failed_package(authority, 'version_not_found')
-    for key in sorted(needed):
-        _reconcile_material(grouped[key], documents)
-    state = _public_content_state(authority, used, documents)
-    if state == 'public_agreement':
-        origin = 'public_content_verified'
-    elif authority.namespace_basis == 'accepted_producer_origin':
-        origin = 'asserted_public'
-    else:
-        origin = 'unavailable'
-    verified = dict(origin_state=origin, content_hash_state=state,
-                    namespace_basis=authority.namespace_basis)
-    used_dates = [_created(documents[record.catalog_url].get('created')) for record in used]
-    if any(date is None for date in used_dates):
-        return PackageResult(reason='release_date_missing', **verified)
-    used_publication = NuGetPublication(authority.normalized_version, used_dates[0], used[0].listed)
-    verified['used_publication'] = used_publication
+    local = failed_package(authority)
+    evidence = dict(origin_state=local.origin_state,
+                    content_hash_state=local.content_hash_state,
+                    namespace_basis=local.namespace_basis)
+    documents = {}
+    selected_urls = {record.catalog_url for record in used}
+    selected_ready = False
+    try:
+        for url in sorted(by_url):
+            documents[url] = _catalog(client, by_url[url])
+            if not selected_ready and selected_urls <= documents.keys():
+                if any(documents[url] is None for url in selected_urls):
+                    return failed_package(authority, 'version_not_found')
+                evidence = _selected_evidence(authority, used, documents)
+                selected_ready = True
+        for key in sorted(needed - {authority.normalized_version}):
+            _reconcile_material(grouped[key], documents)
+    except NuGetRegistryFailure as failure:
+        # A later comparator/alias failure does not erase accepted selected facts.
+        # Incomplete or conflicting selected aliases never established those facts.
+        return PackageResult(reason=failure.reason, **evidence)
+    if 'used_publication' not in evidence:
+        return PackageResult(reason='release_date_missing', **evidence)
     if latest_key is None:
-        return PackageResult(reason='no_stable_release', **verified)
+        return PackageResult(reason='no_stable_release', **evidence)
     latest = grouped[latest_key]
     latest_dates = [_created(documents[record.catalog_url].get('created'))
                     if documents[record.catalog_url] is not None else None for record in latest]
     if any(date is None for date in latest_dates):
-        return PackageResult(reason='release_date_missing', **verified)
-    return PackageResult(latest_publication=NuGetPublication(latest_key, latest_dates[0], True), **verified)
+        return PackageResult(reason='release_date_missing', **evidence)
+    return PackageResult(latest_publication=NuGetPublication(latest_key, latest_dates[0], True), **evidence)
 
 
 class NuGetRegistryAdapter:
