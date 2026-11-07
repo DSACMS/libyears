@@ -54,3 +54,12 @@ introduce authorize_measurement fallback internally in E1, switch source admissi
 only with protocol/registry/output integration in E2. Fallback relaxes hash failures
 only; unsupported namespace/context/selection never falls back. Report retained
 privately at /tmp/libyears-observations/006-0024-plan-review.md. Plan APPROVED.
+
+## Task graph
+
+Frozen graph SHA256 860dfa3ca8591dd9f4e399e14bec6357b6dff7bc384ba5e9705c8c22b1332fe0.
+Fresh non-author tasks_review: COMPLETE / APPROVE, zero material findings.
+Parent validates sequential E1–E4, inert E1 authority then coherent E2 activation,
+C1–C6 ownership, historical reason-fixture preservation, explicit operational
+integrity and decomposed independent convergence. Private report:
+/tmp/libyears-observations/006-0024-tasks-review.md. Graph APPROVED; E1 ready.
