@@ -32,7 +32,7 @@ approval belongs there. One local commit per completed task. No push.
   NuGet/mixed/output/CLI tests; full deterministic and capability-disabled full
   discovery at integration boundary; real-worker lifecycle; diff check; commit.
 
-- [ ] **E3 — Current documentation and operational evidence.** Predecessor: E2.
+- [x] **E3 — Current documentation and operational evidence.** Predecessor: E2.
   C1–C6: update current README/SPEC/AGENTS/CHANGELOG, ROADMAP selected cascade and
   separate population/parser and Python/npm namespace opportunities. Preserve
   original Feature006/H3/discovery/review evidence. Validate ordinary OASim human/
@@ -69,3 +69,9 @@ successful with49 genuine filesystem skips; dedicated real-worker3 PASS. Existin
 historical reason fixtures/Feature006/discovery bytes unchanged. Exact legacy
 explicit JSON remains equal after removing only the three additive evidence fields;
 non-NuGet output unchanged. Diff check PASS.
+
+E3 documentation/operational checkpoint complete: ordinary and JSON OASim exit0/
+empty stderr,10 sources,8 unknown populations,2 known populations totaling3 with
+missing accepted testimony; no new measured row, null coverage. Every blocker is
+recorded in validation.md; exact target manifest equality PASS. History GitLeaks
+follows the E3 commit; independent convergence remains E4.

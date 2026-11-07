@@ -107,7 +107,7 @@ exactly one `=`, with no `=` in either filename. Absolute/dot/dotdot/empty path
 components, backslashes, globs, controls and duplicate mappings are rejected.
 A valid mapped project absent from bounded discovery is a source error. Mapping
 cannot combine with `--nuget-project`/`--nuget-provenance` or direct-file PATH.
-A found witness is never accepted automatically; unchanged H3 requirements below
+A found witness is never accepted automatically; evidence requirements below
 still apply. Missing required whole-source evidence preserves a known population
 but gives null measurement/coverage. An unsupported project gives unknown
 population. Any unknown source prevents repository-wide N/coverage; successful
@@ -449,8 +449,9 @@ python -m libyears PATH --nuget-project Example.csproj --nuget-provenance witnes
 The first command reports unavailable measurement authority. Only explicitly
 supplying `--nuget-provenance` accepts that file's producer/supplier assertions;
 a conventionally named or co-located witness is never trusted automatically.
-Supply genuine retained evidence from an independently authorized producer, rather
-than inventing assertions to make a scan pass. Libyears does not create it by
+Supply accountable retained evidence for the accepted claim; never invent
+assertions to make a scan pass. A later snapshot/namespace assertion need not
+pretend to be a producer-event attestation. Libyears does not create it by
 running dotnet, NuGet or MSBuild.
 
 Both options require their exact spelling, occur at most once, and accept immediate
@@ -482,7 +483,7 @@ retains its fourth component. Different minimum bounds disagree even with identi
 resolved outcomes. Only `resolved` supplies the exact version; there is no range
 solver, satisfaction check, assets/export or package-list fallback.
 
-The supplied witness is strict version-1 UTF-8 JSON with these required fields:
+The stronger version-1 witness remains strict UTF-8 JSON with these fields:
 
 ```json
 {
@@ -519,11 +520,12 @@ Unknown/duplicate fields or package identities are rejected. Each origin record
 binds its ID, normalized selected version and hash to that envelope. A missing,
 private, alternate or conflicting origin causes an individual failure without
 querying a public namesake. Only the singleton canonical public URL above permits
-lookup, after decoded lock/witness SHA512 agreement. Public catalog identity and
-SHA512 agreement must then pass before dates authorize measurement. No archive,
+lookup. Decoded lock/witness SHA512 comparison and public catalog hash
+comparison enrich content assurance; missing or mismatched content evidence no
+longer blocks age when selected version, context and applicable namespace hold. No archive,
 cache, NuGet.Config, source mapping or credential lookup repairs missing evidence.
 
-H3 requires two bound evidence classes: **native NuGet package provenance** from
+The historical H3 event route, retained by version 1, requires two bound evidence classes: **native NuGet package provenance** from
 the producing operation establishes package identity, selected version, actual
 supplying origin and content hash; **contemporaneous producer attestation** binds
 that evidence to the same event, exact project/lock bytes, framework and required
@@ -538,10 +540,56 @@ it cannot establish historical provenance. Later serialization may preserve an
 existing attestation, but cannot create missing event-time testimony.
 
 These are accepted supplier assertions, not authenticated producing history.
-Matching hashes establish content correspondence. The snapshot does not prove
+Matching supplied lock/witness/public hashes establish their content correspondence;
+libyears does not read installed package bytes. The snapshot does not prove
 evaluated MSBuild completeness, successful restore, installed/deployed/runtime
 scope or compatibility. Live measurement yield and signed-content hash-domain
-fitness remain unvalidated; disagreement fails closed.
+fitness remain unvalidated. Content disagreement withholds content assurance;
+known selection/context/namespace disagreement still blocks measurement.
+
+The minimum version-age route accepts an explicitly supplied **version-2 snapshot
+witness**. It asserts that the exact retained project/lock pair is coherent, its
+supported explicit population/context is complete within the stated bounds, and
+each selected package/version belongs to the named public namespace. It asserts
+no historical acquisition event or artifact correspondence:
+
+```json
+{
+  "version": 2,
+  "project": "Example.csproj",
+  "framework": "net10.0",
+  "project_sha256": "<64 lowercase hex digits for exact project bytes>",
+  "lock_sha256": "<64 lowercase hex digits for exact lock bytes>",
+  "coherent_snapshot": true,
+  "baseline": {
+    "sdk": "Microsoft.NET.Sdk",
+    "explicit_population_complete": true,
+    "unsupported_membership_version_influences": false,
+    "unsupported_framework_rid_influences": false,
+    "unsupported_source_influences": false
+  },
+  "packages": [{
+    "id": "Example.Package",
+    "version": "1.0.0",
+    "namespace": "https://api.nuget.org/v3/index.json"
+  }]
+}
+```
+
+This is a template, not evidence. Accept it only from an accountable basis for
+those assertions. V2 forbids producer, sdk_version, origins and content_hash;
+v1 retains their original event meanings. Both routes require deliberate witness
+selection, exact byte/context binding and positive package-specific namespace
+before lookup. Private, unknown, alternate or conflicting namespace never uses a
+public namesake. A lock alone records versions and framework, not project binding,
+namespace authority, acquisition, deployed code or reproducible-build assurance.
+
+The cascade uses the strongest accepted facts available but requires only the
+minimum evidence for the narrower age claim. Population remains declaration-first:
+unsupported project syntax still makes N unknown. Lock Direct entries do not
+silently replace that population. No dotnet/NuGet/MSBuild/restore is run.
+The [prospective contract](maintenance/measurement-evidence-cascade/spec.md)
+explains the minimum floor and the separate lock-population alternative.
 
 Dates mean first receipt by nuget.org, from identity-bound catalog `created`,
 never original upstream release, published/commit/listing/restore/local time.
@@ -573,6 +621,25 @@ Raw hashes, origins, baseline, XML and diagnostics are omitted. NuGet-active hum
 reports abstract the root path and omit raw verbose diagnostics/TLS paths;
 reports without NuGet sources retain their established output. Verbose JSON is identical.
 
+Locally admitted rows add `measurement_basis: bound_snapshot_namespace`,
+`namespace_basis: accepted_producer_origin` or `accepted_snapshot_namespace`, and
+`assurance` with producer_event, local_content, public_content and limitations.
+V2 origin_state remains unavailable even when namespace-authorized dates measure;
+this means acquisition origin was not asserted. V1 preserves asserted_public and
+its original successful public_content_verified/public_agreement states. Local
+agreement compares supplied lock/witness SHA512 values; public agreement adds
+catalog comparison. Missing/mismatched content is inspectable without inventing
+verified content. Neither event testimony nor a number proves reproduction or
+deployment. Source trust_basis is supplied_producer_assertion for v1 and
+supplied_snapshot_assertion for recognized v2. Default human output stays concise;
+use --verbose or JSON for evidence, assurance and limitations.
+
+Python/npm/Yarn already measure supported snapshot versions without event/hash
+assurance, but do not positively verify the applicable public namespace. Ruby
+requires supported public lock source attribution. These different artifact
+mechanics are retained; the Python/npm namespace limitation is separate future
+work, not permission to weaken NuGet public-source safety.
+
 Ordinary repository mode instead adds top-level `nuget_sources`: a sorted array
 of `{source_id, version_evidence, summary, measurement_available}`. Each entry
 represents a project, including failed and empty sources. `source_id` is its
@@ -582,7 +649,7 @@ filenames relative to that project's parent; `summary` uses existing nullable
 summary fields. Ordinary measured/unmeasurable NuGet rows and source errors add
 `source_id`; row `nuget_evidence.project` remains the immediate bound filename.
 The ordinary mode omits the selected-only `version_evidence.nuget` singleton;
-other ecosystems' evidence/rows/errors and explicit selection remain unchanged.
+other ecosystems' evidence/rows/errors and the explicit singleton shape remain unchanged.
 This additive schema-v3 representation preserves same-name packages and same
 project basenames without choosing a representative or deduplicating occurrences.
 The NuGet aggregate sums source populations only when all are known; measured

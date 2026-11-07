@@ -16,11 +16,19 @@ Notable changes to Libyears are documented here.
 
 ### Changed
 
+- Measure accepted NuGet project/lock snapshots with explicit package-specific
+  public namespace authority, without requiring historical acquisition or content
+  agreement for version age. Retain stronger v1 assurance; accept later v2 bound
+  snapshot testimony and expose evidence/limitations additively in schema v3.
+  Unknown/private namespaces and unsupported populations still fail closed.
+  Default human output is concise; verbose/JSON retains assurance detail.
+
 - Ordinary directory scans automatically attempt bounded NuGet project sources.
   Direct package occurrences count independently per project; successful siblings
   survive failures and unknown populations keep repository coverage null. Add
   source-qualified schema-v3 evidence and human project summaries; retain explicit
-  single-project selection and unchanged strict provenance requirements.
+  single-project selection; the prospective evidence cascade separates measurement
+  prerequisites from optional event/content assurance.
 
 ### Added
 
@@ -30,7 +38,8 @@ Notable changes to Libyears are documented here.
 
 - Measure explicitly selected NuGet project snapshots with `--nuget-project`
   and an explicitly accepted producer/supplier witness via `--nuget-provenance`.
-  Require coherent lock evidence and local/public content agreement; use nuget.org
+  Require coherent lock and accepted public namespace evidence; report optional
+  local/public content agreement separately and use nuget.org
   first-receipt dates and greatest listed stable versions. Add safe schema-v3
   evidence and availability reporting without executing dotnet, NuGet or MSBuild.
   Unsupported filesystem safety primitives fail closed.

@@ -4,8 +4,7 @@
 
 Implement a dependency-free CLI that calculates the CHAOSS Libyears metric for a local source repository.
 
-The current implementation supports direct Python, npm, RubyGems and explicitly
-selected NuGet dependencies.
+The current implementation supports direct Python, npm, RubyGems and bounded NuGet project snapshots.
 The original MVP sections below describe Python policy; the ecosystem extensions
 in section 26 govern npm, RubyGems and NuGet without changing PyPI behavior.
 
@@ -18,6 +17,13 @@ The tool performs static analysis of dependency metadata present in the reposito
 ## 2. Core Principle: Measure Repository Evidence
 
 Libyears measures dependency versions that can be established from repository evidence.
+
+Use the strongest available accepted evidence, but require only evidence necessary
+for the claim actually being made. The measurement claim concerns attributable
+selected versions and applicable publication history. Acquisition, artifact content,
+reproducible builds and actual deployment require independent evidence; none follows
+from a number. Evidence mechanics remain ecosystem-specific. Current Python/npm
+positive namespace limitations are recorded separately rather than silently changed.
 
 The tool MUST distinguish between:
 
@@ -838,11 +844,14 @@ project's parent, never packages.lock.json. Duplicate mappings and mixing with
 explicit selection or direct-file paths are usage errors before input reads.
 Unmatched mappings produce nuget_witness_project_missing/unknown population;
 failed discovery instead reports nuget_discovery_incomplete/unavailable, with no
-invented mapping errors. No implicit acceptance or H3 relaxation occurs.
+invented mapping errors. No implicit witness acceptance occurs; the prospective
+evidence cascade below governs measurement admission.
 
 The approved [Feature 006 specification](specs/006-nuget-selected-evidence/spec.md),
 [plan](specs/006-nuget-selected-evidence/plan.md) and
-[tasks](specs/006-nuget-selected-evidence/tasks.md) govern NuGet. The
+[tasks](specs/006-nuget-selected-evidence/tasks.md) retain historical/base NuGet
+contracts. The approved [evidence cascade](maintenance/measurement-evidence-cascade/spec.md)
+prospectively supersedes mandatory event/content gates for version-age measurement. The
 [README workflow](README.md#explicit-nuget-project-snapshots) documents the exact
 witness schema, supported inputs and enforced numeric limits. This extension
 does not change Python/npm/Yarn/Ruby policy or the 365.25-day metric.
@@ -875,26 +884,32 @@ strings are isolated failures; duplicate identities, non-string selections,
 unknown semantic fields and extra contexts reject the entire lock. Transitive
 and Project entries provide closure framing, not measured population.
 
-H3 requires native NuGet package provenance (identity, selected version, actual
-supplying origin and content hash) plus contemporaneous producer attestation.
-The attestation binds that native evidence to the same producing event, exact
-project/lock bytes, framework and required baseline/input-influence assertions.
-Both evidence classes and their linkage must be independently auditable.
-Retrospective replay cannot substitute for original-event producer attestation;
-a new event can attest only its own context, not historical production. Later
-serialization may preserve existing testimony, never create missing testimony.
-The consumer accepts supplied assertions rather than authenticating chronology.
+The measurement floor requires attributable supported direct population, exact
+project/lock selection with request/context/byte binding, applicable public
+namespace before lookup, and authoritative identities/dates. Event acquisition,
+content correspondence, reproducibility and deployment are distinct stronger
+claims; a number establishes none of them by itself. Use the strongest available
+accepted evidence and retain its facts, but require only the age claim's floor.
 
-Strict version-1 witness context binds project/framework, exact project/lock
-SHA256 bytes, producer/coherent snapshot and SDK/baseline assertions. Unsupported
-population influences invalidate the denominator. Per-package evidence binds
-normalized ID/selected version/SHA512 and a singleton explicit canonical
-`https://api.nuget.org/v3/index.json` origin. Local decoded lock/witness hashes
-must agree before LocalAuthority permits supervised public lookup; public catalog
-ID/version/SHA512 agreement precedes dates. No public namesake, configuration,
-cache, source mapping, credential, archive or identity/hash-only shortcut supplies
-missing authority. Hash agreement establishes content correspondence, not origin
-or producing history; the snapshot remains qualified supplier testimony.
+Version1 retains native NuGet provenance plus contemporaneous producer testimony,
+its exact byte/context/producer/SDK/baseline bindings and replay prohibition.
+Its accepted canonical public-origin assertion supports namespace authority.
+Local decoded lock/witness SHA512 and public catalog comparisons enrich assurance;
+absence/disagreement alone no longer blocks age with independent namespace and
+selection. Known private/unknown/conflicting namespace still blocks all lookup.
+
+Version2 explicitly accepts later retained snapshot association and package-specific
+namespace testimony. Exact fields: version2, project/framework/project_sha256/
+lock_sha256/coherent_snapshot; baseline sdk, explicit_population_complete and
+three unsupported influence booleans; packages with id/version/namespace. It omits
+producer, sdk_version, origins and content_hash, retaining the same complete
+framing, byte/context/completeness checks and input bounds. Namespace is exactly
+canonical https://api.nuget.org/v3/index.json, never inferred from public existence,
+configuration, hashes or discovered files. See README for exact templates.
+Unsupported population influences invalidate N; stale/malformed whole evidence
+retains independently known N with unavailable measurement. No v1/v2 merge repairs
+contradictions. Lock Direct population alone is not a fallback for unsupported
+projects: declaration-first population remains. No target/producer execution.
 
 Complete SemVer-2 registration determines greatest currently listed stable by
 numeric precedence, independently of request/framework/date compatibility.
@@ -919,6 +934,15 @@ Human reporting consumes the same typed facts, explains supplier/snapshot and
 publication/comparator limits, and preserves anomaly flags. Raw XML, witness,
 origins, hashes, baseline, unsafe paths and diagnostics are never disclosed;
 NuGet-active root headers are abstracted and raw verbose diagnostics omitted.
+Admitted rows add measurement_basis bound_snapshot_namespace, namespace_basis
+accepted_producer_origin or accepted_snapshot_namespace, and an assurance object
+with producer_event, local_content, public_content and limitations. V2 has
+unavailable acquisition origin/content states plus separate accepted namespace;
+v1 retains its literal origin/hash meanings and producer-event assertions.
+Public content verification still requires the original successful comparison
+chain. Missing/mismatched content does not imply a namespace conflict by itself.
+Source trust_basis names the requested producer or snapshot assertion contract.
+Human default is concise; verbose/JSON exposes detailed facts and limitations.
 Reports without NuGet sources remain unchanged; verbose JSON is identical.
 Ordinary mode adds top-level nuget_sources entries (source_id, existing per-source
 version_evidence, existing nullable summary, measurement_available). Root-relative

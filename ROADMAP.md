@@ -357,45 +357,93 @@ no broader ecosystem discovery is selected by this entry.
 
 ### 13. Cross-ecosystem measurement-evidence parity
 
-**State:** EXPLORE; investigation commissioned in `006-0023`, prospective product /
-trust-boundary decision pending. No replacement H3 or assurance tier is selected.
+**State:** SELECTED in `006-0024`; the human approves a progressive measurement
+cascade. Specification, plan and sequential graph independently approved;
+implementation and operational evidence are under independent convergence review
+in [the correction](maintenance/measurement-evidence-cascade/reviews.md).
 
 **Area:** Product semantics / public publication-history authority
 
-**Contributor fit:** Cross-ecosystem factual and trust-boundary investigation
+**Opportunity:** Use the strongest accepted evidence while requiring only what
+establishes the actual version-age claim. Measurement basis and stronger assurance
+are related but distinct; missing acquisition/content/reproducibility evidence
+must not automatically block a supported snapshot/public-namespace age.
 
-**Opportunity:** Require comparable evidence for truthful dependency-version age
-without making historical package-acquisition provenance an implicit prerequisite.
+**Evidence:** Discovery006-0023 reconciled current PyPI/npm/Ruby/NuGet contracts.
+Historical H3 and published1ba915f truthfully implemented their stronger authority;
+those outcomes remain unchanged. The prospective cascade keeps declaration-first
+NuGet population, exact context/byte/request association and public namespace before
+lookup; v1 facts survive and v2 accepts later bound snapshot/namespace testimony.
+Additive schema3 evidence and verbose detail disclose narrower claims.
 
-**Evidence:** Current Python accepts exact declarations or supplied freeze entries;
-npm accepts supported lock selections without origin/content-hash verification;
-Ruby requires attributable public lock source but no contemporary Bundler testimony.
-NuGet additionally requires native producer-time provenance, contemporaneous
-context attestation and local/public content agreement. Feature006's prospective
-0/1 public-hash mismatch and 006-0022's two known / eight unsupported OASim project
-populations distinguish provenance barriers from parser/context barriers.
+**Practical result:** Ordinary OASim still has ten attempts, eight unsupported
+populations and two supported populations totaling3 occurrences with no accepted
+witness mappings. Zero new ages are established; N/coverage remain unknown. Ten
+retained locks alone cannot establish applicable public namespace. Target before/
+after state equals. Parser limitations and namespace acceptance are distinct from
+optional stronger assurance, and51 literal references are no denominator.
 
-**Why this state:** The published `1ba915f` faithfully implements approved H3 and
-source-qualified occurrences; the commissioning human reports it synchronized
-to both canonical remotes. This investigation recommends a bound snapshot/public
-namespace version-age contract for human consideration, retaining fail-closed
-source attribution and context. It neither changes current authority nor proves
-positive measurement yield. Python/npm's weaker positive source checks are a
-limitation to acknowledge, not permission for namesake-only NuGet measurement.
+**Success signal:** Truthful snapshot ages plus inspectable strongest accepted
+assurance, without namesake fallback, invented population or changed arithmetic.
 
-**Success signal:** A human-selected claim distinguishes selected snapshot P/V
-and applicable public publication history from exact acquisition-event/content
-assurance, with reviewed output/migration semantics before runtime work.
+**Stop condition:** New consequential trust/schema/security authority or incompatible
+output; no implicit testimony, target execution, generic framework, Feature007 or
+provider adoption. Publication/actual hosted witnesses remain separate authority.
 
-**Stop condition:** HUMAN PRODUCT / TRUST-BOUNDARY DECISION. No weakened H3,
-parser/schema/metric/source-policy changes, implicit testimony, target execution,
-provider adoption, generic analyzer work or Feature007 follows from discovery.
+**References:** [Historical discovery](discovery/measurement-evidence-parity.md),
+[historical independent review](discovery/measurement-evidence-parity-review.md),
+[current prospective specification](maintenance/measurement-evidence-cascade/spec.md),
+[verification](maintenance/measurement-evidence-cascade/validation.md).
 
-**References:** [Evidence matrix and alternatives](discovery/measurement-evidence-parity.md),
-[independent review](discovery/measurement-evidence-parity-review.md),
-[repository-source convergence](maintenance/nuget-repository-sources/reviews.md).
-Other radar states remain unchanged; actual hosted CI for `1ba915f` is not
-observed here and does not block this product investigation.
+### 14. NuGet project population and retained lock population
+
+**State:** EXPLORE; evidence-backed future work, no parser/population change selected.
+
+**Area:** NuGet directness/context and ordinary usefulness
+
+**Opportunity:** Compare bounded declaration-parser extensions with an explicitly
+qualified, bound lock-Direct snapshot population convention. Avoid reimplementing
+MSBuild or silently claiming current/evaluated completeness from a historical lock.
+
+**Evidence:** OASim retains ten single-framework schema1 locks; current conservative
+parser accepts only Updater/Profiling (3 direct occurrences), rejecting eight whole
+populations. Conditions, ancillary unrecognized properties/items and Update/Remove
+shapes are observed parser limitations, not missing acquisition provenance.
+The cascade deliberately chooses declaration-first A as the smallest migration.
+
+**Success signal:** A separately selected directness/context contract admits useful
+retained snapshots with truthful denominators and explicit stale/context limits.
+
+**Stop condition:** Resolver/target execution, fabricated51 count, silent A/B mixing,
+implicit/auto-reference scope or unapproved completeness testimony.
+
+**References:** [A/B determination](maintenance/measurement-evidence-cascade/spec.md#lock-and-population-determination-c3),
+[exact operational blockers](maintenance/measurement-evidence-cascade/validation.md).
+
+### 15. Python/npm positive public namespace authority
+
+**State:** EXPLORE; separate prospective product/trust opportunity, no sibling rewrite.
+
+**Area:** Cross-ecosystem truthfulness
+
+**Opportunity:** Establish and disclose applicable public namespace without treating
+public P/V existence as authority for private or conflicting source evidence.
+
+**Evidence:** Current Python exact/freeze and npm/Yarn lock routes use fixed public
+adapters without positive namespace verification; npm does not use resolved URL/
+integrity for this gate. Ruby has explicit supported public lock-source authority.
+The cascade's common floor is a target standard, not a claim siblings already
+satisfy its positive namespace requirement. No inspected repository is thereby
+claimed private, and no historical measurement is rewritten.
+
+**Success signal:** Separately approved source-authority/migration mechanics improve
+truthfulness without guessing acquisition/deployment or breaking released contracts.
+
+**Stop condition:** Copying weaker attribution into NuGet, namesake probing as
+permission, scope/metric changes or silent compatibility degradation.
+
+**References:** [Historical cross-ecosystem matrix](discovery/measurement-evidence-parity.md),
+[current scope limits](maintenance/measurement-evidence-cascade/spec.md#smallest-cascade-and-ecosystem-scope-c2).
 
 ## Selected Work Moved into SDD
 

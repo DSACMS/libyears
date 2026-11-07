@@ -465,9 +465,14 @@ byte/context binding and supported baseline. All supported explicit direct
 PackageReferences count, including test/tool/analyzer/PrivateAssets. Explicit
 selection never expands through project/solution traversal; Python --resolved supplies no NuGet
 authority. Request/lock minimum coherence is bounded normalization, not resolution.
-Only LocalAuthority from singleton asserted public origin plus decoded local
-SHA512 agreement permits supervised public metadata lookup; identity/public hash
-agreement precedes catalog created dates. Complete SemVer-2 registration chooses
+The prospective correction under maintenance/measurement-evidence-cascade/
+supersedes mandatory historical event/content gates. Explicitly accepted v1
+producer-origin or v2 bound snapshot/namespace testimony establishes applicable
+public namespace before supervised lookup. Exact project/lock/context/completeness/
+request association remains essential. Local/public hashes and event testimony
+enrich separately reported assurance; unknown/private/conflicting namespace never
+uses public namesakes. V1 event meanings remain historical/current stronger facts;
+v2 claims no acquisition event. Identity-bound catalog created dates remain required. Complete SemVer-2 registration chooses
 greatest listed stable without compatibility filtering. Keep safe evidence staged;
 no mismatch selection claim or raw hash/origin/baseline/path/diagnostic disclosure.
 Unavailable lock/witness preserves known N with null measurement/coverage/numerics;
@@ -494,8 +499,8 @@ ordinary source; no discovered witness is implicitly trusted. Existing explicit
 --nuget-project/--nuget-provenance remains a single-source precision interface.
 Schema3 ordinary output adds nuget_sources and source_id to NuGet rows/errors,
 without converting the explicit singleton or changing its output. One supervised
-metadata batch retains scan-wide budgets. H3, parser/privacy/metric and no-target-
-execution boundaries remain binding. See approved correction spec/plan/tasks and
+metadata batch retains scan-wide budgets. The prospective evidence cascade governs H3 measurement admission; parser/privacy/
+metric and no-target-execution boundaries remain binding. See approved correction spec/plan/tasks and
 reviews for exact mapping/output/failure semantics. Original Feature006/006-0020
 artifacts remain historical evidence.
 
