@@ -3,7 +3,7 @@
 Sequential graph; spec Q1–Q5 and approved plan govern. Review disposition in
 reviews.md. One local commit per completed task; no push.
 
-- [ ] R1 — Inert deterministic qualification. Predecessor approved graph.
+- [x] R1 — Inert deterministic qualification. Predecessor approved graph.
   Q1–Q3/Q5: implement separate bounded repository_snapshot_population with whole
   safe framing/Direct validation, strict partial facts, all known literal conflict
   refusal and full bidirectional ID/normalized-request equality before any
@@ -56,3 +56,7 @@ Traceability: Q1 precedence R1/R2; Q2 qualification R1/R2; Q3 v3/contradiction
 R1/R2; Q4 namespace/output R2; Q5 verification R1–R4. No target numerical yield
 or hosted pass is a local predecessor. Read-only target baseline already captured
 before first inspection under authorized path; final exact equality mandatory.
+
+R1 complete:72 primitive/project/lock/provenance tests PASS, no skips; qualifier
+remains inert pending R2. Both directions, known conflicts despite ineligibility,
+unsafe framing/Direct evidence and unextractable facts covered. Diff check PASS.
