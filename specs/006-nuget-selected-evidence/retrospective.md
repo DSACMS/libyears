@@ -1,5 +1,10 @@
 # Feature 006 Retrospective
 
+For the later ordinary-repository journey through published `0eabe303…`, see the
+[post-feature methodology retrospective](methodology-retrospective.md) and
+[prospective methodology handoff](methodology-handoff.md). The account below
+retains its original T018 chapter boundary.
+
 Feature 006 is **CONVERGED through T017/K6**, with 36/36 acceptance obligations
 reconciled at `33726aa`. This T018 candidate, run `006-0017`, closes the feature
 story and prepares human roadmap review. Independent disposition belongs in

@@ -63,7 +63,7 @@ An evidence-backed problem or learning opportunity is required.
 | [NuGet project/lock population](#14-nuget-project-population-and-retained-lock-population) | SELECTED (006-0026 bound snapshot fallback) | NuGet population/context | Bounded explicit acceptance |
 | [Python/npm public namespace](#15-pythonnpm-positive-public-namespace-authority) | EXPLORE | Cross-ecosystem truthfulness | Separate source-authority investigation |
 | [Snapshot acceptance/currentness](#16-repository-contained-snapshot-acceptance-and-currentness) | SELECTED (006-0028 B1) | NuGet acceptance | Separate product/trust contract |
-| [NuGet namespace automation](#17-nuget-namespace-authority-automation) | EXPLORE | Namespace authority | Separate evidence investigation |
+| [NuGet namespace automation](#17-nuget-comparatorpublic-namespace-authority) | EXPLORE | Namespace authority | Separate evidence investigation |
 | [Bounded C# parser expansion](#18-bounded-static-c-project-parser-expansion) | EXPLORE | Static declarations | Bounded grammar review |
 | [Evaluated MSBuild use cases](#19-evaluated-msbuild-population-use-cases) | DEFER | Evaluated context | Separate authority |
 | [Hosted action-runtime maintenance](#20-hosted-action-runtime-maintenance-observations) | WATCH | CI maintenance | Separate warning investigation |
@@ -789,3 +789,11 @@ SELECTED work moves into `specs/NNN-...` for SDD.
 
 Movement should be preserved in Git history with a concise rationale. Items may
 remain unchanged for long periods. The radar is deliberately selective.
+
+## Post-Feature006 methodology boundary
+
+The [post-feature retrospective](specs/006-nuget-selected-evidence/methodology-retrospective.md)
+and [next-feature methodology handoff](specs/006-nuget-selected-evidence/methodology-handoff.md)
+reconcile the journey through published `0eabe303…`. They select no new ecosystem.
+Feature007/Java remains unstarted; human roadmap selection and next-stage authority
+remain required. Cross-cutting actor guidance lives in AGENT_ROUTING.md.

@@ -2596,3 +2596,131 @@ only authorized /status enrichment and provenance notes. Original runtime note
 and confounding classifications remain exact;45/49 are account continuity readings,
 no derived delta. Current006-0017 and children are not appended. The current baton
 will cover closure and subsequent maintenance as one human-launched run.
+
+## Post-feature methodology retrospective — 006-0033
+
+This separately commissioned chapter closes at published product candidate
+`0eabe303a11a297939b0f8271e47f9e409a4fd49`; it preserves original T018 closure.
+Candidate: [methodology retrospective](methodology-retrospective.md), reusable
+actor framework in [AGENT_ROUTING](../../AGENT_ROUTING.md#actors-capabilities-and-authority),
+and [prospective handoff](methodology-handoff.md). No Feature007, product/runtime,
+metric, target execution, registry access, CI maintenance or push authority follows.
+
+### Prior observation and publication reconciliation
+
+006-0032 appended **exactly once** from the authorized original44-key external
+handoff with human-supplied session `01a1c1d2-f71b-7551-93d8-3f83a1f9e36f`,
+GPT-6.1-Sol/openai/medium, agent0.160.0, reported runtime1053s, credits_after92.
+Before91 retains explicitly confirmed account continuity; original runtime
+provenance/confounding and all other machine fields remain. No runtime inference,
+credit delta or historical normalization. Earlier50-row bytes preserved, SHA256
+`321f17ab6da13ead383ca35f65b51580e88f636863490fa0b6311613a27df70f`.
+Principal006-0032 validation artifact digest independently matches the handoff.
+Local reconciliation commit: `2d62bf1`.
+
+Read-only live `git ls-remote github refs/heads/main` and equivalent cms query each
+returned the full product candidate above; local remote-tracking refs agree.
+Initial restricted-network query failed DNS; scoped network-enabled read-only
+queries succeeded. No push performed; push actor/time and current hosted outcomes
+are not inferred. Hosted checks may still be asynchronous/incomplete. No idle wait
+or target access occurred.
+
+### Freeze and independent coverage
+
+Six candidate files frozen before review: routing, roadmap, observation ledger,
+original-retrospective pointer, new chapter and handoff. Exact v1 bytes and both
+manifests are retained outside Git in the authorized006-0033 handoff directory.
+
+| Candidate file | Reviewed SHA256 (v2 unless stated) |
+| --- | --- |
+| AGENT_ROUTING.md | `79bd8eebf499b0eadf9c4dbdce217912b054c950f42ac7d75f683bbbbed9cb53` |
+| ROADMAP.md | `91cf9bb086195ac38ad77ccd8f69385dff13b0dc955b42e50a4e19a2fb4d81bc` |
+| observations/agent-runs.csv | `abd65b2b3dd94e724934d4924f32a0aa73cef4023f75e58dc81e5f07ee406679` |
+| retrospective.md | `247f820b0388c5a59d76c054bbfc4c1bad193782fa1d91ee52de73977847c753` |
+| methodology-handoff.md | `29e01e2151a1a7e491507647811d438581188f2d3ce57b92014232f4cb9f90b6` |
+| methodology-retrospective.md v1 | `e731c36ed41674d0d39cc338031ee7cec67290ce1061f7b253836220616fa238` |
+| methodology-retrospective.md v2 | `9d37ae865300ab8b5ea85eace5f5e4c118e52ebf16c836850d69033d8902b0d4` |
+
+Fresh non-author assignments requested `fork_turns=none`, no model/effort overrides;
+actual child telemetry/resources unavailable. No separate child ledger rows.
+Reviewers inspected frozen candidates and underlying sources, recovered truncated
+reads and performed no target/network/runtime actions. Initial A–D received no
+sibling conclusions. E verified v1 before being notified of the separate planned
+namespace correction; it used retained v1 and did not evaluate that other scope.
+Raw reports remain outside Git as006-0033/review-a.md through review-e.md plus
+review-c-closure.md; the table records their durable dispositions and coverage.
+
+| Scope | Independent completed result |
+| --- | --- |
+| A: Feature Story / chronology / 13 intervention groups | COMPLETE APPROVE v1. Independently recalculated every retained33 and51 age and aggregate from durable CSVs; checked all journey boundaries and initiating-authority provenance. No material issue. |
+| B: actors / authority / routing / artifact architecture | COMPLETE APPROVE v1. Checked capability versus permission, fresh parent versus child, gate classification, workflow ownership, duplication and next-feature usefulness against004–006 history. No material issue. |
+| C: cascade / trust / scaffolding | COMPLETE REVISE v1, one finding C-F1. Remaining assigned floor, population, coverage, assurance and policy chronology supported. |
+| D: ledger / prompt-context / capability equity | COMPLETE APPROVE v1. Recomputed every quantitative claim, verified prior-byte preservation and original handoff enrichment; checked resource/causal limits and accessible equivalent-evidence routes. No material issue. |
+| E: taxonomy / review effectiveness / Windows / security / hosted CI / output provenance | COMPLETE APPROVE v1. Independently reconciled retained incidents, exact platform provenance, exhausted exception authority and current human-supplied output observation. No material issue in assigned scope. |
+| Fresh C closure: exact correction and collateral claims | COMPLETE APPROVE v2. Independently verified all manifest digests, sole one-hunk change, underlying mapping/config findings and separate ordinary-A new-authority requirement; no new whole-audit claim. |
+
+### Parent reconciliation and bounded correction
+
+C-F1 validated against namespace discovery review's parent-correction section:
+the candidate misattributed an internal contradiction in the *proposed* comparator
+cascade to the then-current cascade's positive-namespace requirement. The source
+actually corrected absent versus active/unknown mapping and overstated config
+closure; its ordinary-A analysis separately established need for new human authority.
+Parent replaced only that three-line attribution with five accurate lines, froze
+v2 and obtained fresh focused non-author closure. Other five candidate files and
+all remaining chapter bytes are unchanged. Original REVISE, exact v1 and all scoped
+approvals remain historical. No policy change or additional human decision was
+needed to correct the factual attribution.
+
+Parent read all six reports, validated the counterexample and exact correction,
+checked ledger counts/provenance and milestone sources, and reconciled overlapping
+claims. A/B/D/E approval never overrode C-F1. Combined original completed coverage
+plus fresh focused closure establishes **methodology artifacts COMPLETE / independently
+reviewed**, with no unresolved material finding. Reviewer count is not confidence;
+retained counterexamples, checked arithmetic and authority traceability are evidence.
+
+### Verification and handoff
+
+Ledger44-column shape,51 unique records, exactly one006-0032, no006-0033 append,
+prior-byte preservation and principal prior-artifact digest: PASS. Frozen candidate
+digests and milestone commit objects: PASS. New document destinations/anchors and
+`git diff --check`: PASS. A full changed-document link probe additionally found
+one pre-existing ROADMAP item17 anchor mismatch (also present at product HEAD);
+its destination was corrected to the existing comparator/public-namespace heading.
+This is a bounded documentation correction, not a policy or runtime change.
+Final reference review and v3 freeze cover that exact link delta. GitLeaks8.30.1 configured full-history scan at initial
+product HEAD:324 commits, exit0/no unsuppressed findings; proposed changed documents
+and ledger individually scanned via stdin: exit0. Final committed-history scan is
+repeated after the documentation commit and recorded in the current external baton.
+No ignore/config/rule changes.
+
+Only Markdown and the single prior-observation CSV append changed. Product suite
+not rerun: no executable behavior touched. Original retrospective preserved with
+one chapter pointer; ROADMAP adds a methodology boundary pointer without selecting
+new work. No CI/performance/test-output cleanup implemented. Final commit/tree and
+current44-key observation handoff are verified before final reporting; current
+runtime/after-account/child resources remain unobserved. Current before92 follows
+human-confirmed continuity, not billing.
+
+**Exact next human gate:** accept/revise the retrospective/framework, then separately
+select roadmap work and authorize its bounded next stage. Publication of these new
+artifacts requires separate authority. Already-published product hosted evidence
+remains an asynchronous evidence follow-up; no pass or operational closure is
+invented. Feature007/Java NOT STARTED. Push performed:NO.
+
+Final v3 changes only the pre-existing ROADMAP item17 link from v2; roadmap SHA256
+`76454ad7b1bb259c50aa327e55d9fc3e092b5da137e7802c64889143167ef2d0`. The chapter remains reviewed v2 and
+all other five candidate digests remain unchanged. Fresh final artifact/reference
+review disposition is recorded below after completion.
+
+Fresh final non-author F: **COMPLETE / APPROVE v3**, no material finding. Verified
+all six v3 and retained v1 digests, sole v2→v3 ROADMAP anchor substitution,
+173 local Markdown references in its assigned slice, artifact ownership/usefulness
+and durable dispositions against all six prior raw reports. It independently
+checked C-F1's exact one-hunk correction against the original discovery record.
+This is focused package/reference verification, not a repeated historical audit.
+Parent read and validated the report (private006-0033/review-f.md), confirmed the
+seven-file Markdown/CSV-only scope, and repeated whole changed-document reference
+checks:183 local destinations/39 anchors PASS. No unresolved material finding;
+all original review scopes and focused limits remain intact. Final candidate
+principal chapter digest remains v2, and other v3 digests remain unchanged.

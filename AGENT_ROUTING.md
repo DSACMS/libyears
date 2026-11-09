@@ -313,3 +313,90 @@ AGENT_ROUTING.md does not guarantee model behavior, rank vendors/models
 universally, replace human judgment, authorize credentials or publication,
 weaken existing review/acceptance gates, require premium model access, or replace
 prospective observational logging. It remains a revisable working strategy.
+
+## Actors, capabilities and authority
+
+The [post-Feature006 retrospective](specs/006-nuget-selected-evidence/methodology-retrospective.md)
+supports this reusable lens. It extends routing guidance; lifecycle authority
+remains in SDD_WORKFLOW, observation rules in observations/README, and product
+policy in approved contracts. The matrix describes roles, not a new permission
+grant. One person or system may occupy several roles, but the responsibilities
+must remain distinguishable.
+
+**Capability** is what an actor can do. **Authority** is what it is permitted to
+decide or authorize. **Evidence** is what it can establish from observations.
+**Action** changes or inspects state. **Verification** checks a specific claim.
+**Durable memory** preserves decisions and evidence for another reader. None
+substitutes for another: access does not grant permission; a passing test does
+not authorize policy; an approved plan does not prove execution.
+
+| Actor | What can it observe? | What can it decide / authorize? | What can it act upon? | What can it verify? | What should become durable? / wrong assignment failure |
+| --- | --- | --- | --- | --- | --- |
+| Human / product owner | User intent, organizational facts, displayed telemetry, review evidence | Consequential scope, acceptable risk, trust exceptions, external access and publication within their own authority | Select work, supply testimony/authority, perform or authorize external actions | Whether the ordinary journey answers the intended question; accept bounded evidence with limits | Decision, scope, rationale, residual risks. Making the human relay determined internal gates wastes attention; asking agents to invent these choices changes policy silently. |
+| ChatGPT / orchestrator | User request, available harness controls, session metadata where exposed, agent reports | Route work and select session/context/model within human authority; cannot invent trust or publication permission | Create a new top-level session where the harness supports it, assign prompts, collect reports | Actual requested setup where observable, coverage and stopping gates | Setup/request provenance and handoff. Assigning orchestrator-only actions inside a worker prompt makes desired state unenforceable. |
+| Prompt (assignment artifact) | Nothing independently; it carries supplied observations and instructions | Conveys attributed new authority; is not an independent authority holder | Directs a capable authorized actor; does not execute or create context | Nothing by itself; claims need evidence | Intent, delta, exact exceptional restrictions, relevant evidence pointers. Treating copied prose as proof or restating stale state can override current contracts accidentally. |
+| Codex parent agent | Authorized repository/files/tool results and available harness state | Routine implementation and bounded correction determined by approved authority; stop on new consequential choices | Read, edit, test, orchestrate authorized reviews and make authorized commits/actions | Findings against raw authority/evidence; cross-scope reconciliation; actual verification within access | Code/tests or docs, decisions attributed to owners, review disposition and baton. Parent confidence is not independent approval or permission to create provenance. |
+| Codex reviewer / subagent | Frozen candidate, governing authority, independently inspected evidence within assigned access | Findings and a scoped completed/incomplete verdict; cannot authorize changed product/security policy | Read and run authorized bounded probes; edits only if separately commissioned | Assigned obligations and collateral boundaries; cannot certify unaudited scope | Coverage, counterexample, candidate identity, limits and verdict. Counting votes or sharing sibling answers as ground truth masks omissions and correlated mistakes. |
+| Repository | Retained files/history, not outside reality | Carries established authority when approved and current; does not select new work | Supplies inspectable durable state to authorized actors | Enables byte/history/reference checks; existence alone authenticates no claim | Readable current disposition plus preserved history. Treating all historical prose as current creates false blockers or stale permission. |
+| Specification / plan / tasks | Recorded requirements, architecture and dependency graph | Carry approved product / architecture / bounded-work decisions respectively | Govern implementation after execution authorization | Define required witnesses; cannot prove they ran | Traceable scope, criteria, predecessors, hard stops and review disposition. Letting code rewrite approved requirements conceals scope drift. |
+| Tests | Fixture inputs and actual observed behavior under stated harness assumptions | No new product or trust authority; executable contract witnesses | Exercise code and permitted seams | Their assertions on the candidate/platform actually executed; mutation may test witness discrimination | Behavioral regressions, input assumptions and results. Fixture success is not real-target evidence, and skipped native tests are not platform success. |
+| Real target repository | Supplies current authorized bytes and metadata | No implicit execution, witness acceptance or public-comparator authority from mere presence | Can be inspected only within explicit access; target code is not automatically executable | Supplies ordinary-user acceptance evidence when authorized; cannot certify its own history | Bounded inputs/results, integrity scope and limitations in validation records. Familiarity with a path is not renewed permission. |
+| Security tooling | Inputs/history/rules/configuration actually scanned | Findings under configured rules; no authority to classify away or suppress its own hits | Scan authorized scope and return results | Configured detection and negative controls, not universal absence of secrets | Version, scope, redacted findings, classification and exact authorized exceptions. Copying triggering payloads into rationale can create new history findings. |
+| Hosted CI | Candidate/job/platform actually scheduled and executed | Configured gate results; no new scope or publication authority | Execute workflows after their trigger | Actual candidate behavior on actual runners; queue failure proves no candidate test result | Exact SHA, job identity, executed/pending state, result provenance. Declaring local simulation hosted PASS or capacity failure product FAIL misroutes repair. |
+| External package registry | Its current identity, listing, version and date metadata | Authoritative metadata within the approved adapter/claim; no authority over local population or acquisition | Answer permitted public requests after local admission | Public record consistency, not local source/content/producer/deployment history | Adapter rules, fixtures and bounded validation evidence. A successful namesake query cannot retroactively authorize disclosure or comparison. |
+| Observation ledger | Recorded machine observations plus attributed human enrichment | Protocol-defined provenance, not quality scores or billing authority | Retain authorized rows and unknowns | Shape, uniqueness and supplied provenance; cannot reconstruct absent runtime | Raw boundaries, confounding, candidate/artifact pointers. Treating counters as task billing or intervention flags as decision counts manufactures precision. |
+
+### Assign the action to the actor that can perform it
+
+For each workflow requirement, state five things: **who observes it, who decides
+it, who acts, who verifies it, and where the result becomes durable**. If any is
+missing, repair the assignment before treating the requirement as satisfied.
+
+The commissioning human for run006-0033 reports a recurring defect: prompts said
+a task “should run in a fresh context” as though the already-running Codex parent
+could create a fresh top-level context. Correct desired state != correct actor
+assignment. The human/orchestrator must create that context before dispatch, then
+record requested versus observed setup when available. The agent can report its
+limits or request a suitable handoff; it cannot claim to have replaced its parent
+context. A fresh child reviewer, where supported, is a distinct action and does
+not establish fresh-parent state. Earlier ledger requests are not proof of setup.
+
+Apply the same reasoning to credentials, publication, CI reruns, security
+exceptions and telemetry: asking the wrong actor more insistently does not add
+capability or authority. Put harness setup metadata in orchestration and its
+observation record, rather than making it an impossible agent completion obligation.
+
+### Retire repetition only after authority has become policy
+
+Classify a human gate before proposing automation:
+
+- Information unavailable locally still needs an accountable supplier or human;
+  agents must not fabricate it.
+- Facts the repository can establish may become executable checks once approved
+  policy says those facts suffice.
+- Consequential reusable choices need explicit human judgment; after approval,
+  record the choice and its limits so subsequent agents execute without reopening it.
+
+Feature006's automatic sources, qualified current snapshots and comparator
+conventions illustrate different instances, not a universal mandate to remove
+human gates. Known contradictions remain terminal where contracts require it;
+stronger assurance remains separately visible. New security exceptions, scope,
+external access and publication still require their controlling authority.
+
+Within already-authorized work, route determined corrections internally:
+validated finding → bounded fix → freeze → fresh focused non-author review with
+collateral checks → parent reconciliation. Never use positive sibling reviews to
+overrule a validated finding. Use decomposition to make coverage inspectable,
+not to manufacture confidence from reviewer count. Required standards remain
+accessible to human or alternate reviewers; model price is not an acceptance gate.
+
+### Put durable knowledge in the right home
+
+Repository: established methodology, accumulated product policy and current
+approval pointers. Human/orchestrator: session/context/model setup and new
+authority. Prompt: new intent, delta, evidence locations and exact exceptional
+restrictions. Agent: read that state and perform authorized work, preserving
+observations and unresolved gates. This is a division of responsibility, not a
+prompt-length target. Long prompts may be necessary for new consequential
+boundaries; readable sources and inspectable authority take precedence over
+model-token efficiency.
