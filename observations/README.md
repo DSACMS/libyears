@@ -53,11 +53,14 @@ differ, record the observed state and provenance, as with Feature 005's requeste
 fresh but observed continued context. Distinguish displayed runtime components
 when their version readings differ; do not silently reconcile them by inference.
 
-`credits_before` may come from a directly observed pre-run account reading or
-the immediately preceding human-observed post-run account reading when the
-human explicitly confirms no intervening credit-consuming activity. These are
-account-level continuity observations, not exact per-run billing receipts.
-Do not derive or store a credit delta in the canonical ledger.
+Runtime is not reconstructed from adjacent runs. `credits_before` may come
+from a directly observed pre-run account reading or inherit the immediately
+preceding observed account `credits_after` when the human explicitly confirms
+no intervening credit-consuming Codex work. Bounded or maintenance Codex work
+counts as intervening work even without its own substantive ledger row. Boundary
+readings are account-level continuity observations, not exact per-run billing
+receipts. Do not derive or store a credit delta in the canonical ledger merely
+because both boundaries exist.
 
 The canonical ledger stores observations, not derived analytics. Derive elapsed
 wall-clock duration, credit delta, cost per run, words per second, or findings per
@@ -133,7 +136,7 @@ blank always remains available for unobserved data.
 | `reported_runtime_s` | Raw agent/harness-reported runtime in seconds, when available. Never derive this from start/end timestamps or reinterpret reported elapsed time as active compute time. |
 | `runtime_confounded` | Observed classification of reported runtime: `no`, `yes`, or `unknown`. |
 | `runtime_note` | Material confounding such as workstation sleep/lock, interruption, backgrounding, or uncertainty about what the reported timer measures. |
-| `credits_before` | Raw observed credits before the run, when available. Blank is preferable to reconstruction. |
+| `credits_before` | Observed account credits before the run, directly read or inherited under the continuity rule above; otherwise blank. |
 | `credits_after` | Raw observed credits after the run, when available. Derive credit delta separately. |
 | `completion_status` | Whether the assigned run completed its required work: `complete`, `incomplete`, or `blocked`. |
 | `completion_reason` | Short factual explanation of completion status when useful. |
