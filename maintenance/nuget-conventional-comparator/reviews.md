@@ -26,3 +26,34 @@ findings. Plan/graph APPROVED. Process deviation: parent drafted the inert polic
 module while these reviews were pending; no activation, task completion or commit
 occurred before approval. The draft remains subject to all K1 tests and convergence;
 review approval is not claimed to have preceded that drafting.
+
+## Initial pre-live convergence — 8fc185f
+
+Fresh non-author scopes: converge_floor COMPLETE CONVERGED,143 focused tests plus
+independent nonzero A1.0-libyear/schema/claim probe; converge_worker COMPLETE
+CONVERGED,102 focused/1 filesystem skip plus both-basis codec/supervisor forgery
+probes; converge_trust COMPLETE REVISE,92 focused/1 skip, two material defects.
+No target access/live queries occurred. Parent validates both trust findings:
+
+1. Enabled alternate eligibility returned before explicit canonical-source disable,
+   incorrectly letting public testimony repair known exclusion. Parent reproduces
+   original decision. Move explicit disable/closed-public-exclusion refusal before
+   eligibility; source regression proves valid testimony/public namesake fixture
+   produces zero capabilities/HTTP for both explicit-disable and closed-private cases.
+2. Config file checks omitted ctime, allowing detectable same-length in-place edit
+   with restored mtime. Parent runs new regression against original candidate method
+   in memory and reproduces expected failure. Compare final named/descriptor ctime
+   to pre-open state; real-reader regression refuses the mutated config.
+
+No spec/plan change is needed; both corrections follow C2/C3.107 focused successful,
+1 case-alias skip; final full/capability/worker and fresh closure follow.
+
+Canonical GitLeaks actual config/full311-commit history returned exit1: ONE
+new generic-api-key finding at spec.md line35 in78e284f10ee10b2049ba30717b6acda0be650354.
+It is ordinary prose, not a credential; parent and independent worker reviewer
+verify factual false positive. No ignore/rule/config/workflow/history change.
+Previous exact exceptions do not authorize another. Record failed result honestly;
+a new exact suppression/publication needs human authority. C6/K3 requires scan/
+reporting, not a clean-pass predecessor to read-only public measurement; independent
+review confirms this does not establish a runtime blocker. No clean security or
+publication closure is claimed. Target identities/secrets have not been disclosed.

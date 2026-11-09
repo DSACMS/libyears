@@ -141,7 +141,9 @@ class RepositoryNuGetReader(ScopedNuGetReader):
                         final = os.stat(name, dir_fd=directory, follow_symlinks=False)
                         if (len(data) > MAX_PROJECT_BYTES or _reparse_point(final)
                                 or _identity(final) != _identity(inspected)
-                                or _identity(os.fstat(descriptor)) != _identity(inspected)):
+                                or final.st_ctime_ns != inspected.st_ctime_ns
+                                or _identity(os.fstat(descriptor)) != _identity(inspected)
+                                or os.fstat(descriptor).st_ctime_ns != inspected.st_ctime_ns):
                             return unknown_policy()
                         from .nuget_input import LocalInput
                         configs.append(LocalInput(data, data.decode('utf-8', errors='strict')))

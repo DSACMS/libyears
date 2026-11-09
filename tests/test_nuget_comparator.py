@@ -183,3 +183,25 @@ class ComparatorReaderTests(unittest.TestCase):
         with patch('subprocess.Popen', side_effect=AssertionError('no runtime Git')):
             self.assertEqual(self.decide().reason, 'nuget_comparator_ambiguous')
         self.assertEqual(subprocess.check_output(['git', '-C', str(self.root), 'status', '--porcelain']), before)
+
+    def test_in_place_config_mutation_with_restored_mtime_refuses(self):
+        from libyears.nuget_sources import RepositoryNuGetReader
+        path = self.root/'NuGet.Config'
+        path.write_text(config(source()))
+        before = path.stat()
+        original = os.read
+        changed = False
+        def mutate(descriptor, length):
+            nonlocal changed
+            data = original(descriptor, length)
+            if data and not changed:
+                changed = True
+                path.write_bytes(path.read_bytes().replace(b'api.nuget.org', b'bad.nuget.org'))
+                os.utime(path, ns=(before.st_atime_ns, before.st_mtime_ns))
+            return data
+        with RepositoryNuGetReader(self.root, 'child/A.csproj', None) as reader:
+            project = reader.read('A.csproj')
+            with patch('os.read', side_effect=mutate):
+                decision = reader.comparator_policy(project).decide('foo')
+        self.assertTrue(changed)
+        self.assertEqual(decision.reason, 'nuget_comparator_unknown')

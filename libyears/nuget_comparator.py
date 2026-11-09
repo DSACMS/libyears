@@ -64,13 +64,13 @@ class RepositoryComparatorPolicy:
             return UNKNOWN
         enabled = {key: value for key, value in self.sources.items()
                    if not self.disabled.get(key, False)}
-        if any(value != PUBLIC_ORIGIN for value in enabled.values()):
-            return ELIGIBILITY
         if any(self.disabled.get(key, False) and value == PUBLIC_ORIGIN
                for key, value in self.sources.items()):
             return PRIVATE
-        if 'packageSources' in self.closed and not enabled:
+        if 'packageSources' in self.closed and PUBLIC_ORIGIN not in enabled.values():
             return PRIVATE
+        if any(value != PUBLIC_ORIGIN for value in enabled.values()):
+            return ELIGIBILITY
         return CONVENTIONAL
 
 

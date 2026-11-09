@@ -227,3 +227,12 @@ class ComparatorSourceTests(unittest.TestCase):
         self.assertIsNone(report.summary.coverage)
         self.assertEqual([e.reason for e in report.source_errors], ['nuget_provenance_missing']*2)
         self.assertEqual((self.calls, self.urls), ([], []))
+
+    def test_explicit_public_exclusion_cannot_be_downgraded_by_alternate_eligibility(self):
+        files = files_for(public=True)
+        entries = source()+source('other', '/local/feed')
+        for text in (config(entries, disabled='<add key="public" value="true" />'),
+                     config(source('other', '/local/feed'), closed=True)):
+            report = self.scan(files, configs=(text,), witnesses=(('a/Witness.csproj','witness.json'),))
+            self.assertEqual(report.unmeasurable[0].reason, 'nuget_comparator_private')
+            self.assertEqual((self.calls, self.urls), ([], []))
