@@ -539,8 +539,12 @@ Parser18, evaluated19, CI20 and performance22 remain separate.
 **Acceptance:** Independent spec/plan/graph and implementation/convergence before
 first real OASim metadata attempt. Historical audit predicts33 no-config candidates
 and18 alternate-source ambiguities, never a promised33/51 or51/51 measurement.
-Actual operational result will be recorded in
-[validation](maintenance/nuget-conventional-comparator/validation.md).
+**Actual ordinary result:**33/51 measured,64.7059% coverage,26.5508747945
+measured-subset libyears; all33 conventional comparator lookups succeed.18 remain
+alternate-source ambiguity, not registry failures. A2/3+B1 8/48+B2zero retained,
+OASim exact before/after unchanged. Full [validation](maintenance/nuget-conventional-comparator/validation.md)
+and51-row result retained. Runtime locally converged after two reviewed corrections;
+publication security gate remains one unsuppressed GitLeaks prose false positive.
 
 **Methodology:** Use the lowest sufficient truthful evidence floor for the stated
 age claim. Stronger evidence enriches assurance rather than automatically becoming

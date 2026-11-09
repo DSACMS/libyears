@@ -63,9 +63,75 @@ returns a concrete supported or unknown policy. Explicit precision stays unchang
 
 ## Live result
 
-Pending K3 convergence and exact target baseline. No ages/lookup success inferred
-from test fixtures or historical51 inventory. Actual result will replace this pending
-operational section after authorized K4 attempt; no predetermined33/51 or51/51.
+Runtime convergence and fresh correction closure preceded first target access.
+Exact ordinary command: `python3 -m libyears OASIM_ROOT`, with OASIM_ROOT the exact
+human-authorized OASim checkout; JSON companion adds --json. No witness option.
+Both real network-enabled commands exit0, stderr empty. Trusted scanner code runs
+from this repository; no target/application code executes.
+
+**Actual:33 /51 measured,64.70588235294118% coverage. Not51/51.**
+Total26.550874794502747 libyears; mean0.8045719634697803;
+median0.8462138558382133; maximum1.897372996584024. Numerics cover the measured
+subset; the entire repository total remains incomplete. All33 admitted public
+lookups produced usable selected/latest dates. No final registry failure occurred.
+All33 comparator bases are conventional_public_policy; explicit_testimony0,
+repository_mapping0. Source populations A2/3 occurrences, B1 8/48, B2 0/0;
+measured A3 and B1 30. All51 selections/populations remain established.
+
+**Remaining18: POLICY BLOCKER, nuget_comparator_ambiguous.** Each of MRCalc and
+OASim projects has exactly these9 blocked selected occurrences:
+
+| Package | Selected version |
+| --- | --- |
+| Avalonia | 0.10.19 |
+| Avalonia.Desktop | 0.10.19 |
+| Microsoft.Extensions.Configuration.Json | 10.0.14 |
+| Serilog | 4.2.0 |
+| Serilog.Expressions | 5.0.0 |
+| Serilog.Settings.Configuration | 9.0.0 |
+| Serilog.Sinks.Console | 6.0.0 |
+| Serilog.Sinks.File | 6.0.0 |
+| System.Configuration.ConfigurationManager | 10.0.14 |
+
+Their additive alternate-source configs supply eligibility, no unique comparator
+assignment. No private-versus-mirror assumption, namesake query or alternate/private
+request repairs it. Full exact source/package/selected/comparator/publication/age/
+reason records for all51 are retained in [measurement-oasim.csv](measurement-oasim.csv).
+No raw private feed/config/testimony data is published.
+
+Local-only preflight with socket/process creation denied establishes51 rows,
+33 capabilities and18 ambiguity refusals, no source errors. The command passes
+only those33 capabilities to the existing public worker. Private/unknown occurrences
+receive none; canonical URL validator/transport path remains unchanged. Identical
+package IDs in separately authorized projects do not authorize blocked occurrences.
+No packet capture is claimed; evidence is exact local admission and verified
+capability-only dataflow plus adversarial no-HTTP controls.
+
+Initial restricted-sandbox exact command returned33 registry_error rows immediately;
+network-enabled authorized rerun succeeded33, as did independent JSON companion.
+Classify first attempt TRANSIENT INFRASTRUCTURE (sandbox network restriction),
+not registry absence/date failure or policy failure. No TLS bypass, transport
+loosening or registry fallback was made. Final REGISTRY REALITY:33 usable results,
+18 never queried. Implementation defects2 were corrected/reviewed before any
+request; no live-discovered product/registry defect or new trust decision.
+
+Before interpretation, full baseline captures HEAD1e937015e1d242fee5597ea0fbdc4cd5c983f101,
+exact full NUL status/index,223 tracked+12 nonignored untracked bytes/modes/size/
+mtime and50 ignored names; zero relevant ignored inputs. Initial coarser ignored
+inventory10 directories was expanded to50 file names before source parsing or
+command execution. Full before/after manifests are byte-identical, SHA256
+b083c67a0a0a661a928e00537fbef52ebe41ad5b02116940b0bedd10baa09084.
+OASim is unchanged, not claimed clean; unrelated ignored bytes and atomic OS-wide
+invariance are not claimed. No cleanup/normalization/locks/witness/config changes,
+cache/credential/outside NuGet config inspection, target tests, dotnet/NuGet/MSBuild/
+restore/build/execution, private feed or archive access occurred.
+
+Private generated evidence under the authorized006-0030 temporary handoff directory:
+raw human/JSON stdout/stderr, local-authority.json, before/after manifests and
+capture/verification helpers. Parent independently recomputes all33 ages and
+sum/mean/median/max/coverage from returned timestamps (floating tolerance1e-12),
+checks all reasons and basis counts and exact integrity equality. Initial exact
+float equality probe exposed arithmetic-order rounding only; no metric change.
 
 ## Determined convergence corrections
 
