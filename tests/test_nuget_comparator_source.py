@@ -84,9 +84,13 @@ class ComparatorSourceTests(unittest.TestCase):
             self.assertEqual(data['schema_version'],3)
             ev=data['dependencies'][0]['nuget_evidence']
             self.assertIn('namespace_correspondence_assumed_by_policy',ev['comparator_limitations'])
+            self.assertIn('private_namesake_or_fork_not_excluded', ev['comparator_limitations'])
+            self.assertIn('public_lookup_discloses_package_identity', ev['comparator_limitations'])
             self.assertEqual(ev['assurance']['producer_event'],'unavailable')
             self.assertNotIn('accepted_snapshot_not_evaluated_runtime',ev['assurance']['limitations'])
             self.assertIn('assumes namespace correspondence',format_human(report,''))
+            self.assertIn('private namesake or fork', format_human(report, ''))
+            self.assertIn('does not establish acquisition', format_human(report, ''))
             self.assertTrue(self.urls)
 
     def test_mapping_public_and_private_and_exact_over_prefix_zero_http(self):
@@ -103,10 +107,30 @@ class ComparatorSourceTests(unittest.TestCase):
                 self.assertEqual(report.unmeasurable[0].reason,expected)
                 self.assertEqual((self.calls,self.urls),([],[]))
 
-    def test_alternate_local_unsupported_and_source_property_never_reach_http(self):
-        cases=[(files_for(),config(source()+source('private','https://private.invalid')),'nuget_comparator_ambiguous'),
-               (files_for(),config(source('local','/local/feed')),'nuget_comparator_ambiguous'),
-               (files_for(),'<configuration><unknown /></configuration>','nuget_comparator_unknown')]
+    def test_alternate_eligibility_measures_nonzero_age_without_stronger_assurance(self):
+        for unsupported in (False, True):
+            for endpoint in ('https://alternate.invalid/v3/index.json', '/local/feed'):
+                for public_entry in ('', source()):
+                    with self.subTest(unsupported=unsupported, endpoint=endpoint, public=bool(public_entry)):
+                        files = files_for(unsupported=unsupported)
+                        lock = json.loads(files['packages.lock.json'])
+                        lock['dependencies']['net10.0']['Example']['resolved'] = '1.0.0'
+                        files['packages.lock.json'] = json.dumps(lock).encode()
+                        report = self.scan(files, configs=(config(public_entry+source('other', endpoint)),))
+                        self.assertEqual(report.summary.coverage, 1.0)
+                        row, = report.measurements
+                        self.assertEqual(row.libyears, 1.0)
+                        evidence = row.dependency.nuget_evidence
+                        self.assertEqual(evidence.comparator_basis, 'conventional_public_policy')
+                        self.assertEqual((evidence.origin_state, evidence.content_hash_state),
+                                         ('unavailable', 'unavailable'))
+                        self.assertEqual(self.calls[-1].namespace_basis, 'conventional_public_policy')
+                        self.assertTrue(self.urls)
+
+    def test_unsupported_policy_mapping_and_source_property_never_reach_http(self):
+        cases=[(files_for(),'<configuration><unknown /></configuration>','nuget_comparator_unknown'),
+               (files_for(),config(source(), mapping('public','Ex?mple'), closed=True),'nuget_comparator_unknown'),
+               (files_for(),config(source(), mapping('public','Example')),'nuget_comparator_unknown')]
         files=files_for(); files['Witness.csproj']=files['Witness.csproj'].replace(b'</Project>',
             b'<PropertyGroup><RestoreSources>https://private.invalid</RestoreSources></PropertyGroup></Project>')
         cases.append((files,config(source()),'nuget_comparator_unknown'))
@@ -134,9 +158,21 @@ class ComparatorSourceTests(unittest.TestCase):
             files=files_for(public=True)
             witness=json.loads(files['witness.json']);witness['packages'][0]['namespace']=namespace
             files['witness.json']=json.dumps(witness).encode()
-            report=self.scan(files,witnesses=(('a/Witness.csproj','witness.json'),))
+            report=self.scan(files, configs=(config(source('other','https://alternate.invalid')),),
+                             witnesses=(('a/Witness.csproj','witness.json'),))
             self.assertEqual(report.unmeasurable[0].reason,'unsupported_dependency_source')
         self.assertEqual((self.calls,self.urls),([],[]))
+
+    def test_public_testimony_cannot_repair_private_or_conflicting_mapping(self):
+        files = files_for(public=True)
+        entries = source()+source('other','https://alternate.invalid')
+        for maps, reason in ((mapping('other','Example'), 'nuget_comparator_private'),
+                             (mapping('other','Example')+mapping('public','Example'),
+                              'nuget_comparator_ambiguous')):
+            report = self.scan(files, configs=(config(entries, maps, closed=True),),
+                               witnesses=(('a/Witness.csproj','witness.json'),))
+            self.assertEqual(report.unmeasurable[0].reason, reason)
+            self.assertEqual((self.calls, self.urls), ([], []))
 
     def test_valid_whole_witness_missing_row_may_cascade_invalid_whole_may_not(self):
         report=self.scan(files_for(),witnesses=(('a/Witness.csproj','witness.json'),))

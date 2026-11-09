@@ -18,7 +18,6 @@ class ComparatorDecision:
 UNKNOWN = ComparatorDecision(reason='nuget_comparator_unknown')
 PRIVATE = ComparatorDecision(reason='nuget_comparator_private')
 AMBIGUOUS = ComparatorDecision(reason='nuget_comparator_ambiguous')
-ELIGIBILITY = ComparatorDecision(reason='nuget_comparator_ambiguous', testimony_can_resolve=True)
 CONVENTIONAL = ComparatorDecision(basis='conventional_public_policy', testimony_can_resolve=True)
 MAPPED = ComparatorDecision(basis='repository_mapping', testimony_can_resolve=True)
 
@@ -69,8 +68,8 @@ class RepositoryComparatorPolicy:
             return PRIVATE
         if 'packageSources' in self.closed and PUBLIC_ORIGIN not in enabled.values():
             return PRIVATE
-        if any(value != PUBLIC_ORIGIN for value in enabled.values()):
-            return ELIGIBILITY
+        # Unassigned acquisition-source eligibility does not select a different
+        # publication history. Positive assignment/exclusion gates above still do.
         return CONVENTIONAL
 
 

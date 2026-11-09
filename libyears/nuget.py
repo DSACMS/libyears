@@ -290,7 +290,9 @@ def read_nuget_source(root: Path, project_name: str,
                                 comparator_limitations=((
                                     'nuget_org_conventional_reference',
                                     'namespace_correspondence_assumed_by_policy',
-                                    'external_configuration_not_inspected')
+                                    'external_configuration_not_inspected',
+                                    'private_namesake_or_fork_not_excluded',
+                                    'public_lookup_discloses_package_identity')
                                     if basis == 'conventional_public_policy' else ()))
                     if isinstance(authority, LocalAuthorityFailure):
                         reason = authority.reason

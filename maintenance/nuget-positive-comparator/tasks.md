@@ -4,7 +4,7 @@ Approved P1–P5 spec and plan govern, dispositions in reviews.md. No implementa
 before graph approval. One local commit per completed task; no push. No current
 OASim interpretation or metadata request before P2 convergence.
 
-- [ ] P1 — Admission, disclosures and behavioral verification. Predecessor approved
+- [x] P1 — Admission, disclosures and behavioral verification. Predecessor approved
   graph. AC1–AC5: remove only eligibility veto/unused result, retain all terminal
   gates and source cascade. Add two conventional limitations and truthful default
   human note. Update obsolete pure/source/native eligibility expectations. New
@@ -44,3 +44,12 @@ All required implementation and live work is explicitly authorized by the initia
 human after product selection; reviews are internal quality gates, not repeated
 permission requests. No parser expansion, metric/sibling change, CI/performance/
 retrospective framework, new ecosystem or history rewrite.
+
+P1 complete:32 focused policy/source tests OK/1 case-alias skip; broader318 tests
+OK/1skip. Initial broader invocation named nonexistent test_nuget_supervisor;
+corrected module list passes (command error, not product failure). Full783 tests
+OK/1skip in15.917s; capability-disabled783 OK/57 expected native skips in13.568s;
+real-worker3 PASS. Changed-code stdin scan0; diff/whitespace PASS. All newly
+admitted alternate A/B1 fixture ages1.0, actual adapter/codecs, no real HTTP/process.
+No target access yet. Exact assertions retain private/conflicting/unknown/exclusion
+zero capabilities/URLs and separate conventional assurance. Local P1 commit follows.

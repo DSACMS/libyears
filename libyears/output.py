@@ -617,6 +617,8 @@ def _nuget_policy_lines(*, verbose=False, conventional=False, automatic=False) -
     ]
     if conventional:
         lines.insert(1, "Conventional nuget.org comparison assumes namespace correspondence; external configuration is uninspected.")
+        lines.insert(2, "A private namesake or fork may have a different history; public lookup discloses the package identity.")
+        lines.insert(3, "Comparator policy does not establish acquisition, content correspondence or producer/restore history.")
     if not verbose:
         return lines
     return lines + [

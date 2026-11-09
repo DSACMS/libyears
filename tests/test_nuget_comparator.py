@@ -51,12 +51,18 @@ class ComparatorPolicyTests(unittest.TestCase):
             self.assertEqual(decision.basis, 'conventional_public_policy')
             self.assertIsNone(decision.reason)
 
-    def test_alternate_and_local_eligibility_are_ambiguous_not_private(self):
+    def test_unassigned_alternate_and_local_eligibility_allow_convention(self):
         for endpoint in ('https://alternate.invalid/v3/index.json', '/local/feed', 'C:\\feed'):
             for entries in (source('other', endpoint), source()+source('other', endpoint)):
                 decision = self.decide(config(entries))
-                self.assertEqual(decision.reason, 'nuget_comparator_ambiguous')
+                self.assertEqual(decision.basis, 'conventional_public_policy')
+                self.assertIsNone(decision.reason)
                 self.assertTrue(decision.testimony_can_resolve)
+
+    def test_resolved_disabled_alternate_retains_public_convention(self):
+        text = config(source()+source('other', '/local/feed'),
+                      disabled='<add key="other" value="true" />')
+        self.assertEqual(self.decide(text).basis, 'conventional_public_policy')
 
     def test_closed_unique_mapping_to_public_and_private(self):
         entries = source()+source('private', 'https://private.invalid')
@@ -142,7 +148,7 @@ class ComparatorReaderTests(unittest.TestCase):
         self.assertEqual(self.decide().basis, 'conventional_public_policy')
         path = self.root/'NuGet.Config'
         path.write_text(config(source('private', '/local/feed')))
-        self.assertEqual(self.decide().reason, 'nuget_comparator_ambiguous')
+        self.assertEqual(self.decide().basis, 'conventional_public_policy')
         path.write_text(config(source()))
         self.assertEqual(self.decide().basis, 'conventional_public_policy')
 
@@ -181,7 +187,7 @@ class ComparatorReaderTests(unittest.TestCase):
         path.write_text(config(source('other', '/local/feed')))
         before = subprocess.check_output(['git', '-C', str(self.root), 'status', '--porcelain'])
         with patch('subprocess.Popen', side_effect=AssertionError('no runtime Git')):
-            self.assertEqual(self.decide().reason, 'nuget_comparator_ambiguous')
+            self.assertEqual(self.decide().basis, 'conventional_public_policy')
         self.assertEqual(subprocess.check_output(['git', '-C', str(self.root), 'status', '--porcelain']), before)
 
     def test_in_place_config_mutation_with_restored_mtime_refuses(self):
