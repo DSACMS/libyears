@@ -20,7 +20,7 @@ per completed task; no push. No live target lookup before K3 convergence.
   mixed partial numerical coverage, public missing package/version and transport.
   Focused comparator/A/B1/testimony/registry/transport/output/mixed/sibling checks;
   full deterministic/capability-disabled full/real-worker3/diff; local commit.
-- [ ] K3 — Documentation and independent pre-live convergence. Predecessor K2.
+- [x] K3 — Documentation and independent pre-live convergence. Predecessor K2.
   C1–C6: current README/SPEC/AGENTS/CHANGELOG/ROADMAP checkpoint and durable matrix
   verification record; freeze. Fresh non-author decomposed authority/config,
   A/output/compatibility and registry/worker/verification reviews; parent validate
@@ -52,3 +52,9 @@ explicitly patched, real ordinary readers always return policy or unknown. Initi
 new author fixtures corrected for TransportFailure value/JSON shape/inline-page
 identifier; old native tests updated for newly authorized convention. Precision
 output regressions PASS. Diff check PASS.
+
+K3 runtime convergence COMPLETE: initial floor/worker scopes CONVERGED; authority
+REVISE2 findings validated/corrected4e0e60b and fresh closure APPROVE126focused/
+1skip+6probes. Final full780/1skip, capability780/57skip,worker3PASS. GitLeaks
+exit1 verified prose falsepositive unsuppressed; separate human security/publication
+gate, no clean scan claimed. K4 read-only measurement authorized to proceed.

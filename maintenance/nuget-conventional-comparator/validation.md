@@ -66,3 +66,19 @@ returns a concrete supported or unknown policy. Explicit precision stays unchang
 Pending K3 convergence and exact target baseline. No ages/lookup success inferred
 from test fixtures or historical51 inventory. Actual result will replace this pending
 operational section after authorized K4 attempt; no predetermined33/51 or51/51.
+
+## Determined convergence corrections
+
+Initial authority review REVISE is preserved in reviews.md; two runtime defects
+were validated and corrected in4e0e60b. Explicit public exclusions now precede
+resolvable alternate eligibility, and config file ctime changes refuse despite
+restored mtime.107 focused successful/1 alias skip. Corrected full780 successful
+in15.195s/1 alias skip; capability-disabled780 successful in13.381s/57 native skips;
+real-worker3 PASS in5.248s. Fresh correction closure COMPLETE APPROVE126focused/1alias skip+6probes;
+runtime convergence complete before live access.
+
+GitLeaks canonical actual config/full311-commit scan exit1: one verified prose
+false positive in the committed specification. No credential was found, but no
+clean scan is claimed. Ignore/config/history are unchanged; a new exact suppression
+requires human authority. Independent review distinguishes publication/security
+closure from authorized read-only measurement after runtime convergence.

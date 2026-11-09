@@ -57,3 +57,15 @@ a new exact suppression/publication needs human authority. C6/K3 requires scan/
 reporting, not a clean-pass predecessor to read-only public measurement; independent
 review confirms this does not establish a runtime blocker. No clean security or
 publication closure is claimed. Target identities/secrets have not been disclosed.
+
+## Fresh correction closure and pre-live disposition
+
+Fresh non-author converge_closure COMPLETE APPROVE4e0e60b;126 focused successful/
+1 alias skip plus6 independent precedence probes. Both exclusions and detectable
+ctime mutation refuse, while mapping and eligibility-only testimony stay intact.
+Parent validates report against exact diff/new negative controls and its original
+candidate reproductions. Final full780successful/1 skip, capability780/57 skips,
+worker3PASS. Earlier floor/worker scopes remain covered; no majority vote.
+Runtime/spec/plan/tests/output convergence COMPLETE before any target access.
+GitLeaks prose false positive remains publication/security-policy gate, not a
+claim of clean security closure. Proceed K4 under explicit read-only authority.
