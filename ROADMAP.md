@@ -580,8 +580,15 @@ alone is no comparator veto; positive assignment/exclusion/conflicting testimony
 unknown package-specific semantics remain terminal. No acquisition/content/history
 claim. The [prospective correction](maintenance/nuget-positive-comparator/spec.md)
 specification, plan and sequential task graph are independently approved; P1 runtime
-and deterministic verification complete, independent pre-live convergence pending.
-No new real OASim result is asserted before that gate. Stronger assurance/parser/
+and deterministic verification complete; independent pre-live convergence COMPLETE.
+Actual ordinary human/JSON: **51/51 measured,100% coverage**, total51.77572640368723,
+mean1.015210321640926,median1.3155551897482698,max3.630960922059979. All51
+conventional_public_policy results usable,zero registry failures; all18 formerly
+ambiguous rows authorized under the new human-selected policy. No alternate/private
+endpoint contacted; exact target before/after equality. Full
+[validation](maintenance/nuget-positive-comparator/validation.md) retains dates,
+51-occurrence CSV and review limits. Security remains separately green with exact
+exceptions. Independent operational closure is recorded in the correction reviews. Stronger assurance/parser/
 CI/performance/retrospective work remains separate; no sibling semantic change.
 
 ### 18. Bounded static C# project parser expansion

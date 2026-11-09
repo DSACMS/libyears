@@ -26,7 +26,7 @@ OASim interpretation or metadata request before P2 convergence.
   fresh closure; new consequential choice stops. Require complete convergence,
   unchanged frozen candidate, stdin new-doc scan, canonical history GitLeaks0,
   whitespace and local documentation/convergence commit. No target lookup yet.
-- [ ] P3 — Read-only real operation, independent audit and closure. Predecessor P2.
+- [x] P3 — Read-only real operation, independent audit and closure. Predecessor P2.
   AC7: capture established exact OASim before state; guarded production admission
   records all source-qualified occurrences/bases/capabilities/refusals with zero
   network/process attempts. Then run exact ordinary command and JSON via existing
@@ -58,3 +58,12 @@ P2 complete: approved documentation checkpoint prepared; fresh trust and compati
 convergence COMPLETE CONVERGED, parent validates all13 frozen digests and14 negative
 probes. No material findings. Canonical GitLeaks322commits0/new-doc stdin0/diffPASS;
 local P2 commit and postcommit security gate precede any P3 target interpretation.
+
+P3 complete: guarded51capabilities before lookup; exact ordinary/JSON network-enabled
+commands exit0/emptyerr,51/51measured100%,all18previousrefusals authorized. All51
+conventional,registry failures0; exact metrics and51-rowCSV in validation. Parent
+and fresh operational reviewer independently verify every row/aggregate/human join;
+COMPLETE APPROVE, no material findings. Before/after/final manifests exactly equal;
+no target/alternate/private access beyond authorized bounded read/public metadata.
+Final stdin/docs/history/whitespace checks and closure commit required; external
+handoff records postcommit gate/clean tree, no current ledger append or push.

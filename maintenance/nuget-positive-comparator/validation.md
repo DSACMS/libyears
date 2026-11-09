@@ -33,3 +33,76 @@ predicted. After independent pre-live convergence, use exact manifest contract a
 only the approved public registry worker; then independent all-occurrence/aggregate
 verification, exact after/final equality and truthful registry failures. Temporary
 raw evidence stays outside Git; no alternate endpoint or target execution permitted.
+
+## Exact ordinary and JSON measurement
+
+After pre-live convergence and committed9313465, capture before any current target
+interpretation. Exact human-authorized ordinary command `python3 -m libyears
+OASIM_ROOT`, then the same command with `--json` (OASIM_ROOT is the exact authorized
+checkout). Both scoped network-enabled runs exit0 with empty stderr.
+
+**51 /51 measured;100% coverage. All18 formerly ambiguous occurrences authorized
+and measured.** Repository/ecosystem summary:
+
+| Metric | Exact JSON value |
+| --- | ---: |
+| total libyears | 51.77572640368723 |
+| mean | 1.015210321640926 |
+| median | 1.3155551897482698 |
+| maximum | 3.630960922059979 |
+
+Comparator basis counts: conventional_public_policy51,explicit_testimony0,
+repository_mapping0. A2sources/3occurrences plus B1 8sources/48occurrences,
+B2zero; all51 selected versions independently admitted before lookup. Final
+registry failures0,source errors0,unmeasurable0; every authorized public result
+supplies usable selected/latest dates. No fabricated completeness or date fallback.
+This measures the bounded supported direct snapshot population, not deployment.
+
+Guarded production staging before public access records51 occurrence-specific
+capabilities and zero refusals, with socket/process/HTTP entry points denied and
+zero calls. The same nine identities in each MRCalc and OASim project now receive
+conventional authority by the newly accepted policy, not evidence that the CI feed
+is a mirror/public/private namespace. All51 retain unavailable acquisition/content/
+producer assurance and explicit conventional limitations. No namesake query grants
+authority. Known private/conflicting/unknown negative controls remain zero HTTP.
+The unchanged public URL validator and capability-only worker dataflow cannot use
+the alternate URL; no alternate/private endpoint was contacted. No packet capture
+or actual historical source proof is claimed.
+
+Initial restricted-network ordinary attempt exits0 with51 registry_error rows,
+retained separately as sandbox-human evidence. Scoped network-enabled rerun
+succeeds51, followed by JSON51. This is transient sandbox transport restriction,
+not missing registry records or policy refusal. TLS/HTTP/date/budget behavior is
+unchanged and no alternate endpoint or fallback was used.
+
+Parent independently joins every JSON row against pre-metadata source identity/
+selection/basis, recomputes all51 ages from returned timestamps (tolerance1e-12),
+checks anomaly flags/exact-zero and publication identity/listing facts, repository/
+NuGet/per-source aggregates, all human table rows with following source identity,
+and rounded human summary. All pass. Full51 occurrence projection retained in
+[measurement-oasim.csv](measurement-oasim.csv). Existing arithmetic unchanged.
+
+Before and after manifests byte-identical SHA256:
+58569f6fc3a885b90ffd3a1d8937f71721f4d918affe44a412cf018529aac731.
+Coverage: target HEAD/full NUL status/index;223 tracked+12 nonignored untracked
+bytes/mode/size/mtime;50 ignored names;zero relevant ignored inputs. HEAD remains
+1e937015e1d242fee5597ea0fbdc4cd5c983f101. No cleanup/normalization, target writes,
+target/application execution/tests, dotnet/NuGet/MSBuild/restore/build, new locks,
+witnesses/config, ignored assets, caches/credentials/outside NuGet config or archives.
+Target is unchanged, not claimed clean; unrelated ignored bytes/atomic OS-wide
+invariance not claimed. Final manifest equality is also required at closure.
+
+Raw outputs, guarded admission, trusted capture/verification scripts and manifests
+remain outside Git under current006-0032 temporary evidence. Live11-file evidence
+freeze SHA256d30a57fd26243595a5e169ec475012efe9b8ccba9118a328ad34024f2196c3a8;
+independent operational review and final security/closure disposition in reviews.md.
+No further runtime change follows real lookup. No push or hosted success claim.
+
+## Operational approval and final integrity
+
+Fresh non-author operational audit COMPLETE APPROVE (reviews.md): independently
+recomputed every occurrence/summary, human/JSON/CSV and exact live freeze, with no
+material finding.20 exact-zero values,0timestamp anomalies; parent verifies both.
+Final target manifest equals before/after byte-for-byte with the same SHA256 above.
+No further runtime correction or new trust decision. Final committed security and
+clean-tree result are retained in current006-0032 handoff; no push.

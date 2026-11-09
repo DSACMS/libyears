@@ -55,3 +55,41 @@ Canonical current322-commit gate PASS/zero unsuppressed; new current documentati
 stdin scan0 and whitespace PASS. P2 commit freezes exact reviewed candidate with
 this disposition; postcommit gate must pass before P3. Real operation/yield remains
 unverified. No new product/schema/parser or trust decision inferred by approval.
+
+## Independent operational closure — candidate9313465
+
+Fresh non-author p1_operational COMPLETE APPROVE, no material findings. No new
+target reads/network/helper execution by reviewer. Independently recomputes all51
+source/identity/selection/basis joins, publication/age/anomaly/exact-zero facts,
+repository/NuGet/all10source aggregates, all human rows/per-source/global rounding
+and exact CSV projection.20 exact zeros,0anomalies;48B1+3A preserved. All18 previously
+ambiguous occurrences independently joined to the historical CSV: same selected
+versions, now authorized and measured. All51 conventional, no stronger testimony/
+acquisition/content/producer assertions. No final failures; restricted sandbox51
+transport errors retained separately. Parent independently verifies same results.
+
+All11 live evidence digests verified by reviewer before/after and parent at closure;
+freeze manifest SHA256d30a57fd26243595a5e169ec475012efe9b8ccba9118a328ad34024f2196c3a8.
+Before/after/final target manifests byte-identical SHA256
+58569f6fc3a885b90ffd3a1d8937f71721f4d918affe44a412cf018529aac731.
+Reviewer confirms required capture scope, capability-only worker dataflow and
+canonical HTTPS metadata validation/redirect refusal. No packet capture or actual
+acquisition provenance claimed. Parent final integrity also passes; no target
+cleanup/writes/execution, alternate/private feed, outside NuGet config or archive.
+
+P3 all51 actual ordinary/JSON results usable,100%coverage,total51.77572640368723,
+mean1.015210321640926,median1.3155551897482698,max3.630960922059979;
+registry failures0. No runtime change after pre-live convergence; no repeated full
+suite needed for this documentation-only closure. Final whitespace, current-doc
+stdin and canonical GitLeaks required before closure commit, postcommit result
+recorded in external handoff. No additional exception/suppression/config change.
+
+Prior006-0031 recorded exactly once from original44-key baton plus supplied session/
+model/provider/effort/version/runtime572s/account89/91; runtime/confounding and
+prior ledger bytes retained, no derived credit delta. Current006-0032 inherits
+before91 and has no observed runtime/after counter; current/children not appended.
+Current44-key handoff outside Git. Five local commits comprise prior discovery/
+observation freeze, approved lifecycle, P1, P2 and P3 closure. No push/release/tag/
+history rewrite, metric/schema/sibling change or ancillary CI/performance/parser/
+retrospective work. Next gate HUMAN PRE-PUSH / PUBLICATION AUTHORIZATION, followed
+by actual hosted platform evidence; local convergence is not a hosted pass.
