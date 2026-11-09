@@ -230,3 +230,24 @@ No OASim access/change/investigation, target execution, push or publication.
 **Exact next gate: HUMAN PRE-PUSH / PUBLICATION AUTHORIZATION**, then actual
 hosted Windows and required CI/security observation on the repaired published
 candidate before operational closure. Corrected hosted Windows remains UNOBSERVED.
+
+## Repaired published candidate: supplied hosted evidence — 006-0025
+
+The commissioning human supplies hosted results for exact published commit
+`70b458330bba5868c54ab1e6585a1f400a3cbf90`: Microsoft Windows Server 2025,
+`windows-2025-vs2026`, Python 3.11. Both portability witnesses now PASS:
+`test_absent_required_flags_refuse_before_any_open` and
+`test_each_required_capability_refuses_before_any_open`. The complete hosted
+suite reports 703 tests PASS with 49 expected skips; dedicated real-worker suite
+3 PASS. The human reports all required hosted checks green. These are accepted
+human-supplied post-publication observations, not agent-retrieved CI logs or
+independently replicated Windows execution.
+
+This closes the repaired candidate's previously unobserved hosted-evidence gate
+on the supplied basis. The failed published 1b834d2 witness, test-only repair,
+and original local 006-0024 convergence claim above remain unchanged historical
+evidence. No new process task, runtime change, publication or push is performed.
+The pending 006-0024 observation handoff remains unchanged; no missing telemetry
+is reconstructed. The separate next population investigation is
+[006-0025](../../discovery/nuget-population-basis.md), not a reopened cascade or
+portability decision.

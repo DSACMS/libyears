@@ -399,19 +399,35 @@ provider adoption. Publication/actual hosted witnesses remain separate authority
 
 ### 14. NuGet project population and retained lock population
 
-**State:** EXPLORE; evidence-backed future work, no parser/population change selected.
+**State:** EXPLORE; run `006-0025` completes a fresh ten-project investigation
+and independent review for a HUMAN PRODUCT / POPULATION-AUTHORITY DECISION.
+No parser/population change is selected or implemented.
 
 **Area:** NuGet directness/context and ordinary usefulness
 
-**Opportunity:** Compare bounded declaration-parser extensions with an explicitly
-qualified, bound lock-Direct snapshot population convention. Avoid reimplementing
-MSBuild or silently claiming current/evaluated completeness from a historical lock.
+**Opportunity:** Select the smallest truthful population basis: bounded static
+declaration support versus explicitly accepted bound snapshot fallback. Avoid
+reimplementing MSBuild or claiming current/evaluated completeness from a lock.
 
-**Evidence:** OASim retains ten single-framework schema1 locks; current conservative
-parser accepts only Updater/Profiling (3 direct occurrences), rejecting eight whole
-populations. Conditions, ancillary unrecognized properties/items and Update/Remove
-shapes are observed parser limitations, not missing acquisition provenance.
-The cascade deliberately chooses declaration-first A as the smallest migration.
+**Evidence:** Fresh enumeration finds ten sole-net10.0 schema1 locks with 51 Direct
+records, matching 51 literal references and normalized requests, with supported
+selected versions throughout. This agreement is not an accepted denominator.
+Current A accepts only Updater/Profiling (3 occurrences); eight reject for exact
+ancillary-property, conditional-output or resource/item rules, not observed
+conditional PackageReferences. Property-table corrections could admit 6/16;
+narrow None Update support could reach 7/25. Broader inert-only grammar or an
+independently bound snapshot basis could potentially reach 10/51, subject to
+approval and acceptance. Neither automatically establishes currentness or absence
+of implicit SDK references. The implemented cascade retained A deliberately.
+
+**Recommendation:** An explicit, bound snapshot-population fallback for human
+consideration, preserving explicit external direct scope, context/byte association,
+known-conflict refusal and visible population basis. No silent fallback or reuse
+of old witness meanings. Namespace remains a separate prerequisite: existing
+Updater testimony matches current bytes but requires explicit acceptance; no
+automatic ordinary-file public authority was established. Registry dates remain
+untested. Windows portability is separately closed on human-supplied repaired
+70b4583 hosted evidence, without revising 006-0024's original local convergence.
 
 **Success signal:** A separately selected directness/context contract admits useful
 retained snapshots with truthful denominators and explicit stale/context limits.
@@ -419,8 +435,11 @@ retained snapshots with truthful denominators and explicit stale/context limits.
 **Stop condition:** Resolver/target execution, fabricated51 count, silent A/B mixing,
 implicit/auto-reference scope or unapproved completeness testimony.
 
-**References:** [A/B determination](maintenance/measurement-evidence-cascade/spec.md#lock-and-population-determination-c3),
-[exact operational blockers](maintenance/measurement-evidence-cascade/validation.md).
+**References:** [Ten-project audit and alternatives](discovery/nuget-population-basis.md),
+[independent review](discovery/nuget-population-basis-review.md),
+[historical A/B determination](maintenance/measurement-evidence-cascade/spec.md#lock-and-population-determination-c3),
+[exact prior operational blockers](maintenance/measurement-evidence-cascade/validation.md),
+[post-publication Windows evidence](maintenance/measurement-evidence-cascade/reviews.md#repaired-published-candidate-supplied-hosted-evidence--006-0025).
 
 ### 15. Python/npm positive public namespace authority
 
