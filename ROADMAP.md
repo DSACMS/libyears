@@ -515,19 +515,38 @@ selection. This does not remove independent namespace authority or generalize to
 all human gates. Preserve for planned reusable retrospective framework; no framework
 is created here.
 
-### 17. NuGet namespace-authority automation
+### 17. NuGet comparator/public-namespace authority
 
-**State:** EXPLORE; no implementation selected.
+**State:** EXPLORE; frozen006-0029 discovery, HUMAN PRODUCT /
+NAMESPACE-AUTHORITY DECISION required. No automatic policy selected.
 
-**Opportunity:** Independently establish applicable publication namespace from
-sufficient retained evidence without a public-namesake assumption.
-**Evidence:** Accepted snapshot population and lock Direct cannot supply namespace.
-OASim's current unmapped evidence still authorizes zero new public requests.
-The existing cascade already separates optional acquisition/content assurance.
-**Success signal:** New explicitly approved trust contract with private/conflicting
-negative controls. **Stop condition:** Unknown/private namespace uses nuget.org.
-**Reference:** [Cascade](maintenance/measurement-evidence-cascade/spec.md),
-[snapshot P3](maintenance/nuget-snapshot-population/spec.md).
+**Opportunity:** Establish the applicable publication comparator from positive
+repository-contained policy, independently of acquisition/content/producer history.
+**Evidence:** [Discovery](discovery/nuget-namespace-authority.md),
+[all51 occurrence audit](discovery/nuget-namespace-authority-oasim.csv) and
+[independent review](discovery/nuget-namespace-authority-review.md). Closed unique winning public mapping may support a deliberately CURRENT
+comparator convention; a sole-public repository-only/no-mapping convention needs
+separate acceptance because machine default sources can survive repository clear; open inheritance, multiple eligible sources, namesakes and
+absence do not. OASim has two additive alternate configs/no mapping and eight
+absent configs: zero51 newly authorized. No package queries/ages. Existing explicit
+v1/v2/v3 namespace route remains; stronger assurance stays21.
+
+**Separate A-floor opportunity:** A2/3 stops on whole baseline testimony while
+B1 8/48 stages selection before namespace. Hidden baseline facts remain real, but
+a future current-pair policy could remove unnecessary unrelated admission burden
+without pretending to prove them. Requires separate human contract decision;
+no A correction, parser18 expansion or evaluated19 execution selected.
+
+**Success signal:** Human-selected precise comparator claim, closed positive source
+assignment and private/conflicting negative controls; prospective spec/review before
+implementation. **Stop condition:** Public existence/default convention/unknown or
+private source substitutes nuget.org, or config is called acquisition history.
+
+**Retrospective input:** Claim decomposition can reveal stronger assurance made an
+unnecessary floor; human gates may scaffold unknown boundaries until reusable policy
+is deliberately selected. Ordinary-user smoke tests product intent; hosted checks
+are asynchronous evidence and do not replace synchronous trust authority. No reusable
+retrospective framework created. [Existing cascade](maintenance/measurement-evidence-cascade/spec.md).
 
 ### 18. Bounded static C# project parser expansion
 
@@ -577,6 +596,15 @@ assurance without becoming an unnecessary version-age prerequisite.
 history/source or bundling target execution into the consumer.
 **Reference:** [Cascade](maintenance/measurement-evidence-cascade/spec.md),
 [qualified policy](maintenance/nuget-repository-snapshot/spec.md).
+
+### 22. Test-suite performance profiling
+
+**State:** WATCH; no optimization selected.
+**Evidence:** Supplied exact b449c5d Windows full suite ran751 tests in159.702s,
+with51 expected skips and worker3 PASS. This duration is not a diagnosis or evidence
+of a candidate defect. **Success signal:** Separately scoped profiling identifies
+measured causes before optimization. **Stop condition:** Bundling performance work
+into namespace discovery or weakening deterministic/platform witnesses.
 
 ## Selected Work Moved into SDD
 

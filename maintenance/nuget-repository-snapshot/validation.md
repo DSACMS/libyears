@@ -128,3 +128,17 @@ Q1–Q5 and all20matrix cases; no vote. No runtime correction follows the751 ful
 751 capability/3 worker passes. Canonical committed R3 history303commits/no leaks;
 final closure-only history/integrity/clean-tree checks are in the external handoff.
 R1–R4 COMPLETE / locally CONVERGED; actual hosted platforms remain future evidence.
+
+## Published candidate supplied Windows evidence — 006-0029
+
+Human-supplied at investigation start for exact candidate
+`b449c5ddbbd2c5c702e03ab112511f89996e0482`: Microsoft Windows Server 2025,
+windows-2025-vs2026, CPython 3.11.9. Dedicated real-worker suite **3 PASS**;
+full suite **751 tests in 159.702 seconds, OK with 51 expected platform skips**;
+`git diff --check` completed. Prior portability witnesses remain PASS and new
+repository-snapshot/B1 tests execute successfully on Windows. This is supplied
+hosted evidence, not logs independently fetched or a new local Windows execution.
+Other candidate hosted jobs may remain pending; none is declared passed without
+observed evidence. No candidate defect is supplied. Runner capacity/queueing is
+infrastructure, and recurring action-runtime/punycode warnings remain separate
+maintenance observations. No CI maintenance or test optimization is performed.
