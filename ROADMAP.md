@@ -615,7 +615,8 @@ resolver. **Reference:** [Snapshot limitations](maintenance/nuget-snapshot-popul
 
 ### 20. Hosted action-runtime maintenance observations
 
-**State:** WATCH; no CI implementation selected.
+**State:** WATCH for upstream managed Pages warnings; owned action maintenance
+completed in006-0035, pending separately authorized publication/hosted validation.
 **Evidence:** Human-supplied72dc9a2 hosted checks ultimately GREEN. Recurring
 checkout@v4/setup-node@v4 Node20-to-Node24 runtime warning likely belongs to
 repository action maintenance. deploy-pages@v5 DEP0040 punycode ownership and
@@ -625,6 +626,14 @@ execute candidate/tests; successful exact-candidate rerun supplies the witness.
 necessary action updates. **Stop condition:** Treating warnings as failed checks,
 runner exhaustion as flaky tests, or bundling CI changes into population discovery.
 **Reference:** [Supplied hosted evidence](maintenance/nuget-snapshot-population/reviews.md#published-candidate-supplied-hosted-evidence--006-0027).
+
+**006-0035 bounded outcome:** Repository checkout uses now pin supported v7.0.1;
+Tier2 setup-node pins v7.1.0, with Node22/uncached tooling preserved. **FIXED**
+locally after fresh independent executable review. Managed Pages punycode and
+upload-artifact runtime warnings are **UPSTREAM / MONITOR**, not candidate failures.
+Reconsider on a relevant supported upstream fix or actual deployment failure;
+no repository Pages redesign. Exact ownership, compatibility, hosted results and
+limits are in [the housekeeping record](maintenance/post-006-housekeeping.md).
 
 ### 21. Stronger NuGet producer assurance
 
@@ -648,6 +657,19 @@ with51 expected skips and worker3 PASS. This duration is not a diagnosis or evid
 of a candidate defect. **Success signal:** Separately scoped profiling identifies
 measured causes before optimization. **Stop condition:** Bundling performance work
 into namespace discovery or weakening deterministic/platform witnesses.
+
+**006-0035 bounded outcome:** **UNDERSTOOD / DEFERRED**. Public metadata isolates
+the dominant Windows delay inside the offline test step, rather than queue/setup.
+Local profiling demonstrates a deliberate five-second worker negative witness and
+771 native TLS context constructions across92 Ruby tests; Windows trust-store
+cost remains a hypothesis, not an established root cause. No accidental wait was
+demonstrated, so no optimization. Reconsider with exact-candidate Windows per-test,
+TLS/subprocess/filesystem timing or recurring pressure on the20-minute budget.
+Retain native capability/refusal witnesses. [Profile and limitations](maintenance/post-006-housekeeping.md#3-runtime-disparity--understood--deferred-optimization).
+
+The same one-time sweep **FIXED** incidental CLI fixture output in three tests and
+**RECONCILED** published product/methodology/documentation hosted evidence. No
+further cleanup or Feature007 work is selected by that closure.
 
 ## Selected Work Moved into SDD
 
