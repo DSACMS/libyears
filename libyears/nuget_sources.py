@@ -94,6 +94,67 @@ class RepositoryNuGetReader(ScopedNuGetReader):
                 return False
         return True
 
+    def comparator_policy(self, project_source):
+        """Inspect only held ancestors; inability to inspect is never silence."""
+        from .nuget_comparator import parse_repository_policy, unknown_policy
+        from .nuget_input import MAX_PROJECT_BYTES
+        configs = []
+        try:
+            if not self.chain or len(self.chain) > 5:
+                return unknown_policy()
+            for directory, _, _ in self.chain:
+                before = os.fstat(directory)
+                names = []
+                count = 0
+                with os.scandir(directory) as entries:
+                    for entry in entries:
+                        count += 1
+                        if count > 10_000:
+                            return unknown_policy()
+                        lower = entry.name.lower()
+                        if lower in ('directory.build.props', 'directory.build.targets',
+                                     'directory.packages.props'):
+                            return unknown_policy()
+                        if lower == 'nuget.config':
+                            names.append(entry.name)
+                if len(names) > 1:
+                    return unknown_policy()
+                if names:
+                    name = names[0]
+                    inspected = os.stat(name, dir_fd=directory, follow_symlinks=False)
+                    if not stat.S_ISREG(inspected.st_mode) or _reparse_point(inspected):
+                        return unknown_policy()
+                    descriptor = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                                         dir_fd=directory)
+                    try:
+                        if _identity(os.fstat(descriptor)) != _identity(inspected):
+                            return unknown_policy()
+                        chunks = []
+                        remaining = MAX_PROJECT_BYTES + 1
+                        while remaining:
+                            chunk = os.read(descriptor, min(remaining, 64 * 1024))
+                            if not chunk:
+                                break
+                            chunks.append(chunk)
+                            remaining -= len(chunk)
+                        data = b''.join(chunks)
+                        final = os.stat(name, dir_fd=directory, follow_symlinks=False)
+                        if (len(data) > MAX_PROJECT_BYTES or _reparse_point(final)
+                                or _identity(final) != _identity(inspected)
+                                or _identity(os.fstat(descriptor)) != _identity(inspected)):
+                            return unknown_policy()
+                        from .nuget_input import LocalInput
+                        configs.append(LocalInput(data, data.decode('utf-8', errors='strict')))
+                    finally:
+                        os.close(descriptor)
+                after = os.fstat(directory)
+                if (_identity(before) != _identity(after)
+                        or before.st_ctime_ns != after.st_ctime_ns or not self._root_unchanged()):
+                    return unknown_policy()
+            return parse_repository_policy(tuple(configs), project_source)
+        except (OSError, ValueError, UnicodeError, NotImplementedError):
+            return unknown_policy()
+
     def __exit__(self, *unused):
         for descriptor, _, _ in reversed(self.chain):
             os.close(descriptor)

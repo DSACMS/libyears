@@ -3,7 +3,7 @@
 Spec C1–C6/approved plan govern; review disposition in reviews.md. One local commit
 per completed task; no push. No live target lookup before K3 convergence.
 
-- [ ] K1 — Inert policy primitive and bounded reader. Predecessor approved graph.
+- [x] K1 — Inert policy primitive and bounded reader. Predecessor approved graph.
   C1–C3/C6: strict config grammar/whole validation/cross-file operations, correct
   exact/prefix ranking, private/unknown/eligibility distinctions, project source
   influences and anchored case-safe bounded policy reads. Behavior tests cover
@@ -40,3 +40,7 @@ per completed task; no push. No live target lookup before K3 convergence.
 
 Traceability: C1 K1–K4; C2 K1/K2/K3; C3 K1/K2/K3; C4 K2/K3; C5 K2/K3/K4;
 C6 every task. Expected OASim33 potential is not an acceptance requirement.
+
+K1 complete:62 focused successful/1 case-alias filesystem skip. Parser/reader inert;
+no source activation. Exact private-ID over public-prefix regression and policy
+negative controls PASS. Diff check PASS.
