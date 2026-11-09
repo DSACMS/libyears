@@ -40,3 +40,12 @@ Fresh focused non-author spec_closure COMPLETE / APPROVE (private
 closed and collateral precedence/namespace/output obligations covered. Parent
 validates corrected bytes and existing count/parse behavior. Specification APPROVED;
 no new product/trust/schema decision. Approval is not majority voting.
+
+## Technical plan
+
+Frozen plan SHA256 521d81262e63908e945984d5ef60f2718f5a4876633cb040b8e39200a9e9f88d.
+Fresh non-author plan_review COMPLETE / APPROVE, no material findings. Private
+006-0026-plan-review.md covers P1–P5 against current parser/provenance/source/
+output/worker seams. Parent validates DTD/mixed-duplicate classification hazards,
+whole-B request/selection validation, B-only dispatch and safe staged count. Plan
+APPROVED; no worker/protocol/metadata or static A grammar change is necessary.
