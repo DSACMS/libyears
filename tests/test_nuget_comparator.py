@@ -168,3 +168,18 @@ class ComparatorReaderTests(unittest.TestCase):
             return original(directory)
         with patch('os.scandir', side_effect=changed):
             self.assertEqual(self.decide().reason, 'nuget_comparator_unknown')
+
+    def test_dirty_tracked_config_uses_current_bytes(self):
+        import shutil
+        import subprocess
+        if shutil.which('git') is None:
+            self.skipTest('Git only constructs the dirty-config witness')
+        path = self.root/'NuGet.Config'
+        path.write_text(config(source()))
+        subprocess.run(['git', 'init', '--quiet', str(self.root)], check=True)
+        subprocess.run(['git', '-C', str(self.root), 'add', 'NuGet.Config'], check=True)
+        path.write_text(config(source('other', '/local/feed')))
+        before = subprocess.check_output(['git', '-C', str(self.root), 'status', '--porcelain'])
+        with patch('subprocess.Popen', side_effect=AssertionError('no runtime Git')):
+            self.assertEqual(self.decide().reason, 'nuget_comparator_ambiguous')
+        self.assertEqual(subprocess.check_output(['git', '-C', str(self.root), 'status', '--porcelain']), before)

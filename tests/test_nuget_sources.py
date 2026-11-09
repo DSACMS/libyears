@@ -35,7 +35,8 @@ def repository_inputs(root, projects, *, status='complete'):
     with patch.object(sources, 'discover_nuget_candidates', return_value=inventory), \
             patch.object(sources.RepositoryNuGetReader, '__enter__', enter), \
             patch.object(sources.RepositoryNuGetReader, '__exit__', return_value=None), \
-            patch.object(ScopedNuGetReader, 'read', read):
+            patch.object(ScopedNuGetReader, 'read', read), \
+            patch.object(sources.RepositoryNuGetReader, 'comparator_policy', return_value=None):
         yield reads
 
 
@@ -204,5 +205,7 @@ class AnchoredReaderTests(unittest.TestCase):
         actual = sources.read_repository_sources(self.root)
         self.assertEqual([item.result.source_id for item in actual], ['a/A.csproj', 'bad\\name.csproj'])
         self.assertEqual([item.result.dependencies_discovered for item in actual], [1, None])
-        self.assertEqual([item.result.source_errors[0].reason for item in actual],
-                         ['nuget_provenance_missing', 'invalid_nuget_project'])
+        self.assertEqual(actual[0].result.source_errors, ())
+        self.assertEqual(actual[0].authorized_candidates[0].authority.namespace_basis,
+                         'conventional_public_policy')
+        self.assertEqual(actual[1].result.source_errors[0].reason, 'invalid_nuget_project')

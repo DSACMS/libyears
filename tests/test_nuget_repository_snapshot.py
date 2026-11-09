@@ -393,8 +393,8 @@ class RepositorySnapshotFilesystemTests(unittest.TestCase):
             source, = read_repository_sources(self.root)
         self.assertEqual(source.result.dependencies_discovered, 1)
         self.assertEqual(source.result.evidence.population_basis, 'qualified_repository_snapshot')
-        self.assertEqual(source.result.unmeasurable[0].reason, 'unsupported_dependency_source')
-        self.assertEqual(source.authorized_candidates, ())
+        self.assertEqual(source.result.unmeasurable, ())
+        self.assertEqual(source.authorized_candidates[0].authority.namespace_basis, 'conventional_public_policy')
 
     def test_non_git_directory_current_pair_needs_no_git(self):
         self.assertFalse((self.root/'.git').exists())

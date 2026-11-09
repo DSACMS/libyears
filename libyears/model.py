@@ -89,6 +89,8 @@ class NuGetEvidence:
     namespace_basis: str | None = None
     local_content_state: str | None = None
     population_basis: str | None = None
+    comparator_basis: str | None = None
+    comparator_limitations: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

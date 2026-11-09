@@ -126,7 +126,8 @@ def decode_authority(value):
         raise ValueError('authority')
     basis = value['namespace_basis']
     state = value['local_content_state']
-    if basis not in ('accepted_producer_origin', 'accepted_snapshot_namespace'):
+    if basis not in ('accepted_producer_origin', 'accepted_snapshot_namespace',
+                      'repository_mapping', 'conventional_public_policy'):
         raise ValueError('authority')
     if state not in ('local_agreement', 'mismatch', 'unavailable'):
         raise ValueError('authority')
@@ -139,7 +140,7 @@ def decode_authority(value):
             raise ValueError('authority')
     if (state == 'local_agreement') != (digest is not None):
         raise ValueError('authority')
-    if basis == 'accepted_snapshot_namespace' and state != 'unavailable':
+    if basis != 'accepted_producer_origin' and state != 'unavailable':
         raise ValueError('authority')
     return LocalAuthority(value['project_sha256'], value['lock_sha256'],
                           value['package_key'], value['normalized_version'], digest, basis, state)
@@ -179,16 +180,17 @@ def decode_result(value):
     if value['reason'] is not None and (not isinstance(value['reason'], str) or value['reason'] not in REASONS):
         raise ValueError('protocol')
     basis = value['namespace_basis']
-    if basis not in ('accepted_producer_origin', 'accepted_snapshot_namespace'):
+    if basis not in ('accepted_producer_origin', 'accepted_snapshot_namespace',
+                      'repository_mapping', 'conventional_public_policy'):
         raise ValueError('protocol')
-    origins = (('unavailable',) if basis == 'accepted_snapshot_namespace'
+    origins = (('unavailable',) if basis != 'accepted_producer_origin'
                else ('asserted_public', 'public_content_verified'))
     if value['origin_state'] not in origins:
         raise ValueError('protocol')
     if value['content_hash_state'] not in ('local_agreement', 'unavailable', 'mismatch', 'public_agreement'):
         raise ValueError('protocol')
     verified = value['origin_state'] == 'public_content_verified'
-    if basis == 'accepted_snapshot_namespace' and value['content_hash_state'] != 'unavailable':
+    if basis != 'accepted_producer_origin' and value['content_hash_state'] != 'unavailable':
         raise ValueError('protocol')
     if verified != (value['content_hash_state'] == 'public_agreement'):
         raise ValueError('protocol')

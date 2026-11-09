@@ -141,6 +141,10 @@ def _nuget_evidence_dict(evidence: NuGetEvidence) -> dict[str, Any]:
             result[field] = value
     if evidence.population_basis is not None:
         result["population_basis"] = evidence.population_basis
+    if evidence.comparator_basis is not None:
+        result['comparator_basis'] = evidence.comparator_basis
+        if evidence.comparator_limitations:
+            result['comparator_limitations'] = list(evidence.comparator_limitations)
     if evidence.measurement_basis is not None:
         result['measurement_basis'] = evidence.measurement_basis
         result['namespace_basis'] = evidence.namespace_basis
@@ -165,7 +169,9 @@ def _nuget_assurance(evidence: NuGetEvidence) -> dict[str, Any]:
     else:
         public = 'not_checked'
     producer = evidence.namespace_basis == 'accepted_producer_origin'
-    limitations = ['accepted_snapshot_not_evaluated_runtime',
+    limitations = [('policy_selected_snapshot_not_evaluated_runtime'
+                    if evidence.measurement_basis == 'public_comparator_version_age'
+                    else 'accepted_snapshot_not_evaluated_runtime'),
                    'acquisition_testimony_not_authenticated' if producer else 'acquisition_not_established',
                    'reproducibility_not_established', 'deployment_not_established']
     if public != 'public_agreement':
@@ -559,7 +565,15 @@ def _nuget_repository_disclosure(report, *, verbose=False) -> list[str]:
     ]
     # Reuse the established trust/date/scope explanation once, without claiming
     # a representative project or whole-ecosystem availability for one source.
-    lines.extend(_nuget_policy_lines(verbose=verbose))
+    conventional = any(
+        item.nuget_evidence is not None
+        and item.nuget_evidence.comparator_basis == 'conventional_public_policy'
+        for item in (*report.unmeasurable, *(m.dependency for m in report.measurements)))
+    automatic = any(
+        item.nuget_evidence is not None
+        and item.nuget_evidence.comparator_basis in ('repository_mapping', 'conventional_public_policy')
+        for item in (*report.unmeasurable, *(m.dependency for m in report.measurements)))
+    lines.extend(_nuget_policy_lines(verbose=verbose, conventional=conventional, automatic=automatic))
     for source in sources:
         summary = report.by_nuget_source[source.source_id]
         evidence = source.evidence
@@ -595,11 +609,14 @@ def _nuget_population_lines(evidence, *, verbose=False) -> list[str]:
     return lines
 
 
-def _nuget_policy_lines(*, verbose=False) -> list[str]:
+def _nuget_policy_lines(*, verbose=False, conventional=False, automatic=False) -> list[str]:
     lines = [
-        "NuGet measures accepted project/lock snapshot versions in an explicitly accepted public namespace.",
+        ("NuGet measures qualified project/lock snapshot versions against an authorized public comparator."
+         if automatic else "NuGet measures accepted project/lock snapshot versions in an explicitly accepted public namespace."),
         "Stronger assurance is separate; use --verbose or JSON to inspect evidence and limitations.",
     ]
+    if conventional:
+        lines.insert(1, "Conventional nuget.org comparison assumes namespace correspondence; external configuration is uninspected.")
     if not verbose:
         return lines
     return lines + [
@@ -708,6 +725,9 @@ def _nuget_reason_text(reason: str) -> str:
         'lock_version_missing': 'selected version missing from packages.lock.json',
         'unsupported_lock_evidence': 'unsupported selected version syntax in packages.lock.json',
         'unsupported_dependency_source': 'accepted public namespace authority unavailable; no public namesake is substituted',
+        'nuget_comparator_ambiguous': 'repository source policy leaves comparator ambiguity; no public lookup',
+        'nuget_comparator_private': 'repository policy assigns or restricts to a nonpublic comparator; no public lookup',
+        'nuget_comparator_unknown': 'repository comparator policy cannot be safely determined; no public lookup',
         'content_hash_unavailable': 'usable SHA512 content evidence unavailable',
         'content_hash_mismatch': 'content hashes disagree; content correspondence not established',
         'package_not_found': 'authorized public nuget.org package metadata absent',

@@ -2,6 +2,7 @@
 
 from dataclasses import dataclass, replace
 from pathlib import Path
+import hashlib
 import re
 
 from .model import (DependencyCandidate, NuGetEvidence, SourceError,
@@ -84,6 +85,7 @@ def read_nuget_source(root: Path, project_name: str,
     count = None
     stage = 'project'
     source_name = project_name
+    policy = None
 
     def rejected(reason: str) -> NuGetSource:
         result = SourceResult('nuget', (), (),
@@ -95,6 +97,8 @@ def read_nuget_source(root: Path, project_name: str,
     try:
         with (reader or ScopedNuGetReader(root, project_name, provenance_name)) as reader:
             project_source = reader.read(project_name)
+            if repository_snapshot and hasattr(reader, 'comparator_policy'):
+                policy = reader.comparator_policy(project_source)
             fallback = False
             try:
                 project = parse_project(project_source)
@@ -196,13 +200,28 @@ def read_nuget_source(root: Path, project_name: str,
                 # conventional witness name is invented or inspected.
                 source_name = provenance_name or project_name
                 if provenance_name is None:
-                    return rejected('nuget_provenance_missing')
-                witness_source = reader.read(provenance_name)
-                context = parse_provenance(
-                    witness_source, project_name=project_name,
-                    project_source=project_source, lock_source=lock_source, project=project)
-                if context.contract_version == 2:
-                    evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
+                    if policy is None or not unambiguous_snapshot:
+                        return rejected('nuget_provenance_missing')
+                    stage = 'lock'
+                    source_name = 'packages.lock.json'
+                    qualified = repository_snapshot_population(project_source, lock)
+                    if qualified is None:
+                        return rejected('nuget_provenance_missing')
+                    context = None
+                    evidence = replace(evidence, trust_basis='repository_current_pair_policy',
+                        population_limitations=(
+                            'policy_selected_current_repository_pair',
+                            'historical_producing_association_not_established',
+                            'current_evaluated_declaration_completeness_not_established',
+                            'supplier_baseline_not_established',
+                            'acquisition_content_deployment_reproducibility_not_established'))
+                else:
+                    witness_source = reader.read(provenance_name)
+                    context = parse_provenance(
+                        witness_source, project_name=project_name,
+                        project_source=project_source, lock_source=lock_source, project=project)
+                    if context.contract_version == 2:
+                        evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
     except NuGetInputFailure as failure:
         if stage == 'witness' and failure.witness_version == 2:
             evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
@@ -244,16 +263,48 @@ def read_nuget_source(root: Path, project_name: str,
                     authority = (LocalAuthorityFailure('unsupported_dependency_source')
                                  if context is None else authorize_measurement(
                                      context, declaration.package_key, selected, entry.content_hash))
+                    if policy is not None:
+                        decision = policy.decide(declaration.package_key)
+                        exact_testimony = (context is not None and any(
+                            item.package_key == declaration.package_key
+                            and item.normalized_version == selected.normalized_version
+                            for item in context.packages))
+                        if not decision.testimony_can_resolve:
+                            authority = LocalAuthorityFailure(decision.reason)
+                        elif isinstance(authority, LocalAuthorityFailure):
+                            # A matching private/unknown record cannot disappear
+                            # into a weaker convention. Missing records may cascade.
+                            if not exact_testimony:
+                                if decision.basis is None:
+                                    authority = LocalAuthorityFailure(decision.reason)
+                                else:
+                                    authority = LocalAuthority(
+                                        hashlib.sha256(project_source.data).hexdigest(),
+                                        hashlib.sha256(lock_source.data).hexdigest(),
+                                        declaration.package_key, selected.normalized_version,
+                                        None, decision.basis, 'unavailable')
+                        if not isinstance(authority, LocalAuthorityFailure):
+                            basis = (authority.namespace_basis if authority.namespace_basis in (
+                                'repository_mapping', 'conventional_public_policy') else 'explicit_testimony')
+                            row_evidence = replace(row_evidence, comparator_basis=basis,
+                                comparator_limitations=((
+                                    'nuget_org_conventional_reference',
+                                    'namespace_correspondence_assumed_by_policy',
+                                    'external_configuration_not_inspected')
+                                    if basis == 'conventional_public_policy' else ()))
                     if isinstance(authority, LocalAuthorityFailure):
                         reason = authority.reason
                         row_evidence = replace(row_evidence, origin_state=authority.origin_state,
                                                content_hash_state=authority.content_hash_state)
                     else:
                         row_evidence = replace(
-                            row_evidence, measurement_basis='bound_snapshot_namespace',
+                            row_evidence, measurement_basis=(
+                                'public_comparator_version_age' if authority.namespace_basis in (
+                                    'repository_mapping', 'conventional_public_policy')
+                                else 'bound_snapshot_namespace'),
                             namespace_basis=authority.namespace_basis,
                             local_content_state=authority.local_content_state,
-                            origin_state=('asserted_public' if context.contract_version == 1
+                            origin_state=('asserted_public' if authority.namespace_basis == 'accepted_producer_origin'
                                           else 'unavailable'),
                             content_hash_state=authority.local_content_state)
         request_label = ('snapshot minimum ' if evidence.population_basis in (

@@ -11,7 +11,7 @@ per completed task; no push. No live target lookup before K3 convergence.
   credentials, directory mutation/links and non-Git/dirty policy. Native tests
   gated honestly; semantic tests portable. Focused primitive/reader tests, diff,
   local commit. No source activation.
-- [ ] K2 — Ordinary source, capability and output integration. Predecessor K1.
+- [x] K2 — Ordinary source, capability and output integration. Predecessor K1.
   C1–C6: additive no-witness A qualified current pair, exact testimony precedence,
   mapping/convention per occurrence, private/unknown zero capabilities, new policy
   codecs with forged assurance rejection, additive basis/limitations and honest
@@ -44,3 +44,11 @@ C6 every task. Expected OASim33 potential is not an acceptance requirement.
 K1 complete:62 focused successful/1 case-alias filesystem skip. Parser/reader inert;
 no source activation. Exact private-ID over public-prefix regression and policy
 negative controls PASS. Diff check PASS.
+
+K2 complete:300 focused successful/1 case-alias skip; full778 successful/1
+case-alias skip; capability-disabled778 successful/56 expected native skips;
+real-worker3 PASS. Native semantic expansion active; legacy fixture no-policy seam
+explicitly patched, real ordinary readers always return policy or unknown. Initial
+new author fixtures corrected for TransportFailure value/JSON shape/inline-page
+identifier; old native tests updated for newly authorized convention. Precision
+output regressions PASS. Diff check PASS.
