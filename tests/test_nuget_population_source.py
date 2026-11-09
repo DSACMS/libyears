@@ -308,7 +308,7 @@ class SnapshotSourceTests(unittest.TestCase):
         self.assertIsNone(report.summary.coverage)
         data = report_to_dict(report, '')
         self.assertEqual([s['version_evidence']['population_basis'] for s in data['nuget_sources']],
-                         ['resolved_snapshot', 'resolved_snapshot', 'declaration_derived', 'unknown'])
+                         ['qualified_repository_snapshot', 'qualified_repository_snapshot', 'declaration_derived', 'unknown'])
         self.assertEqual([r['source_id'] for r in data['unmeasurable'] if r['name']=='Example'],
                          ['a/Witness.csproj', 'b/Witness.csproj'])
-        self.assertIn('accepted resolved snapshot', format_human(report, ''))
+        self.assertIn('policy-selected current repository snapshot', format_human(report, ''))

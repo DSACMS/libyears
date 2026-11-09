@@ -1,5 +1,6 @@
 """Bounded independent repository NuGet sources; no graph or resolver authority."""
 
+from collections import Counter
 from dataclasses import replace
 import os
 from pathlib import Path
@@ -130,6 +131,7 @@ def read_repository_sources(root: Path, witnesses=()) -> tuple[NuGetSource, ...]
     if inventory.status != 'complete':
         return (_unavailable(None, 'nuget_discovery_' + inventory.status),)
     sources = []
+    parent_counts = Counter(project.rpartition('/')[0] for project in inventory.candidates)
     for project in inventory.candidates:
         parent = root.joinpath(*project.split('/')[:-1])
         name = project.rsplit('/', 1)[-1]
@@ -141,7 +143,9 @@ def read_repository_sources(root: Path, witnesses=()) -> tuple[NuGetSource, ...]
             # scoped reader's filename contract. Refusal belongs to this source.
             sources.append(_unavailable(project, 'invalid_nuget_project'))
             continue
-        source = read_nuget_source(parent, name, witness, reader=reader)
+        source = read_nuget_source(parent, name, witness, reader=reader,
+            repository_snapshot=True,
+            unambiguous_snapshot=parent_counts[project.rpartition('/')[0]] == 1)
         sources.append(_attribute_source(source, project))
     for project in sorted(mapping.keys() - set(inventory.candidates)):
         sources.append(_unavailable(project, 'nuget_witness_project_missing'))

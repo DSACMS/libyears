@@ -7,7 +7,7 @@ import re
 from .model import (DependencyCandidate, NuGetEvidence, SourceError,
                     SourceEvidence, SourceResult, UnmeasurableDependency)
 from .nuget_input import NuGetInputFailure, ScopedNuGetReader, decode_json
-from .nuget_population import snapshot_population
+from .nuget_population import repository_snapshot_population, snapshot_population
 from .nuget_lock import parse_lock
 from .nuget_project import parse_project
 from .nuget_provenance import (LocalAuthority, LocalAuthorityFailure,
@@ -67,11 +67,13 @@ def _source_reason(stage: str, category: str) -> str:
 
 def read_nuget_source(root: Path, project_name: str,
                       provenance_name: str | None = None, *,
-                      reader: ScopedNuGetReader | None = None) -> NuGetSource:
-    """Read only explicit local inputs and stage safe evidence before lookup.
+                      reader: ScopedNuGetReader | None = None,
+                      repository_snapshot: bool = False,
+                      unambiguous_snapshot: bool = True) -> NuGetSource:
+    """Read bounded local inputs and stage safe population evidence before lookup.
 
-    Filenames are immediate names validated by the caller (future CLI usage
-    validation). The scoped reader independently enforces containment. Whole
+    Filenames are immediate names validated by the caller. The scoped reader
+    independently enforces containment. Whole
     source rejection returns no dependency rows or adapter capabilities.
     """
     evidence = NuGetSourceEvidence(
@@ -97,40 +99,82 @@ def read_nuget_source(root: Path, project_name: str,
             try:
                 project = parse_project(project_source)
             except NuGetInputFailure as failure:
-                if failure.category != 'unsupported' or provenance_name is None:
+                if (failure.category != 'unsupported'
+                        or (provenance_name is None and not repository_snapshot)):
                     raise
                 fallback = True
             if fallback:
-                stage = 'witness'
-                source_name = provenance_name
-                witness_source = reader.read(provenance_name)
-                value = decode_json(witness_source.data.decode('utf-8', errors='strict'))
-                if (not isinstance(value, dict) or type(value.get('version')) is not int
-                        or value['version'] != 3):
-                    # Older contracts cannot be reinterpreted as snapshot population.
+                context = None
+                lock_source = None
+                qualified = None
+                if repository_snapshot:
+                    stage = 'lock'
+                    source_name = 'packages.lock.json'
+                    lock_source = reader.read(source_name)
+                    lock = parse_lock(lock_source)
+                    stage = 'project'
                     source_name = project_name
-                    return rejected('unsupported_nuget_project')
-                stage = 'lock'
-                source_name = 'packages.lock.json'
-                lock_source = reader.read(source_name)
-                lock = parse_lock(lock_source)
-                stage = 'witness'
-                source_name = provenance_name
-                context = parse_population_provenance(
-                    witness_source, project_name=project_name,
-                    project_source=project_source, lock_source=lock_source,
-                    framework=lock.framework)
-                stage = 'project'
-                source_name = project_name
-                project = snapshot_population(project_source, lock)
-                count = len(project.declarations)
-                evidence = replace(evidence, framework=project.framework,
-                    format='packages_lock_v1', population_basis='resolved_snapshot',
-                    trust_basis='supplied_snapshot_population_assertion',
-                    population_limitations=(
-                        'accepted_retained_external_direct_snapshot',
-                        'current_evaluated_declaration_completeness_not_established',
-                        'acquisition_content_deployment_reproducibility_not_established'))
+                    # Check known contradictions even if the directory has more
+                    # than one project and automatic attribution is unavailable.
+                    qualified = repository_snapshot_population(project_source, lock)
+                if qualified is not None and unambiguous_snapshot:
+                    project = qualified
+                    count = len(project.declarations)
+                    evidence = replace(evidence, framework=project.framework,
+                        format='packages_lock_v1', population_basis='qualified_repository_snapshot',
+                        trust_basis='repository_snapshot_policy',
+                        population_limitations=(
+                            'policy_selected_current_repository_snapshot',
+                            'historical_producing_association_not_established',
+                            'current_evaluated_declaration_completeness_not_established',
+                            'acquisition_content_deployment_reproducibility_not_established'))
+                    if provenance_name is not None:
+                        stage = 'witness'
+                        source_name = provenance_name
+                        witness_source = reader.read(provenance_name)
+                        context = parse_population_provenance(
+                            witness_source, project_name=project_name,
+                            project_source=project_source, lock_source=lock_source,
+                            framework=lock.framework)
+                        evidence = replace(evidence,
+                            trust_basis='supplied_snapshot_population_assertion',
+                            population_limitations=evidence.population_limitations + (
+                                'accepted_retained_external_direct_snapshot',))
+                else:
+                    if provenance_name is None:
+                        source_name = project_name
+                        return rejected('unsupported_nuget_project')
+                    stage = 'witness'
+                    source_name = provenance_name
+                    witness_source = reader.read(provenance_name)
+                    value = decode_json(witness_source.data.decode('utf-8', errors='strict'))
+                    if (not isinstance(value, dict) or type(value.get('version')) is not int
+                            or value['version'] != 3):
+                        # Older contracts cannot be reinterpreted as snapshot population.
+                        source_name = project_name
+                        return rejected('unsupported_nuget_project')
+                    if lock_source is None:
+                        stage = 'lock'
+                        source_name = 'packages.lock.json'
+                        lock_source = reader.read(source_name)
+                        lock = parse_lock(lock_source)
+                    stage = 'witness'
+                    source_name = provenance_name
+                    context = parse_population_provenance(
+                        witness_source, project_name=project_name,
+                        project_source=project_source, lock_source=lock_source,
+                        framework=lock.framework)
+                    stage = 'project'
+                    source_name = project_name
+                    project = snapshot_population(project_source, lock)
+                    count = len(project.declarations)
+                    evidence = replace(evidence, framework=project.framework,
+                        format='packages_lock_v1', population_basis='resolved_snapshot',
+                        trust_basis='supplied_snapshot_population_assertion',
+                        population_limitations=(
+                            'accepted_retained_external_direct_snapshot',
+                            'current_evaluated_declaration_completeness_not_established',
+                            'acquisition_content_deployment_reproducibility_not_established'))
             else:
                 count = len(project.declarations)
                 evidence = replace(evidence, framework=project.framework,
@@ -197,8 +241,9 @@ def read_nuget_source(root: Path, project_name: str,
                         row_evidence, selected_version=selected.original_version,
                         normalized_version=selected.normalized_version,
                         selection_source='packages.lock.json')
-                    authority = authorize_measurement(context, declaration.package_key,
-                                                  selected, entry.content_hash)
+                    authority = (LocalAuthorityFailure('unsupported_dependency_source')
+                                 if context is None else authorize_measurement(
+                                     context, declaration.package_key, selected, entry.content_hash))
                     if isinstance(authority, LocalAuthorityFailure):
                         reason = authority.reason
                         row_evidence = replace(row_evidence, origin_state=authority.origin_state,
@@ -211,7 +256,8 @@ def read_nuget_source(root: Path, project_name: str,
                             origin_state=('asserted_public' if context.contract_version == 1
                                           else 'unavailable'),
                             content_hash_state=authority.local_content_state)
-        request_label = ('snapshot minimum ' if evidence.population_basis == 'resolved_snapshot' else '')
+        request_label = ('snapshot minimum ' if evidence.population_basis in (
+            'resolved_snapshot', 'qualified_repository_snapshot') else '')
         declared = declaration.package_name + ' (' + request_label + declaration.declared_version + ')'
         if reason is not None:
             failures.append(UnmeasurableDependency('nuget', declaration.package_name,

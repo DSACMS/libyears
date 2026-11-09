@@ -584,6 +584,8 @@ def _nuget_repository_disclosure(report, *, verbose=False) -> list[str]:
 
 def _nuget_population_lines(evidence, *, verbose=False) -> list[str]:
     lines = []
+    if evidence.population_basis == 'qualified_repository_snapshot':
+        lines.append("  NuGet population basis: policy-selected current repository snapshot (external Direct records).")
     if evidence.population_basis == 'resolved_snapshot':
         lines.append("  NuGet population basis: accepted resolved snapshot (external Direct records).")
     if verbose:
@@ -655,7 +657,8 @@ def _nuget_detail_lines(evidence: NuGetEvidence | None, *, verbose=True) -> list
         project = json.dumps(project, ensure_ascii=True)
     if not verbose:
         return lines
-    request_label = 'snapshot minimum' if evidence.population_basis == 'resolved_snapshot' else 'requested'
+    request_label = ('snapshot minimum' if evidence.population_basis in (
+        'resolved_snapshot', 'qualified_repository_snapshot') else 'requested')
     lines.append(f"    NuGet project: {project}; framework: {evidence.framework}; {request_label}: {evidence.requested}.")
     if evidence.population_basis is not None:
         lines.append(f"    Population basis: {evidence.population_basis}.")
@@ -704,7 +707,7 @@ def _nuget_reason_text(reason: str) -> str:
         'declaration_lock_requirement_mismatch': 'declaration and lock numeric minimum requests disagree; selection not established',
         'lock_version_missing': 'selected version missing from packages.lock.json',
         'unsupported_lock_evidence': 'unsupported selected version syntax in packages.lock.json',
-        'unsupported_dependency_source': 'accepted public-origin assertion unavailable; no public namesake is substituted',
+        'unsupported_dependency_source': 'accepted public namespace authority unavailable; no public namesake is substituted',
         'content_hash_unavailable': 'usable SHA512 content evidence unavailable',
         'content_hash_mismatch': 'content hashes disagree; content correspondence not established',
         'package_not_found': 'authorized public nuget.org package metadata absent',

@@ -14,7 +14,7 @@ reviews.md. One local commit per completed task; no push.
   metadata/computed facts; partial contradictions despite unrelated unavailability.
   Run primitive/project/lock/provenance suites, diff check, local commit.
 
-- [ ] R2 — Ordinary source activation and truthful output. Predecessor R1.
+- [x] R2 — Ordinary source activation and truthful output. Predecessor R1.
   Q1–Q4/Q5: enable B1 only ordinary sources, same byte reads/unique immediate
   directory attribution; A unchanged, B2 preserved on insufficient B1, no bypass
   of ordinary known contradictions. Stage B1 N before optional explicit v3 parser;
@@ -60,3 +60,11 @@ before first inspection under authorized path; final exact equality mandatory.
 R1 complete:72 primitive/project/lock/provenance tests PASS, no skips; qualifier
 remains inert pending R2. Both directions, known conflicts despite ineligibility,
 unsafe framing/Direct evidence and unextractable facts covered. Diff check PASS.
+
+R2 complete:276 focused NuGet/project/lock/provenance/source/repository/output/CLI/
+mixed tests PASS; full751 PASS/no skips; capability-disabled751 successful/51
+native-filesystem skips (including2 new dirty/non-Git real-reader witnesses),
+semantic/refusal tests active; dedicated real-worker3 PASS. Ordinary prior B2
+fixture now expects B1 basis; explicit historical fixtures unchanged. Initial
+integration caught that expected basis change and an author test's unsupported
+format_json verbose argument, corrected before passes. Diff check PASS.
