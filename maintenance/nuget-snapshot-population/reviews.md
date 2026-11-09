@@ -49,3 +49,12 @@ Fresh non-author plan_review COMPLETE / APPROVE, no material findings. Private
 output/worker seams. Parent validates DTD/mixed-duplicate classification hazards,
 whole-B request/selection validation, B-only dispatch and safe staged count. Plan
 APPROVED; no worker/protocol/metadata or static A grammar change is necessary.
+
+## Task graph
+
+Frozen graph SHA256 1afec43b631752c4a722148e2ad1547a300383ebbc12426297aaf7722ed0ad1e.
+Fresh non-author tasks_review COMPLETE / APPROVE, no material findings. Parent
+validates sequential S1 inert primitives, S2 activation/integration, S3 retained
+operation/docs and S4 independent convergence with all P1–P5 obligations traced.
+Private report006-0026-tasks-review.md. Graph APPROVED; S1 dependency-ready.
+Baseline full deterministic703 PASS/no skips. No positive OASim yield required.
