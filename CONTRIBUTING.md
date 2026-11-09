@@ -8,7 +8,7 @@ released under CC0 1.0 Universal as described in [Public Domain](#public-domain)
 ## Getting Started
 
 Obtain an authorized checkout or source archive and open a terminal at its root.
-Use Python 3.11+. See [Development](README.md#development) for CLI examples.
+Use Python 3.11+. See [Quick start](README.md#quick-start) for CLI examples.
 
 ### Building dependencies
 
@@ -21,7 +21,7 @@ No compilation, packaging, or build step is configured. Run from the repository 
 
 ```sh
 python -m libyears --help
-python -m unittest discover -s tests -v
+python -m unittest discover -s tests
 ```
 
 ### Workflow and Branching
@@ -72,8 +72,10 @@ are deferred. Complete the [outbound checklist](checklist.md) before release.
 ## Documentation
 
 Preserve useful existing documentation and document behavior from repository
-evidence. [SPEC.md](SPEC.md) describes the metric; [README.md](README.md) describes
-current CLI use, including resolved snapshots added after the specification.
+evidence. [README.md](README.md) is the user entry point; [ECOSYSTEMS.md](ECOSYSTEMS.md)
+explains evidence, detailed usage and limitations. [SPEC.md](SPEC.md) governs the
+metric/output contract and indexes approved ecosystem contracts. Historical
+rationale belongs in discovery and retrospective artifacts.
 
 ## AI Usage
 

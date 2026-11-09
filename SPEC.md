@@ -852,7 +852,7 @@ The approved [Feature 006 specification](specs/006-nuget-selected-evidence/spec.
 [tasks](specs/006-nuget-selected-evidence/tasks.md) retain historical/base NuGet
 contracts. The approved [evidence cascade](maintenance/measurement-evidence-cascade/spec.md)
 prospectively supersedes mandatory event/content gates for version-age measurement. The
-[README workflow](README.md#explicit-nuget-project-snapshots) documents the exact
+[ecosystem workflow](ECOSYSTEMS.md#explicit-nuget-project-snapshots) documents the exact
 witness schema, supported inputs and enforced numeric limits. This extension
 does not change Python/npm/Yarn/Ruby policy or the 365.25-day metric.
 
@@ -905,7 +905,7 @@ three unsupported influence booleans; packages with id/version/namespace. It omi
 producer, sdk_version, origins and content_hash, retaining the same complete
 framing, byte/context/completeness checks and input bounds. Namespace is exactly
 canonical https://api.nuget.org/v3/index.json, never inferred from public existence,
-configuration, hashes or discovered files. See README for exact templates.
+configuration, hashes or discovered files. See [the ecosystem guide](ECOSYSTEMS.md#explicit-nuget-project-snapshots) for exact templates.
 Unsupported population influences invalidate N; stale/malformed whole evidence
 retains independently known N with unavailable measurement. No v1/v2 merge repairs
 contradictions. Lock Direct population alone is never acceptance authority.
@@ -950,7 +950,7 @@ content correspondence, deployment, restore/reproducibility or current evaluated
 completeness claim; no target/producer execution or automatic namespace
 acceptance. B1 trust_basis repository_snapshot_policy and fixed limitations identify
 policy selection; accepted v3 retains supplied_snapshot_population_assertion.
-Namespace and stronger assurance remain distinct from population basis. See README for the v3 format and complete correction for refusal rules.
+Namespace and stronger assurance remain distinct from population basis. See [the ecosystem guide](ECOSYSTEMS.md#explicitly-accepted-resolved-snapshot-fallback-b2) for the v3 format and complete correction for refusal rules.
 
 Complete SemVer-2 registration determines greatest currently listed stable by
 numeric precedence, independently of request/framework/date compatibility.

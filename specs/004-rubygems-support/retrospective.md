@@ -38,7 +38,7 @@ Confidence came from reviewed contracts, tests covering every acceptance
 criterion, existing ecosystem regressions, authorized real-project validation,
 and independent convergence. These support the bounded capability, not universal
 Bundler compatibility. For deeper reading, start with the
-[README guide](../../README.md#rubygems-support), then the [specification](spec.md)
+[ecosystem guide](../../ECOSYSTEMS.md#rubygems), then the [specification](spec.md)
 for behavior, [plan](plan.md) for architecture, [reviews](reviews.md) for decisions,
 [tasks](tasks.md) for deterministic witnesses, and
 [release validation](release-validation.md) for live evidence and its limits.
@@ -244,7 +244,7 @@ effort produced the differences; T019 likewise does not establish an optimal
 routing rule.
 
 An incomplete review leaves a gate open but is distinct from software failing a
-completed review. Applying the [OSPO access mission](../../README.md#cms-open-source-program-office-mission)
+completed review. Applying the [OSPO access mission](../../README.md#team-mission)
 and [community principles](../../COMMUNITY.md), open-source quality gates should
 not silently require premium model access. Standards should remain unchanged.
 The hypothesis is that smaller independently verifiable evidence tasks, followed
