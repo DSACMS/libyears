@@ -13,3 +13,16 @@ rejection. Fresh non-author spec_closure COMPLETE APPROVE collateral C2–C4,
 SHA2564c67d0339e4aae4b730f471d99a039c8f8733dd8c82eff389f84a17a971bad32.
 Parent validates qualifications/precision/privacy preserved; specification APPROVED.
 Actual child settings unobserved; all fork_turns=none, no overrides, no author review.
+
+## Plan and graph
+
+Fresh independent plan_trust and plan_floor each COMPLETE APPROVE plan
+656ae09edcc8733d2bd6df65055d4d7d88404e66d4d163abc54e81bb629b9e97,
+then separately COMPLETE APPROVE graph
+e156ea895a6589b8f086ae7b1f1db6f63b1ad9fdf6c23fd96ba48531bf771b56.
+Parent validates ordinary/precision boundary, whole qualification, policy reads,
+codec assurance restrictions and convergence-before-live ordering. No material
+findings. Plan/graph APPROVED. Process deviation: parent drafted the inert policy
+module while these reviews were pending; no activation, task completion or commit
+occurred before approval. The draft remains subject to all K1 tests and convergence;
+review approval is not claimed to have preceded that drafting.
