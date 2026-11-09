@@ -62,10 +62,12 @@ An evidence-backed problem or learning opportunity is required.
 | [Cross-ecosystem measurement-evidence parity](#13-cross-ecosystem-measurement-evidence-parity) | SELECTED (006-0024 cascade) | Product semantics | Bounded measurement/assurance migration |
 | [NuGet project/lock population](#14-nuget-project-population-and-retained-lock-population) | SELECTED (006-0026 bound snapshot fallback) | NuGet population/context | Bounded explicit acceptance |
 | [Python/npm public namespace](#15-pythonnpm-positive-public-namespace-authority) | EXPLORE | Cross-ecosystem truthfulness | Separate source-authority investigation |
-| [Snapshot acceptance/currentness](#16-repository-contained-snapshot-acceptance-and-currentness) | DEFER | NuGet acceptance | Separate product/trust contract |
+| [Snapshot acceptance/currentness](#16-repository-contained-snapshot-acceptance-and-currentness) | SELECTED (006-0028 B1) | NuGet acceptance | Separate product/trust contract |
 | [NuGet namespace automation](#17-nuget-namespace-authority-automation) | EXPLORE | Namespace authority | Separate evidence investigation |
 | [Bounded C# parser expansion](#18-bounded-static-c-project-parser-expansion) | EXPLORE | Static declarations | Bounded grammar review |
 | [Evaluated MSBuild use cases](#19-evaluated-msbuild-population-use-cases) | DEFER | Evaluated context | Separate authority |
+| [Hosted action-runtime maintenance](#20-hosted-action-runtime-maintenance-observations) | WATCH | CI maintenance | Separate warning investigation |
+| [Stronger producer assurance](#21-stronger-nuget-producer-assurance) | EXPLORE | NuGet provenance | Separate retained evidence |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
@@ -484,35 +486,34 @@ permission, scope/metric changes or silent compatibility degradation.
 
 ### 16. Repository-contained snapshot acceptance and currentness
 
-**State:** EXPLORE; investigated in006-0027, unselected pending HUMAN PRODUCT /
-SNAPSHOT-ACCEPTANCE DECISION. No automatic population authority implemented.
+**State:** SELECTED; human006-0028 approves qualified current snapshot policy.
+Implementation and verification are in [the correction](maintenance/nuget-repository-snapshot/spec.md),
+[reviews](maintenance/nuget-repository-snapshot/reviews.md) and
+[validation](maintenance/nuget-repository-snapshot/validation.md).
 
-**Opportunity:** Replace only objectively recoverable snapshot facts and deliberate
-artifact-selection policy, keeping supplier knowledge distinct from computation.
-**Evidence:** V3 decomposes into local byte/context checks, accountable association/
-explicit-scope assertions, policy intent and separate namespace. P2/P3 one-way
-checks admit stale removed/extra Direct records; full positive literal parity is
-available on all ten OASim pairs, but same-domain copied locks and hidden evaluated
-changes remain indistinguishable. All ten locks are untracked; Git supplies no
-committed-pair witness and chronology cannot prove restore. P7/P6 could represent
-A3+B48 occurrences only after new approval; actual result remains A2/3, B0 and no
-accepted repository denominator or real ages. A whole-source acceptance and
-namespace remain independent blockers; no automatic A witness removal is selected.
-**Success signal:** Separately approved byte-bound represented-snapshot policy,
-positive explicit-ID/request equality, sole context, known-conflict refusal and
-honest no-producing-history/no-current-evaluation limitations; otherwise retain
-accountable explicit acceptance. No silent coherent_snapshot assertion generation.
-**Stop condition:** Colocation/hashes/Git become historical trust or public namespace;
-new policy is implemented without human approval.
-**References:** [Frozen investigation](discovery/nuget-snapshot-acceptance.md),
-[independent review](discovery/nuget-snapshot-acceptance-review.md),
-[existing snapshot P2/P5](maintenance/nuget-snapshot-population/spec.md).
+**Outcome:** A remains first, B1 automatically qualifies current repository pairs
+using strict literal identity/request/context equality in BOTH directions, then
+explicit v3 B2 remains for insufficient automatic facts. Known conflicts cannot be
+repaired by testimony. Policy selection claims no historical producing association
+or complete evaluated state. Dirty/copied/non-Git coherent inputs are eligible.
+Ordinary real-target result: A2/3, B1 8/48, B2 0; accepted N51, measured0, coverage
+null because A whole testimony remains unavailable. B1's48 namespace failures
+correctly authorize no lookup. Namespace automation remains separate17; parser18,
+evaluated use19, CI20 and stronger producer assurance21 remain separate.
 
-**Methodology signal:** Human authority may scaffold unknown trust boundaries;
-after evidence gathering, deterministic policy may replace recoverable facts or
-consciously narrow the claim. This remains a hypothesis, not a universal rule or
-proof that the present association assertion has an automatic equivalent. Preserve
-for the planned retrospective framework; no framework created here.
+**Evidence:** Frozen006-0027 investigation/review preserved in e736736; approved
+product decision consciously narrows claim to policy-selected CURRENT pair, not
+an automatic equivalent of supplier history. Full observable parity prevents
+stale removed/added/extra Direct mismatch, while coherent copied origin remains
+unknowable. Current selected versions are recorded snapshot evidence, not restore
+success, recency, deployment or namespace.
+
+**Methodology result (one case):** A human gate can scaffold an unknown consequential
+trust boundary. After explicit reusable product-policy selection and deterministic
+qualification, ordinary runs need not repeatedly ask for the same population
+selection. This does not remove independent namespace authority or generalize to
+all human gates. Preserve for planned reusable retrospective framework; no framework
+is created here.
 
 ### 17. NuGet namespace-authority automation
 
@@ -562,6 +563,20 @@ execute candidate/tests; successful exact-candidate rerun supplies the witness.
 necessary action updates. **Stop condition:** Treating warnings as failed checks,
 runner exhaustion as flaky tests, or bundling CI changes into population discovery.
 **Reference:** [Supplied hosted evidence](maintenance/nuget-snapshot-population/reviews.md#published-candidate-supplied-hosted-evidence--006-0027).
+
+### 21. Stronger NuGet producer assurance
+
+**State:** EXPLORE; no new producer execution selected.
+**Opportunity:** Retain accountable historical association/event and content
+correspondence evidence separately from qualified current-snapshot population.
+**Evidence:** B1 proves no producing history; explicit v1/v2/v3 meanings remain,
+and original controlled hash-domain/live-yield limitations are historical evidence.
+**Success signal:** Separately authorized, inspectable stronger evidence enriches
+assurance without becoming an unnecessary version-age prerequisite.
+**Stop condition:** Generating testimony from current hashes, silently assuming
+history/source or bundling target execution into the consumer.
+**Reference:** [Cascade](maintenance/measurement-evidence-cascade/spec.md),
+[qualified policy](maintenance/nuget-repository-snapshot/spec.md).
 
 ## Selected Work Moved into SDD
 

@@ -525,3 +525,22 @@ coverage, worker safety and historical authority remain unchanged.
 Do not infer authorization for Maven, Go, Cargo, additional npm dependency scopes, or other registries from the existence of npm support.
 
 For ecosystem behavior, the approved feature specification takes precedence over generic assumptions in this file.
+
+The approved correction under `maintenance/nuget-repository-snapshot/` adds automatic
+B1 population policy to ordinary NuGet sources after unsupported well-framed A and
+before explicitly accepted v3 B2. Require unambiguous immediate project/lock
+attribution, safe exact current bytes, whole schema1/sole framework and supported
+Direct evidence, strict unconditional literal PackageReference/framework extraction,
+FULL bidirectional IDs and normalized-request equality, and no known conflict.
+Unknown relevant facts can leave B1 unavailable for B2; known ordinary contradictions
+cannot be repaired by testimony. A and explicit single-project precision behavior
+remain unchanged. B1 does not require A completeness, Git, clean/tracked files or
+historical supplier association. Unknown ancillary syntax stays uninterpreted;
+no A grammar expansion or evaluation. A coherent copied/dirty/non-Git current pair
+may qualify without proving history/evaluated state/acquisition/content/deployment/
+reproducibility. qualified_repository_snapshot basis/limitations disclose policy
+selection separately from explicit v3 supplier assertions and namespace/assurance.
+B1 with no accepted namespace yields known population and per-row
+unsupported_dependency_source, zero capabilities/lookups. Existing valid explicit
+v3 retains supplier scope/association/namespace, invalid testimony is not ignored.
+NO namespace automation, public-namesake or private/unknown fallback is authorized.

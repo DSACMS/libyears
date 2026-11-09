@@ -587,13 +587,52 @@ namespace authority, acquisition, deployed code or reproducible-build assurance.
 The cascade uses the strongest accepted facts available but requires only the
 minimum evidence for the narrower age claim. Population remains declaration-first
 where supported. The separately approved fallback below can establish a narrower
-accepted retained snapshot when A cannot establish population. No automatic lock
-acceptance or dotnet/NuGet/MSBuild/restore is performed.
+snapshot when A cannot establish population. Qualified current pairs can be
+selected automatically under the policy below; no dotnet/NuGet/MSBuild/restore is performed.
 The [cascade contract](maintenance/measurement-evidence-cascade/spec.md) governs
 namespace and stronger assurance; the [population contract](maintenance/nuget-snapshot-population/spec.md)
 governs the prospective population fallback.
 
-### Bound resolved-snapshot population fallback
+### Qualified current repository snapshots
+
+Ordinary directory scans use **A → B1 → B2 → unknown**. A remains authoritative
+when supported. B1 automatically selects the current project/lock pair only when
+one attributable project owns the immediate lock candidate, the whole schema-1
+lock has a sole supported framework and valid Direct requests/selections, and all
+written PackageReference and framework facts can be safely extracted as supported
+unconditional literals. Package IDs must equal the entire lock Direct set **in
+both directions**, and normalized requests/framework must agree. An added/removed
+reference, extra/missing Direct, changed request or known context conflict refuses;
+explicit testimony cannot repair known ordinary-mode contradictions.
+
+Unrelated unsupported project syntax may remain uninterpreted: B1 does not require
+A to understand complete project semantics. Unextractable relevant facts, known
+mutation constructs or ambiguous shared-lock attribution leave B1 unavailable;
+explicit B2 remains available within its existing contract. No static grammar
+expansion or evaluation occurs. Explicit single-project mode retains its existing
+A/B2 precision behavior. A's later lock/witness/namespace failures never retry B.
+
+B1 is a **policy-selected current snapshot**, not a recovered historical producer
+association or complete evaluated MSBuild state. A coherent copied pair, dirty
+worktree, archive or non-Git directory is eligible; a mismatching copied lock is
+refused. Git cleanliness/history never decides B1. The exact safely read current
+bytes are the basis. No acquisition, content, deployment, restore or reproducibility
+claim follows. Optional explicitly accepted v3 testimony retains its accountable
+snapshot association/scope meaning, independent of B1; invalid supplied testimony
+is refused rather than ignored. V3 does not authenticate historical production.
+
+B1 population acceptance authorizes **zero public requests** by itself. Without
+separate applicable namespace authority, selected rows report
+unsupported_dependency_source. A's existing v1/v2 whole-witness requirements remain,
+so known repository N can coexist with null coverage and missing A testimony.
+JSON schema3 adds qualified_repository_snapshot to population_basis and fixed
+limitations; B1 trust_basis is repository_snapshot_policy, or
+supplied_snapshot_population_assertion when valid explicit v3 is also accepted.
+Default human output names the current snapshot basis and real namespace blocker;
+verbose/JSON makes limitations inspectable. See the
+[qualified repository contract](maintenance/nuget-repository-snapshot/spec.md).
+
+### Explicitly accepted resolved-snapshot fallback (B2)
 
 When well-framed project XML is unsupported by A, explicitly selecting a **v3**
 witness through the same witness options may accept population B. V1/v2 are never
@@ -643,12 +682,14 @@ only an explicitly accepted exact selected P/V with the canonical public namespa
 can authorize public metadata. Unknown/private/conflicting namespaces never use
 public namesakes. No automatic repository-file namespace policy is introduced.
 
-Source and row JSON evidence add population_basis (declaration_derived,
-resolved_snapshot or unknown); B source evidence adds population_limitations.
+Source and row JSON evidence use population_basis (declaration_derived,
+qualified_repository_snapshot, resolved_snapshot or unknown); snapshot source
+evidence adds population_limitations.
 Its trust_basis is supplied_snapshot_population_assertion; namespace/assurance
 remain separate. Default human output marks accepted resolved snapshots; verbose
 and JSON expose limitations. Snapshot minima are not current project declarations.
-Automatic repository-contained snapshot acceptance/currentness remains deferred.
+B2 remains available when automatic B1 qualification is unavailable; ordinary
+known contradictions are terminal. Current evaluated state remains unestablished.
 
 Dates mean first receipt by nuget.org, from identity-bound catalog `created`,
 never original upstream release, published/commit/listing/restore/local time.

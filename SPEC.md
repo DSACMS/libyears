@@ -910,8 +910,19 @@ Unsupported population influences invalidate N; stale/malformed whole evidence
 retains independently known N with unavailable measurement. No v1/v2 merge repairs
 contradictions. Lock Direct population alone is never acceptance authority.
 The separate approved [snapshot-population correction](maintenance/nuget-snapshot-population/spec.md)
-adds B only after unsupported well-framed A, through a new explicitly selected v3
-witness. A retains v1/v2 baseline gates; v3 on A refuses with known N and unavailable
+adds explicitly accepted B2 after unsupported well-framed A, through a selected v3
+witness. The later [qualified repository correction](maintenance/nuget-repository-snapshot/spec.md)
+adds ordinary-mode B1 before B2: choose the exact current pair by policy after whole
+schema1/sole-context/Direct validation, unambiguous immediate-project attribution,
+strict unconditional literal extraction and FULL bidirectional ID/normalized-request
+equality. Relevant unextractable facts make B1 unavailable; unrelated syntax remains
+uninterpreted. Known current conflicts are terminal across ordinary B routes.
+No A grammar expansion, complete evaluated semantics or historical production
+inference occurs. Dirty/copied/non-Git coherent current pairs qualify without Git.
+B1 optional explicitly accepted v3 retains supplier association/scope and namespace;
+invalid supplied testimony refuses measurement with B1 N retained. No testimony
+means known B1 N, selected rows unsupported_dependency_source and zero lookup.
+Explicit precision mode preserves its A/B2 contract. A retains v1/v2 baseline gates; v3 on A refuses with known N and unavailable
 measurement. No fallback after A establishes population or after its later gates fail.
 
 V3 exact keys: version3, project, framework, project_sha256, lock_sha256,
@@ -930,13 +941,16 @@ Packages uses existing v2 id/version/namespace records. Empty is valid and grant
 zero public capability. Unknown/private/conflicting namespace fails per occurrence
 after whole B acceptance; public namesakes never repair it. Existing dates/worker/
 occurrence/metric/aggregation rules remain unchanged. Additive schema3 source/row
-population_basis is declaration_derived, resolved_snapshot or unknown; B source
+population_basis is declaration_derived, qualified_repository_snapshot,
+resolved_snapshot or unknown; snapshot source
 population_limitations and supplied_snapshot_population_assertion trust_basis
 identify retained snapshot limits independently of assurance/namespace. Human
 output marks B concisely; verbose/JSON inspects limitations. No acquisition,
 content correspondence, deployment, restore/reproducibility or current evaluated
-completeness claim; no target/producer execution or automatic snapshot/namespace
-acceptance. See README for the v3 format and complete correction for refusal rules.
+completeness claim; no target/producer execution or automatic namespace
+acceptance. B1 trust_basis repository_snapshot_policy and fixed limitations identify
+policy selection; accepted v3 retains supplied_snapshot_population_assertion.
+Namespace and stronger assurance remain distinct from population basis. See README for the v3 format and complete correction for refusal rules.
 
 Complete SemVer-2 registration determines greatest currently listed stable by
 numeric precedence, independently of request/framework/date compatibility.

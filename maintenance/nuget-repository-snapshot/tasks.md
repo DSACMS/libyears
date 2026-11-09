@@ -30,7 +30,7 @@ reviews.md. One local commit per completed task; no push.
   full deterministic; capability-disabled full discovery; real-worker3; diff check;
   local commit. Semantic tests remain active when native filesystem safety absent.
 
-- [ ] R3 — Current documentation and real operation. Predecessor R2.
+- [x] R3 — Current documentation and real operation. Predecessor R2.
   Q1–Q5: update README/SPEC/AGENTS/CHANGELOG/ROADMAP checkpoint, separate namespace,
   bounded static parser, stronger producer assurance, CI warning and evaluated
   MSBuild opportunities. Preserve methodology signal as one case, no framework.
@@ -68,3 +68,10 @@ semantic/refusal tests active; dedicated real-worker3 PASS. Ordinary prior B2
 fixture now expects B1 basis; explicit historical fixtures unchanged. Initial
 integration caught that expected basis change and an author test's unsupported
 format_json verbose argument, corrected before passes. Diff check PASS.
+
+R3 complete:current docs/roadmap/changelog reconciled with actual ordinary result;
+A2/3+B1 8/48+B2 0 gives accepted N51,M0,coverage null.48 namespace failures and2
+A whole-witness errors, no ages. All exact CLI companions exit0/empty stderr;
+guarded process/network calls zero, verboseJSON equal. Target manifest exact equality
+PASS (223 tracked/12 untracked/50 ignored inventory). No target writes/execution/
+evidence generation/network. Canonical history GitLeaks and convergence follow.

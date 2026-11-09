@@ -32,11 +32,18 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Automatically select qualified current NuGet repository project/lock snapshots
+  when declaration-first population is unsupported. Require bidirectional literal
+  dependency/request/context coherence, disclose the policy basis in schema v3,
+  and report missing namespace authority truthfully. No Git or supplier snapshot
+  witness is needed for B1 population; explicit v3 remains available. This does
+  not establish producer history or authorize public lookup.
+
 - Accept an explicitly bound resolved NuGet snapshot as a population fallback when
   static project parsing cannot establish population. New v3 supplier testimony
   binds exact project/lock bytes and explicit external Direct scope; schema-v3
   evidence discloses the snapshot basis and limitations. Namespace authority stays
-  separate, and discovered locks are never accepted automatically.
+  separate; lock presence alone supplies no population or namespace authority.
 
 - Accept explicit per-project supplier witnesses with repeatable
   `--nuget-witness PROJECT=NAME.json` during ordinary repository scans.
