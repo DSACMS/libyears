@@ -58,3 +58,17 @@ validates sequential S1 inert primitives, S2 activation/integration, S3 retained
 operation/docs and S4 independent convergence with all P1–P5 obligations traced.
 Private report006-0026-tasks-review.md. Graph APPROVED; S1 dependency-ready.
 Baseline full deterministic703 PASS/no skips. No positive OASim yield required.
+
+## Prior0024 reconciliation clarification
+
+The initial pending disposition above followed historical0025 notes. Re-reading
+the normative observation README establishes post-run/status is recommended, not
+mandatory: missing harness metadata stays blank. Fresh independent bounded
+protocol review (006-0026-observation-review.md) confirms original0024 handoff has
+all44 keys, no existing row, and current human authorization permits unchanged
+machine-observed recording. Parent validates exact rules and appends0024 once
+with missing fields blank, original runtime_confounded=yes and provenance intact,
+no invented status/before-credit/delta; earlier ledger bytes and both batons
+unchanged.0025 remains once with supplied enrichment; current0026 not appended.
+This prospectively supersedes the initial pending disposition without rewriting
+historical0025 narrative or earlier ledger notes.
