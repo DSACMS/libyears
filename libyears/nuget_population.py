@@ -94,6 +94,6 @@ def snapshot_population(source: LocalInput, lock: LockSnapshot) -> ProjectContex
                 if minimum is not None and entry.requested != (
                         '[' + minimum.normalized_version + ', )'):
                     raise NuGetInputFailure('context_mismatch')
-    if len(frameworks) > 1 or any(value != lock.framework for value in frameworks):
+    if any(value != lock.framework for value in frameworks):
         raise NuGetInputFailure('context_mismatch')
     return ProjectContext(sdk, lock.framework, tuple(declarations))

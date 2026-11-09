@@ -72,3 +72,32 @@ no invented status/before-credit/delta; earlier ledger bytes and both batons
 unchanged.0025 remains once with supplied enrichment; current0026 not appended.
 This prospectively supersedes the initial pending disposition without rewriting
 historical0025 narrative or earlier ledger notes.
+
+## Initial independent convergence and bounded correction
+
+Frozen S3 candidate7539ddc301784b7ef3295997a1952fe3c1b1e464, clean, canonical
+GitLeaks8.30.1 exit0/no leaks294commits. Three fresh non-author decomposed reviews:
+A population/binding/precedence P1/P2 COMPLETE / REVISE A-F1 (135 focused PASS);
+B namespace/security P3 COMPLETE / CONVERGED, no material finding (126 focused,
+21 protocol/controller,3 worker PASS and9 namespace probes); C output/schema/
+operational P4/P5 COMPLETE / CONVERGED, no material finding (81 focused and
+capability728/49 skips PASS, raw outputs/manifests/counts independently reconciled).
+Reports retained privately as006-0026-convergence-a/b/c.md. Parent reads complete
+reports and checks code/authority/evidence; positive slices do not override A-F1.
+
+A-F1 validated by parent reproduction: probe refused two identical unconditional
+framework literals solely because there were two occurrences. P2 requires each
+known framework agree, not each literal occur once. Remove occurrence-count
+refusal; retain all comparisons against sole accepted lock context and literal
+multi-framework list refusal. A parser unchanged. Regression accepts repeated
+identical TargetFramework/TargetFrameworks under explicit bound v3, while distinct
+literals/lists still refuse and namespace remains absent/zero lookup. This is a
+determined P2 correction, no product/schema/trust change. Fresh focused review
+follows corrective commit; initial reviewed bytes remain inspectable at7539ddc.
+
+Corrective focused156 PASS; full730 PASS/no skips; capability-disabled730
+successful/49 genuine filesystem skips. Corrected OASim human/JSON/verbose outputs
+byte-identical to S3; corrected-after manifest equals original baseline exactly.
+No target evidence created or accepted. Whitespace/diff inspection PASS. Fresh
+focused non-author closure will inspect corrective frozen commit and collateral
+precedence/conflict/namespace/output gates; S4 remains pending that approval.

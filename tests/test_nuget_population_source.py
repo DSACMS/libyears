@@ -174,6 +174,28 @@ class SnapshotSourceTests(unittest.TestCase):
         files['Witness.csproj'] = b'<!DOCTYPE Project>'+files['Witness.csproj']
         self.assert_unknown(rebind(files))
 
+    def test_repeated_identical_literal_framework_facts_accept_one_snapshot_context(self):
+        for property_name in ('TargetFramework', 'TargetFrameworks'):
+            files = files_for(unsupported=False)
+            extra = ('<' + property_name + '>net10.0</' + property_name + '>').encode()
+            files['Witness.csproj'] = files['Witness.csproj'].replace(
+                b'</PropertyGroup>', extra+b'</PropertyGroup>')
+            report = self.scan(rebind(files))
+            self.assertEqual(report.summary.dependencies_discovered, 1)
+            self.assertEqual(report.summary.dependencies_measured, 0)
+            self.assertEqual(report.source_results[-1].evidence.population_basis, 'resolved_snapshot')
+            self.assertEqual(report.unmeasurable[0].reason, 'unsupported_dependency_source')
+            self.assertEqual(self.lookups, [])
+            self.assertEqual(self.urls, [])
+
+    def test_any_distinct_literal_framework_fact_still_refuses_the_whole_snapshot(self):
+        for value in ('net9.0', 'net10.0;net9.0'):
+            files = files_for(unsupported=False, public=True)
+            extra = ('<TargetFrameworks>' + value + '</TargetFrameworks>').encode()
+            files['Witness.csproj'] = files['Witness.csproj'].replace(
+                b'</PropertyGroup>', extra+b'</PropertyGroup>')
+            self.assert_unknown(rebind(files))
+
     def test_whole_direct_request_selected_and_context_failures_keep_n_unknown(self):
         for change in ('missing_selected', 'unsafe_selected', 'bad_request', 'extra_context', 'alias'):
             files = files_for(public=True)

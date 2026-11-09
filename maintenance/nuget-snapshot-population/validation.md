@@ -98,3 +98,20 @@ After independent convergence, exact next human gate is publication/push authori
 then actual hosted Windows/security/CI for the new candidate. Optional future
 acceptance of sufficient retained testimony is separate; it is not manufactured
 to force a number. No push, release/tag/history rewrite or other ecosystem work.
+
+## Convergence correction verification
+
+Initial independent population review returns A-F1 REVISE: repeated equal literal
+frameworks were rejected by occurrence count. Parent reproduces and validates P2
+mismatch; correction compares every known literal to the sole lock framework,
+without requiring one written occurrence. Repeated identical TargetFramework or
+TargetFrameworks now accepts B only with explicit binding; differing literals or
+literal multiple-framework lists still refuse. Static A parser is unchanged.
+
+Corrective focused156 PASS, full730 PASS/no skips, capability-disabled730
+successful/49 genuine filesystem skips. Dedicated worker3 result remains valid:
+no worker/protocol/registry change. Corrected ordinary OASim human/JSON/verbose
+stdout/stderr/exits equal frozen S3 outputs byte-for-byte; corrected-after manifest
+again equals original before exactly. Private correction logs and corrected-*
+outputs/manifests retained. Diff check PASS. Fresh focused non-author review and
+final convergence/security disposition follow in reviews.md; no result is backdated.
