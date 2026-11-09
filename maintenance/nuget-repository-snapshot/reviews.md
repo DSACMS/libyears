@@ -47,3 +47,72 @@ Fresh non-author tasks_review COMPLETE/APPROVE, no material finding. Parent vali
 sequential inert R1 then R2 activation, Q1–Q5/20-case traceability, separate operational
 and convergence tasks, capability/worker/history/integrity witnesses and bounded
 fresh correction gates. Graph APPROVED; R1 dependency-ready. No new human gate.
+
+## R4 independent implementation/convergence
+
+Frozen clean candidate06343ce297dbbc26bf765cacee270a2413639553. Canonical history
+GitLeaks exit0/no leaks303commits; full751/no skips, capability751/51 genuine
+filesystem skips and dedicated real-worker3 PASS. Three fresh non-author contexts,
+fork_turns=none/no overrides, directly inspect frozen authority/code/tests/docs:
+
+| Scope | Completion/disposition | Independent evidence |
+| --- | --- | --- |
+| convergence_coherence Q1–Q3 | COMPLETE/APPROVE, no material finding | 113 focused PASS,10 additional mutations covering partial/nested context/request conflicts, condition/unknown facts, normalization and ancillary metadata; dirty/non-Git witnesses PASS |
+| convergence_trust Q1/Q3/Q4/Q5 | COMPLETE/APPROVE, no material finding | 156 focused including real worker PASS;7 extra guarded exact-P/V/namespace/privacy probes (empty, wrong ID/version, case duplicate/conflicting duplicate, malformed namespace, private URL canary), zero capabilities/lookup and no private output |
+| convergence_output Q4/Q5 | COMPLETE/APPROVE, no material finding | 142 focused PASS; capability142 successful/7 genuine filesystem skips; retained output/count/integrity/log audit, no target access |
+
+No reviewer edits, target access/execution/network or delegation. Actual child
+configuration/resources unavailable; no invented child ledger rows. Retained full
+and history checks are parent executions, not claimed independently rerun by output
+reviewer. Guarded target companion is parent-executed evidence; output reviewer
+checks its retained summary rather than claiming replay. No approval by vote.
+
+Parent validates reports against exact source control flow and requirements:
+Q1 unchanged A and explicit precision, B1 before B2 only ordinary unsupported A;
+Q2 full strict reference parity in both directions, corresponding normalized minima,
+sole context and known conflicts before ineligibility/ambiguous attribution;
+Q3 accepted v3 scope/trust/namespace retained, invalid witness cannot be ignored,
+ordinary known conflict terminal, unknown/computed B2 remains available;
+Q4 new basis is additive schema3, source/row meanings/assurance kept separate, absent
+namespace creates no capability, numeric M/null coverage follows unchanged scan
+aggregation; Q5 matrix-to-tests, semantic portability, real worker and exact target
+operation accounted. No runtime A/project grammar, provenance/worker/registry,
+metric or sibling ecosystem implementation changes. Historical fixtures unchanged.
+
+Parent independently reconciles retained JSON: A2/3+B1 8/48+B2 0; N51/M0/coverage
+null,48 unsupported_dependency_source rows and2 A nuget_provenance_missing errors.
+Human output reports current policy basis and real namespace blocker on B1, with
+none of the obsolete unsupported/missing-supplier-population messages on those
+sources. No public metadata, date/latest/age or stronger assurance fabricated.
+
+Before/after manifests are byte-identical SHA256
+cc27706bb5ebb8c587ae7caa4bc67c4b122fc1e44f773a3cf6bf3a03344822b1:
+223 tracked/12 untracked fully hashed,50 ignored metadata entries, full NUL Git
+status/index/HEAD and relevant ignored evidence. No target cleaning/normalization,
+write, execution, new evidence or target-behalf network. Non-atomic capture and
+unrelated ignored-byte limits remain explicit. Final equality repeats after closure.
+
+**R1–R4 COMPLETE / locally CONVERGED.** Spec correction's original REVISE remains
+preserved and closed by fresh spec_closure; no implementation correction is needed.
+Spec/plan/graph digests remain unchanged except execution statuses appended to graph.
+Current README/SPEC/AGENTS/CHANGELOG/ROADMAP reconcile policy and actual blockers.
+Methodology one-case result retained; no retrospective framework, CI maintenance,
+namespace automation, public namesake, new ecosystem or target execution introduced.
+
+Exact next human gate: **HUMAN PRE-PUSH / PUBLICATION AUTHORIZATION**, followed by
+actual hosted Windows/macOS/security/CI on this new candidate. Namespace-authority
+work requires separate future human authority; no workaround is selected here.
+Push performed:NO. Final closure commit/history/tree/integrity checks and current
+44-key006-0028 external handoff follow; current run/children are not appended.
+
+Parent reproduces coherence review's10 exact probes using a retained trusted
+synthetic script006-0028/parent-review-probes.py:normalized minimum and conditional
+ancillary property remain B1; reverse mismatch with unknown framework, nested
+changed request, opaque-metadata changed request and nested framework conflict
+remain unknown/terminal; conditional unknown reference, unknown root label,
+equivalent Version child and unsupported VersionOverride remain B2 under explicit
+v3. All10 PASS with zero capabilities/process/socket calls. Uninterpreted conditional/
+override facts do not become evaluated contradictions. These probes check N/basis/
+capability, not individual public reason strings; production tests separately check
+reasons. Reviewer raw probes lived only in its tool transcript; parent reproduction
+supplies a retained private witness without inventing an original artifact.

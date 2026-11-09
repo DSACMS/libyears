@@ -41,7 +41,7 @@ reviews.md. One local commit per completed task; no push.
   in validation.md, all checks/limits; diff/local links; local commit. Canonical
   history GitLeaks on committed candidate, freeze for convergence.
 
-- [ ] R4 — Independent convergence and closure. Predecessor R3.
+- [x] R4 — Independent convergence and closure. Predecessor R3.
   Q1–Q5: fresh non-author decomposed coherence/precedence, namespace/v3/claims and
   output/schema/portability/OASim cross-artifact reviews on frozen candidate.
   Parent validates material findings and complete matrix/requirements coverage.
@@ -75,3 +75,13 @@ A whole-witness errors, no ages. All exact CLI companions exit0/empty stderr;
 guarded process/network calls zero, verboseJSON equal. Target manifest exact equality
 PASS (223 tracked/12 untracked/50 ignored inventory). No target writes/execution/
 evidence generation/network. Canonical history GitLeaks and convergence follow.
+
+R4 complete / locally CONVERGED:three fresh decomposed complete non-author reviews
+APPROVE, no material findings. Independent coherence113 plus10 probes, trust156
+plus7 guarded namespace probes, output142 and capability142/7 skips PASS. Parent
+validates all reports/20-case coverage/Q1–Q5 and retained actual operation/integrity;
+no majority vote. No implementation correction needed. Spec's earlier M-null
+finding remains preserved and independently closed. Final whitespace/history/
+integrity/clean-tree checks and current external handoff follow closure commit.
+Next human gate publication authorization then actual hosted platform/security/CI;
+namespace automation remains separate future authority. No push.
