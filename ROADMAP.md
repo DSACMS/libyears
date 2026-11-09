@@ -484,15 +484,35 @@ permission, scope/metric changes or silent compatibility degradation.
 
 ### 16. Repository-contained snapshot acceptance and currentness
 
-**State:** DEFER; explicitly excluded from006-0026.
+**State:** EXPLORE; investigated in006-0027, unselected pending HUMAN PRODUCT /
+SNAPSHOT-ACCEPTANCE DECISION. No automatic population authority implemented.
 
-**Opportunity:** Determine whether retained repository evidence can eventually
-support automatic snapshot acceptance without human-authored testimony.
-**Evidence:** B now has a truthful bound contract, but OASim's retained locks alone
-still cannot supply its explicit acceptance. No new acceptance was manufactured.
-**Success signal:** Separately approved accountable association/currentness policy.
-**Stop condition:** Co-location, hashes or counts silently become trust authority.
-**Reference:** [Snapshot P2/P5](maintenance/nuget-snapshot-population/spec.md).
+**Opportunity:** Replace only objectively recoverable snapshot facts and deliberate
+artifact-selection policy, keeping supplier knowledge distinct from computation.
+**Evidence:** V3 decomposes into local byte/context checks, accountable association/
+explicit-scope assertions, policy intent and separate namespace. P2/P3 one-way
+checks admit stale removed/extra Direct records; full positive literal parity is
+available on all ten OASim pairs, but same-domain copied locks and hidden evaluated
+changes remain indistinguishable. All ten locks are untracked; Git supplies no
+committed-pair witness and chronology cannot prove restore. P7/P6 could represent
+A3+B48 occurrences only after new approval; actual result remains A2/3, B0 and no
+accepted repository denominator or real ages. A whole-source acceptance and
+namespace remain independent blockers; no automatic A witness removal is selected.
+**Success signal:** Separately approved byte-bound represented-snapshot policy,
+positive explicit-ID/request equality, sole context, known-conflict refusal and
+honest no-producing-history/no-current-evaluation limitations; otherwise retain
+accountable explicit acceptance. No silent coherent_snapshot assertion generation.
+**Stop condition:** Colocation/hashes/Git become historical trust or public namespace;
+new policy is implemented without human approval.
+**References:** [Frozen investigation](discovery/nuget-snapshot-acceptance.md),
+[independent review](discovery/nuget-snapshot-acceptance-review.md),
+[existing snapshot P2/P5](maintenance/nuget-snapshot-population/spec.md).
+
+**Methodology signal:** Human authority may scaffold unknown trust boundaries;
+after evidence gathering, deterministic policy may replace recoverable facts or
+consciously narrow the claim. This remains a hypothesis, not a universal rule or
+proof that the present association assertion has an automatic equivalent. Preserve
+for the planned retrospective framework; no framework created here.
 
 ### 17. NuGet namespace-authority automation
 
@@ -529,6 +549,19 @@ conditions, SDK and environment can change current evaluated population.
 **Success signal:** Concrete unmet evaluated-state use case and separate execution/
 trust authority. **Stop condition:** Consumer CLI executes targets or becomes a
 resolver. **Reference:** [Snapshot limitations](maintenance/nuget-snapshot-population/spec.md).
+
+### 20. Hosted action-runtime maintenance observations
+
+**State:** WATCH; no CI implementation selected.
+**Evidence:** Human-supplied72dc9a2 hosted checks ultimately GREEN. Recurring
+checkout@v4/setup-node@v4 Node20-to-Node24 runtime warning likely belongs to
+repository action maintenance. deploy-pages@v5 DEP0040 punycode ownership and
+remediation require later investigation. Initial macOS runner exhaustion did not
+execute candidate/tests; successful exact-candidate rerun supplies the witness.
+**Success signal:** A separately scoped maintenance investigation identifies owned,
+necessary action updates. **Stop condition:** Treating warnings as failed checks,
+runner exhaustion as flaky tests, or bundling CI changes into population discovery.
+**Reference:** [Supplied hosted evidence](maintenance/nuget-snapshot-population/reviews.md#published-candidate-supplied-hosted-evidence--006-0027).
 
 ## Selected Work Moved into SDD
 

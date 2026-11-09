@@ -144,3 +144,32 @@ hosted Windows/security/CI on the new published candidate. Local simulation and
 historical70b4583 hosted evidence do not establish those new witnesses. Optional
 future acceptance of sufficient retained v3 testimony is a separate evidence action;
 no acceptance is manufactured to make OASim numeric. Push performed:NO.
+
+## Published candidate: supplied hosted evidence — 006-0027
+
+The human reports all required hosted checks GREEN for exact published candidate
+`72dc9a28d46f117e6786a29afe8b42f9a4596001`. This is accepted human-supplied
+post-publication evidence, not agent-fetched logs or a new local execution.
+Historical local convergence and its previously pending hosted gate remain
+historical; this entry supplies the subsequent platform witness.
+
+- Windows: exact published candidate executed; full suite: 730 PASS with expected
+  platform skips, prior portability regression absent, required capability-absence
+  tests PASS. No unreported runner/Python details are inferred.
+- Initial Python 3.13 macOS attempt obtained no GitHub-hosted runner and did not
+  execute the candidate. External transient infrastructure availability failure;
+  neither candidate/test failure nor flaky test.
+- Successful rerun: exact 72dc9a28d46f117e6786a29afe8b42f9a4596001;
+  macOS 26.7.2, macos-26-arm64, image 20261102.0473.1, CPython 3.13.17.
+  Dedicated real-worker: 3 PASS; complete suite: 730 PASS in 21.640 seconds;
+  test_absent_required_flags_refuse_before_any_open and
+  test_each_required_capability_refuses_before_any_open PASS.
+- Pages/Tier2: required hosted checks ultimately PASS. Nonblocking warnings:
+  actions/checkout@v4 and actions/setup-node@v4 target deprecated Node.js 20 and are
+  currently forced onto Node.js 24; actions/deploy-pages@v5 emits DEP0040 punycode.
+  Repository-action runtime maintenance is a prospective opportunity; punycode
+  ownership/actionability needs investigation. No CI implementation here.
+
+Supplied evidence closes the previously unobserved published-candidate hosted
+checks on this provenance basis. It does not supply new OASim snapshot/namespace
+acceptance, live registry dates or evidence of target restore/deployment.
