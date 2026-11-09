@@ -116,8 +116,10 @@ zipp==4.1.0
         scan.assert_called_once_with(".", nuget_repository=True)
 
     def test_ca_bundle_is_threaded_to_scan(self):
-        with patch("libyears.cli.ssl.create_default_context"), patch("libyears.cli.scan_mixed_repository", return_value=empty_report()) as scan:
-            self.assertEqual(main([".", "--ca-bundle", "/tmp/ca.pem"]), 0)
+        output = io.StringIO()
+        with patch("libyears.cli.ssl.create_default_context"), patch("libyears.cli.scan_mixed_repository", return_value=empty_report()) as scan, redirect_stdout(output):
+            code = main([".", "--ca-bundle", "/tmp/ca.pem"])
+        self.assertEqual(code, 0, output.getvalue())
         scan.assert_called_once_with(".", nuget_repository=True, ca_bundle="/tmp/ca.pem")
 
     def test_missing_ca_bundle_is_filesystem_error(self):
@@ -128,9 +130,10 @@ zipp==4.1.0
         scan.assert_not_called()
 
     def test_explicit_path(self):
-        with patch("libyears.cli.scan_mixed_repository", return_value=empty_report()) as scan:
+        output = io.StringIO()
+        with patch("libyears.cli.scan_mixed_repository", return_value=empty_report()) as scan, redirect_stdout(output):
             code = main(["/tmp/repository"])
-        self.assertEqual(code, 0)
+        self.assertEqual(code, 0, output.getvalue())
         scan.assert_called_once_with("/tmp/repository")
 
     def test_resolved_snapshot_is_parsed_and_passed_to_scan(self):
@@ -168,13 +171,14 @@ zipp==4.1.0
         self.assertEqual(code, 2)
 
     def test_resolved_snapshot_measurement_gap_is_success(self):
+        output = io.StringIO()
         report = ScanReport(MetricSummary(1, 0, 0.0, 0.0, None, None, None), (), ())
         with tempfile.TemporaryDirectory() as directory:
             snapshot_path = Path(directory) / "resolved.txt"
             snapshot_path.write_text("other==1.0\n", encoding="utf-8")
-            with patch("libyears.cli.scan_mixed_repository", return_value=report):
+            with patch("libyears.cli.scan_mixed_repository", return_value=report), redirect_stdout(output):
                 code = main([".", "--resolved", str(snapshot_path)])
-        self.assertEqual(code, 0)
+        self.assertEqual(code, 0, output.getvalue())
 
     def test_json_output_is_parseable(self):
         output = io.StringIO()
