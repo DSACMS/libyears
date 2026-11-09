@@ -5,3 +5,7 @@
 # maintenance/gitleaks-exact-exceptions-006-0019.md
 943d5de022a13103a2657a3be6b10f711565047a:specs/006-nuget-selected-evidence/reviews.md:generic-api-key:1557
 8377163f6e8396c3f089a5cb54dc476d5bbff7fe:tests/test_nuget_registry.py:generic-api-key:491
+
+# Independently reviewed historical specification prose (006-0031).
+# maintenance/gitleaks-exact-exceptions-006-0031.md
+78e284f10ee10b2049ba30717b6acda0be650354:maintenance/nuget-conventional-comparator/spec.md:generic-api-key:35
