@@ -16,6 +16,14 @@ Notable changes to Libyears are documented here.
 
 ### Changed
 
+- Ordinary NuGet scans can date qualified selected versions against a disclosed
+  conventional nuget.org reference when repository policy supplies no contrary
+  assignment or ambiguity. Preserve stronger testimony and mapping separately;
+  alternate/private/unknown policy never falls back to public namesakes. Supported
+  declaration populations can use the same narrow current-pair measurement floor
+  without inventing supplier baseline assertions. Schema v3 adds comparator basis
+  and limitations; explicit precision behavior and metric arithmetic are unchanged.
+
 - Measure accepted NuGet project/lock snapshots with explicit package-specific
   public namespace authority, without requiring historical acquisition or content
   agreement for version age. Retain stronger v1 assurance; accept later v2 bound

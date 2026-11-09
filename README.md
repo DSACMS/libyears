@@ -435,6 +435,39 @@ without required safe file-access capabilities fail closed. The
 failure/field rules; [validation evidence](specs/005-gemfile-group-scope/release-validation.md)
 separates offline correctness from pending authorized real-root validation.
 
+## Ordinary NuGet version-age comparator
+
+For ordinary directory scans, qualified selected versions may use nuget.org as a
+**conventional public reference** when bounded repository policy is silent or
+public-only. Namespace correspondence is assumed by this disclosed product policy;
+it is not independently established. External user/machine/ancestor configuration
+is uninspected. Dates describe nuget.org's history, not package acquisition,
+content correspondence, producer history, evaluated state or deployment.
+
+Known private/nonpublic assignment, conflicting testimony, active ambiguous mapping,
+unsupported/unreadable relevant policy or source-affecting project/import evidence
+blocks public lookup. Enabled alternate/local feeds without package assignment
+remain ambiguous; they are neither assumed private nor assumed public mirrors.
+Valid accepted exact public testimony can resolve eligibility alone. Closed unique
+public mapping can establish current repository assignment. Otherwise the convention
+applies only after supported bounded inspection. Public namesake existence never
+authorizes lookup. No alternate/private feed is contacted.
+
+Inspection covers only anchored root-to-project ancestors, case-insensitive
+NuGet.Config names and presence of Directory.Build.props/targets/Directory.Packages.props.
+The initial safe config subset supports source/disable clear/add/remove and closed
+source mapping with exact > longest prefix > wildcard precedence. Unsupported
+sections (including credential framing), ambiguous aliases, links and excessive
+inputs refuse safely. No imported code or outside configuration is read/evaluated.
+Dirty/untracked/non-Git current bytes follow the same rules.
+
+Schema3 ordinary rows add comparator_basis (explicit_testimony, repository_mapping,
+conventional_public_policy). Conventional rows disclose their assumptions separately
+from population/selection and stronger assurance. Automatic policy dates use
+measurement_basis public_comparator_version_age, never accepted testimony labels.
+The explicit precision interface retains its existing contract and output shape.
+See the [approved policy](maintenance/nuget-conventional-comparator/spec.md).
+
 ## Explicit NuGet project snapshots
 
 For precision/debugging or a single source, select exactly one immediate C#
@@ -621,10 +654,13 @@ claim follows. Optional explicitly accepted v3 testimony retains its accountable
 snapshot association/scope meaning, independent of B1; invalid supplied testimony
 is refused rather than ignored. V3 does not authenticate historical production.
 
-B1 population acceptance authorizes **zero public requests** by itself. Without
-separate applicable namespace authority, selected rows report
-unsupported_dependency_source. A's existing v1/v2 whole-witness requirements remain,
-so known repository N can coexist with null coverage and missing A testimony.
+Population acceptance authorizes **zero public requests** by itself. Ordinary
+sources independently apply the [comparator policy](maintenance/nuget-conventional-comparator/spec.md).
+Supported A without a supplied witness may select a uniquely attributable current
+pair with the same whole-lock, bidirectional ID/request/context qualification as B1.
+It stays declaration_derived and does not establish supplier baseline assertions.
+Existing stronger v1/v2 and explicit precision routes remain available; invalid
+supplied testimony is never discarded to obtain weaker acceptance.
 JSON schema3 adds qualified_repository_snapshot to population_basis and fixed
 limitations; B1 trust_basis is repository_snapshot_policy, or
 supplied_snapshot_population_assertion when valid explicit v3 is also accepted.
@@ -674,13 +710,12 @@ not evaluated or certified current. This claim is a retained snapshot, without
 current evaluated completeness, acquisition/content correspondence, deployment,
 restore success or reproducibility. Each project still owns its own occurrences.
 
-Population acceptance supplies **no public namespace authority**. Empty packages
-is valid and authorizes no lookups: accepted occurrences become individually
-unmeasurable with unsupported_dependency_source. To accept namespace testimony,
-packages may contain exactly the existing v2 records {id, version, namespace};
-only an explicitly accepted exact selected P/V with the canonical public namespace
-can authorize public metadata. Unknown/private/conflicting namespaces never use
-public namesakes. No automatic repository-file namespace policy is introduced.
+Population acceptance supplies **no public comparator authority** by itself.
+Packages may contain existing v2 records {id, version, namespace}; exact accepted
+public testimony remains one comparator route. Empty packages supplies no testimony.
+Ordinary sources may independently use the repository comparator cascade below;
+explicit precision mode still requires exact accepted namespace testimony.
+Unknown/private/conflicting testimony never uses public namesakes.
 
 Source and row JSON evidence use population_basis (declaration_derived,
 qualified_repository_snapshot, resolved_snapshot or unknown); snapshot source

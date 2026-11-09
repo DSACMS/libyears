@@ -921,7 +921,7 @@ No A grammar expansion, complete evaluated semantics or historical production
 inference occurs. Dirty/copied/non-Git coherent current pairs qualify without Git.
 B1 optional explicitly accepted v3 retains supplier association/scope and namespace;
 invalid supplied testimony refuses measurement with B1 N retained. No testimony
-means known B1 N, selected rows unsupported_dependency_source and zero lookup.
+means known B1 N; ordinary comparator admission is now separately governed below.
 Explicit precision mode preserves its A/B2 contract. A retains v1/v2 baseline gates; v3 on A refuses with known N and unavailable
 measurement. No fallback after A establishes population or after its later gates fail.
 
@@ -1033,3 +1033,24 @@ runtime compatibility, current restore or cryptographic provenance. Useful live
 yield and hash-domain fitness remain unverified; real-root validation requires
 separate explicit target/network authority. Assets/exports/packages.config,
 general MSBuild/CPM, private feeds and portfolio aggregation remain out of scope.
+
+## Ordinary NuGet conventional comparator correction
+
+The approved [comparator contract](maintenance/nuget-conventional-comparator/spec.md)
+supersedes ordinary namespace admission above. It permits a deliberately conventional
+nuget.org reference after supported bounded repository inspection finds no contrary
+assignment or ambiguity. Correspondence is assumed by policy, not established;
+external configuration, acquisition/content/producer/evaluated/deployed state remain
+unestablished. Enabled nonpublic/local alternatives without assignment are ambiguous,
+not implicitly private. Exact accepted testimony, then closed unique public mapping,
+then convention apply only absent stronger contradictions/unknown relevant syntax.
+No public namesake grants capability. Private/unknown occurrences make no HTTP call.
+
+Ordinary no-witness A additionally may qualify a uniquely attributable current pair
+under B1-strength whole-lock/ID/request/framework/selected identity checks, retaining
+declaration_derived and explicit missing supplier baseline limitations. No baseline
+or witness is synthesized; stronger accepted witness and precision routes retain
+meaning. Schema3 ordinary rows add comparator_basis and fixed conventional
+comparator_limitations; policy namespace/measurement values remain distinct from
+testimony. Metric, stable/date policy, worker/transport budgets and sibling semantics
+are unchanged. See C1–C6 for exact bounded grammar, refusal and precedence rules.

@@ -517,36 +517,37 @@ is created here.
 
 ### 17. NuGet comparator/public-namespace authority
 
-**State:** EXPLORE; frozen006-0029 discovery, HUMAN PRODUCT /
-NAMESPACE-AUTHORITY DECISION required. No automatic policy selected.
+**State:** SELECTED in006-0030 under explicit conditional human direction.
+Frozen006-0029 evidence830a19c remains historical; narrow
+[investigation](discovery/nuget-conventional-comparator.md) and
+[independent review](discovery/nuget-conventional-comparator-review.md) approve a
+consciously conventional public reference with namespace correspondence assumed,
+not independently established. Effective external configuration remains uninspected.
 
-**Opportunity:** Establish the applicable publication comparator from positive
-repository-contained policy, independently of acquisition/content/producer history.
-**Evidence:** [Discovery](discovery/nuget-namespace-authority.md),
-[all51 occurrence audit](discovery/nuget-namespace-authority-oasim.csv) and
-[independent review](discovery/nuget-namespace-authority-review.md). Closed unique winning public mapping may support a deliberately CURRENT
-comparator convention; a sole-public repository-only/no-mapping convention needs
-separate acceptance because machine default sources can survive repository clear; open inheritance, multiple eligible sources, namesakes and
-absence do not. OASim has two additive alternate configs/no mapping and eight
-absent configs: zero51 newly authorized. No package queries/ages. Existing explicit
-v1/v2/v3 namespace route remains; stronger assurance stays21.
+**Selected contract:** [C1–C6](maintenance/nuget-conventional-comparator/spec.md)
+retains exact testimony and closed unique public mapping, then conventional
+nuget.org comparison only absent contrary assignment/ambiguity. Enabled alternate/
+local feeds without assignment remain ambiguous; no mirror/private inference.
+Private/conflicting/unknown policy never reaches public lookup. Public namesakes
+never grant authority. Stronger acquisition/content/producer facts stay separate21.
 
-**Separate A-floor opportunity:** A2/3 stops on whole baseline testimony while
-B1 8/48 stages selection before namespace. Hidden baseline facts remain real, but
-a future current-pair policy could remove unnecessary unrelated admission burden
-without pretending to prove them. Requires separate human contract decision;
-no A correction, parser18 expansion or evaluated19 execution selected.
+**A-floor:** Add ordinary no-witness qualified current-pair route retaining
+A declaration population and strict whole-lock/ID/request/context qualification.
+No fake hidden-baseline assertion; old precision/witness semantics preserved.
+Parser18, evaluated19, CI20 and performance22 remain separate.
 
-**Success signal:** Human-selected precise comparator claim, closed positive source
-assignment and private/conflicting negative controls; prospective spec/review before
-implementation. **Stop condition:** Public existence/default convention/unknown or
-private source substitutes nuget.org, or config is called acquisition history.
+**Acceptance:** Independent spec/plan/graph and implementation/convergence before
+first real OASim metadata attempt. Historical audit predicts33 no-config candidates
+and18 alternate-source ambiguities, never a promised33/51 or51/51 measurement.
+Actual operational result will be recorded in
+[validation](maintenance/nuget-conventional-comparator/validation.md).
 
-**Retrospective input:** Claim decomposition can reveal stronger assurance made an
-unnecessary floor; human gates may scaffold unknown boundaries until reusable policy
-is deliberately selected. Ordinary-user smoke tests product intent; hosted checks
-are asynchronous evidence and do not replace synchronous trust authority. No reusable
-retrospective framework created. [Existing cascade](maintenance/measurement-evidence-cascade/spec.md).
+**Methodology:** Use the lowest sufficient truthful evidence floor for the stated
+age claim. Stronger evidence enriches assurance rather than automatically becoming
+its minimum. Product policy selects a reference; it does not reconstruct history.
+Human gates may scaffold unknown boundaries; ordinary-user smoke supplies product
+acceptance evidence and hosted checks remain asynchronous. Partial coverage is
+preferable to fabricated completeness. No retrospective framework created.
 
 ### 18. Bounded static C# project parser expansion
 

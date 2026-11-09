@@ -544,3 +544,16 @@ B1 with no accepted namespace yields known population and per-row
 unsupported_dependency_source, zero capabilities/lookups. Existing valid explicit
 v3 retains supplier scope/association/namespace, invalid testimony is not ignored.
 NO namespace automation, public-namesake or private/unknown fallback is authorized.
+
+The approved correction under maintenance/nuget-conventional-comparator/ governs
+ordinary version-age comparator admission. Qualified population/selection can use
+nuget.org by disclosed product convention only after bounded repository inspection
+finds no contrary assignment/unresolved ambiguity. Correspondence is assumed, not
+proven; no acquisition/content/producer/evaluated claim. Alternate/local eligibility
+without assignment is ambiguous; private/conflicting/unknown policy never reaches
+HTTP. Exact accepted testimony and closed unique public mapping retain stronger
+authority; no public-namesake permission. Ordinary no-witness A can use strictly
+qualified current-pair age admission while retaining declaration_derived, missing
+stronger baseline limitations and existing witness/precision semantics. Schema3
+additive comparator basis is separate from population/selection/assurance. No
+outside config, target execution, private endpoint, metric or sibling change.
