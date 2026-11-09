@@ -69,3 +69,29 @@ worker3PASS. Earlier floor/worker scopes remain covered; no majority vote.
 Runtime/spec/plan/tests/output convergence COMPLETE before any target access.
 GitLeaks prose false positive remains publication/security-policy gate, not a
 claim of clean security closure. Proceed K4 under explicit read-only authority.
+
+## Actual operation independent closure — 23248e0
+
+Fresh non-author operational_review COMPLETE APPROVE, no material operational
+findings. Read only generated exact evidence, no new target access/live lookup.
+Independently recomputes all33 timestamp ages/repository/per-source aggregates,
+51-occurrence authority/result join, CSV exact projection, source bases/A3+B1 30
+measured, all18 unauthorized ambiguity rows and human/JSON selected/latest/reason/
+rounding consistency. Exact before/after manifests and capture scope independently
+verified; no target clean/atomic claim. Parent validates every count/hash/metric.
+Runtime and operational convergence COMPLETE; K4 first honest real attempt gives
+33/51, not51/51.18 remain policy ambiguity, final registry failures zero.
+
+Canonical full314-commit GitLeaks repeated exit1 SAME single prose false positive.
+Exact proposed human decision is whether to authorize ONE additional historical
+fingerprint in the existing exact-exception policy:
+
+`78e284f10ee10b2049ba30717b6acda0be650354:maintenance/nuget-conventional-comparator/spec.md:generic-api-key:35`
+
+No exception proposal is installed; current two approved exceptions unchanged.
+No credential remediation/history rewrite/CI maintenance is justified by prose.
+Publication/security closure awaits that human decision, then separate pre-push
+publication authorization and asynchronous hosted evidence for the new candidate.
+No push/release/tag/history rewrite performed. No comparator gate remains for33;
+remaining18 need sufficient package-specific assignment/testimony, never weaker
+public namesake/default assumption under ambiguous repository policy.

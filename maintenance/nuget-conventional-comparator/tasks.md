@@ -27,7 +27,7 @@ per completed task; no push. No live target lookup before K3 convergence.
   every finding. Determined corrections separately committed/tested/freshly closed.
   Record complete dispositions, no majority vote; new product/schema gaps stop.
   Canonical history GitLeaks/diff/local commit. No target lookup yet.
-- [ ] K4 — First actual ordinary OASim measurement and closure. Predecessor K3.
+- [x] K4 — First actual ordinary OASim measurement and closure. Predecessor K3.
   C6: capture exact baseline before target access, run ordinary command + JSON
   through existing public worker with established capabilities only; retain outputs
   and registry realities. Report actual denominator/M/coverage/total/mean/median/max,
@@ -58,3 +58,12 @@ REVISE2 findings validated/corrected4e0e60b and fresh closure APPROVE126focused/
 1skip+6probes. Final full780/1skip, capability780/57skip,worker3PASS. GitLeaks
 exit1 verified prose falsepositive unsuppressed; separate human security/publication
 gate, no clean scan claimed. K4 read-only measurement authorized to proceed.
+
+K4 measurement/operational closure COMPLETE: ordinary human/JSON exit0 emptyerr,
+33/51 measured (all33 admitted requests usable),64.705882% coverage,26.5508747945
+measured-subset libyears.18 alternate-source ambiguity refusals, no capability/
+lookup; A2/3+B1 8/48+B2zero. Before/after exact manifest equality, independent
+operational review COMPLETE APPROVE; no runtime correction after real lookup.
+Initial sandbox33transport failures resolved by authorized network-enabled rerun.
+Canonical GitLeaks exit1 verified prose false positive remains unsuppressed,
+security/publication gate only. No push. Final clean-tree/handoff follow commit.

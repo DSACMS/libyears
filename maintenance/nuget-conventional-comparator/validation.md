@@ -148,3 +148,30 @@ false positive in the committed specification. No credential was found, but no
 clean scan is claimed. Ignore/config/history are unchanged; a new exact suppression
 requires human authority. Independent review distinguishes publication/security
 closure from authorized read-only measurement after runtime convergence.
+
+## Operational closure and publication limit
+
+Fresh operational_review COMPLETE APPROVE23248e0 with independent all33 age/metric/
+per-source and51-row CSV/authority checks, exact integrity and human/JSON agreement;
+no material findings. Parent verifies same artifacts; all four task outcomes are
+complete. Later canonical history314commits scan still exits1 for the SAME single
+committed prose false positive; no ignore/security policy change. No clean GitLeaks
+or hosted new-candidate pass is claimed. Exact next gate HUMAN SECURITY-POLICY
+DECISION on the single documented exact prose fingerprint, then separate HUMAN
+PRE-PUSH/PUBLICATION AUTHORIZATION and asynchronous hosted validation. No push.
+
+Files changed since b449c5d:28 total, including the preserved006-0029 six-file
+freeze. Runtime:model,nuget,nuget_comparator,nuget_sources,nuget_supervisor,output;
+tests:two new comparator suites plus source/nativeB1 expectation updates; current
+AGENTS/README/SPEC/CHANGELOG/ROADMAP; frozen old/new discovery/data/reviews;
+comparator spec/plan/tasks/reviews/validation/51-row CSV; prior snapshot Windows
+validation append and prior-run observation ledger. No sibling runtime, registry
+semantics, CI config, GitLeaks policy or metric module changed.
+
+Local lifecycle commits before closure:830a19c,00d5770,78e284f,a8207a5,f8789ec,
+0f08140,8fc185f,4e0e60b,df28157,23248e0. Closure commit and final checks are recorded
+in the external44-key006-0030 handoff; current run/children are not appended.
+006-0029 recorded exactly once with supplied telemetry/runtime provenance and
+account83/86; current before86 inherits confirmed continuity, no current after
+reading/runtime or derived credit delta. Process deviation (inert drafting while
+plan review pending) is disclosed in reviews.md, no activation before approval.
