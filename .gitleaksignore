@@ -9,3 +9,6 @@
 # Independently reviewed historical specification prose (006-0031).
 # maintenance/gitleaks-exact-exceptions-006-0031.md
 78e284f10ee10b2049ba30717b6acda0be650354:maintenance/nuget-conventional-comparator/spec.md:generic-api-key:35
+
+# Additional exact prose occurrence explicitly authorized after 006-0031 stop.
+17a375f45f8de0e5f5ff28b9acf6f6456e7c66dc:maintenance/gitleaks-exact-exceptions-006-0031.md:generic-api-key:22

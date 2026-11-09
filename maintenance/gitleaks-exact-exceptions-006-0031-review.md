@@ -39,3 +39,20 @@ is exhausted; a second exact exception needs human authorization. Reviewer
 explicitly acknowledged missing the predictable quotation recurrence in the
 candidate review. Parent validated this finding and disposition. Current quote
 removal is preventive only, not remediation of committed history.
+
+## Explicitly authorized continuation — final candidate
+
+The human separately authorized the second exact fingerprint after accepting
+the independent prose classification. Fresh follow-up A inspected the current
+delta and resumed disposable controls and independently recomputed removal sets:
+6 → 3 → 2; all three prior exceptions exact, only the separately authorized
+fingerprint newly removed, both new controls remain detected. Both historical
+prose occurrences are suppressed. Current documents stdin scan exit 0; canonical
+318-commit gate exit 0/no leaks; gate tests 4 PASS; whitespace PASS. APPROVE;
+no broader suppression, history change or quotation restoration. Parent validated
+these results. Post-commit history verification is still required before Phase 2.
+
+Frozen continuation SHA256:
+
+- `.gitleaksignore`: `9ab2f21ac82c2218582d8fb9a322880c3fc031392027b9076f66e8e6002a10da`
+- rationale: `41f9c095fee2340fbd349ae3df51b86a341c15fe2f008c61f3f9175f8b271330`

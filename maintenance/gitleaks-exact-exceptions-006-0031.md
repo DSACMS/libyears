@@ -76,3 +76,22 @@ network lookup occurred in this run. The next gate is HUMAN SECURITY DECISION:
 separately authorize or reject this additional exact historical prose fingerprint.
 The initiating prompt's one-exception authority is exhausted. Publication remains
 unauthorized regardless of that decision.
+
+## Human-authorized continuation in the same context
+
+The human explicitly accepts the completed independent classification and
+separately authorizes only the second fingerprint printed above. One exact
+entry is added; no scanner configuration, rule, path/regex allowance or history
+changes. The corrected current paraphrase is retained.
+
+The existing disposable-clone control experiment is rerun against the current
+history: no exceptions gives six findings; the prior three exact exceptions give
+three; adding the second authorized fingerprint gives two. Removed sets are
+asserted exactly, including all prior exceptions. Both newly introduced controls
+(identical prose at a new commit/path and a different synthetic generic key)
+remain detected. Both approved prose fingerprints are removed from the final set.
+Corrected current security documentation scanned through stdin has zero findings.
+Canonical committed-history gate with the candidate ignore: exit 0, zero
+unsuppressed findings. Gate tests: 4 PASS; whitespace check PASS. A final scan of
+the security commit is required before Phase 2. Earlier failures remain historical
+evidence; this authorization changes no NuGet comparator/product authority.
