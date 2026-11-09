@@ -139,6 +139,48 @@ all external, security or maturity gates. No package managers or CI changes.
 
 ## Reconciliation and verification
 
-Pending candidate implementation and independent A–E review. Record frozen
-candidate identities, findings, corrections and actual checks in a separate
-review record; reconcile this map after migration without rewriting the inventory.
+At inventory freeze, candidate implementation and independent review were pending.
+The completed migration and independent review are recorded in
+[the review record](readme-architecture-reviews.md). The inventory above retains
+its original proposed classifications and locators; corrections are explicit below.
+
+
+### Locator correction and completed migration
+
+Independent Reviewer F identified inaccurate ranges in five unheaded-subsection
+rows of the frozen map. These are inventory locator errors, not missing migrated
+content. The following ranges at original HEAD0506861 supersede those locators;
+the frozen history and original rows remain inspectable.
+
+| Original block | Correct frozen README location | Final destination |
+| --- | --- | --- |
+| v3 template and accountable scope | L685–699 template; L701–706 scope | [B2 / v3](../ECOSYSTEMS.md#explicitly-accepted-resolved-snapshot-fallback-b2) |
+| Dates, latest and normalization | L734–747 | [Dates and versions](../ECOSYSTEMS.md#dates-and-versions) |
+| Output, assurance and cross-ecosystem distinctions | L749–799 | [Output and assurance](../ECOSYSTEMS.md#output-and-assurance) |
+| Availability, failure and safe input | L801–817 | [Availability and safe input](../ECOSYSTEMS.md#availability-and-safe-input) |
+| Numeric bounds and metadata supervision | L819–850 | [Bounds](../ECOSYSTEMS.md#enforced-bounds) and [metadata access](../ECOSYSTEMS.md#metadata-access-and-supervision) |
+
+All inventory dispositions are implemented. README retains the first-use path,
+metric/coverage interpretation, ecosystem table, common options, key limitations,
+required mission/identity statements and project-resource links. ECOSYSTEMS retains
+the rich explanatory/operational reference and all ecosystem examples. SPEC has
+only three destination substitutions. CONTRIBUTING now owns the compact offline
+test instruction and links the user documentation roles. Two historical Ruby
+retrospective links were repaired without changing its narrative. No Feature006
+Feature Story or methodology handoff was rewritten.
+
+Deduplication: README's verbose development test command delegates to CONTRIBUTING;
+CONTRIBUTING's test command now uses repository-default compact output. README and
+CONTRIBUTING delegate security reporting and unresolved response expectations to
+SECURITY; neither repeats the inherited unestablished three-day promise. This
+resolves an existing contradiction without establishing a new commitment. LICENSE,
+COMMUNITY, conduct, security and maturity-rule files are unchanged.
+
+Knowledge reconciliation: fresh Reviewer B accounted for all114 original
+non-heading content blocks,98 verbatim after whitespace normalization and16
+individually compared. The20 original fenced examples remain available, apart
+from the intentionally compacted contributor test command; the guide retains18
+transferred ecosystem/example blocks byte-for-byte at the initial candidate.
+The README summary is an additional illustrative example, corrected against
+actual mocked CLI output. No material knowledge loss was found. See the review
+record for scope, correction freezes and verification limits.

@@ -22,7 +22,8 @@ It does not install dependencies or run the target project's tooling.
 A report's summary looks like this illustrative example (not a live scan):
 
 ```text
-Measured: 2 / 3 dependencies (66.7%)
+Measured: 2 / 3 dependencies
+Coverage: 66.7%
 Total:    4.12 libyears
 Mean:     2.06
 Median:   2.06

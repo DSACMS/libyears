@@ -820,7 +820,8 @@ Raw hashes, origins, baseline, XML and diagnostics are omitted. NuGet-active hum
 reports abstract the root path and omit raw verbose diagnostics/TLS paths;
 reports without NuGet sources retain their established output. Verbose JSON is identical.
 
-Locally admitted rows add `measurement_basis: bound_snapshot_namespace`,
+Rows admitted through accepted namespace testimony add
+`measurement_basis: bound_snapshot_namespace`,
 `namespace_basis: accepted_producer_origin` or `accepted_snapshot_namespace`, and
 `assurance` with producer_event, local_content, public_content and limitations.
 V2 origin_state remains unavailable even when namespace-authorized dates measure;
