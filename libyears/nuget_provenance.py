@@ -226,7 +226,7 @@ def authorize_measurement(context: SupplierContext, package_key: str,
     publication namespace. Neither a public namesake nor a hash supplies it.
     """
     key = package_key.lower()
-    if context.contract_version == 2:
+    if context.contract_version in (2, 3):
         matching = [package for package in context.packages
                     if package.package_key == key
                     and package.normalized_version == selected.normalized_version]
@@ -242,3 +242,49 @@ def authorize_measurement(context: SupplierContext, package_key: str,
     return LocalAuthority(context.project_sha256, context.lock_sha256, key,
                           selected.normalized_version, None,
                           'accepted_producer_origin', strong.content_hash_state)
+
+
+def parse_population_provenance(source: LocalInput, *, project_name: str,
+                                project_source: LocalInput, lock_source: LocalInput,
+                                framework: str) -> SupplierContext:
+    """Accept only explicitly selected v3 retained external-direct testimony.
+
+    This is distinct from v1/v2 baseline authority. In particular it does not
+    assert static/current evaluated declaration completeness or acquisition.
+    """
+    check_count(len(source.data), MAX_PROVENANCE_BYTES)
+    try:
+        value = decode_json(source.data.decode('utf-8', errors='strict'))
+    except UnicodeError:
+        raise NuGetInputFailure('malformed') from None
+    envelope = frozenset({'version', 'project', 'framework', 'project_sha256',
+                          'lock_sha256', 'coherent_snapshot',
+                          'explicit_external_direct_complete', 'packages'})
+    value = _object(value, envelope)
+    if type(value['version']) is not int or value['version'] != 3:
+        raise NuGetInputFailure('malformed')
+    name = _string(value['project'])
+    accepted_framework = _string(value['framework'], MAX_FRAMEWORK_LENGTH)
+    project_digest = _digest(value['project_sha256'])
+    lock_digest = _digest(value['lock_sha256'])
+    coherent = _boolean(value['coherent_snapshot'])
+    complete = _boolean(value['explicit_external_direct_complete'])
+    records = value['packages']
+    if not isinstance(records, list):
+        raise NuGetInputFailure('malformed')
+    check_count(len(records), MAX_PACKAGE_RECORDS)
+    packages = []
+    seen = set()
+    for record in records:
+        package = _package(record, 2)
+        identity = (package.package_key, package.normalized_version)
+        if identity in seen:
+            raise NuGetInputFailure('malformed')
+        seen.add(identity)
+        packages.append(package)
+    if (not coherent or not complete or name != project_name
+            or accepted_framework != framework
+            or project_digest != hashlib.sha256(project_source.data).hexdigest()
+            or lock_digest != hashlib.sha256(lock_source.data).hexdigest()):
+        raise NuGetInputFailure('context_mismatch', witness_version=3)
+    return SupplierContext(project_digest, lock_digest, tuple(packages), 3)

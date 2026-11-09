@@ -3,7 +3,7 @@
 Candidate graph; dispositions and frozen digests in reviews.md. Execute sequentially,
 one local commit per completed task. No push. Spec P1–P5 governs scope.
 
-- [ ] S1 — Inert bound snapshot primitives. Predecessor: approved graph.
+- [x] S1 — Inert bound snapshot primitives. Predecessor: approved graph.
   P1/P2/P3: add strict v3 testimony parser preserving v1/v2 dispatch, whole framing,
   exact bytes/context/coherence/external-completeness and namespace record meanings.
   Add bounded whole-XML conflict probe without changing parse_project; reject DTD,
@@ -57,3 +57,6 @@ compatibility, P5 by each focused check and S2–S4 integration/operational/revi
 No positive OASim yield, accepted51 denominator, new testimony or hosted evidence
 is a local predecessor. Semantic tests run without native descriptor capabilities;
 real safety refusal stays unskipped and real filesystem witnesses keep honest skips.
+
+S1 complete:96 focused primitive/project/lock/provenance/input/local-cascade tests
+PASS. New primitives remain inert until S2. Whitespace check PASS.
