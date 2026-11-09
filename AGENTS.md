@@ -504,6 +504,24 @@ metric and no-target-execution boundaries remain binding. See approved correctio
 reviews for exact mapping/output/failure semantics. Original Feature006/006-0020
 artifacts remain historical evidence.
 
+The approved correction under `maintenance/nuget-snapshot-population/` adds an
+explicitly accepted bound resolved-snapshot population fallback B only when static
+A reports unsupported well-framed project evidence. A remains first with unchanged
+v1/v2 baseline authority; v3 cannot force B on supported A. V3 separately asserts
+exact project/lock byte/name/framework association, coherent snapshot and complete
+explicit external Direct snapshot scope. It does not prove current evaluated
+project completeness, acquisition/content, deployment or reproducibility. No A
+completeness prerequisite for B. Whole schema1 sole-context lock, every Direct's
+safe request/selected identity and known literal conflict/duplicate refusal remain
+required before B population. Malformed/unsafe/over-budget/DTD project evidence
+cannot be salvaged. No parser grammar expansion/evaluation. V3 optional packages
+reuse explicitly accepted v2 namespace semantics; empty grants no lookup. No
+automatic snapshot or namespace acceptance, public namesake/private fallback or
+new repository-file trust route. Source/row population_basis and fixed source
+limitations extend schema3; occurrence weighting, arithmetic, unknown/unavailable
+coverage, worker safety and historical authority remain unchanged.
+
+
 Do not infer authorization for Maven, Go, Cargo, additional npm dependency scopes, or other registries from the existence of npm support.
 
 For ecosystem behavior, the approved feature specification takes precedence over generic assumptions in this file.

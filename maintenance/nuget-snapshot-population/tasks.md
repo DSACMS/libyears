@@ -29,7 +29,7 @@ one local commit per completed task. No push. Spec P1–P5 governs scope.
   fixture suites, full deterministic, full capability-disabled and real-worker;
   diff check and commit. Do not modify historical fixtures/contracts.
 
-- [ ] S3 — Documentation and retained OASim operation. Predecessor: S2.
+- [x] S3 — Documentation and retained OASim operation. Predecessor: S2.
   P1–P5: update current README/SPEC/AGENTS/CHANGELOG and ROADMAP checkpoint.
   Reconcile selected population work using actual evidence; preserve independent
   automatic snapshot/currentness, namespace automation, static parser expansion
@@ -66,3 +66,8 @@ successful/49 genuine filesystem skips; real-worker3 PASS. Initial integration
 exposed prospective read-order/additive-output expectations and a synthetic lookup
 fixture error; corrected before final passes. Historical fixture bytes unchanged.
 Whitespace/diff inspection PASS; source fallback and schema3 basis integrated.
+
+S3 complete:current docs/roadmap reconciled; exact ordinary OASim human/JSON/
+verbose exit0/empty stderr. A2/3; B potential8/48, actual0; repository N/coverage
+unknown, no age established. Final manifest equals baseline. GitLeaks follows
+committed S3. No target writes/execution/new acceptance evidence.

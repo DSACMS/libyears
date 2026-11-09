@@ -866,7 +866,7 @@ Missing explicitly selected projects instead yield completed source-error report
 Explicit selection adds no other projects. Solutions/references supply no
 population authority and portfolio scope remains excluded.
 
-Bounded static scope is one supported namespace-free UTF-8 SDK-style project,
+Declaration-first A static scope is one supported namespace-free UTF-8 SDK-style project,
 one unconditional literal framework, and all immediate unconditional literal
 Include/Version PackageReferences, including test/tool/analyzer/PrivateAssets.
 Duplicate case-insensitive IDs, conditions, version children/overrides,
@@ -908,8 +908,35 @@ canonical https://api.nuget.org/v3/index.json, never inferred from public existe
 configuration, hashes or discovered files. See README for exact templates.
 Unsupported population influences invalidate N; stale/malformed whole evidence
 retains independently known N with unavailable measurement. No v1/v2 merge repairs
-contradictions. Lock Direct population alone is not a fallback for unsupported
-projects: declaration-first population remains. No target/producer execution.
+contradictions. Lock Direct population alone is never acceptance authority.
+The separate approved [snapshot-population correction](maintenance/nuget-snapshot-population/spec.md)
+adds B only after unsupported well-framed A, through a new explicitly selected v3
+witness. A retains v1/v2 baseline gates; v3 on A refuses with known N and unavailable
+measurement. No fallback after A establishes population or after its later gates fail.
+
+V3 exact keys: version3, project, framework, project_sha256, lock_sha256,
+coherent_snapshot, explicit_external_direct_complete, packages. Both booleans must
+be true; exact current supplied bytes/name/sole lock framework must bind. The
+assertion establishes the complete explicit external Direct set for the accepted
+retained snapshot, not complete/current evaluated declarations. No A baseline/
+SDK-import completeness proof or producing event is required by B. Whole schema1
+lock framing, supported requests/selections for every Direct, duplicate refusal
+and known literal framework/ID/request contradiction checks precede B count/rows.
+Malformed/unsafe/limit/DTD project input cannot fall back. Transitive/Project and
+implicit SDK references are outside the accepted explicit scope. Same-byte imported
+or environment drift is not detectable; no evaluated currentness claim follows.
+
+Packages uses existing v2 id/version/namespace records. Empty is valid and grants
+zero public capability. Unknown/private/conflicting namespace fails per occurrence
+after whole B acceptance; public namesakes never repair it. Existing dates/worker/
+occurrence/metric/aggregation rules remain unchanged. Additive schema3 source/row
+population_basis is declaration_derived, resolved_snapshot or unknown; B source
+population_limitations and supplied_snapshot_population_assertion trust_basis
+identify retained snapshot limits independently of assurance/namespace. Human
+output marks B concisely; verbose/JSON inspects limitations. No acquisition,
+content correspondence, deployment, restore/reproducibility or current evaluated
+completeness claim; no target/producer execution or automatic snapshot/namespace
+acceptance. See README for the v3 format and complete correction for refusal rules.
 
 Complete SemVer-2 registration determines greatest currently listed stable by
 numeric precedence, independently of request/framework/date compatibility.

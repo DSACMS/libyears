@@ -60,8 +60,12 @@ An evidence-backed problem or learning opportunity is required.
 | [Project-root discovery/listing](#3-project-root-discoverylisting) | SELECTED (bounded NuGet correction) | CLI / repository discovery | Bounded product correction |
 | [NuGet repository project sources](#12-nuget-repository-project-sources) | SELECTED (source occurrences) | NuGet / repository population | Bounded product correction |
 | [Cross-ecosystem measurement-evidence parity](#13-cross-ecosystem-measurement-evidence-parity) | SELECTED (006-0024 cascade) | Product semantics | Bounded measurement/assurance migration |
-| [NuGet project/lock population](#14-nuget-project-population-and-retained-lock-population) | EXPLORE | NuGet population/context | Separately bounded product investigation |
+| [NuGet project/lock population](#14-nuget-project-population-and-retained-lock-population) | SELECTED (006-0026 bound snapshot fallback) | NuGet population/context | Bounded explicit acceptance |
 | [Python/npm public namespace](#15-pythonnpm-positive-public-namespace-authority) | EXPLORE | Cross-ecosystem truthfulness | Separate source-authority investigation |
+| [Snapshot acceptance/currentness](#16-repository-contained-snapshot-acceptance-and-currentness) | DEFER | NuGet acceptance | Separate product/trust contract |
+| [NuGet namespace automation](#17-nuget-namespace-authority-automation) | EXPLORE | Namespace authority | Separate evidence investigation |
+| [Bounded C# parser expansion](#18-bounded-static-c-project-parser-expansion) | EXPLORE | Static declarations | Bounded grammar review |
+| [Evaluated MSBuild use cases](#19-evaluated-msbuild-population-use-cases) | DEFER | Evaluated context | Separate authority |
 | [Go selected-version support](#4-go-selected-version-support) | WATCH | Go | Advanced evidence investigation |
 | [Python pyproject declaration discovery](#5-python-pyproject-declaration-discovery) | WATCH | PyPI | Rotation / bounded discovery task |
 | [Portfolio orchestration](#6-portfolio-orchestration) | DEFER | Multi-project workflow | Separate tool / future product exploration |
@@ -399,9 +403,12 @@ provider adoption. Publication/actual hosted witnesses remain separate authority
 
 ### 14. NuGet project population and retained lock population
 
-**State:** EXPLORE; run `006-0025` completes a fresh ten-project investigation
-and independent review for a HUMAN PRODUCT / POPULATION-AUTHORITY DECISION.
-No parser/population change is selected or implemented.
+**State:** SELECTED in `006-0026` by explicit human population authority.
+The [bound snapshot correction](maintenance/nuget-snapshot-population/spec.md)
+implements A-first, explicitly accepted B fallback; convergence disposition lives
+in its [review record](maintenance/nuget-snapshot-population/reviews.md).
+Run006-0025 discovery/review was frozen in be1fc47 before selection and remains
+historical: no prior accepted51 denominator or mistaken prior refusal is implied.
 
 **Area:** NuGet directness/context and ordinary usefulness
 
@@ -420,7 +427,7 @@ independently bound snapshot basis could potentially reach 10/51, subject to
 approval and acceptance. Neither automatically establishes currentness or absence
 of implicit SDK references. The implemented cascade retained A deliberately.
 
-**Recommendation:** An explicit, bound snapshot-population fallback for human
+**006-0025 recommendation (historical):** An explicit, bound snapshot-population fallback for human
 consideration, preserving explicit external direct scope, context/byte association,
 known-conflict refusal and visible population basis. No silent fallback or reuse
 of old witness meanings. Namespace remains a separate prerequisite: existing
@@ -440,6 +447,15 @@ implicit/auto-reference scope or unapproved completeness testimony.
 [historical A/B determination](maintenance/measurement-evidence-cascade/spec.md#lock-and-population-determination-c3),
 [exact prior operational blockers](maintenance/measurement-evidence-cascade/validation.md),
 [post-publication Windows evidence](maintenance/measurement-evidence-cascade/reviews.md#repaired-published-candidate-supplied-hosted-evidence--006-0025).
+
+**006-0026 implementation evidence:** strict v3 snapshot testimony binds exact
+project/lock bytes, project identity and sole framework, with explicit external
+Direct completeness. It does not require static A completeness or expand A grammar.
+Namespace is independently explicit per P/V; no automatic acceptance. Synthetic
+positive and refusal cases pass. Actual OASim no-mapping operation still establishes
+A2/3, B0; eight sources/48 Direct occurrences are potential B only with sufficient
+accepted testimony, absent here. Repository N/coverage remain unknown. Separate
+follow-ons16–19 below retain currentness, namespace, parser and evaluated use cases.
 
 ### 15. Python/npm positive public namespace authority
 
@@ -465,6 +481,54 @@ permission, scope/metric changes or silent compatibility degradation.
 
 **References:** [Historical cross-ecosystem matrix](discovery/measurement-evidence-parity.md),
 [current scope limits](maintenance/measurement-evidence-cascade/spec.md#smallest-cascade-and-ecosystem-scope-c2).
+
+### 16. Repository-contained snapshot acceptance and currentness
+
+**State:** DEFER; explicitly excluded from006-0026.
+
+**Opportunity:** Determine whether retained repository evidence can eventually
+support automatic snapshot acceptance without human-authored testimony.
+**Evidence:** B now has a truthful bound contract, but OASim's retained locks alone
+still cannot supply its explicit acceptance. No new acceptance was manufactured.
+**Success signal:** Separately approved accountable association/currentness policy.
+**Stop condition:** Co-location, hashes or counts silently become trust authority.
+**Reference:** [Snapshot P2/P5](maintenance/nuget-snapshot-population/spec.md).
+
+### 17. NuGet namespace-authority automation
+
+**State:** EXPLORE; no implementation selected.
+
+**Opportunity:** Independently establish applicable publication namespace from
+sufficient retained evidence without a public-namesake assumption.
+**Evidence:** Accepted snapshot population and lock Direct cannot supply namespace.
+OASim's current unmapped evidence still authorizes zero new public requests.
+The existing cascade already separates optional acquisition/content assurance.
+**Success signal:** New explicitly approved trust contract with private/conflicting
+negative controls. **Stop condition:** Unknown/private namespace uses nuget.org.
+**Reference:** [Cascade](maintenance/measurement-evidence-cascade/spec.md),
+[snapshot P3](maintenance/nuget-snapshot-population/spec.md).
+
+### 18. Bounded static C# project parser expansion
+
+**State:** EXPLORE; no expansion selected in006-0026.
+
+**Opportunity:** Review narrowly named ancillary properties/items separately from B.
+**Evidence:** Frozen006-0025 reports property-only potential6/16 and narrow None
+Update potential7/25. B leaves current A grammar unchanged.
+**Success signal:** Separately approved bounded grammar with behavioral witnesses.
+**Stop condition:** Arbitrary properties, conditions/import evaluation or count-driven
+loosening. **Reference:** [Static alternatives](discovery/nuget-population-basis.md).
+
+### 19. Evaluated MSBuild population use cases
+
+**State:** DEFER; no evaluator or producer execution selected.
+
+**Opportunity:** Investigate genuinely evaluated context needs under separate
+human authority. **Evidence:** B claims only a retained accepted snapshot; imports,
+conditions, SDK and environment can change current evaluated population.
+**Success signal:** Concrete unmet evaluated-state use case and separate execution/
+trust authority. **Stop condition:** Consumer CLI executes targets or becomes a
+resolver. **Reference:** [Snapshot limitations](maintenance/nuget-snapshot-population/spec.md).
 
 ## Selected Work Moved into SDD
 

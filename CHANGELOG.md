@@ -32,6 +32,12 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Accept an explicitly bound resolved NuGet snapshot as a population fallback when
+  static project parsing cannot establish population. New v3 supplier testimony
+  binds exact project/lock bytes and explicit external Direct scope; schema-v3
+  evidence discloses the snapshot basis and limitations. Namespace authority stays
+  separate, and discovered locks are never accepted automatically.
+
 - Accept explicit per-project supplier witnesses with repeatable
   `--nuget-witness PROJECT=NAME.json` during ordinary repository scans.
 

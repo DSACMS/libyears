@@ -462,7 +462,7 @@ allowed because one is selected explicitly; their populations are never combined
 Python `--resolved`, npm/Yarn arbitration and Ruby group selection keep their
 existing independent meanings.
 
-Supported scope is one namespace-free UTF-8 SDK-style `Project Sdk="..."` with
+Declaration-first population (A) supports one namespace-free UTF-8 SDK-style `Project Sdk="..."` with
 one unconditional literal `TargetFramework` or single-valued `TargetFrameworks`.
 Count immediate unconditional `PackageReference Include="ID" Version="1.0"`
 declarations, including test, tool, analyzer and PrivateAssets references, once
@@ -585,11 +585,70 @@ public namesake. A lock alone records versions and framework, not project bindin
 namespace authority, acquisition, deployed code or reproducible-build assurance.
 
 The cascade uses the strongest accepted facts available but requires only the
-minimum evidence for the narrower age claim. Population remains declaration-first:
-unsupported project syntax still makes N unknown. Lock Direct entries do not
-silently replace that population. No dotnet/NuGet/MSBuild/restore is run.
-The [prospective contract](maintenance/measurement-evidence-cascade/spec.md)
-explains the minimum floor and the separate lock-population alternative.
+minimum evidence for the narrower age claim. Population remains declaration-first
+where supported. The separately approved fallback below can establish a narrower
+accepted retained snapshot when A cannot establish population. No automatic lock
+acceptance or dotnet/NuGet/MSBuild/restore is performed.
+The [cascade contract](maintenance/measurement-evidence-cascade/spec.md) governs
+namespace and stronger assurance; the [population contract](maintenance/nuget-snapshot-population/spec.md)
+governs the prospective population fallback.
+
+### Bound resolved-snapshot population fallback
+
+When well-framed project XML is unsupported by A, explicitly selecting a **v3**
+witness through the same witness options may accept population B. V1/v2 are never
+reinterpreted as B. Supported A remains first: v3 on A is an invalid witness with
+known N retained, and a failed A lock/namespace/metadata gate cannot trigger B.
+Malformed, unsafe, over-budget, duplicate or DTD/entity project input cannot be
+salvaged. This does not expand static project parsing or evaluate MSBuild.
+
+The v3 JSON envelope has exactly these fields (placeholders describe required
+values; this is a format example, not usable target testimony):
+
+```json
+{
+  "version": 3,
+  "project": "Example.csproj",
+  "framework": "net10.0",
+  "project_sha256": "<64 lowercase hex digits for exact supplied project bytes>",
+  "lock_sha256": "<64 lowercase hex digits for exact supplied lock bytes>",
+  "coherent_snapshot": true,
+  "explicit_external_direct_complete": true,
+  "packages": []
+}
+```
+
+Selecting it accepts the supplier assertion that these exact project/lock bytes
+belong together for the named retained framework snapshot, whose complete Direct
+set represents explicit external direct packages, excluding implicit SDK references,
+project references, other frameworks and RID variants. This assertion needs an
+accountable retained evidence basis; libyears never generates it from co-location,
+counts, names or hashes. It requires no declaration-completeness proof from A.
+
+B accepts only a whole schema-1 lock with one literal framework and supported
+selected versions and canonical numeric minimum requests for **every** Direct
+record. Transitive/Project records do not count. Known unconditional literal
+framework/identity/request conflicts and duplicate literal IDs refuse the whole B
+population. Unknown/conditional/computed constructs stay uninterpreted. Changed
+project/lock bytes invalidate binding; unchanged imported/environment state is
+not evaluated or certified current. This claim is a retained snapshot, without
+current evaluated completeness, acquisition/content correspondence, deployment,
+restore success or reproducibility. Each project still owns its own occurrences.
+
+Population acceptance supplies **no public namespace authority**. Empty packages
+is valid and authorizes no lookups: accepted occurrences become individually
+unmeasurable with unsupported_dependency_source. To accept namespace testimony,
+packages may contain exactly the existing v2 records {id, version, namespace};
+only an explicitly accepted exact selected P/V with the canonical public namespace
+can authorize public metadata. Unknown/private/conflicting namespaces never use
+public namesakes. No automatic repository-file namespace policy is introduced.
+
+Source and row JSON evidence add population_basis (declaration_derived,
+resolved_snapshot or unknown); B source evidence adds population_limitations.
+Its trust_basis is supplied_snapshot_population_assertion; namespace/assurance
+remain separate. Default human output marks accepted resolved snapshots; verbose
+and JSON expose limitations. Snapshot minima are not current project declarations.
+Automatic repository-contained snapshot acceptance/currentness remains deferred.
 
 Dates mean first receipt by nuget.org, from identity-bound catalog `created`,
 never original upstream release, published/commit/listing/restore/local time.
@@ -716,7 +775,7 @@ The worker uses shared default verified TLS trust selection; the explicit
   `Gemfile.lock` DEPENDENCIES unless `--ruby-group` explicitly selects declared
   Gemfile groups within the closed static subset.
 - Direct dependencies only.
-- NuGet requires a supported per-project declaration/lock/explicit-witness snapshot;
+- NuGet requires a supported declaration-first or explicitly accepted bound resolved-snapshot population;
   there is no solution, portfolio, general MSBuild or private-feed interpretation.
 - The resolved snapshot format is a narrow list of exact `NAME==VERSION`
   entries; repository declarations determine which entries are in scope.
