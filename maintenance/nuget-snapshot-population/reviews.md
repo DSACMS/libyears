@@ -101,3 +101,46 @@ byte-identical to S3; corrected-after manifest equals original baseline exactly.
 No target evidence created or accepted. Whitespace/diff inspection PASS. Fresh
 focused non-author closure will inspect corrective frozen commit and collateral
 precedence/conflict/namespace/output gates; S4 remains pending that approval.
+
+## Final convergence disposition
+
+Fresh non-author convergence_closure on633d4bac2f89e9343b5bcc980785282aab3c0380:
+COMPLETE / APPROVE, A-F1 closed,137 focused and10 adversarial probes PASS. Exact
+one-condition runtime delta and two regressions inspected; collateral A-first/
+v3B-only/known-conflict/binding/namespace/output/privacy/aggregation covered.
+Retained corrected ordinary/JSON/verbose outputs and original/corrected manifest
+equality independently reproduced from retained evidence; no reviewer target access.
+Private006-0026-convergence-closure.md. Parent validates complete reports and
+correction against P1–P5: local implementation/convergence APPROVED; S1–S4 COMPLETE.
+Original REVISE and original reviewed bytes remain historical, not overwritten.
+
+P1/P2 complete original A audit plus focused closure establishes truthful snapshot
+population/selection without A completeness, exact acceptance/binding/currentness
+limits, whole Direct safety and known contradiction refusal. P3 complete B audit
+establishes unchanged namespace/capability/private-source boundary, v1/v2 history
+and unavailable acquisition/content assurance. P4/P5 complete C audit establishes
+additive schema3, ordinary/explicit occurrence/null/sibling behavior, concise/
+inspectable limits, test portability and retained actual operational accounting.
+No current sibling vote overrides any finding; only validated closure resolves A-F1.
+
+Final runtime verification:focused156, full730/no skips, capability730 successful/
+49 genuine filesystem skips, worker3 PASS. Last security history gate after
+correction:GitLeaks8.30.1 actual config/complete history exit0,no leaks296commits.
+Final closure-only commit requires final history/clean-tree check, captured in the
+external handoff. Whitespace/range checks, current local document links, frozen
+006-0025 digest and observation schema/uniqueness/prior-byte/round-trip checks PASS.
+
+Actual OASim A2/3; conditional structural B8/48, actually accepted B0; no complete
+accepted repository denominator, no new ages/dates/public lookup. All source and
+coverage blockers remain explicit in validation.md. Target after equals original
+before under the documented conventional coverage. No target writes/execution,
+new acceptance evidence, automatic currentness/namespace policy, parser expansion,
+metric change, incompatible schema or history rewrite. Prior0024/0025 recorded
+once from available observations, missing fields blank; current0026/children not
+appended. Current44-key handoff goes to /tmp/libyears-observations/006-0026.json.
+
+**Exact next human gate: HUMAN PRE-PUSH / PUBLICATION AUTHORIZATION**, then actual
+hosted Windows/security/CI on the new published candidate. Local simulation and
+historical70b4583 hosted evidence do not establish those new witnesses. Optional
+future acceptance of sufficient retained v3 testimony is a separate evidence action;
+no acceptance is manufactured to make OASim numeric. Push performed:NO.

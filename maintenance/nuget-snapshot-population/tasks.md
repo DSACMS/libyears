@@ -41,7 +41,7 @@ one local commit per completed task. No push. Spec P1–P5 governs scope.
   and checks/limits in validation.md; diff check and commit. Run canonical history
   GitLeaks on committed candidate, freeze for convergence.
 
-- [ ] S4 — Independent convergence and closure. Predecessor: S3.
+- [x] S4 — Independent convergence and closure. Predecessor: S3.
   Fresh non-author decomposed population/binding/precedence and namespace/output/
   compatibility/operational review against frozen spec/plan/tasks/code/tests/docs/
   verification. Parent validates all material findings and reconciles all P1–P5;
@@ -71,3 +71,10 @@ S3 complete:current docs/roadmap reconciled; exact ordinary OASim human/JSON/
 verbose exit0/empty stderr. A2/3; B potential8/48, actual0; repository N/coverage
 unknown, no age established. Final manifest equals baseline. GitLeaks follows
 committed S3. No target writes/execution/new acceptance evidence.
+
+S4 complete / locally CONVERGED:three initial complete independent slices plus
+fresh focused non-author closure APPROVE A-F1,137 focused and10 probes PASS.
+Parent validates all material findings and P1–P5 coverage; no majority approval.
+Final full730/no skips, capability730/49 skips, worker3 PASS; corrected target
+outputs unchanged and exact integrity equality. No push; actual hosted evidence
+remains separate. Final history/clean-tree checks and current external baton follow.
