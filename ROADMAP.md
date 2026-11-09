@@ -544,7 +544,7 @@ measured-subset libyears; all33 conventional comparator lookups succeed.18 remai
 alternate-source ambiguity, not registry failures. A2/3+B1 8/48+B2zero retained,
 OASim exact before/after unchanged. Full [validation](maintenance/nuget-conventional-comparator/validation.md)
 and51-row result retained. Runtime locally converged after two reviewed corrections;
-publication security gate remains one unsuppressed GitLeaks prose false positive.
+publication security gate historically remained one unsuppressed GitLeaks prose false positive.
 
 **Methodology:** Use the lowest sufficient truthful evidence floor for the stated
 age claim. Stronger evidence enriches assurance rather than automatically becoming
@@ -552,6 +552,26 @@ its minimum. Product policy selects a reference; it does not reconstruct history
 Human gates may scaffold unknown boundaries; ordinary-user smoke supplies product
 acceptance evidence and hosted checks remain asynchronous. Partial coverage is
 preferable to fabricated completeness. No retrospective framework created.
+
+**006-0031 security and alternate-source investigation:** Exact security maintenance
+is separately resolved in `e78b228` with the two explicitly approved historical
+prose exceptions; canonical committed gate319commits PASS, no broad suppression
+or history rewrite. See [security evidence](maintenance/gitleaks-exact-exceptions-006-0031.md).
+The [final18 investigation](discovery/nuget-alternate-source-comparator.md) finds
+byte-identical project-local AvaloniaCI/MyGet HTTPS additions, described as an
+unstable-package CI feed, with no mapping/disable/clear or public-identity assignment.
+Mirror/private/mixed namespace role remains UNKNOWN; all nine repeated identities
+have no contrary package-specific repository evidence observed, never proved public.
+Current offline staging retains N51/33 capabilities/18 ambiguity refusals; no new
+live measurement or comparator behavior. The latest real result remains006-0030.
+Allowing unassigned alternate HTTPS eligibility under a positive-contrary-only rule
+requires **HUMAN PRODUCT / ALTERNATE-SOURCE COMPARATOR DECISION**: accept or retain
+refusal of observed competing-history ambiguity, separately from acquisition proof.
+Existing exact testimony/mapping routes remain available; no target evidence is
+fabricated. Stronger assurance21, parser18, CI20, performance22 and methodology10
+remain separate; no retrospective framework or ancillary maintenance implemented.
+Independent discovery review and exact target integrity are in the companion
+[review](discovery/nuget-alternate-source-comparator-review.md).
 
 ### 18. Bounded static C# project parser expansion
 
