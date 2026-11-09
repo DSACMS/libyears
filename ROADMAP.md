@@ -524,7 +524,7 @@ Frozen006-0029 evidence830a19c remains historical; narrow
 consciously conventional public reference with namespace correspondence assumed,
 not independently established. Effective external configuration remains uninspected.
 
-**Selected contract:** [C1–C6](maintenance/nuget-conventional-comparator/spec.md)
+**006-0030 contract (superseded only by the correction below):** [C1–C6](maintenance/nuget-conventional-comparator/spec.md)
 retains exact testimony and closed unique public mapping, then conventional
 nuget.org comparison only absent contrary assignment/ambiguity. Enabled alternate/
 local feeds without assignment remain ambiguous; no mirror/private inference.
@@ -539,7 +539,7 @@ Parser18, evaluated19, CI20 and performance22 remain separate.
 **Acceptance:** Independent spec/plan/graph and implementation/convergence before
 first real OASim metadata attempt. Historical audit predicts33 no-config candidates
 and18 alternate-source ambiguities, never a promised33/51 or51/51 measurement.
-**Actual ordinary result:**33/51 measured,64.7059% coverage,26.5508747945
+**006-0030 ordinary result:**33/51 measured,64.7059% coverage,26.5508747945
 measured-subset libyears; all33 conventional comparator lookups succeed.18 remain
 alternate-source ambiguity, not registry failures. A2/3+B1 8/48+B2zero retained,
 OASim exact before/after unchanged. Full [validation](maintenance/nuget-conventional-comparator/validation.md)
@@ -562,7 +562,7 @@ byte-identical project-local AvaloniaCI/MyGet HTTPS additions, described as an
 unstable-package CI feed, with no mapping/disable/clear or public-identity assignment.
 Mirror/private/mixed namespace role remains UNKNOWN; all nine repeated identities
 have no contrary package-specific repository evidence observed, never proved public.
-Current offline staging retains N51/33 capabilities/18 ambiguity refusals; no new
+006-0031 offline staging retained N51/33 capabilities/18 ambiguity refusals; no new
 live measurement or comparator behavior. The latest real result remains006-0030.
 Allowing unassigned alternate HTTPS eligibility under a positive-contrary-only rule
 requires **HUMAN PRODUCT / ALTERNATE-SOURCE COMPARATOR DECISION**: accept or retain
@@ -572,6 +572,17 @@ fabricated. Stronger assurance21, parser18, CI20, performance22 and methodology1
 remain separate; no retrospective framework or ancillary maintenance implemented.
 Independent discovery review and exact target integrity are in the companion
 [review](discovery/nuget-alternate-source-comparator-review.md).
+
+**006-0032 human decision:** Explicitly SELECTED bounded positive-contrary-evidence
+public comparator policy, accepting undisclosed private same-ID/version fork/history
+risk and public identifier disclosure. Unassigned acquisition-source eligibility
+alone is no comparator veto; positive assignment/exclusion/conflicting testimony/
+unknown package-specific semantics remain terminal. No acquisition/content/history
+claim. The [prospective correction](maintenance/nuget-positive-comparator/spec.md)
+specification, plan and sequential task graph are independently approved; P1 runtime
+and deterministic verification complete, independent pre-live convergence pending.
+No new real OASim result is asserted before that gate. Stronger assurance/parser/
+CI/performance/retrospective work remains separate; no sibling semantic change.
 
 ### 18. Bounded static C# project parser expansion
 

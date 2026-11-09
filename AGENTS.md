@@ -547,11 +547,14 @@ NO namespace automation, public-namesake or private/unknown fallback is authoriz
 
 The approved correction under maintenance/nuget-conventional-comparator/ governs
 ordinary version-age comparator admission. Qualified population/selection can use
-nuget.org by disclosed product convention only after bounded repository inspection
-finds no contrary assignment/unresolved ambiguity. Correspondence is assumed, not
-proven; no acquisition/content/producer/evaluated claim. Alternate/local eligibility
-without assignment is ambiguous; private/conflicting/unknown policy never reaches
-HTTP. Exact accepted testimony and closed unique public mapping retain stronger
+nuget.org by disclosed product convention after bounded repository inspection.
+The subsequent approved maintenance/nuget-positive-comparator/ correction permits
+unassigned alternate acquisition eligibility alone, while positive private/conflicting
+assignment, explicit public exclusion, unknown mapping and unsupported relevant
+semantics still refuse before lookup. Correspondence is assumed, not
+proven; no acquisition/content/producer/evaluated claim. Undisclosed same-ID/version private fork/namesake comparison and public identity
+disclosure are accepted limitations; no acquisition/content/history claim follows.
+Private/conflicting/unknown policy never reaches HTTP. Exact accepted testimony and closed unique public mapping retain stronger
 authority; no public-namesake permission. Ordinary no-witness A can use strictly
 qualified current-pair age admission while retaining declaration_derived, missing
 stronger baseline limitations and existing witness/precision semantics. Schema3

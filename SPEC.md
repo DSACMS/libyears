@@ -1039,10 +1039,14 @@ general MSBuild/CPM, private feeds and portfolio aggregation remain out of scope
 The approved [comparator contract](maintenance/nuget-conventional-comparator/spec.md)
 supersedes ordinary namespace admission above. It permits a deliberately conventional
 nuget.org reference after supported bounded repository inspection finds no contrary
-assignment or ambiguity. Correspondence is assumed by policy, not established;
+assignment or unsupported package-specific ambiguity. Correspondence is assumed by policy, not established;
 external configuration, acquisition/content/producer/evaluated/deployed state remain
-unestablished. Enabled nonpublic/local alternatives without assignment are ambiguous,
-not implicitly private. Exact accepted testimony, then closed unique public mapping,
+unestablished. The subsequent human-approved
+[positive-contrary correction](maintenance/nuget-positive-comparator/spec.md) permits
+unassigned alternate/local source eligibility alone: it is acquisition policy, not
+private comparator assignment. Undisclosed private namesakes/forks may receive the
+wrong public history; public queries disclose their IDs. These residual metric
+risks are explicitly accepted, not proof of public identity. Exact accepted testimony, then closed unique public mapping,
 then convention apply only absent stronger contradictions/unknown relevant syntax.
 No public namesake grants capability. Private/unknown occurrences make no HTTP call.
 

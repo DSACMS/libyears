@@ -17,9 +17,12 @@ Notable changes to Libyears are documented here.
 ### Changed
 
 - Ordinary NuGet scans can date qualified selected versions against a disclosed
-  conventional nuget.org reference when repository policy supplies no contrary
-  assignment or ambiguity. Preserve stronger testimony and mapping separately;
-  alternate/private/unknown policy never falls back to public namesakes. Supported
+  conventional nuget.org reference unless supported repository evidence establishes
+  a contrary comparator or unsupported package-specific policy. Unassigned alternate
+  acquisition sources alone do not block comparison. Disclose possible private
+  namesake/fork misattribution and public identity disclosure; preserve stronger
+  testimony/mapping and refuse private/conflicting/unknown assignments. Public
+  namesake existence never authorizes lookup. Supported
   declaration populations can use the same narrow current-pair measurement floor
   without inventing supplier baseline assertions. Schema v3 adds comparator basis
   and limitations; explicit precision behavior and metric arithmetic are unchanged.

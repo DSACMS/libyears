@@ -438,18 +438,22 @@ separates offline correctness from pending authorized real-root validation.
 ## Ordinary NuGet version-age comparator
 
 For ordinary directory scans, qualified selected versions may use nuget.org as a
-**conventional public reference** when bounded repository policy is silent or
-public-only. Namespace correspondence is assumed by this disclosed product policy;
+**conventional public reference** unless supported bounded repository evidence
+establishes a contrary/private comparator, exclusion, conflicting mapping/testimony
+or unsupported package-specific source semantics. Namespace correspondence is assumed by this disclosed product policy;
 it is not independently established. External user/machine/ancestor configuration
 is uninspected. Dates describe nuget.org's history, not package acquisition,
 content correspondence, producer history, evaluated state or deployment.
 
 Known private/nonpublic assignment, conflicting testimony, active ambiguous mapping,
 unsupported/unreadable relevant policy or source-affecting project/import evidence
-blocks public lookup. Enabled alternate/local feeds without package assignment
-remain ambiguous; they are neither assumed private nor assumed public mirrors.
-Valid accepted exact public testimony can resolve eligibility alone. Closed unique
-public mapping can establish current repository assignment. Otherwise the convention
+blocks public lookup. Enabled alternate/local acquisition sources without package
+assignment do not by themselves defeat public comparison; they are neither assumed
+private nor assumed public mirrors. An undisclosed same-ID/version private fork
+may therefore be compared against the wrong public history, and lookup discloses
+the identity to nuget.org. These are explicitly accepted metric limitations. Valid
+accepted exact public testimony and closed unique public mapping retain stronger
+comparator authority. Otherwise the convention
 applies only after supported bounded inspection. Public namesake existence never
 authorizes lookup. No alternate/private feed is contacted.
 
@@ -466,7 +470,8 @@ conventional_public_policy). Conventional rows disclose their assumptions separa
 from population/selection and stronger assurance. Automatic policy dates use
 measurement_basis public_comparator_version_age, never accepted testimony labels.
 The explicit precision interface retains its existing contract and output shape.
-See the [approved policy](maintenance/nuget-conventional-comparator/spec.md).
+See the [positive-contrary-evidence policy](maintenance/nuget-positive-comparator/spec.md)
+and its [base contract](maintenance/nuget-conventional-comparator/spec.md).
 
 ## Explicit NuGet project snapshots
 

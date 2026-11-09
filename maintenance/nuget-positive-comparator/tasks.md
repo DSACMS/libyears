@@ -17,7 +17,7 @@ OASim interpretation or metadata request before P2 convergence.
   source/output/registry/population/mixed/sibling tests first; full deterministic,
   capability-disabled full and dedicated real-worker suite. Inspect diff/whitespace
   and stdin-scan changed disclosure text; local commit after checks pass.
-- [ ] P2 — Current docs and independent pre-live convergence. Predecessor P1.
+- [x] P2 — Current docs and independent pre-live convergence. Predecessor P1.
   AC1–AC6: update README/SPEC/AGENTS/CHANGELOG/ROADMAP at this approved checkpoint,
   preserve old contracts as historical. Record exact test/case traceability and
   results, freeze candidate. Fresh non-author trust/negative-control reviewer and
@@ -53,3 +53,8 @@ real-worker3 PASS. Changed-code stdin scan0; diff/whitespace PASS. All newly
 admitted alternate A/B1 fixture ages1.0, actual adapter/codecs, no real HTTP/process.
 No target access yet. Exact assertions retain private/conflicting/unknown/exclusion
 zero capabilities/URLs and separate conventional assurance. Local P1 commit follows.
+
+P2 complete: approved documentation checkpoint prepared; fresh trust and compatibility
+convergence COMPLETE CONVERGED, parent validates all13 frozen digests and14 negative
+probes. No material findings. Canonical GitLeaks322commits0/new-doc stdin0/diffPASS;
+local P2 commit and postcommit security gate precede any P3 target interpretation.
