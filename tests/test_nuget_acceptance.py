@@ -243,7 +243,9 @@ class NuGetAcceptanceTests(unittest.TestCase):
                 expected_reads = ['Witness.csproj']
                 if reason != 'unsupported_nuget_project':
                     expected_reads.append('packages.lock.json')
-                if reason == 'nuget_context_mismatch':
+                # Unsupported A may inspect the explicitly selected contract
+                # to determine v3 eligibility; v1/v2 never establish B.
+                if reason in ('unsupported_nuget_project', 'nuget_context_mismatch'):
                     expected_reads.append('witness.json')
                 self.assertEqual(self.read_names, expected_reads)
 

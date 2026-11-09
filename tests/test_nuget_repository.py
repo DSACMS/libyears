@@ -246,6 +246,8 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(evidence.pop('measurement_basis'), 'bound_snapshot_namespace')
         self.assertEqual(evidence.pop('namespace_basis'), 'accepted_producer_origin')
         self.assertEqual(evidence.pop('assurance')['public_content'], 'public_agreement')
+        self.assertEqual(evidence.pop('population_basis'), 'declaration_derived')
+        self.assertEqual(current['version_evidence']['nuget'].pop('population_basis'), 'declaration_derived')
         self.assertEqual(current, json.loads(baseline))
         self.assertNotIn('source_id', baseline)
         self.assertNotIn('nuget_sources', baseline)

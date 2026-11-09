@@ -14,7 +14,7 @@ one local commit per completed task. No push. Spec P1–P5 governs scope.
   with no target execution/network and injected LocalInput. Run project/lock/
   provenance/input/new primitive suites, diff check and commit. No source activation.
 
-- [ ] S2 — Source fallback and inspectable output. Predecessor: S1.
+- [x] S2 — Source fallback and inspectable output. Predecessor: S1.
   P1–P4: wire only unsupported well-framed A to explicitly selected v3; no retry
   after A population exists, no implicit witness read/acceptance. Stage B count
   only after whole acceptance; unknown on refusal. Preserve source occurrence,
@@ -60,3 +60,9 @@ real safety refusal stays unskipped and real filesystem witnesses keep honest sk
 
 S1 complete:96 focused primitive/project/lock/provenance/input/local-cascade tests
 PASS. New primitives remain inert until S2. Whitespace check PASS.
+
+S2 complete:304 focused PASS; full728 PASS/no skips; capability-disabled728
+successful/49 genuine filesystem skips; real-worker3 PASS. Initial integration
+exposed prospective read-order/additive-output expectations and a synthetic lookup
+fixture error; corrected before final passes. Historical fixture bytes unchanged.
+Whitespace/diff inspection PASS; source fallback and schema3 basis integrated.

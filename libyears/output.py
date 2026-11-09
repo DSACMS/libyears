@@ -62,7 +62,10 @@ def _source_evidence_dict(source) -> dict[str, Any]:
         result["requested_groups"] = sorted(set(evidence.requested_groups))
     if source.ecosystem == "nuget":
         result.update(provenance_source=evidence.provenance_source,
-                      framework=evidence.framework, trust_basis=evidence.trust_basis)
+                      framework=evidence.framework, trust_basis=evidence.trust_basis,
+                      population_basis=evidence.population_basis)
+        if evidence.population_limitations:
+            result["population_limitations"] = list(evidence.population_limitations)
     return result
 
 
@@ -136,6 +139,8 @@ def _nuget_evidence_dict(evidence: NuGetEvidence) -> dict[str, Any]:
         value = getattr(evidence, field)
         if value is not None:
             result[field] = value
+    if evidence.population_basis is not None:
+        result["population_basis"] = evidence.population_basis
     if evidence.measurement_basis is not None:
         result['measurement_basis'] = evidence.measurement_basis
         result['namespace_basis'] = evidence.namespace_basis
@@ -566,6 +571,7 @@ def _nuget_repository_disclosure(report, *, verbose=False) -> list[str]:
                      f"{measured} / {population} measured; {_coverage(summary.coverage)} coverage; "
                      f"total {_number(summary.total_libyears)}, mean {_number(summary.mean_libyears)}, "
                      f"median {_number(summary.median_libyears)}, max {_number(summary.max_libyears)} libyears.")
+        lines.extend(_nuget_population_lines(evidence, verbose=verbose))
         if not verbose:
             continue
         lines.append(f"  Project: {json.dumps(evidence.declaration_source, ensure_ascii=True)}; "
@@ -573,6 +579,17 @@ def _nuget_repository_disclosure(report, *, verbose=False) -> list[str]:
                      f"snapshot: {json.dumps(evidence.snapshot_source, ensure_ascii=True)}; "
                      f"witness: {json.dumps(evidence.provenance_source, ensure_ascii=True)}; "
                      f"lock: {'accepted' if evidence.format == 'packages_lock_v1' else 'unavailable'}.")
+    return lines
+
+
+def _nuget_population_lines(evidence, *, verbose=False) -> list[str]:
+    lines = []
+    if evidence.population_basis == 'resolved_snapshot':
+        lines.append("  NuGet population basis: accepted resolved snapshot (external Direct records).")
+    if verbose:
+        lines.append("  Population basis: " + evidence.population_basis + '.')
+        if evidence.population_limitations:
+            lines.append("  Population limitations: " + ', '.join(evidence.population_limitations) + '.')
     return lines
 
 
@@ -585,7 +602,8 @@ def _nuget_policy_lines(*, verbose=False) -> list[str]:
         return lines
     return lines + [
         "Scope: all supported explicit direct PackageReferences, including test, tool, analyzer and PrivateAssets references.",
-        "Trust basis: explicit version-1 producer testimony or version-2 retained snapshot/namespace testimony.",
+        "Trust basis: explicit version-1 producer testimony, version-2 retained snapshot/namespace testimony, or version-3 fallback population/namespace testimony.",
+        "Version 3 accepts the bound retained external Direct population only when declaration-first population is unsupported; namespace remains separate.",
         "Version 1 retains native NuGet package provenance plus contemporaneous producer attestation, bound to the same event, "
         "exact project/lock bytes, framework and required input-influence assertions.",
         "Retrospective replay does not substitute for producer attestation of the original event.",
@@ -608,6 +626,7 @@ def _nuget_disclosure(source, summary, *, verbose=False) -> list[str]:
         f"provenance source: {evidence.provenance_source or 'not supplied'}.",
     ]
     lines.extend(_nuget_policy_lines(verbose=verbose))
+    lines.extend(_nuget_population_lines(evidence, verbose=verbose))
     lock_state = 'accepted' if evidence.format == 'packages_lock_v1' else 'unavailable'
     lines.append(f"NuGet packages.lock.json recognition: {lock_state}.")
     if source.dependencies_discovered is None:
@@ -636,7 +655,10 @@ def _nuget_detail_lines(evidence: NuGetEvidence | None, *, verbose=True) -> list
         project = json.dumps(project, ensure_ascii=True)
     if not verbose:
         return lines
-    lines.append(f"    NuGet project: {project}; framework: {evidence.framework}; requested: {evidence.requested}.")
+    request_label = 'snapshot minimum' if evidence.population_basis == 'resolved_snapshot' else 'requested'
+    lines.append(f"    NuGet project: {project}; framework: {evidence.framework}; {request_label}: {evidence.requested}.")
+    if evidence.population_basis is not None:
+        lines.append(f"    Population basis: {evidence.population_basis}.")
     if evidence.lock_requested is not None:
         lines.append(f"    Lock requested: {evidence.lock_requested}")
     if evidence.selected_version is not None:

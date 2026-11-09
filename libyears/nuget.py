@@ -6,11 +6,13 @@ import re
 
 from .model import (DependencyCandidate, NuGetEvidence, SourceError,
                     SourceEvidence, SourceResult, UnmeasurableDependency)
-from .nuget_input import NuGetInputFailure, ScopedNuGetReader
+from .nuget_input import NuGetInputFailure, ScopedNuGetReader, decode_json
+from .nuget_population import snapshot_population
 from .nuget_lock import parse_lock
 from .nuget_project import parse_project
 from .nuget_provenance import (LocalAuthority, LocalAuthorityFailure,
-                               authorize_measurement, parse_provenance)
+                               authorize_measurement, parse_provenance,
+                               parse_population_provenance)
 from .nuget_version import MAX_VERSION_LENGTH, parse_selected_identity
 
 
@@ -19,6 +21,8 @@ class NuGetSourceEvidence(SourceEvidence):
     provenance_source: str | None = None
     framework: str | None = None
     trust_basis: str = 'supplied_producer_assertion'
+    population_basis: str = 'unknown'
+    population_limitations: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
@@ -45,6 +49,8 @@ def _safe_lock_request(value: str) -> str | None:
 
 
 def _source_reason(stage: str, category: str) -> str:
+    if category == 'context_mismatch':
+        return 'nuget_context_mismatch'
     if stage == 'project':
         return {'missing': 'nuget_project_missing',
                 'unsupported': 'unsupported_nuget_project',
@@ -80,39 +86,79 @@ def read_nuget_source(root: Path, project_name: str,
     def rejected(reason: str) -> NuGetSource:
         result = SourceResult('nuget', (), (),
                               (SourceError('nuget', source_name, reason),),
-                              evidence, count, False)
+                              replace(evidence, population_basis=('unknown' if count is None
+                                      else evidence.population_basis)), count, False)
         return NuGetSource(result)
 
     try:
         with (reader or ScopedNuGetReader(root, project_name, provenance_name)) as reader:
             project_source = reader.read(project_name)
-            project = parse_project(project_source)
-            count = len(project.declarations)
-            evidence = replace(evidence, framework=project.framework)
+            fallback = False
+            try:
+                project = parse_project(project_source)
+            except NuGetInputFailure as failure:
+                if failure.category != 'unsupported' or provenance_name is None:
+                    raise
+                fallback = True
+            if fallback:
+                stage = 'witness'
+                source_name = provenance_name
+                witness_source = reader.read(provenance_name)
+                value = decode_json(witness_source.data.decode('utf-8', errors='strict'))
+                if (not isinstance(value, dict) or type(value.get('version')) is not int
+                        or value['version'] != 3):
+                    # Older contracts cannot be reinterpreted as snapshot population.
+                    source_name = project_name
+                    return rejected('unsupported_nuget_project')
+                stage = 'lock'
+                source_name = 'packages.lock.json'
+                lock_source = reader.read(source_name)
+                lock = parse_lock(lock_source)
+                stage = 'witness'
+                source_name = provenance_name
+                context = parse_population_provenance(
+                    witness_source, project_name=project_name,
+                    project_source=project_source, lock_source=lock_source,
+                    framework=lock.framework)
+                stage = 'project'
+                source_name = project_name
+                project = snapshot_population(project_source, lock)
+                count = len(project.declarations)
+                evidence = replace(evidence, framework=project.framework,
+                    format='packages_lock_v1', population_basis='resolved_snapshot',
+                    trust_basis='supplied_snapshot_population_assertion',
+                    population_limitations=(
+                        'accepted_retained_external_direct_snapshot',
+                        'current_evaluated_declaration_completeness_not_established',
+                        'acquisition_content_deployment_reproducibility_not_established'))
+            else:
+                count = len(project.declarations)
+                evidence = replace(evidence, framework=project.framework,
+                                   population_basis='declaration_derived')
 
-            stage = 'lock'
-            source_name = 'packages.lock.json'
-            lock_source = reader.read(source_name)
-            lock = parse_lock(lock_source)
-            evidence = replace(evidence, format='packages_lock_v1')
-            declared_keys = {item.package_key for item in project.declarations}
-            if (lock.framework != project.framework
-                    or any(item.kind == 'Direct' and item.package_key not in declared_keys
-                           for item in lock.entries)):
-                return rejected('nuget_context_mismatch')
+                stage = 'lock'
+                source_name = 'packages.lock.json'
+                lock_source = reader.read(source_name)
+                lock = parse_lock(lock_source)
+                evidence = replace(evidence, format='packages_lock_v1')
+                declared_keys = {item.package_key for item in project.declarations}
+                if (lock.framework != project.framework
+                        or any(item.kind == 'Direct' and item.package_key not in declared_keys
+                               for item in lock.entries)):
+                    return rejected('nuget_context_mismatch')
 
-            stage = 'witness'
-            # An absent option identifies the project requiring testimony; no
-            # conventional witness name is invented or inspected.
-            source_name = provenance_name or project_name
-            if provenance_name is None:
-                return rejected('nuget_provenance_missing')
-            witness_source = reader.read(provenance_name)
-            context = parse_provenance(
-                witness_source, project_name=project_name,
-                project_source=project_source, lock_source=lock_source, project=project)
-            if context.contract_version == 2:
-                evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
+                stage = 'witness'
+                # An absent option identifies the project requiring testimony; no
+                # conventional witness name is invented or inspected.
+                source_name = provenance_name or project_name
+                if provenance_name is None:
+                    return rejected('nuget_provenance_missing')
+                witness_source = reader.read(provenance_name)
+                context = parse_provenance(
+                    witness_source, project_name=project_name,
+                    project_source=project_source, lock_source=lock_source, project=project)
+                if context.contract_version == 2:
+                    evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
     except NuGetInputFailure as failure:
         if stage == 'witness' and failure.witness_version == 2:
             evidence = replace(evidence, trust_basis='supplied_snapshot_assertion')
@@ -125,7 +171,8 @@ def read_nuget_source(root: Path, project_name: str,
     failures = []
     for declaration in sorted(project.declarations, key=lambda item: item.package_key):
         row_evidence = NuGetEvidence(project_name, project.framework,
-                                     declaration.declared_version)
+                                     declaration.declared_version,
+                                     population_basis=evidence.population_basis)
         entry = direct.get(declaration.package_key)
         reason = None
         if entry is None:
@@ -164,7 +211,8 @@ def read_nuget_source(root: Path, project_name: str,
                             origin_state=('asserted_public' if context.contract_version == 1
                                           else 'unavailable'),
                             content_hash_state=authority.local_content_state)
-        declared = declaration.package_name + ' (' + declaration.declared_version + ')'
+        request_label = ('snapshot minimum ' if evidence.population_basis == 'resolved_snapshot' else '')
+        declared = declaration.package_name + ' (' + request_label + declaration.declared_version + ')'
         if reason is not None:
             failures.append(UnmeasurableDependency('nuget', declaration.package_name,
                                                    declared, reason, nuget_evidence=row_evidence))

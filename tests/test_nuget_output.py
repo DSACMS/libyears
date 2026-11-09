@@ -25,11 +25,13 @@ SOURCE = {
     'format': 'packages_lock_v1', 'framework': 'net10.0',
     'trust_basis': 'supplied_producer_assertion',
     'publication_basis': 'nuget_org_first_receipt_created',
+    'population_basis': 'declaration_derived',
 }
 BASE_ROW = {
     'project': 'Witness.csproj', 'framework': 'net10.0', 'requested': '1.0',
     'origin_state': 'unavailable', 'content_hash_state': 'unavailable',
     'publication_basis': 'nuget_org_first_receipt_created',
+    'population_basis': 'declaration_derived',
 }
 SELECTION = {
     'lock_requested': '[1.0.0, )', 'selected_version': '1.0.0',
@@ -128,6 +130,7 @@ class NuGetJSONTests(unittest.TestCase):
                     rejected_input = source.source_errors[0].source
                     project_rejected = rejected_input == 'Witness.csproj'
                     expected = dict(SOURCE,
+                        population_basis='unknown' if count is None else 'declaration_derived',
                         framework=None if project_rejected else 'net10.0',
                         format=None if project_rejected or rejected_input == 'packages.lock.json'
                             else 'packages_lock_v1')

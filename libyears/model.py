@@ -88,6 +88,7 @@ class NuGetEvidence:
     measurement_basis: str | None = None
     namespace_basis: str | None = None
     local_content_state: str | None = None
+    population_basis: str | None = None
 
 
 @dataclass(frozen=True, slots=True)

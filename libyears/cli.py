@@ -45,11 +45,11 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--nuget-project", metavar="NAME.csproj", action="append",
                         help="select one immediate C# project (directory scans only)")
     parser.add_argument("--nuget-provenance", metavar="NAME.json", action="append",
-                        help="accept an immediate v1 producer-event or v2 bound snapshot/namespace witness; "
+                        help="accept an immediate v1 producer-event or v2 bound snapshot/namespace witness, or v3 fallback population witness; "
                              "stronger event/content assurance is reported separately")
     parser.add_argument("--nuget-witness", metavar="PROJECT=NAME.json", action="append",
                         help="accept one explicit supplier witness per root-relative project in ordinary "
-                             "repository mode (repeatable; exactly one =; v1 event or v2 snapshot/namespace assertions)")
+                             "repository mode (repeatable; exactly one =; v1 event, v2 namespace or v3 fallback population assertions)")
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
     parser.add_argument("--ca-bundle", metavar="FILE", help="verified CA bundle for PyPI HTTPS")
     parser.add_argument("--verbose", action="store_true", help="show concise registry failure diagnostics")
