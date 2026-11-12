@@ -1,5 +1,15 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0014 / T010
+
+**T001–T010 COMPLETE. T011–T014 NOT STARTED.** T010 ordinary directory/additive
+schema3 and paired human integration independently converged. [Convergence record](reviews.md#run007-0014--t010-directory-and-output-integration)
+retains exact legacy projection/null/sibling/privacy and portable fixture evidence.
+T011 integrated adversarial checkpoint is dependency-ready under the persistent
+execution envelope. No live target, Observed intake, publication or GPUBLIC grant
+is implied. Earlier statuses remain historical; approved requirements are unchanged.
+
+
 ## Execution status — run007-0014 / T009
 
 **T001–T009 COMPLETE. T010–T014 NOT STARTED.** T009 source orchestration and admitted

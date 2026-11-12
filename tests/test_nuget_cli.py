@@ -274,5 +274,11 @@ class NuGetCLITests(unittest.TestCase):
                 self.assertNotIn('SECRET', stdout)
 
 
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()
+
+
 if __name__ == '__main__':
     unittest.main()

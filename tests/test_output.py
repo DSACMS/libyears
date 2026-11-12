@@ -706,5 +706,11 @@ class ScopedRubyJsonTests(unittest.TestCase):
         self.assertNotIn('include_lock_requirement', format_json(scoped, '.'))
 
 
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -90,3 +90,9 @@ class ScopedCapabilityTests(unittest.TestCase):
             self.assertIsNone(source.evidence.format)
             opened.assert_not_called()
             consumed.assert_not_called()
+
+
+def setUpModule():
+    # Independent sibling semantics certify absence; Maven safety is separate.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()

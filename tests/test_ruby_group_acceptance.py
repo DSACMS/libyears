@@ -254,5 +254,11 @@ class RubyGroupAcceptanceTests(unittest.TestCase):
         self.assertEqual(before, after)
 
 
+def setUpModule():
+    # Independent sibling semantics certify absence; Maven safety is separate.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()
+
+
 if __name__ == '__main__':
     unittest.main()

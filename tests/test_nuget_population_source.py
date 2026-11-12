@@ -312,3 +312,9 @@ class SnapshotSourceTests(unittest.TestCase):
         self.assertEqual([r['source_id'] for r in data['unmeasurable'] if r['name']=='Example'],
                          ['a/Witness.csproj', 'b/Witness.csproj'])
         self.assertIn('policy-selected current repository snapshot', format_human(report, ''))
+
+
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()

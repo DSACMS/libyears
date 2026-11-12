@@ -14,6 +14,7 @@ from .constraints import (
     validate_snapshot_version,
 )
 from .metric import build_report, calculate_summary, measure_dependency
+from .maven import MavenScanReport, scan_maven
 from .model import (
     Dependency,
     DependencyCandidate,
@@ -261,6 +262,7 @@ class MixedScanReport:
     tls_trust: str | None = None
     nuget_repository: bool = False
     by_nuget_source: dict[str | None, MetricSummary] = field(default_factory=dict)
+    maven: MavenScanReport | None = None
 
     @property
     def dependencies(self) -> tuple[DependencyMeasurement, ...]:
@@ -471,6 +473,7 @@ def scan_mixed_repository(
     nuget_adapter: NuGetRegistryAdapter | None = None,
     nuget_lookup: Callable[[tuple[LocalAuthority, ...]],
                            tuple[tuple[LocalAuthority, PackageResult], ...]] | None = None,
+    maven_scan=None,
 ) -> MixedScanReport:
     """Discover supported sources, with explicit internal NuGet mode requests."""
     validate_witnesses(nuget_witnesses)
@@ -645,6 +648,21 @@ def scan_mixed_repository(
                 discovery_failed=member.dependencies_discovered is None,
                 unavailable_numeric=not member.measurement_available)
 
+    maven = None
+    if root.is_dir():
+        maven_scanner = maven_scan or scan_maven
+        maven = maven_scanner(root, ca_bundle=ca_bundle)
+    if maven is not None:
+        null_summary = MetricSummary(None, None, None, None, None, None, None)
+        by_ecosystem['maven'] = null_summary
+        legacy_available = any(source.measurement_available for source in detected_sources)
+        summary = (replace(summary, dependencies_discovered=None, coverage=None)
+                   if legacy_available else null_summary)
+        for source_id in maven.discovery.source_ids:
+            source_errors.append(SourceError('maven', source_id, 'maven_plural_projection_unavailable', source_id))
+        if not maven.discovery.complete:
+            source_errors.append(SourceError('maven', 'discovery', 'maven_plural_projection_unavailable', None))
+
     tls_trust = None
     for source, active_adapter in (
         (python_result, pypi_adapter),
@@ -666,6 +684,7 @@ def scan_mixed_repository(
         tls_trust,
         nuget_repository,
         by_nuget_source,
+        maven,
     )
 
 __all__ = [

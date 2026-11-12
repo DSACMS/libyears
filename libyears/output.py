@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from datetime import datetime, timezone
 import json
 from typing import Any
@@ -14,6 +14,7 @@ from .snapshot import SNAPSHOT_FORMAT
 
 
 _REASON_TEXT = {
+    "maven_plural_projection_unavailable": "Maven has independent plural views; legacy scalar projection unavailable",
     "non_exact_version": "exact version not available",
     "unsupported_requirement": "unsupported requirement format",
     "conflicting_versions": "conflicting exact versions",
@@ -224,7 +225,7 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
     repository_mode = isinstance(report, MixedScanReport) and report.nuget_repository
     for error in source_errors:
         row = {"ecosystem": error.ecosystem, "source": error.source, "reason": error.reason}
-        if repository_mode and error.ecosystem == "nuget":
+        if (repository_mode and error.ecosystem == "nuget") or error.ecosystem == "maven":
             row["source_id"] = error.source_id
         errors.append(row)
     result = {
@@ -238,6 +239,13 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
         "unmeasurable": failures,
         "source_errors": errors,
     }
+    if isinstance(report, MixedScanReport) and report.maven is not None:
+        from .maven_output import maven_to_dict
+        result['maven'] = maven_to_dict(report.maven)
+        result['version_evidence']['maven'] = {
+            'mode': 'plural', 'scope': 'supported_local_base_model_direct_requests',
+            'observed_reader': None,
+        }
     if repository_mode and "nuget" in ecosystems:
         result["nuget_sources"] = [
             {"source_id": source.source_id,
@@ -411,6 +419,14 @@ def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bo
 
 def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
                         nuget_recognition: NuGetRecognition | None = None) -> str:
+    if report.maven is not None:
+        from .maven_output import maven_human_lines
+        lines = ['Libyears: selected repository', '', *maven_human_lines(report.maven, verbose=verbose),
+                 '', 'Legacy subset (incomplete scalar projection; Maven unavailable):']
+        # Retain sibling presentation, without exposing root or raw diagnostics.
+        legacy = replace(report, maven=None, diagnostics=(), tls_trust=None)
+        return '\n'.join(lines) + '\n' + _format_mixed_human(
+            legacy, 'selected repository', verbose=verbose, nuget_recognition=nuget_recognition)
     ecosystems = sorted({source.ecosystem for source in report.source_results if source.source_present})
     labels = ", ".join(ecosystems) if ecosystems else "none"
     recognition_lines = _nuget_recognition_lines(nuget_recognition)

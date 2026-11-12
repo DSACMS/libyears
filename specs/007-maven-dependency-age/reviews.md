@@ -2409,3 +2409,115 @@ Frozen correction SHA256:
 | libyears/maven.py | 6e705765952909047ce41c4a6ce6e0d535a87547c899fa1a568be09d85bef6a4 |
 | libyears/maven_model.py | 698bf6953efb1a2cd83834a694f6a986c269901bae28b9212736b0f70bcbf579 |
 | tests/test_maven_scan.py | 54ff6d79ba828cb2f3f205c1ef71c2f735e9f299905be4834abd18f7c934a205 |
+
+## Run007-0014 — T010 directory and output integration
+
+T010 followed clean6e8a616, the separately reviewed S7 freshness retention correction;
+configured GitLeaks8.30.1 history344 passed. The task uses the existing execution
+envelope without a new task grant. Only scan.py/output.py/new maven_output.py change
+runtime behavior; CLI arguments, sibling adapters/parsers, metric and transport stay
+unchanged. No target or package HTTP access occurred.
+
+MixedScanReport has an optional Maven report defaulting absent. Ordinary directories
+automatically invoke bounded Maven scanning; direct files never activate it. Explicit
+CA trust reaches Maven's existing isolated supervisor, and --resolved remains solely
+Python authority. Complete safe Maven absence leaves old output untouched. Unsupported
+native access or incomplete discovery retains an unknown Maven presence/population;
+it cannot certify absence or a complete empty denominator.
+
+Schema3 adds Maven to ecosystem/evidence descriptions and a separate maven subtree
+with discovery, sorted sources/contexts, structured model/artifact occurrences and
+independent declared/observed records/views. Present facts keep independently nullable
+request/version, origins, availability/reason and nullable ages. Ages retain exact
+POM Last-Modified field names, catalogue retrieval UTC, separate bases/ordering/
+eligibility, anomaly flag and fixed limitations. Source/views disclose the configured
+basis even when no row measures, while availability/reasons prevent claiming success.
+No raw model/configuration/header/URL/hash/absolute-root evidence is emitted. Unsafe
+unsupported requests containing URL/credential/path/markup syntax become null rather
+than leaking raw text; their known identity/population and fixed failure remain.
+
+No Maven age/row enters legacy dependencies, unmeasurable or scalar arithmetic.
+Every detected POM receives maven_plural_projection_unavailable with its source_id;
+incomplete discovery also has a discovery error with source_id null. Maven's legacy
+seven statistics are null. Repository N/coverage are null whenever Maven is active/
+unknown. Existing admitted siblings retain measured-subset M/numerics and their own
+rows/evidence/per-ecosystem summaries; when every detected legacy source is unavailable
+(Maven-only included), M and numerics are explicitly null. Admitted empty siblings may
+retain0/total0.0 as the labeled incomplete legacy subset, never a Maven total.
+
+Normal human output leads with paired seven-field Declared/Observed summaries and
+one conventional POM-time line, explicit reader unavailability, source/typed occurrence
+identity and count/refusal explanations. Verbose adds exact dates/freshness/bases/origins/
+limitations, never raw root/diagnostics. Legacy presentation follows under an explicit
+incomplete subset label. Prospective paired differing-version records render separately
+with distinct totals, never add/subtract or replace views; their construction remains
+in the model-test fixture, not a runtime input/reader/CLI option.
+
+### Fixture scope and verification
+
+Automatic Maven discovery exposed pre-Maven sibling fixtures assuming complete Maven
+absence while using alias-containing temporary roots, mocked access or unavailable
+native primitives. Strict Maven no-follow/capability rules correctly could not prove
+absence there. Sixteen sibling-semantics modules now explicitly provide certified
+Maven absence through a scoped unittest module fixture, matching the already used
+independent NuGet-inventory fixture practice. No runtime safety rule is weakened.
+The small helper is test input, not a native discovery witness or generalized harness.
+Module setup/cleanup is bounded to each module and precedes optional direct-run entry.
+
+Separate new tests exercise actual resolved-root complete absence, empty POM activation,
+direct-file exclusion, symlink/primitive-unknown behavior including ordinary CLI,
+Python-resolved isolation/exit meanings, Maven-only all-null legacy values, unknown
+discovery/null source ID, four successful/empty sibling ecosystems, all-unavailable
+mixed nulls, unsafe-request redaction and prospective paired differing versions.
+NuGet sibling combination uses its established bound source and injected lookup;
+Python/npm/Ruby source seams and their full unchanged parser regression targets remain
+separate from native Maven discovery. No fixture pretends to prove Windows safety.
+
+Frozen22 files (3 runtime,19 tests/fixtures) received two fresh complete non-author
+slices, both COMPLETE / APPROVE without material findings:
+
+| Slice | Independent coverage/results |
+| --- | --- |
+| Schema/human/privacy/S6–S8 | All22 current/preserved hashes;11 output +26 summary tests;19 independent composition/paired/UTC-freshness/runtime-request-redaction probes; no missing assigned obligation |
+| Dispatch/compatibility/portability | All22 hashes;11 focused tests; full1070run/1skip PASS; capability-disabled1070/98skip PASS; independent CA forwarding/direct-POM/symlink-root-unknown probes; fixture isolation and four-sibling parity verified |
+
+Parent independently ran **287 Maven tests PASS; full1070 run,1 skip,PASS**.
+Capability-disabled full suite1070/98skip PASS was also observed; this is semantic/
+refusal evidence, not positive native Windows or hosted-matrix execution. Diff whitespace
+passes. Only one narrow S7 retention correction preceded T010; no approved product/
+plan requirements were modified to justify implementation choices. T010 required no
+new public authoritative evidence access or human implementation/privacy/schema gate.
+
+Final frozen SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_output.py | dc71a15775449976c4ba1505d8541e36647a2169e30639a99fdf114d9d08b2d7 |
+| libyears/output.py | 05e2ca1ac58e49c933f72bbf4a92023b78f451b241c30eeefacd78397745a4dd |
+| libyears/scan.py | 3275b79d163b5532530fa76ea2c0e6952824a46a69bf69409b7ef64ec305b62f |
+| tests/maven_fixtures.py | 04f77a614d78c3c6fd1b0140f77328021bd7241eb865487ce198922273152437 |
+| tests/test_cli.py | 7f0b99fff6b760a7eb73f99791c2645b665a1feb614e89f172566979de123f39 |
+| tests/test_maven_model.py | be31ee2a2682809ca2227bc8475820771d0e6907e93ad693677d363deff517fe |
+| tests/test_maven_output.py | 4d6f1662850537fa1e47f87178291e74c627115275efcae0691cacefdb309e7d |
+| tests/test_mixed_scan.py | e147438ffef12511ca4210dcf5f0e07bda4ce811e5262538008c3fb92bb5bd6d |
+| tests/test_nuget_acceptance.py | 3e5b92d88631bc8802b6e66dceb90bdeaf98f74a64b250be9cfcdbf25cd0933b |
+| tests/test_nuget_cascade.py | d53a7503a8553aeff74a9721976b1e030cde3d2d57a7ed51df2910a1c8455477 |
+| tests/test_nuget_cli.py | ac2918333c5e163fdf233ba98d83ea3410ce7c3a676276c9ae4f6b08e1c7e629 |
+| tests/test_nuget_comparator_source.py | 204b571b36ad107e3d200b9fb6ef2d9a6359910049ffbde15e88c581b9b98c20 |
+| tests/test_nuget_output.py | 1516e2ccd60bd6ee982294da4dfe30d823e81669eadc44715e77930d80c0b21b |
+| tests/test_nuget_population_source.py | 60998f4ebb181939b35aaa552ab4482bec403fe2085e5bfde855499197528be4 |
+| tests/test_nuget_recognition.py | 4e3339aa2a4f553290a981d7814acd69a0146456b3edbe0887f24c9e1b328d8b |
+| tests/test_nuget_repository.py | 7f307061a8638aada6f3e4010b8ebff213c6ee25a6e051d762cf22c12083ce1b |
+| tests/test_nuget_repository_snapshot.py | efe65f684f2a8787c4bd238ab14adb186c421249d5e5ddaa25b02ba7d7babbf4 |
+| tests/test_nuget_scan.py | af657ab7cd393e2ff0824357e3104c8b01a12869438fdce825895081d52001ae |
+| tests/test_output.py | 45da29abdd5e0e80d3e59bdcf8f8091ae5cb6a0eedf02dafdbfb05d70de47973 |
+| tests/test_ruby_group_acceptance.py | e48c8ad09576c82359d5ceb4fdfa7f997231b81b1423cffcd022b616a0f84fd3 |
+| tests/test_scoped_portability.py | 1e80f6d72109ff20cb267996649366f02dd30858eb53fd00f827d24ff574d58b |
+| tests/test_scoped_scan.py | b5fa187cecaab1ee311edfd719f7ed687654776090727028e85d577437746a47 |
+
+Parent reconciled both completed slices against all T010/P7 acceptance and AC01–03/
+09/12–14/16: **T010 independently CONVERGED.** One coherent local task commit follows
+scoped freeze/diff/cached-whitespace and configured current/history GitLeaks checks.
+T011 is the next already-authorized task and must complete its fresh decomposed
+integrated checkpoint before T012. GPUBLIC/target/private/publication gates remain
+unchanged. No push, release or tag occurred.

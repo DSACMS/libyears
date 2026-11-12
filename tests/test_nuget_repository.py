@@ -317,3 +317,9 @@ class RepositoryTests(unittest.TestCase):
                 code, output, errors = self.call([], **options)
             self.assertEqual((code, output), (2, ''))
             self.assertNotIn('SECRET_PATH', errors)
+
+
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()

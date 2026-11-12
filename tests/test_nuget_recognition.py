@@ -78,3 +78,9 @@ class RecognitionFilesystemIntegrationTests(unittest.TestCase):
                 else:
                     self.assertIsNone(data['nuget_sources'][0]['source_id'])
                     self.assertEqual(data['source_errors'][0]['reason'], 'nuget_discovery_unavailable')
+
+
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()

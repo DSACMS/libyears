@@ -30,6 +30,23 @@ def occurrence(source='pom.xml', name='example', value=None, *, observed=False):
     )
 
 
+def paired_source_fixture():
+    """Prospective model-only views, never a runtime retained-selection reader."""
+    stamp = datetime(2020, 1, 1, tzinfo=timezone.utc)
+    freshness = datetime(2026, 11, 12, tzinfo=timezone.utc)
+    declared = MavenVersionFact(MavenVersionBasis.DECLARED, version='1', request='1',
+        age=MavenAge('4', stamp, stamp + timedelta(days=365.25), 1.0,
+                     catalogue_retrieved_at=freshness))
+    observed = MavenVersionFact(MavenVersionBasis.OBSERVED, version='3',
+        age=MavenAge('4', stamp, stamp + timedelta(days=365.25 * 2), 2.0,
+                     catalogue_retrieved_at=freshness))
+    key = MavenOccurrenceKey('pom.xml', 'base_model', MavenModelKey('g', 'a'))
+    row = MavenOccurrence(key, MavenArtifactKey('g', 'a', 'jar'), declared=declared, observed=observed)
+    return MavenSource(MavenContext('pom.xml'),
+        MavenCollection(MavenView.DECLARED, 1, (row,), True),
+        MavenCollection(MavenView.OBSERVED, 1, (row,), True))
+
+
 class MavenModelTests(unittest.TestCase):
     def test_module_context_and_case_are_part_of_occurrence_identity(self):
         root = occurrence()

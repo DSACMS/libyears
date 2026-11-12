@@ -272,3 +272,9 @@ class ComparatorSourceTests(unittest.TestCase):
             report = self.scan(files, configs=(text,), witnesses=(('a/Witness.csproj','witness.json'),))
             self.assertEqual(report.unmeasurable[0].reason, 'nuget_comparator_private')
             self.assertEqual((self.calls, self.urls), ([], []))
+
+
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()

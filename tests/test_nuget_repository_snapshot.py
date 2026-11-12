@@ -414,3 +414,9 @@ class RepositorySnapshotFilesystemTests(unittest.TestCase):
         self.assertIn(b'?? packages.lock.json', before)
         self.assert_current_policy()
         self.assertEqual(subprocess.check_output(['git','-C',str(self.root),'status','--porcelain']), before)
+
+
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()

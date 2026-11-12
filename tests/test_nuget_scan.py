@@ -267,5 +267,11 @@ class NuGetScanTests(unittest.TestCase):
         nuget_source.assert_not_called()
 
 
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()
+
+
 if __name__ == '__main__':
     unittest.main()

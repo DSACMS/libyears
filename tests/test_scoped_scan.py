@@ -227,3 +227,9 @@ class ScopedScanTests(unittest.TestCase):
         factory.assert_called_once_with(ca_bundle='approved.pem')
         factory.return_value.lookup.assert_called_once_with('rack', '1')
         self.assertEqual(report.tls_trust, 'custom CA bundle')
+
+
+def setUpModule():
+    # This module tests sibling semantics with certified Maven absence.
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()

@@ -17,6 +17,8 @@ from tests.scoped_ruby_fixtures import fixture_scoped_reads
 # These are Python/Ruby CLI semantics; project inventory availability is supplied
 # independently of the host. Production discovery/refusal has separate witnesses.
 def setUpModule():
+    from tests.maven_fixtures import declare_maven_absent
+    declare_maven_absent()
     from libyears.nuget_discovery import NuGetRecognition
     global inventory_patch
     inventory_patch = patch('libyears.nuget_sources.discover_nuget_candidates',
