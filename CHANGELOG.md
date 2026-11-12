@@ -43,6 +43,14 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Automatically report independent Maven Declared / Observed dependency-age views
+  for bounded directory POMs. Measure supported static requests using explicitly
+  conventional versioned-POM Last-Modified dates; keep Observed unavailable without
+  an accepted reader, preserve module occurrence weights and honest partial coverage,
+  and retain sibling results through an additive schema3 subtree with unavailable
+  Maven legacy scalar projection. No Maven/Gradle/Java or resolver runs. Operational
+  DPC validation remains pending separate authorization (Feature007).
+
 - Automatically select qualified current NuGet repository project/lock snapshots
   when declaration-first population is unsupported. Require bidirectional literal
   dependency/request/context coherence, disclose the policy basis in schema v3,

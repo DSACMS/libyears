@@ -1,7 +1,7 @@
 # Libyears
 
 Libyears measures how far direct dependency versions lag behind the latest stable
-releases, using public registry timestamps. Use it to understand dependency
+releases, using each ecosystem's disclosed time basis. Use it to understand dependency
 freshness alongside measurement coverage; age alone does not indicate security risk.
 
 ## Quick start
@@ -19,7 +19,8 @@ Replace `/path/to/repository` with the directory you want to measure. Libyears r
 supported dependency files and requests public registry metadata over verified HTTPS.
 It does not install dependencies or run the target project's tooling.
 
-A report's summary looks like this illustrative example (not a live scan):
+For the existing single-view ecosystems, a summary looks like this illustrative
+example (not a live scan):
 
 ```text
 Measured: 2 / 3 dependencies
@@ -36,11 +37,13 @@ that is useful information, rather than a zero-age result.
 
 ## What libyears measures
 
-For each measurable dependency, libyears compares the release time of its exact
-used version with the latest stable release:
+For each measurable dependency, libyears compares the two admitted ecosystem
+timestamps. Python/npm/RubyGems/NuGet retain their registry-date policies. Maven
+uses versioned public POM modification times as a conventional release-age
+surrogate, independently for each available version view:
 
 ```text
-libyears = max(latest stable release time - used release time, 0) / 365.25 days
+libyears = max(comparison timestamp - version timestamp, 0) / 365.25 days
 ```
 
 Total is the sum of measured ages; mean is their average, median their middle
@@ -61,12 +64,42 @@ explain declarations, exact versions and source failures.
 | npm / Yarn Classic | Root package.json production dependencies excluding optional names; package-lock v2/v3 or Yarn Classic v1 | [npm and Yarn](ECOSYSTEMS.md#npm-and-yarn-classic) |
 | RubyGems | Root Gemfile.lock direct dependencies; optional static Gemfile group selection | [RubyGems](ECOSYSTEMS.md#rubygems) |
 | NuGet | Automatically attempted bounded .csproj sources with associated packages.lock.json evidence; precision interface also available | [NuGet](ECOSYSTEMS.md#nuget) |
+| Maven | Bounded directory POMs; supported static Declared requests, independent Observed view initially unavailable; conventional POM modification dates | [Maven](ECOSYSTEMS.md#maven) |
 
-Directory scans combine supported sources. NuGet counts each project's direct
+Directory scans compose supported sources. Maven has its own paired views; its
+legacy scalar projection is unavailable. Existing sibling rows and partial
+aggregates survive, while legacy repository counts/coverage become unknown.
+NuGet counts each project's direct
 external dependency occurrences independently, including test/tool/analyzer
 references; repeated packages across projects count repeatedly. Discovery is
 bounded to depth 0–4 and can leave population unknown. See the guide for exact
 [discovery bounds and exclusions](ECOSYSTEMS.md#ordinary-discovery-and-witness-mappings).
+
+## Maven directory scans
+
+Use the same ordinary directory commands, with no Java-specific flags:
+
+```bash
+python3 -m libyears PATH
+python3 -m libyears PATH --json
+python3 -m libyears PATH --verbose
+```
+
+Maven output begins with **Conventional Maven dependency age**, separate Declared /
+Observed summaries and **Time basis: Maven conventional (versioned public POM
+Last-Modified)**. Declared describes supported local base-model requests. Observed
+requires retained dependency-system selection evidence; this version has no accepted
+Maven reader, so that view remains unavailable. `--resolved` supplies Python only.
+
+The static projection includes direct test/provided/optional/tooling/POM requirements
+and weights each consuming project independently. Unread BOMs, missing parents,
+unknown model facts, contrary policy or missing dates can leave partial/unavailable
+results. No Maven/Gradle/Java, restore or resolver is run. Dates establish neither
+first publication nor upstream release; comparison establishes no classifier
+availability or compatibility. See [Maven scope and limitations](ECOSYSTEMS.md#maven)
+and the [deterministic/operational verification status](specs/007-maven-dependency-age/verification.md).
+This source-checkout capability is unreleased; the separately authorized real DPC
+operational witness remains pending.
 
 ## Common usage
 
@@ -107,8 +140,14 @@ python3 -m libyears --help
   receive the wrong public history, and queries disclose package identities.
   Known private/conflicting assignment or unknown relevant policy blocks NuGet lookup.
   [Source and comparator distinctions](ECOSYSTEMS.md#ordinary-nuget-version-age-comparator).
+  Maven also assumes conventional Central correspondence after bounded local policy
+  checks. Unassigned alternate/file repositories alone do not veto it; queries
+  disclose coordinates and an undisclosed private fork may get the wrong public
+  comparison. [Maven comparator and date authority](ECOSYSTEMS.md#maven-comparator-and-time-basis).
 - Safe file-access primitives are required for bounded Ruby group/NuGet inputs.
-  Unsupported hosts fail closed; Windows worker lifecycle support does not imply
+  Maven also requires safe discovery and isolated-worker capabilities; unavailable
+  primitives can leave Maven presence/population unknown even in a directory with
+  no confirmed POM. Unsupported hosts fail closed; Windows worker lifecycle support does not imply
   usable filesystem-reader support. [NuGet availability](ECOSYSTEMS.md#availability-and-safe-input).
 - No ecosystems beyond those listed above are supported. See the [ecosystem guide](ECOSYSTEMS.md)
   for the detailed supported formats, refusal cases and evidence limits.
@@ -126,7 +165,7 @@ python3 -m libyears --help
 ## About the Project
 
 Libyears is a small local CLI implemented with the Python standard library. It
-measures direct Python, npm, RubyGems and bounded NuGet dependencies without
+measures direct Python, npm, RubyGems, bounded NuGet and Maven evidence without
 requiring a repository host, database or server.
 
 Project website: https://dsacms.github.io/libyears

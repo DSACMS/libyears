@@ -12,6 +12,7 @@ remain in their [retrospectives](#history-and-further-reading).
 - [npm and Yarn Classic](#npm-and-yarn-classic)
 - [RubyGems](#rubygems)
 - [NuGet](#nuget)
+- [Maven](#maven)
 - [Cross-ecosystem lessons](#cross-ecosystem-lessons)
 
 ## Common measurement model
@@ -19,11 +20,13 @@ remain in their [retrospectives](#history-and-further-reading).
 Every measurement needs a supported chain:
 
 ```text
-dependency population -> selected version -> applicable public comparator
-                      -> release dates -> libyears
+dependency population -> accepted version fact -> applicable public comparator
+                      -> admitted ecosystem timestamps -> libyears
 ```
 
-Population answers what counts; selection answers which exact version is evidenced.
+Population answers what counts; version evidence answers which exact version fact
+is established. Maven distinguishes a supported declared request from a retained
+dependency-system selection; its Observed reader is initially unavailable.
 Neither alone proves public source, acquisition, installed bytes or runtime use.
 Evidence mechanics differ by ecosystem. A manifest is not automatically a lockfile,
 and a lockfile is not automatically authority for every claim.
@@ -49,10 +52,12 @@ evidence.
 | npm | Root package.json production dependencies, excluding optional names | Root package-lock v2/v3 or Yarn Classic v1 | npm registry version publication times; not dist-tags.latest alone |
 | RubyGems | Root lock DEPENDENCIES; optionally statically selected Gemfile groups | Supported associated Gemfile.lock specs | Independently supported public source; earliest admissible supported observable artifact creation |
 | NuGet | Each bounded project independently; declarations or qualified/accepted snapshot | Associated schema1 packages.lock.json Direct records | Accepted testimony, closed public mapping or disclosed ordinary-mode convention; nuget.org first receipt |
+| Maven | Independent supported local base-model project occurrences | Declared exact request/property/management facts; Observed initially unavailable | Conventional Central comparison; versioned POM Last-Modified surrogate, not publication history |
 
 Python and npm choose eligible stable comparators by publication time; NuGet uses
 greatest listed stable SemVer precedence. Ruby's observable-artifact policy is
-explained below. None of these comparators promises compatibility with a project's
+explained below. Maven uses pinned Maven precedence and a conservative eligibility
+policy; its two views never share a denominator by default. None of these comparators promises compatibility with a project's
 requested range or runtime.
 
 ## Reporting and registry access
@@ -74,7 +79,9 @@ below define the exact known/unknown/unavailable cases.
 
 JSON schema version 3 reports ecosystem-keyed version evidence, repository and
 per-ecosystem summaries, and source discovery errors separately from
-dependency-level failures. The schema v2 to v3 change is intentional. A
+dependency-level failures. Maven adds an independent plural subtree and deliberately
+unavailable legacy scalar projection; see [Maven output](#maven-output-and-coverage).
+The schema v2 to v3 change is intentional. A
 synthetic Python-only example (versions and dates illustrate the format; they
 are not a live registry observation):
 
@@ -166,6 +173,11 @@ trust source. Stable JSON reason identifiers remain unchanged.
 NuGet's isolated metadata worker uses the shared verified default trust selection;
 `--ca-bundle` is validated but is **not forwarded** to that worker. NuGet-active
 reports omit raw verbose diagnostics and TLS paths. See [metadata access](#metadata-access-and-supervision).
+
+Maven's worker uses verified compiled system trust or a privately staged explicit
+`--ca-bundle`; it does not honor ambient CA/proxy/auth variables or search pip,
+Maven caches or home configuration. Missing trust leaves metadata unavailable.
+Readiness issues no request and does not prove TLS or registry availability.
 
 ## Python / PyPI
 
@@ -915,6 +927,158 @@ with deferred cleanup rather than an unbounded wait or synchronous fallback.
 The worker uses shared default verified TLS trust selection; the explicit
 `--ca-bundle` argument is validated but is not forwarded to this worker.
 
+## Maven
+
+Maven support in this unreleased source checkout follows approved [Feature007](specs/007-maven-dependency-age/spec.md),
+its [bounded source policy](specs/007-maven-dependency-age/source-policy.md) and
+[metadata contract](specs/007-maven-dependency-age/metadata-contract.md).
+[Verification status](specs/007-maven-dependency-age/verification.md) distinguishes
+passed offline conformance from the pending authorized DPC operational witness.
+
+Run ordinary directory/JSON/verbose commands; there are no Java-specific options.
+A direct POM-file argument does not activate Maven. `--resolved` remains Python-only.
+
+### Maven population and version facts
+
+Each safely discovered project owns its supported local base-model direct external
+requirements, including packaging=POM projects and test/provided/optional/tooling/
+ordinary dependency-POM rows. Build plugins and their dependencies, management-only
+entries and transitive closure do not add population. Gemfile, Gradle, lock exports,
+SBOMs or target tools do not supply Maven Observed evidence.
+
+A source is its root-relative POM path. Occurrences keep source/context plus exact
+case-sensitive group/artifact/type/classifier model identity. Built-in handlers
+supply separate artifact identities: test-jar and jar/tests may map to the same
+artifact but remain distinct management/occurrence keys. Explicit empty classifiers,
+unknown handlers, duplicates and unsupported relevant syntax refuse dependent facts.
+No systemPath is read; system assignment refuses comparison.
+
+Supported local parents merge raw dependency fields, with child-written values
+winning and origins retained. Consumer-context literal properties and bounded
+builtins can establish requests. Supported management supplies absent fields;
+optional is never managed and scope defaults wait until absence is established.
+BOM contents are never fetched or read, even when local. Unknown imports may leave
+versions/scopes unavailable; independent explicit facts survive. Profiles are
+considered as possible changes, with no host activation/evaluation.
+
+An exact bare request or supported hard singleton can provide a Declared version;
+it is never evidence of resolver selection. Ranges, dynamic selectors, snapshots,
+missing/cyclic/unsupported values remain unavailable. A module's inherited request
+counts for that consumer as well as any parent with its own direct requirement.
+Totals weight occurrences, not unique package names or distinct upgrade actions.
+Aggregation is separate from inheritance/co-location. Internal exclusion requires
+an exact supported project GAV in the same unambiguous static aggregation component;
+unknown membership/version can make N unknown while independent safe rows survive.
+
+Observed means an accepted retained dependency-system selection bound to the same
+source/context/direct identity. It never means loaded, installed, deployed or runtime
+state. This version has no accepted Maven Observed reader; it reports that view
+unavailable with independent null statistics rather than copying Declared data or
+using Gradle locks, effective POMs, arbitrary dependency trees or archives.
+
+### Maven comparator and time basis
+
+Maven compares independently evidenced Declared and Observed versions using the
+public repository's versioned POM Last-Modified values as a conventional release-age
+surrogate. These dates do not establish first publication or upstream release.
+The GA comparison does not establish classifier availability or compatibility.
+The initial Observed view remains unavailable for the reader limitation above.
+
+The comparator assumes Central correspondence after bounded local inspection.
+Unassigned alternate/file/parameterized repository eligibility alone does not veto
+comparison. Nearest unconditional child repository IDs replace whole parent records;
+all possibly relevant profile writes are checked. Supported Central exclusion,
+redefinition/block, system assignment, conflicting identity and relevant unknown
+policy refuse before lookup. No public namesake response authorizes a request.
+No supplier/private-assignment reader is invented. Undisclosed private same-ID/version
+forks can still be misattributed; queries disclose public coordinate/version IDs.
+Acquisition, bytes, producer history, evaluated model and runtime state are not proven.
+
+Only fixed verified HTTPS Central GA catalogues and exact versioned POMs are used.
+No alternate/private endpoint, archive, parent/BOM POM, index/search/provider or date
+fallback is queried. Selected repository-contained settings/mirrors/launch evidence
+use a finite grammar; an ordinary co-located settings.xml alone is not selected.
+Credentials, unknown filters/extensions and unsafe relevant policy withhold comparison;
+no user/global Maven settings, wrapper, cache or environment property is inspected.
+
+Choose the greatest unique eligible version from the whole current GA catalogue
+using pinned ComparableVersion3.9.11. `maven_conservative_stable_v1` admits numeric
+forms, release aliases and service packs; recognized prereleases and snapshots are
+excluded. Other safe strings are unknown: strictly below the known maximum is
+harmless, at/above it or inability to compare refuses. Distinct equivalent maximum
+strings such as1/1.0 are ambiguous; response order, lexical order and dates never
+break the tie. The target is global GA age, with no request/major/variant compatibility
+filter. Current catalogue disappearance can change a future result.
+
+Both dates need exact POM identity and one valid nonfuture IMF-fixdate Last-Modified.
+Missing target/used date ends the attempt; an older target, metadata lastUpdated,
+HTTP Date, local/retrieval time or provider field cannot replace it. Same exact
+version produces0.0 only after its shared date is admitted. Existing365.25-day
+arithmetic and flagged negative timestamp clamping remain. Catalogue retrieval UTC
+is separate freshness evidence, never a version date.
+
+### Maven output and coverage
+
+Normal output begins with **Conventional Maven dependency age**, paired Declared /
+Observed summaries and **Time basis: Maven conventional (versioned public POM
+Last-Modified)**. Verbose adds exact date/freshness/basis/origin/limitation details
+without raw XML/headers/source URLs/credentials/absolute roots. Unsafe unsupported
+request text may be null rather than disclosing a URL or location.
+
+For each view, known N and accepted rows allow M/N, including0% when every age fails.
+Total0.0 then describes an empty measured subset, not fresh dependencies. Certified
+emptiness has N=M=0, null coverage and total0.0. Unknown population with safe rows has
+null N/coverage but partial M/statistics; with no accepted collection, M/numerics are
+null. A whole-unavailable sibling also makes coverage null. Means/medians/maxima use
+the union of measured occurrences, never averages of source statistics. Views are
+never substituted, added, subtracted or turned into a gap metric.
+
+Schema3 retains siblings and adds `version_evidence.maven` plus top-level `maven`:
+
+- `discovery`: complete/unavailable and fixed reason; unavailable can mean unknown
+  Maven presence even before any POM was safely observed.
+- `sources`: sorted root-relative IDs, safe context/parent identities, basis,
+  limitations and independent `views.declared`/`views.observed` summaries.
+- `occurrences`: structured model key, supported artifact key, scope/optional and
+  independently nullable records with safe request/version/origins, availability,
+  reason, limitations and nullable `age`.
+- `views`: repository Maven-only populations/availability and the seven existing
+  statistic names. Each version record has `version_basis`; its age separately holds
+  `comparator_basis`, `time_basis=maven_conventional_pom_last_modified`, ordering/eligibility,
+  `measured_version_pom_last_modified`, `comparison_version_pom_last_modified` and
+  `catalogue_retrieved_at` (UTC).
+
+Maven has no legacy scalar projection. `maven_plural_projection_unavailable` appears
+in `source_errors` per detected POM, or with source_id null for incomplete discovery.
+Maven's legacy by-ecosystem statistics are null; legacy repository N/coverage are null
+whenever Maven is present/unknown. Successful existing-ecosystem rows/evidence/own
+summaries and partial aggregates survive; every legacy source unavailable makes
+M/numerics null. An admitted empty sibling can retain measured0/total0 as an explicit
+incomplete **legacy subset**. No Maven value enters legacy dependency rows or totals.
+Consumers must use the Maven subtree for its two answers. Closed-world consumers
+that reject new keys/ecosystems/reasons may reject this additive schema3 extension.
+
+### Maven bounds and availability
+
+| Boundary | Limit / effect |
+| --- | --- |
+| Directory inventory | Exact regular pom.xml, depth0–4,256directories,10,000entries,100POMs; exclusions/unsafe links do not expand traversal |
+| Local XML | 1MiB/document,32MiB distinct total, depth32/50,000elements; DTD/entities/XInclude refused |
+| Model | Parent chain16,10,000direct records/POM and expanded scan; finite properties/profiles/policy/path budgets |
+| Metadata | 2MiB GA catalogue/10,000entries;1MiB POM;64KiB/100headers |
+| Worker | One GET per16KiB command; command10s/GA60s/scan300s,300attempts/64MiB, readiness10s, bounded0.5s cleanup attempts |
+
+The [source policy](specs/007-maven-dependency-age/source-policy.md) defines exact
+exclusions/grammar and remaining finite limits. Required no-follow/race-resistant
+filesystem and isolated-process capabilities fail closed. On an unsupported host,
+Maven discovery itself can remain unknown and make legacy repository coverage null,
+even for a directory with no confirmed POM. Native this-host tests and injected
+semantics do not establish positive Windows support or an executed hosted matrix.
+Final bounded deferred cleanup can finish after metadata command/I/O deadlines;
+no unbounded reap, worker restart, synchronous fallback or further metadata I/O is
+allowed. Plain hex chunked framing is bounded; extensions/trailers and compressed
+responses are refused. No Maven/Gradle/Java/build/restore/resolver/target code executes.
+
 ## Cross-ecosystem lessons
 
 Direct scope is an ecosystem contract: npm production declarations, Ruby lock
@@ -929,7 +1093,9 @@ Python/npm snapshot measurement does not establish public namespace; Ruby requir
 supported public lock authority; NuGet's ordinary convention explicitly assumes
 correspondence after bounded inspection. These distinctions do not grant permission
 to substitute private packages with public namesakes or to change another ecosystem's
-rules. Missing evidence is reported rather than resolved, guessed or reconstructed.
+rules. Maven adds independent request/retained-selection views and a disclosed
+conventional time basis; its module occurrences and totals remain separate from
+legacy scalar summaries. Missing evidence is reported rather than resolved, guessed or reconstructed.
 
 ### History and further reading
 

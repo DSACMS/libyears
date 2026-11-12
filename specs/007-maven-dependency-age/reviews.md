@@ -2623,3 +2623,72 @@ CONVERGED.** One coherent task commit follows scoped freeze/diff/cached-whitespa
 configured current and history GitLeaks checks. T012 is dependency-ready and already
 authorized; GPUBLIC remains the next consequential external-target boundary after
 T012 deterministic convergence. No private access, publication, push, tag or release.
+
+
+## Run007-0014 — T012 deterministic convergence
+
+**COMPLETE / APPROVE / CONVERGED.** T012 follows independently approved T011.
+Only README, SPEC, ECOSYSTEMS, the curated Unreleased changelog entry and new
+verification/validation-preparation records change shipping documentation. Runtime,
+tests, approved specification/plan and normative companions are unchanged from
+c433f05. No release/tag, target access, package HTTP or publication occurred.
+
+The fresh non-author complete deterministic audit reconciled actual spec/plan/tasks,
+implementation, tests and all six frozen documents against every AC. Two bounded
+fresh read-only model and transport slices inspected actual code and tests; the
+parent independently reconciled output, integration, shipping claims and remaining
+obligations. All audits completed APPROVE, with no material finding or unaudited
+T012 obligation. No passing-count or positive-slice substitution for review occurred.
+Temporary complete report: `/tmp/libyears-observations/007-0014/t012-review/complete-review.md`.
+Its substantive disposition and evidence are retained here and in
+[verification](verification.md); temporary reports are not normative authority.
+
+Actual verification: author and independent reviewer each ran the full deterministic
+suite: **1080 run,1 skipped,PASS**. Independent Maven suite: **297 PASS**; model slice
+178 focused and transport slice118 focused PASS. Additional independent composition/
+privacy/date/unknown-inventory probes passed. T011's capability-disabled full suite
+1080/99skip PASS remains applicable because runtime/tests are unchanged. Native
+readiness/import exclusion/blocked cleanup witnesses ran on this macOS/CPython3.11
+host; injected HTTP semantics do not prove live TLS. Hosted Linux/macOS/Windows ×
+Python3.11–3.13 matrix was not executed/published; no positive Windows claim follows.
+
+Configured GitLeaks8.30.1 precommit history346 commits and exact six current frozen
+documents: zero findings; whitespace PASS. Author local Markdown checker239 references
+across18 documents and independent checker238 parsed references: zero missing files/
+anchors (different parser counts, no unresolved link). Final bookkeeping additions
+receive current-content/link/whitespace checks and postcommit history scanning.
+No suppressions or security-policy exceptions were added.
+
+Final approved shipping-document SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| README.md | d8daede4535677e4449588e6411a7eb32a1e3e2ee36fe9792b90cbccc9a79d1e |
+| SPEC.md | 226d9dd270168840d183dcf6bf79eea4c10d02f2fd48970990172d79a5f4d452 |
+| ECOSYSTEMS.md | 64cbf95ba4ac9acb73a3c5a43c8f708f00cd0afbcaeabf1d2028b69d3f883362 |
+| CHANGELOG.md | d4cbe58b60f7b3cc70636b7f618e3ebad4470edbed65592307a1a1e848e83f4d |
+| specs/007-maven-dependency-age/verification.md | 1fd2d35c289f9b9614b42e5d049683dddb00addef7fb3eb0fe4152cbb2d677d7 |
+| specs/007-maven-dependency-age/validation-preparation.md | 79457894c42271cee609b064ae1094dcf566f2c1bc00c8732a96e39c7628fd71 |
+
+All20 ACs are accounted for in verification.md. Actual DPC usefulness and target
+integrity/disclosure evidence remain **PENDING GPUBLIC/T013**, never supplied by
+synthetic fixtures, mocks or this deterministic approval. T013/T014 are not started.
+The prepared witness requires the exact public DPC identity/path/revision/status,
+public coordinate/HTTP disclosure, safe capture/reviewer scope and read-only integrity
+authority. No external path is guessed or inspected. Private validation and push/
+publication remain separate gates.
+
+Fresh-parent recovery confirmed initial clean9cdca81/T005, the durable sequential
+execution envelope, derived public evidence rule and T006 security obligations.
+The initiating prompt also restated persistence; no no-reminder causal claim follows.
+No additional task reauthorization relay or important conversation-only normative
+dependency was found. Ten bounded implementation/evidence findings through T011
+were corrected and independently closed; T012 adds none. Only one bounded public
+primary-document retrieval occurred, recorded in policy-facts.json; no live package
+request or target execution occurred. Observation007-0013 was reconciled once with
+human-supplied telemetry and original notes retained. Current007-0014 handoff remains
+temporary for the next recorder; unobserved telemetry/credit-before stay blank.
+
+One coherent authorized local T012 commit follows. **Stop at GPUBLIC**, as required
+by the approved graph; autonomous implementation authority is not revoked by the
+context rollover. No push, release, tag, private access or T013/T014 work.

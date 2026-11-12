@@ -4,9 +4,12 @@
 
 Implement a dependency-free CLI that calculates the CHAOSS Libyears metric for a local source repository.
 
-The current implementation supports direct Python, npm, RubyGems and bounded NuGet project snapshots.
+The current implementation supports direct Python, npm, RubyGems, bounded NuGet
+project snapshots and bounded Maven plural dependency-age views.
 The original MVP sections below describe Python policy; the ecosystem extensions
-in section 26 govern npm, RubyGems and NuGet without changing PyPI behavior.
+in section 26 and the Maven extension below govern ecosystem-specific version/time
+claims without changing PyPI behavior. Maven declares supported requests and uses
+conventional POM modification dates; it does not claim retained selection/publication.
 
 It must work equally well for public repositories, private repositories, source archives, and ordinary local directories.
 
@@ -20,7 +23,8 @@ Libyears measures dependency versions that can be established from repository ev
 
 Use the strongest available accepted evidence, but require only evidence necessary
 for the claim actually being made. The measurement claim concerns attributable
-selected versions and applicable publication history. Acquisition, artifact content,
+version facts and the relevant ecosystem-specific time evidence. Maven's separate
+declared/observed and conventional POM-time contract is defined below. Acquisition, artifact content,
 reproducible builds and actual deployment require independent evidence; none follows
 from a number. Evidence mechanics remain ecosystem-specific. Current Python/npm
 positive namespace limitations are recorded separately rather than silently changed.
@@ -74,7 +78,7 @@ The MVP does not:
 - infer versions from the developer's machine
 - inspect transitive dependencies
 - support private package registries
-- support ecosystems beyond the explicitly approved PyPI, npm, RubyGems and bounded NuGet scope
+- support ecosystems beyond the explicitly approved PyPI, npm, RubyGems, bounded NuGet and Maven scope
 
 The tool MUST NOT turn an unresolved dependency declaration into an exact version by resolving it against the package registry at scan time.
 
@@ -407,7 +411,8 @@ The top-level object includes `schema_version`, `metric`, `dependency_scope`,
 statistics and `by_ecosystem` with the same statistic fields. Discovery failure
 is represented by null counts and coverage, never by zero. `source_errors`
 contains source-level failures; dependency-level failures remain in
-`unmeasurable`.
+`unmeasurable` for the existing scalar projection. Maven has its own plural subtree
+and deliberately unavailable legacy projection, as specified below.
 
 Each measurable or unmeasurable dependency carries its `ecosystem`. Measurable
 dependencies carry `version_source`; Python values remain `requirements_exact`
@@ -615,7 +620,7 @@ Not part of MVP:
 - constraints files
 - environment markers
 - requirements file inclusion
-- Maven
+- Maven retained-selection readers and broader model support beyond Feature007
 - Go
 - Cargo
 - transitive dependencies
@@ -1058,3 +1063,88 @@ meaning. Schema3 ordinary rows add comparator_basis and fixed conventional
 comparator_limitations; policy namespace/measurement values remain distinct from
 testimony. Metric, stable/date policy, worker/transport budgets and sibling semantics
 are unchanged. See C1–C6 for exact bounded grammar, refusal and precedence rules.
+
+
+## Maven plural dependency-age views (Feature 007)
+
+The approved [Feature007 specification](specs/007-maven-dependency-age/spec.md),
+[source policy](specs/007-maven-dependency-age/source-policy.md),
+[latest policy](specs/007-maven-dependency-age/latest-policy.md#selected-policy--run007-0008)
+and [metadata contract](specs/007-maven-dependency-age/metadata-contract.md) govern
+this extension and supersede original MVP single-view/release-date assumptions for
+Maven only. [Deterministic verification](specs/007-maven-dependency-age/verification.md)
+records conformance and the still-pending separately authorized operational witness.
+
+Ordinary directory scans discover bounded regular pom.xml sources with no Java
+flags; direct files do not activate Maven. Each consuming source owns independent
+supported static base-model external direct occurrences. Local parent/field/property/
+management facts are bounded, profiles are not activated, BOMs are not read/fetched,
+and internal exclusion requires exact GAV in an unambiguous static aggregation.
+Test/provided/optional/tooling/ordinary-POM rows count; plugins/management/transitives
+do not create population. Type/classifier model keys and artifact aliases stay separate.
+Repeated modules weight totals independently. Unknown relevant syntax refuses at the
+smallest dependent scope, masking unsafe same-key inherited fallback; safe siblings
+survive with honest unknown population. No target tooling executes.
+
+Declared records use supported_local_base_model_request, an exact request fact rather
+than selection. Observed would require bound retained_dependency_system_selection;
+there is no accepted Maven reader/option initially. Both views have independent
+populations, availability, coverage and seven statistics. Missing Observed is all-null,
+never copied or replaced by Declared/Gradle/effective-POM/runtime data. Model-only
+paired differing-version capacity creates no new intake.
+
+After local contrary checks, conventional_central assumes correspondence; alternate/
+file eligibility alone does not veto it. Supported system assignment, Central
+exclusion/redefinition/block, identity conflict and relevant unknown policy refuse
+before lookup. Only fixed verified HTTPS public GA metadata/exact versioned POMs are
+permitted; no auth/proxy/redirect/archive/private/parent/BOM/provider route follows.
+A trusted installed isolated Python worker enforces closed commands, budgets and
+bounded cleanup with no restart/fallback. Missing native safety capabilities or TLS
+trust leaves evidence unavailable. An explicit CA bundle is staged privately;
+Maven honors no ambient CA/proxy settings or pip/Maven configuration fallback.
+
+Maven time_basis is maven_conventional_pom_last_modified: the public repository's
+reported modification time for each versioned POM representation, used as an
+explicit conventional release-age surrogate. It is not first publication/upstream
+release or acquired bytes/classifier/runtime history. Require exact representation
+identity and a unique supported nonfuture Last-Modified. Catalogue retrieval time
+is independent freshness, never a replacement version timestamp. Missing either
+date is terminal, including same-version zero; no older candidate or fallback field.
+Existing365.25-day arithmetic and negative timestamp anomaly clamping remain.
+
+Ordering is pinned maven_comparable_version_3_9_11, separately from
+maven_conservative_stable_v1 eligibility: numeric/release-alias/service-pack forms,
+known prerelease/snapshot exclusion, unknown strictly below harmless versus unknown
+at/above/unorderable refusal, and distinct equivalent maximum-string ambiguity.
+The comparison is the global current GA maximum, never compatible-upgrade advice.
+
+Schema3 adds version_evidence.maven (plural mode/static scope/no Observed reader)
+and maven.discovery/sources/occurrences/views. Structured source/context/model and
+artifact keys retain nullable request/version/origins/availability/reason/age.
+Ages expose comparison_version, libyears, timestamp_order_anomaly, separate bases/
+ordering/eligibility, measured_version_pom_last_modified,
+comparison_version_pom_last_modified, catalogue_retrieved_at and fixed limitations.
+Source/views disclose basis/limitations when no row measures; unsafe raw request,
+URLs/headers/XML/credentials/absolute roots/hashes are not emitted.
+
+Known accepted N permits M/N including0, with measured-subset total0.0 when M0;
+certified empty N=M0 has null coverage/total0.0. Unknown N with safe rows preserves
+partial M/statistics with null coverage; no accepted collection leaves M/numerics
+null. A whole-unavailable sibling also nulls coverage. Statistics use occurrence
+unions, and the two views are never added/subtracted/substituted.
+
+Maven has no legacy scalar projection: per-source maven_plural_projection_unavailable
+errors (discovery-level source_id null), all-null Maven by_ecosystem statistics,
+and null legacy repository N/coverage. Successful sibling rows/evidence/per-ecosystem
+summaries and partial numeric subset remain; every legacy source unavailable makes
+M/numerics null. Admitted empty siblings may retain0/total0.0 only as a labeled
+incomplete legacy subset. Maven-only legacy counts/numerics are all-null. No Maven
+row enters legacy dependencies/unmeasurable or scalar arithmetic. Complete Maven
+absence leaves old output unchanged; unknown discovery cannot certify absence.
+
+Human output leads with paired Conventional Maven dependency age and one section
+time-basis line. Verbose shows exact dates/bases/origins/limits without raw evidence.
+Existing CLI exit categories remain0/1/2. Public coordinate disclosure and undisclosed
+private namesake/fork misattribution are accepted limitations; stronger acquisition,
+producer/evaluated/runtime claims never follow. Live target validation, private access
+and publication remain separate lifecycle permissions, not implied by offline tests.

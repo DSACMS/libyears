@@ -1,5 +1,17 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0014 / T012
+
+**T001–T012 COMPLETE. T013–T014 NOT STARTED. GPUBLIC REQUIRED.** Fresh independent
+complete deterministic convergence approved the implementation, all20 AC accounting
+and shipping documentation. [Convergence record](reviews.md#run007-0014--t012-deterministic-convergence)
+retains actual tests, security checks, frozen documentation and audit limits.
+Progression stops at the explicit GPUBLIC target/disclosure/integrity authority gate
+below. No actual DPC witness, private access or publication is implied. The persistent
+implementation envelope was recovered; this is an authority boundary, not a context/
+resource interruption. Earlier statuses and approved requirements remain historical.
+
+
 ## Execution status — run007-0014 / T011
 
 **T001–T011 COMPLETE. T012–T014 NOT STARTED.** The decomposed integrated adversarial
