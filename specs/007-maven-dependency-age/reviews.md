@@ -1,5 +1,12 @@
 # Feature 007 review record
 
+Current007-0009: human T001-only implementation/local-commit authority exercised.
+**T001 CONVERGED — T002 AUTHORITY REQUIRED.**40 focused Maven tests and16 existing
+model/metric regressions pass; three fresh independent scopes and fresh test-addition
+review approve. No material defect or later-task implementation. Earlier current
+paragraphs remain historical; the new record below governs execution status.
+
+
 Current007-0008: conservative eligibility selected; complete source-policy and
 metadata companions received fresh whole-specification review and focused correction
 closure. **SPECIFICATION, PLAN AND TASK GRAPH APPROVED; IMPLEMENTATION AUTHORITY REQUIRED.**
@@ -1110,3 +1117,111 @@ access/modification/build execution/private or alternate endpoint contact, commi
 reset/stash/history rewrite or push. Exact next authority: T001 only, new Maven
 records/collection summaries and focused offline tests; a local commit only if
 explicitly included. No later task/network/target/private/publication authority.
+
+## Run007-0009 — T001 implementation convergence
+
+The initiating human grant authorizes **T001 only**, including focused deterministic
+verification, fresh review, bounded correction and local commit. T002 and every later
+task, public metadata/target/private access, build tools and push remain prohibited.
+The approved specification/plan/normative contracts are unchanged; only task status
+and this execution record are added. ROADMAP opportunity8 remains EXPLORE.
+
+007-0008 original44-key baton and task-graph principal digest verified before edits;
+appended once with supplied session01a1d138-dff8-7901-8368-378599a922b7,
+GPT-6.1-Sol/openai/medium,0.160.0, reported1606s and credits_after123. Explicit
+continuity permits credits_before119 from007-0007. Prior59 ledger rows and original
+baton notes/runtime classification/other fields preserved; no derived runtime or
+credit delta, current append or inferred current credits_before123.
+
+### Bounded implementation and verification
+
+Four new files only implement T001 runtime/tests:
+
+- maven_model.py: immutable source/context/model/artifact/occurrence/field-origin,
+  nullable version fact, established age, collection/view and discovery **records**.
+  Closed view/version/field bases and reasons; fixed conventional time/comparator /
+  ordering/eligibility labels are evidence fields, not their implementations.
+- maven_results.py: pure collection admission-state validation and per-source /
+  repository collection composition. Known all-row failures retain N/M0/coverage0;
+  absent collection yields null measurement/numerics, independently known N may
+  survive. Unknown-safe-rows and incomplete discovery preserve partial statistics;
+  certified emptiness alone admits empty zero. Union statistics retain module
+  occurrence weighting; Declared and Observed never substitute or combine totals.
+- test_maven_model.py/test_maven_results.py: offline behavioral/refusal examples,
+  every S6 composition, nullable records, exact identities, independent views and
+  A1/A1a/A1b counterexamples. Constructed paired/observed-only facts are model tests,
+  not a reader or authority route. Initial source Observed defaults unavailable.
+
+No discovery/POM parsing, inheritance, policy, ordering, eligibility, date retrieval,
+age calculation, registry/CLI/scan integration or generic framework is implemented.
+Age records carry already established values/times; construction never computes
+libyears. Existing model.py/metric.py and all sibling/runtime interfaces remain
+byte-identical to run start. Capability-disabled tests are inapplicable: T001 reads
+no filesystem/process/network capability. No full suite is required by this task:
+no shared behavior changed, and graph full-suite checkpoints begin later.
+
+Actual verification:40 focused Maven tests PASS; existing test_model.py3 and
+ test_metric.py13 PASS. No network, build/target execution or hosted-platform
+claim. Code and tests are frozen for review; no product code changed after approval.
+
+### Fresh review and nonblocking test improvement
+
+Freeze1 four-file digests:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_model.py | c45ff036d247ef2e89b0edb19e5a8399607fa2e8472d3bb6774c20967c4040a8 |
+| libyears/maven_results.py | d46bd42d096312bd16c4d50d4925d5d6ba7d9cc3f2a5841f276e4d47700d0714 |
+| tests/test_maven_model.py | ef54eaeb6dc617136b823d0dce5c65e7c3cf0c5d892ab17d7995660f618faa01 |
+| tests/test_maven_results.py | 06a4e2396e1af7b1b428ea4c5e261b00b6ddf5049b93f11bc1fe09357be5fda8 |
+
+Three fresh non-author scopes verified hashes and governing T001/P1/S6/S8 plus
+prior correction records; no sibling conclusions shared before completion. No
+model/effort overrides requested; actual child settings/resources unobserved.
+
+| Reviewer | Completed scope and actual independent checks | Disposition |
+| --- | --- | --- |
+| A | Domain fidelity/readability/immutability/identity/bases and T001 scope;39 tests plus unequal-view/context-mismatch probes | COMPLETE / APPROVE; no material finding |
+| B | All zero/null/unknown/empty/partial compositions and independent views;39 tests plus2,048 cross-product cases across both views/discovery states | COMPLETE / APPROVE; no material counterexample |
+| C | Sibling/shared-file preservation, no later-task behavior, readability/test adequacy;39 focused plus16 existing regressions and3 identity/view refusal probes | COMPLETE / APPROVE; no material finding |
+
+B's nonblocking test suggestion: most durable composition tests used Declared,
+although its independent probes covered both views. Parent adds one concrete
+Observed partial-composition test with deliberately different Declared N/value,
+and a known-N or unknown unavailable Observed sibling. This tests wrong-view
+substitution directly rather than duplicating the implementation. No code change.
+
+Freeze2 changes only test_maven_results.py to SHA256
+ e8c00516c908e4f79ed0a0c85d9e1f04c52ad8b38c9c063c4af18003a5707be8;
+other three digests unchanged. Fresh D **COMPLETE / APPROVE** focused test/collateral
+scope:40 tests pass; four in-memory mutations rejected (wrong-view collection,
+dropped unavailable-sibling N, wrong-view value and fabricated coverage). No new
+full-audit or material correction-cycle claim. All reviewed bytes retained outside
+Git in this run's freeze directories.
+
+Parent reconciliation: **all T001 acceptance criteria satisfied; T001 CONVERGED**.
+No unresolved finding, product choice or scope pressure requiring later work. This
+is evidence reconciliation, not approval by count. No T002 code or target action.
+
+### Auditable commit boundary and local checks
+
+Repository history supports separate approved lifecycle and implementation commits.
+After T001 review converged, explicitly staged16 documentation/observation paths:
+approved Feature007 evidence/spec/plan/tasks/reviews, portfolio discovery/review,
+ROADMAP, observations through007-0008 and the22-line published-boundary follow-up
+linked by discovery. That follow-up is prior approved evidence, not new maintenance.
+Documentation commit **8441184**, docs(maven): freeze approved Feature007 lifecycle,
+retains the exact approved pre-execution bytes and contains no T001 runtime code.
+
+The separate T001 commit contains only the four new runtime/test files plus task
+execution status and this review record. It is the commit containing this entry;
+its exact identity is reported in the current external observation/final handoff.
+No indiscriminate staging, history rewrite or unrelated cleanup occurred.
+
+Checks cover40 focused tests,16 existing regressions, frozen code/approved contract
+integrity, original dirty-evidence preservation, local documentation links/anchors,
+ledger60x44 uniqueness/prefix/provenance, whitespace/git diff --check and configured
+GitLeaks history/current files. No package manager/build tool/network request,
+public/private/alternate endpoint or target access/modification/execution. Current
+44-key handoff is /tmp/libyears-observations/007-0009.json, not appended here.
+Push performed: **NO**. Exact next human gate: authorize T002 separately.

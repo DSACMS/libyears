@@ -1,5 +1,17 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0009
+
+**T001 COMPLETE — independently converged. T002–T014 NOT STARTED.**
+The human authorized T001 only, its focused offline verification/review/correction
+and local commit. [T001 evidence](reviews.md#run007-0009--t001-implementation-convergence)
+records40 focused tests,16 existing model/metric regressions and fresh review.
+Exact next gate: **T002 implementation authority required**. No T002 work, CLI
+activation, metadata I/O or target validation follows. Earlier run007-0008 approval /
+NOT STARTED / next-T001 paragraphs below retain the original reviewed baseline,
+frozen in documentation commit8441184; task requirements are unchanged.
+
+
 ## Authority, execution and stop conditions
 
 Run007-0008 task-review candidate. The [specification](spec.md) and [plan](plan.md)
