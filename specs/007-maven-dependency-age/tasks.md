@@ -1,5 +1,16 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0014 / T007
+
+**T001–T007 COMPLETE. T008–T014 NOT STARTED.** T007 pure catalogue/identity/date
+parsers converged after one normalization correction and fresh focused closure.
+[Convergence record](reviews.md#run007-0014--t007-pure-representation-parsers)
+retains review and test evidence. T006's independent source-authority checkpoint
+is approved; T008 is dependency-ready under the persistent execution envelope.
+No HTTP transport or later-task behavior is implied by T007. Requirements and
+earlier statuses below remain historical.
+
+
 ## Execution status — run007-0014 / T006
 
 **T001–T006 COMPLETE. T007–T014 NOT STARTED.** T006 local comparator admission and

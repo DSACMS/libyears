@@ -2101,3 +2101,79 @@ Diff/cached whitespace, evidence/licensing/freeze and ledger shape/prefix/unique
 checks pass. Configured GitLeaks8.30.1 history339 and current candidates pass before
 commit; the post-commit gate is checked separately. T007 is the next dependency-ready
 already-authorized task. No new task grant is required, no push is authorized/performed.
+
+## Run007-0014 — T007 pure representation parsers
+
+T007 followed independently converged T006 commit2fad613b3daccd383e08147c9ace33772a5f5b31
+under the same autonomous sequential envelope, without a new human task grant.
+That committed boundary was clean; configured GitLeaks8.30.1 post-commit history340
+passed. No T007 work began before T006's independent security checkpoint converged.
+
+maven_registry.py now builds only fixed relative maven2 catalogue/exact-POM paths
+from bounded case-sensitive safe GA/version identities, percent-encoding plus.
+Pure whole catalogue parsing checks supported namespace, exact GA, framing/singletons/
+entries and pre-collapse budgets, then calls T003 selection. latest/release/lastUpdated,
+dates and prior catalogue results never choose or rescue a maximum. Exact versioned
+POM association checks direct identity or literal immediate parent fields only when
+omitted, with no parent/BOM/dependency fetch/evaluation; relocation refuses. Unrelated
+POM build/dependency syntax stays inert. A unique strict IMF-fixdate Last-Modified
+must have valid Gregorian calendar/weekday/GMT, no duplicate/future value and a
+successful whole200 representation. Retrieval UTC remains separate. Missing dates
+remain terminal for the chosen maximum and for same-exact-version zero admission.
+No transport, age arithmetic, cache, CLI or runtime Observed reader is enabled.
+
+The only shared-input change adds an explicit parse_xml max_bytes keyword: local
+XML's1MiB default and structural/framing limits remain unchanged, while the remote
+catalogue can use its approved2MiB cap. Remote POMs keep1MiB. The existing source
+reader's own byte/total/no-follow/race limits and T006 policy checkpoint are unchanged.
+
+Three files were frozen before a fresh complete non-author T007 audit. It completed
+all assigned T007/P5/metadata/date/path/privacy/budget/refusal obligations, verified
+current/preserved hashes and231 Maven tests, then returned COMPLETE / REVISE R1:
+stripping catalogue entries and metadata/POM/direct-parent identity text admitted
+unsafe whitespace/Unicode values as different normalized identities and collapsed
+strings beyond the byte-identical rule. This was a bounded exact-identity defect;
+no product/authority choice was missing. Other assigned obligations had no material
+finding. Header streaming/length/encoding and process/scan transport enforcement
+remain T008 obligations, never claimed from these pure parser tests.
+
+Correction preserves remote identity text and entry text unchanged into exact
+comparison/T003 grammar. Two new parameterized regression groups cover ASCII
+whitespace/NBSP, safe-plus-unsafe/duplicate shapes, metadata group/artifact, direct
+POM GAV and parent fallback group/version. XML character decoding remains normal
+XML parsing, without arbitrary identity normalization. Freeze2 three files received
+a fresh focused non-author COMPLETE / APPROVE: original defect independently
+reproduced against retained freeze1, exact refusal and all relevant collateral
+verified against freeze2; no remaining finding. It independently ran23 focused and
+233 Maven tests and exact old/new probes covering both identity surfaces and valid
+literal/parent/namespace/duplicate/eligibility/budget/date/no-fallback behavior.
+This is focused closure following one complete initial audit, not a new full audit.
+
+All T007 acceptance categories have executable witnesses in test_maven_registry.py:
+complete current list, exact namespace/GA/entry/singleton and truncation refusals,
+byte-identical duplicates versus aliases/ties/unknowns,10,000 before collapse,
+2MiB/1MiB and common structural/version bounds, catalogue disappearance, direct/
+literal-parent POM identity, relocation/error/unsafe XML, missing/duplicate/conflicting/
+invalid/future headers, valid UTC and retrieval separation, measured GAV absent from
+catalogue, missing chosen date with no older/fallback/same-version zero. Paths reject
+URLs/escapes/selectors/snapshots before transport; ordinary POM identity is dated
+without interpreting model dependencies or variants. No new public evidence access
+was needed. **23 focused and233 total Maven tests PASS; diff whitespace PASS.**
+No full-suite rerun is required for this additive pure-parser task: the last full
+checkpoint is T006's993 run/1skip PASS; T008 requires its own full deterministic suite.
+
+Final frozen SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_registry.py | 6f31b48834192805f958fc8eaf406107d93b402eef0418987b9f9abad7a8b267 |
+| libyears/maven_input.py | 22be3115f4b488c41c3053dbadb18360c77e442dc0c7c90c88778bfa26e26a1e |
+| tests/test_maven_registry.py | c10bc1ae062ceb32dbad76711f9d31ece4b3570ddf3016f2b84c845005767769 |
+
+Parent reconciled full audit and focused closure against T007/P5/AC06/11/16/18/20:
+**T007 independently CONVERGED.** One coherent local task commit follows scoped
+freeze/diff/cached-whitespace/GitLeaks checks. Approved spec/plan/companions and
+T006 policy/launch/coordinator, sibling modules, arithmetic and CLI remain unchanged.
+T008 is the next dependency-ready already-authorized task. Its HTTP/worker security
+and full-suite obligations are not satisfied by this parser approval. No target,
+private endpoint, package manager/build, external execution or push occurred.

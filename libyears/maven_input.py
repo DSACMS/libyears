@@ -126,9 +126,9 @@ class _XMLFrame:
     children: list[MavenXMLElement] = field(default_factory=list)
 
 
-def parse_xml(data: bytes) -> MavenXMLElement:
+def parse_xml(data: bytes, *, max_bytes: int = MAX_XML_BYTES) -> MavenXMLElement:
     """Whole UTF-8 structural representation, never a partial parser stream."""
-    if type(data) is not bytes or len(data) > MAX_XML_BYTES:
+    if type(data) is not bytes or len(data) > max_bytes:
         raise MavenInputFailure(MavenInputIssue.LIMIT)
     if b'\x00' in data:
         # Expat autodetects BOM-less UTF-16/32; NUL is never valid UTF-8 XML text.
