@@ -1,5 +1,16 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0014 / T008
+
+**T001–T008 COMPLETE. T009–T014 NOT STARTED.** T008 supervised fixed-public metadata
+transport converged after independent HTTP/security and lifecycle audits, three
+transport corrections and fresh focused closures. [Convergence record](reviews.md#run007-0014--t008-supervised-metadata-transport)
+retains the security/full-suite evidence. T009 is dependency-ready under the persistent
+execution envelope. This approval is offline implementation conformance, not live
+registry/target access or positive native Windows evidence. Earlier statuses remain
+historical; approved requirements are unchanged.
+
+
 ## Execution status — run007-0014 / T007
 
 **T001–T007 COMPLETE. T008–T014 NOT STARTED.** T007 pure catalogue/identity/date

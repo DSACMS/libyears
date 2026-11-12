@@ -2177,3 +2177,127 @@ T006 policy/launch/coordinator, sibling modules, arithmetic and CLI remain uncha
 T008 is the next dependency-ready already-authorized task. Its HTTP/worker security
 and full-suite obligations are not satisfied by this parser approval. No target,
 private endpoint, package manager/build, external execution or push occurred.
+
+## Run007-0014 — T008 supervised metadata transport
+
+T008 began after independently converged T007 d417426; its clean boundary and
+configured GitLeaks8.30.1 history341 were verified. T006's independent before-HTTP
+source-authority/privacy checkpoint remains approved. No human task relay was
+needed under the persistent envelope; no live HTTP/target permission was inferred.
+
+Seven new files implement only P6: maven_protocol.py closed16KiB atomic-file
+messages; maven_http.py fixed public HTTPS client; installed isolated maven_worker.py;
+maven_supervisor.py one scan-wide batch; two focused test modules and a trusted
+blocking-worker fixture. No sibling transport/lifecycle refactor or CLI/orchestration
+activation is included. The protocol carries only operation/sequence/safe GA/exact
+version/deadline and closed selected-version/date/retrieval/basis/reason/counter
+results, never raw catalogue/XML/headers/settings/CA bytes/source paths/diagnostics.
+Parent keeps occurrence associations. Target-date authority comes only from a
+successful accepted target for that same admitted GA; arbitrary/cross-GA versions
+cannot borrow it. Exact admitted measured versions remain independent.
+
+The supervisor launches only the absolute installed entry using trusted Python -I,
+private cwd, empty environment, DEVNULL streams and no shell. No worker starts when
+all capabilities are denied. Readiness cannot issue HTTP; TLS material is loaded
+only on a command. Explicit CA material is copied from a bounded regular no-follow/
+stable input into private storage; no target/user/global Maven trust configuration
+is inspected. The client accepts only fixed repo.maven.apache.org:443 GET paths,
+verified TLS using staged explicit CA or compiled system trust, no environment CA/
+proxy/auth/cookie/redirect route, and rejects non-global/multicast/reserved DNS answers
+before connection. TLS failure never enables an insecure or alternate fallback.
+
+Status/header framing is capped before HTTPMessage accumulation (64KiB/100fields),
+with identity encoding, strict length/transfer framing and response caps. Plain
+chunked framing, Content-Length and bounded EOF bodies are supported; chunk
+extensions and representation trailers are explicitly unsupported/refused. Body
+bytes are counted on each delivered raw piece, even if a later read/timeout/reset/
+framing error fails the representation. The client and parent retain cumulative
+300-attempt/64MiB scan counters; clocks enforce command10s, GA60s, scan300s and
+readiness10s. Parent reserves0.5s for bounded kill/reap. Protocol/death/deadline failure
+permanently cancels further I/O with no restart or synchronous fallback; completed
+cached results survive. Unreaped process/directory handles remain retained for
+nonblocking deferred reap and block all further Maven I/O. Cached per-representation
+fixed failures never authorize denied sources or reset budgets between modules.
+
+### Independent audits and corrections
+
+Freeze1 seven files received two fresh complete non-author slices. Lifecycle /
+protocol review returned COMPLETE / APPROVE after14 worker tests and independent
+native death-before-readiness, death-after-command and duplicate-key malformed-result
+probes. It covered schemas/types/identities/bases/timestamps/counters, admission/
+cache/GA isolation, exact isolated spawn/environment/cwd/CA staging, readiness,
+deadlines, no restart/fallback, bounded cleanup/deferred handle and primitive refusal.
+It did not claim HTTP correctness or Windows/live operational evidence.
+
+HTTP/TLS/streaming review returned COMPLETE / REVISE after11 HTTP tests and independent
+memory-only probes: F1 buffered reads could consume bytes then raise TimeoutError
+without updating body counters (5 consumed versus0 recorded); F2 HTTPResponse accepted
+an invalid chunk-data delimiter XX as successful catalogue data. Neither initial
+full1041/skip1 PASS nor lifecycle approval overruled these transport findings.
+
+Bounded correction requests unbuffered socket files and counts each raw delivered
+piece before subsequent reads, loops safely for fragmentation, and validates pending
+chunk CRLF explicitly. A related author check now caches a TLS context only after
+verification requirements pass, so a failed check cannot be bypassed by reuse.
+Freeze2 fresh focused review independently reproduced/closed F1/F2, including actual
+anonymous socketpair timeouts and timeout/reset across length/chunk/EOF paths, then
+returned COMPLETE / REVISE for neighboring F3: Python int still accepted signs,
+prefixes/underscores/whitespace and malformed chunk extension syntax. This was a
+contract-determined framing defect, not a missing human product/security decision.
+
+Freeze3 accepts exact one-or-more hexadecimal size bytes before CRLF, with no int
+normalization; all extensions are refused as outside the bounded grammar. One added
+parameterized regression covers bad initial/terminal sizes/extensions and valid
+uppercase/leading/multiple-zero chunks. A fourth fresh focused non-author returned
+COMPLETE / APPROVE F3 and collateral: frozen2 defect reproduced, all seven frozen3 /
+current hashes checked, valid one-byte fragmentation/body counts, retained F1/F2
+socketpair/raw timeout/reset corrections, header/body/scan/TLS/privacy bounds and
+28 focused HTTP/worker tests verified. No remaining material finding. Parent
+reconciled both complete initial slices and both focused corrections, rather than
+counting approvals; no new full-audit claim follows from focused closure.
+
+### Acceptance and checkpoint
+
+Every T008 acceptance category has deterministic/native evidence: all-denied and
+readiness zero requests; one GET/command and no raw catalogue in IPC; closed message
+sequence/type/exact identity/state/basis/date/counter validation; private DNS/path/
+proxy/auth/env/redirect refusal; trusted import/cwd and explicit CA staging; streamed
+header/body/length/encoding/framing caps; cumulative clock/request/byte/cache limits;
+real blocked-worker kill/reap, native death/malformed-protocol probes, no restart or
+fallback, retained unreaped handles, and unskipped missing-capability refusal.
+
+**14 HTTP +14 worker tests PASS;261 Maven tests PASS. Full deterministic suite1044
+run,1 skip,PASS.** Capability-disabled full discovery, before importing tests:
+1044 run,96 skips,PASS. Injected semantic/HTTP fixtures and this host's native
+process/filesystem witnesses are distinguished; no positive Windows behavior or
+hosted matrix completion is inferred. Ordinary type=POM/date parser and prior
+source/version/population tests pass without changing their implementations.
+
+Readiness/import tests use explicit nonempty synthetic staged CA bytes and issue no
+GET; they do not prove TLS authentication or certificate validity. TLS verification,
+compiled-versus-explicit trust and invalid-context refusal are separately injected
+transport witnesses. This host's default Python verify paths were unavailable;
+no live request, insecure workaround, invented trust input or positive registry yield
+was attempted/claimed. Operational evidence remains the separately gated T013 work.
+No new public authoritative evidence was retrieved for T008. Only the single T006
+pinned reference access has occurred in this run. No package manager, target code,
+private target/config/credentials, archive or alternate endpoint was accessed.
+
+Final frozen SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_protocol.py | a5e080cc039bce90a7689702eeaf424b81f0aa45f4852ef194b5bfe2799cf622 |
+| libyears/maven_http.py | 11710947d1715b5fbf0042d133201818bea77d75ce92bcc706ad7fc2a114c4cf |
+| libyears/maven_worker.py | 6ceb552e569c60ccce70811602199cd8e72aa3269d57bfa088601482f807bd87 |
+| libyears/maven_supervisor.py | be266041ceb5205bbcdb2cc91a4f3c0c1d1d26d091ca9ba494bbb3978ab6c63e |
+| tests/test_maven_http.py | 255e36ce6ca3b567929e9867b35957e6a8b5f2466dc51855c78dc0af5c74c593 |
+| tests/test_maven_worker.py | 8bcfb6475dc1d775f3a459f8818860b81cce15ffec6eac42b626d1159000c605 |
+| tests/fixtures/maven/blocking_worker.py | e22d5a817a7c6ae3800b6c66eeee926cafa74dc4769593171c7b39a2df484365 |
+
+All T008 acceptance/security/full-suite obligations are satisfied on the stated
+portable/native evidence. **T008 independently CONVERGED.** One coherent local
+Conventional Commit follows freeze/diff/cached-whitespace and configured current/
+history GitLeaks checks. Approved specification/plan/companions, T006/T007 code,
+siblings, arithmetic and runtime CLI remain unchanged. T009 is the next already-
+authorized dependency-ready task. No push or live/target/publication authority follows.
