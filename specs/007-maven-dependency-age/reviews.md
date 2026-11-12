@@ -1362,3 +1362,201 @@ modules, three new test files and task/review/prior-observation bookkeeping only
 8441184/d52e278 remain unchanged. Its exact identity is recorded in the external
 handoff and final report; current44-key baton is
 /tmp/libyears-observations/007-0010.json, not appended here. Push: **NO**.
+
+## Run007-0011 — T003 fresh-context recovery and missing offline pin
+
+The human grants T003 only, including implementation, deterministic tests, fresh
+independent review/correction and a local commit after convergence. Starting HEAD
+is c2edc952346a5fc6e09b45f304748794566c26b7, clean; expected lifecycle8441184,
+T001d52e278 and T002c2edc95 boundaries are present. T003 requirements and all
+approved contracts remain unchanged. No T003 code or later-task work was started.
+
+Repository recovery supplies the selected conservative whitelist, global GA target,
+unknown-below versus unknown-equal/above refusal, exact maximum tie behavior,
+separate snapshot/prerelease exclusions, pinned ComparableVersion3.9.11 and budgets.
+T003/P5 additionally require faithful item/list semantics, independent pinned
+upstream vectors and Apache provenance/notices. The repository contains pinned
+links and summaries, but no upstream source/test corpus or applicable upstream
+license/notice copies. It does not fully reproduce nested-list normalization,
+separator/digit transitions or ArtifactUtils timestamp recognition. The initiating
+prompt explicitly prohibits network access; arbitrary external cache searches are
+also unauthorized. No substitute ordering or memory-derived port was attempted.
+
+One fresh non-author reviewer independently inspected T003/P5, selected policy,
+retained publication evidence and repository paths. **COMPLETE boundary review:
+stop justified for T003 convergence.** No product ambiguity or renewed T003 grant
+is needed. Some lexical/eligibility preparation would be possible, but cannot
+establish all T003 acceptance or justify a convergence commit. This is not an
+implementation approval, material code finding or completed conformance review.
+
+Smallest unblock: identify and authorize an offline Maven3.9.11 source directory
+containing ComparableVersion.java, ComparableVersionTest.java, ArtifactUtils.java
+and applicable LICENSE/NOTICE, or separately permit bounded retrieval of those
+exact public source artifacts. No Java/Maven/Gradle execution is needed. A text
+clarification request was issued; no additional input was received at recording.
+T003 remains incomplete and no task commit is created; T004 remains unauthorized.
+
+007-0010 was verified against its44-key handoff and maven_input.py digest, then
+appended exactly once with human session/model/provider/effort/version,1553s,
+credits_after126 and continuity-inherited credits_before124 from007-0009.
+Original notes/runtime confounding retained, prior ledger bytes preserved; no
+credit delta or current007-0011 append. Ledger62x44, unique IDs.
+
+Verification:98 T001/T002 deterministic tests PASS; approved spec/plan/companion
+hashes match the recorded approval and task graph is unchanged. Configured
+GitLeaks8.30.1 full336-commit history PASS, zero findings. git diff --check PASS.
+No shared/runtime/test files changed, so sibling/full-suite reruns are unnecessary.
+No T003 focused tests or mutation probes exist yet; every T003 acceptance criterion
+is not satisfied. No network, build-tool, target/private access, commit or push.
+
+Harness observation: fresh parent recovered authority and selected semantics from
+the task baton plus normative companions. Specification/evidence reading was
+necessary and expected; no missing prior-prompt methodology was found. The reduced
+prompt exposed an offline evidence-availability gap, not a product ambiguity or
+missed constraint; no causal prompt-size or efficiency claim follows. Independent
+review confirmed the missing inputs rather than compensating through memory.
+Additional human input identifying accessible source material is required. No
+harness/SKILL/framework was built. Current handoff is outside Git at
+/tmp/libyears-observations/007-0011.json; current telemetry remains unobserved.
+
+**T003 BLOCKED — HUMAN DECISION REQUIRED**, solely for access to pinned offline
+implementation/conformance/provenance inputs. Existing T003 authority persists.
+
+## Run007-0011 — T003 resumed convergence
+
+### Resumed authority and evidence
+
+This is the same substantive007-0011 baton, not a new observed run. The human
+resolved the evidence-access stop by authorizing bounded read-only retrieval of
+exact public Apache Maven3.9.11 source/tests, licensing and necessary adjacent
+semantics. T003 implementation authority persisted. This is a material in-run
+human intervention: **bounded public upstream evidence retrieval authorized**.
+The repository-contained contract was sufficient; pinned upstream conformance
+evidence was not locally available. The blocked record above remains historical.
+
+Six exact public files were retrieved from Apache's `maven-3.9.11` tag on
+raw.githubusercontent.com: ComparableVersion.java, ComparableVersionTest.java,
+ArtifactUtils.java, Artifact.java, LICENSE and NOTICE. Artifact.java was necessary
+because ArtifactUtils delegates the suffix and timestamp pattern to its constants.
+Exact paths/URLs and SHA256 values are retained in
+[provenance.json](../../third_party/maven-3.9.11/provenance.json); raw Java remains
+outside Git. Initial sandbox DNS failure was retried with required escalation.
+No other source, registry metadata, package, target, private or alternate endpoint
+was retrieved. No Maven/Gradle/Java/target execution or dependency resolution.
+
+Apache2.0 permits the bounded adaptation with its conditions. Exact LICENSE/NOTICE
+copies are retained; module/test/vector notices identify derivation and changes,
+including pertinent Kenney Westerhof and Hervé Boutemy credits. No root-license
+reinterpretation or full Java vendoring. The durable fixture contains only two
+ordered arrays and42 equality/22 less-than literal pairs, extracted from upstream
+expected values, plus explicit provenance metadata. Python tests add source-derived
+regressions and libyears-owned policy boundaries. Licensing handling was independently
+reviewed and corrected below; no unresolved licensing decision remains.
+
+### Implementation and acceptance
+
+`libyears/maven_version.py` implements bounded safe ASCII exact text, pinned
+numeric/string/list parsing and comparison, deepest-first zero/list normalization,
+dot/hyphen and digit transitions, ordinary underscore/plus content, alias context
+and case-insensitive ordering while preserving exact coordinate spelling. Python
+integers retain upstream numeric storage precedence, including non-normalized
+all-zero segment widths. There is no SemVer/Resolver substitution or generic
+framework. No mutable Java reuse/canonical API is needed for this precedence claim.
+
+Separate eligibility implements `maven_conservative_stable_v1`: numeric core plus
+optional release alias/service pack and decimal suffix; recognized alpha/beta/
+milestone/rc/cr/contextual a/b/m and suffix/token/timestamp snapshots are excluded
+first. Other safe forms remain unknown. Global GA target selection has no request,
+family, variant/classifier, compatibility or date inputs. Unknown strictly below the
+eligible maximum is harmless; unknown equal/above refuses. With no eligible forms,
+unknown gives unknown_latest_eligibility, known-only gives no_stable_release.
+Distinct exact maxima refuse ambiguous_latest_version; identical strings collapse.
+Unsafe/unorderable/over-budget entries refuse instead of disappearing. Catalogue
+entry count10000 is checked before deduplication; version256 ASCII, numeric128 digits,
+128 scalar/child items before normalization and separate128-depth limits are bounded.
+
+Pinned source inspection exposed a nontransitive nested-qualifier example:
+`1-0.alpha < 1 < 1-sp2` but `1-0.alpha > 1-sp2`. Independent tracing confirms the
+pin, not a port defect. An explicit conformance witness retains it and proves the
+alpha exclusion makes every catalogue permutation select1-sp2. No universal
+transitivity claim or upstream repair is made. Fixed-corpus order properties and
+independently generated eligible-corpus checks pass. No new product gate is needed.
+
+All T003 acceptance categories have executable witnesses in test_maven_version.py:
+pinned ordering/equality vectors and MNG5568/6572/6964/7644; numeric/list/separator/
+underscore/digit transitions; aliases and service packs; prerelease/snapshot/timestamp
+exclusion; unknown below/equal/above; no-stable reasons; exact ties/duplicates; lexical/
+item/digit/length/catalogue budgets; order properties and permutation determinism.
+**16 focused tests PASS;98 T001/T002 regressions PASS (114 Maven tests total).**
+No shared or sibling files changed, so no full-suite/sibling rerun is required at
+this unintegrated task boundary. T004 model work, HTTP, dates, age arithmetic,
+aggregation, CLI and target validation remain unimplemented/unauthorized here.
+
+### Frozen independent review and correction
+
+Seven implementation/test/provenance files were frozen under this run's external
+freeze1 manifest. Two fresh non-author reviews independently inspected source,
+contracts, expected vectors, budgets, eligibility, scope and actual tests:
+
+| Scope | Completion / disposition | Material finding |
+| --- | --- | --- |
+| Ordering fidelity, pin irregularity, consequential selection safety, provenance, scope | COMPLETE / REVISE | A1: retain pertinent upstream author credits |
+| Policy, unknown/ties/snapshots/budgets, vectors/license, scope | COMPLETE / REVISE | P1: adapted JSON itself needs prominent derivation/change notice |
+
+Neither found an ordering/eligibility defect. Parent validated both provenance
+findings. Freeze2 adds module/README author credits and JSON provenance/change
+metadata, plus the README pin-irregularity explanation; executable AST and vector
+values remain unchanged. Fresh third non-author focused closure independently
+verified both manifests, upstream bytes, exact vectors, unchanged executable AST
+and16 tests: **COMPLETE / APPROVE A1/P1 and collateral**. This is focused closure,
+not a replacement full semantic audit or approval by reviewer count.
+
+Independent in-memory mutations were rejected: cr alias removal(5 test failures),
+service-pack precedence reversal(3), unknown admission as stable(3), timestamp
+recognition removal(2); policy review separately rejects dropped unknowns(2),
+allowed unknown-equal(1), ignored ties(1), omitted timestamp snapshots(2) and removed
+release alias(1). Reviewers additionally checked eligible corpora of465,456 and88
+variants for order properties without finding counterexamples; bounded evidence,
+not proof of universal transitivity. No product or test behavior changed in the
+provenance correction. All material findings are closed.
+
+Final frozen SHA256 values:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_version.py | 91503cdbe06bccbfca41e045565409aa21a08c498c8ac6e0c87cb647b9e151fd |
+| tests/test_maven_version.py | a09decb7ba4fea09fddb548b75a93d6744c4bd60bbba26e7bb33970a47d8757f |
+| tests/fixtures/maven/comparable-version-3.9.11.json | 876a18eaf7281bf66c12b06209e942f273b5dbaae3700a2bc13671734dfc0bc6 |
+| third_party/maven-3.9.11/LICENSE | cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30 |
+| third_party/maven-3.9.11/NOTICE | 05ae716d43260f68b3d231d32105c2f837439e03c62440ee9f38703c0406afa1 |
+| third_party/maven-3.9.11/README.md | 5d55211733eb3433980396d494b0d4817accacc126c64153036a0aa76e1b4b60 |
+| third_party/maven-3.9.11/provenance.json | a1415ce0e1bf631ab2d03d202cf1219eb0efbea8544c4b2f39500c3506839453 |
+
+### Verification, observation and harness result
+
+Approved spec/plan/normative companion hashes match approval. Task requirements
+remain byte-identical; only execution status is inserted. Prior T001/T002 code,
+shared/sibling behavior and all earlier commits are preserved. Diff/whitespace,
+ledger62x44 unique IDs and original prefix preservation, upstream/freeze hashes,
+retained license/notice, no vendored Java and scoped commit boundaries checked.
+Configured GitLeaks8.30.1 full history/current candidate scans pass with zero findings;
+final committed-history result is checked after the local commit. No push.
+
+007-0010 remains appended exactly once with supplied telemetry, continuity124/126
+boundaries and no delta. Current007-0011 is not appended. Original blocked handoff
+is preserved outside Git and eventual same-ID handoff updates human_intervention=yes,
+type=authority. No completed current runtime/credit/model telemetry was supplied;
+those fields remain blank. The authority gate interruption is retained as context.
+
+The fresh reduced-context prompt recovered authority, product semantics, T003 scope,
+prior boundaries, review and observation protocol. Additional spec/plan/companion
+reading was necessary and sufficient. No consequential methodology existed only
+in old conversation. The bounded evidence-access grant sufficed to resume without
+retransmitting the contract; no product redesign or missed constraint followed.
+Independent review caught two provenance omissions and verified the upstream
+irregularity. Human evidence-access intervention was required; it is not described
+as a prompt-methodology failure or measured efficiency benefit. No generalized
+harness/SKILL/framework was implemented.
+
+**T003 CONVERGED — T004 AUTHORITY REQUIRED.** One coherent local T003 commit follows
+this record and checks. T004 and later tasks remain NOT STARTED; no push authority.

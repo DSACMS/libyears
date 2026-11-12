@@ -1,5 +1,16 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0011
+
+**T001–T003 COMPLETE. T004–T014 NOT STARTED.** The human authorized T003 only,
+then bounded public pinned-source evidence retrieval during the same baton.
+[T003 convergence](reviews.md#run007-0011--t003-resumed-convergence) records pinned
+ordering/conservative eligibility,16 focused tests,98 predecessor regressions,
+two provenance corrections and fresh focused closure. Exact next gate:
+**T004 authority required**. Earlier statuses below remain historical; approved
+requirements and task ordering are unchanged.
+
+
 ## Execution status — run007-0010
 
 **T001/T002 COMPLETE. T003–T014 NOT STARTED.** The human authorized T002 only,

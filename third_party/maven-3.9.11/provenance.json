@@ -1,0 +1,36 @@
+{
+  "tag": "maven-3.9.11",
+  "repository": "https://github.com/apache/maven",
+  "artifacts": [
+    {
+      "name": "ComparableVersion.java",
+      "url": "https://raw.githubusercontent.com/apache/maven/maven-3.9.11/maven-artifact/src/main/java/org/apache/maven/artifact/versioning/ComparableVersion.java",
+      "sha256": "133b7566c3da8f3d1a2feb358d4b10d85073a2c44174d3438e6aa57118b0e1ca"
+    },
+    {
+      "name": "ComparableVersionTest.java",
+      "url": "https://raw.githubusercontent.com/apache/maven/maven-3.9.11/maven-artifact/src/test/java/org/apache/maven/artifact/versioning/ComparableVersionTest.java",
+      "sha256": "8a95cf41545fe11bc3ab3de186b22b2736d388cd7991323420fecc6b976d907e"
+    },
+    {
+      "name": "ArtifactUtils.java",
+      "url": "https://raw.githubusercontent.com/apache/maven/maven-3.9.11/maven-artifact/src/main/java/org/apache/maven/artifact/ArtifactUtils.java",
+      "sha256": "65900342cdb2196eef7dac8d6b43c9e25530197571d9dafb2e348ca8a3d1ad18"
+    },
+    {
+      "name": "Artifact.java",
+      "url": "https://raw.githubusercontent.com/apache/maven/maven-3.9.11/maven-artifact/src/main/java/org/apache/maven/artifact/Artifact.java",
+      "sha256": "14b4216406161ee6b07e005e1b0cc0d6f88d420a6f629182883dbc4543aaaa41"
+    },
+    {
+      "name": "LICENSE",
+      "url": "https://raw.githubusercontent.com/apache/maven/maven-3.9.11/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "name": "NOTICE",
+      "url": "https://raw.githubusercontent.com/apache/maven/maven-3.9.11/NOTICE",
+      "sha256": "05ae716d43260f68b3d231d32105c2f837439e03c62440ee9f38703c0406afa1"
+    }
+  ]
+}
