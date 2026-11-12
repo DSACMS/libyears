@@ -1799,3 +1799,165 @@ registry metadata, package resolution or Maven/Gradle/Java/target execution.
 
 **T004 CONVERGED — T005 AUTHORITY REQUIRED.** One coherent local T004 commit follows
 this record/checks. T005 and later remain NOT STARTED. No push is authorized/performed.
+
+## Run007-0013 — reviewed-task execution envelope
+
+The human changes implementation authority prospectively after converged T004
+275fe75. Remaining already-reviewed Feature007 tasks beginning T005 may execute
+sequentially, each only after its prerequisites converge and each through tests,
+fresh independent non-author review, bounded corrections/focused closure and one
+coherent local task commit. Mechanical next-task authorization messages are retired.
+Parallel task implementation, skipped review, merged giant implementation commits
+and changes to approved product/plan requirements remain unauthorized.
+
+For the remainder of Feature007, current approved-task authority includes bounded
+read-only retrieval of directly necessary public authoritative evidence explicitly
+identified/pinned/cited or unambiguously implied by the approved artifacts/references.
+It must require no credentials, disclose no private/sensitive target information,
+contact no private endpoint, execute no external code, invoke no write/action
+endpoint, adopt no new production dependency/trust relationship and materially
+expand no task/network scope. Retain provenance/hashes/minimal facts where required.
+Private sources, credentials, sensitive target/path/coordinate disclosure, unjustified
+new services, broad acquisition, execution, write endpoints, consequential licensing
+uncertainty and new security/privacy/trust boundaries still require human authority.
+This is effect-based evidence permission, not general network permission.
+
+Consequential product/security/privacy/schema/metric/scope decisions and actual
+contract non-convergence remain human stops. Existing explicit GPUBLIC target /
+coordinate-disclosure authority is not supplied by this envelope; private target,
+Maven/Gradle/Java/resolver/target execution and push/publication remain separate gates.
+Internal T006/T011/T012 review checkpoints remain mandatory. Local test fixtures and
+trusted repository verification are permitted; arbitrary live package lookup and
+real-target access are not. Old per-task next-authority statements remain historical,
+not current blockers for dependency-ready reviewed implementation nodes.
+
+Methodological rationale: one-task grants were useful initial scaffolding; T001–T004
+repeatedly established bounded independent convergence. Repeating only authorizeT00N
+began making the human a message bus without new product intent. T003/T004 evidence
+interruptions also separated implementation and exact public evidence permission
+too conservatively. The new envelope delegates reviewed transitions and necessary
+public evidence while retaining consequential human gates. This is a prospective
+Feature007 observation, not cross-project generality or a generalized harness/SKILL.
+Fewer messages alone do not establish success: task leakage, skipped review, improper
+network access, hidden product decisions and convergence quality must be observed.
+
+007-0012 original44-key handoff and maven_project.py digest verified, then appended
+exactly once with supplied session01a1d188-8a40-7d93-8f62-f3365cf68aba,
+GPT-6.1-Sol/openai/medium/0.160.0, reported961s and credits_after130. Handler-evidence
+interactive authority intervention and original unknown runtime-confounding notes /
+classification preserved. Credits_before remains blank absent a direct reading or
+qualifying explicit continuity confirmation. No runtime subdivision, credit delta
+or per-task resource boundaries are invented. Ledger64x44 unique; current007-0013
+is not appended. Multiple tasks in this parent remain one substantive observation.
+
+## Run007-0013 — T005 convergence
+
+T005 began from clean275fe751d66806cd75f098a5b5e5b191d80415d6 under the reviewed-task
+execution envelope above. Prerequisite T004 and earlier commits were confirmed.
+No next-task implementation ran concurrently. Source facts are local static declared
+requests, not resolved/evaluated selections; Observed remains unavailable.
+
+### Implementation and evidence
+
+maven_project.py now establishes final supported external occurrences from raw T004
+models. Separate maven_properties.py supplies bounded repository-only substitutions:
+consumer property precedence, reserved model/host namespace refusal, the two supported
+project builtins, duplicate/cycle/refusal and16-depth/1024-substitution/64KiB/4096-property
+limits. Child scalar replacements survive unrelated unknown ancestor property evidence;
+dependent inherited unknown lookups remain unavailable. Origins remain per-field.
+
+Raw explicit dependency fields beat management. Management is exact-model-key and
+field-local: optional never applies; imported BOM uncertainty blocks inherited fields
+while independently supported consumer-written fields survive. Scope/default handling
+waits until absence is established; no compile guess through unread imports. Hard
+singletons retain the raw safe request; ranges/selectors/snapshots refuse release-age
+facts while known external identities remain counted. Independently safe snapshot GAV
+identity may establish internal association without becoming an exact release-age fact.
+No BOM content, host properties/configuration or secondary path is read.
+
+Possible profile effects are inspected across local ancestors without activation.
+Version-only external changes retain N and withhold the dependent fact. New/unsupported
+membership, project identity or possible incoming module association changes withhold
+affected externalness. Internal exclusion requires supported exact GAV and unambiguous
+association, including candidate-member profile uncertainty; no co-location/GA-only
+exclusion. Different-version requests and independent external siblings survive.
+Module uncertainty alone cannot erase a source's certified empty direct population.
+Repeated consuming modules remain separate occurrences. No age/HTTP/CLI or T006 policy
+is implemented; all date-unavailable/unsupported facts have closed reasons.
+
+One derived-authority evidence read was necessary for supported root-container framing
+and the absent-profile-ID default: exact authoritative
+https://maven.apache.org/ref/3.9.11/maven-model/maven.html.
+Raw HTML SHA2565716760b676e861c4854cc6114a068a1cf1ce922f5c487ec9a04286933f3c2fe.
+[model-facts.json](../../third_party/maven-3.9.11/model-facts.json) retains URL,
+retrieval UTC, hash,30 project-child names, profile-ID default, transformation notice,
+Apache attribution and limits. Complete HTML stays temporary outside Git; existing
+Apache LICENSE/NOTICE unchanged. No script, linked asset, other source, service,
+registry metadata or target-derived request was acquired. This narrow read needed
+no human relay under the new envelope and introduced no grammar/evaluation expansion.
+
+### Independent review and correction
+
+Five files were frozen before two fresh non-author reviews. Both completed their
+assigned contract/code/test audits and verified the frozen bytes;28 initial focused
+facts tests and36 T004 regressions passed but did not establish convergence:
+
+| Reviewer focus | Verdict | Material findings |
+| --- | --- | --- |
+| Property/builtin/management/profile fact attribution and bounds | COMPLETE / REVISE | F1 unrelated custom management globally poisoned supported fields; F2 ancestor property uncertainty defeated independent child replacements; F3 candidate project identity/profile uncertainty was ignored by another consumer's internal exclusion |
+| Population/internal association/safe rows/empty-known versus unknown and provenance | COMPLETE / REVISE | P1 conditional incoming module association was ignored for a previously separate source; P2 module uncertainty erased certified empty source population |
+
+Parent validated all five against S3/S6/B2. Bounded corrections make known management
+ambiguities key-local, preserve independently trusted post-uncertainty child values,
+propagate candidate identity variation and possible incoming module edges, and apply
+association uncertainty per request rather than to empty source population. Keyword
+construction also clarifies the internal context record. Six added regression tests
+cover findings and collateral, including duplicate management, unknown inherited
+lookups, different-version requests and missing-parent non-emptiness.
+
+Freeze2 retains revised source/helper/tests with evidence files unchanged. A third
+fresh focused non-author independently reproduced all original findings against
+freeze1, verified correction and safe-row/origin/boundary collateral against freeze2:
+**COMPLETE / APPROVE F1/F2/F3/P1/P2 closure**, no residual material finding or new
+human authority requirement. This is focused closure, not approval by reviewer count
+or a replacement full audit.
+
+Initial independent mutants rejected imports ignored(1 failure), consumer property
+precedence reversed(2), management optional applied(1), co-location as association(1),
+GA-only exclusion(1), missing-parent complete N(1), repeated-source dropping(1 failure /
+6 errors). Closure additionally rejected global management poisoning(1), ignored
+trusted replacements(1), ignored candidate identity variation(1), ignored incoming
+profile edges(2), association uncertainty erasing emptiness(2).
+
+Final frozen SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_project.py | 37f0bb96413cf1a2f5ecebd70d7acd8083e856eceb3941558fab30f9b5aa5589 |
+| libyears/maven_properties.py | 461331cb8f06ecac1209516e56e6e7dab8eb3e2cbaf7978996f79c1d80df18f4 |
+| tests/test_maven_facts.py | f3e794a94aff7bbf3ef5b05c1c300ff87cc0c0eb6e6b63b260d939a3aba80550 |
+| third_party/maven-3.9.11/model-facts.json | 3ec0c36249d3055f2426f9d9cef42b7ffc38bacf98f9ff99da915d1b22f86249 |
+| third_party/maven-3.9.11/README.md | 24ee47232f83456531a576d89aad40b6e5d3648f8971cf797cc2a93c7e96b896 |
+
+### Acceptance, verification and progression
+
+All T005 acceptance categories have executable witnesses in test_maven_facts.py:
+delayed scope/defaults, optional never managed, explicit/inherited/consumer precedence,
+consumer-context substitutions and reserved builtins/directory/cycles/budgets; per-field
+unknown-import refusal; ordinary POM/tooling/test/provided/optional inclusion; module
+weighting; conditional identity/internal membership; missing-parent safe rows; and
+fixed refusal reasons/known versus unknown population. All-missing-BOM N2/M0/coverage0/
+total0.0 is verified through actual T001 summaries; Observed stays unavailable.
+**34 focused tests and150 predecessor regressions PASS (184 Maven tests).**
+All pre-existing T004 function/class ASTs are unchanged. Shared/sibling/runtime CLI /
+metric files and approved spec/plan/companions remain unchanged. No full-suite run is
+required at this isolated boundary; the T006 source-authority integration boundary
+requires it. Diff/whitespace, frozen/evidence/licensing/task/ledger64x44/prefix/unique-ID
+and scoped commit checks pass; configured GitLeaks history/current candidates pass.
+
+T005 is independently CONVERGED and receives one coherent local commit. T006 is the
+next dependency-ready already-authorized task; no authorizeT006 message is needed.
+GPUBLIC and private/target/build/disclosure/publication gates remain unchanged. Current
+007-0013 has no supplied final runtime/credit telemetry; no per-task billing/duration
+is inferred. This one-task result plus one derived evidence read is not itself proof
+of improved multi-task convergence; prospective observation continues.

@@ -1,7 +1,7 @@
-"""Bounded local Maven graphs and raw fields, not evaluated dependency facts.
+"""Bounded local Maven graphs, raw fields and supported declared facts.
 
-Only an inventoried T002 snapshot reader supplies bytes. These records deliberately
-have no external-population count, resolved version, Observed record or age.
+Only an inventoried T002 snapshot reader supplies bytes. Raw models remain distinct
+from final declared collections. No resolver, Observed reader or age is inferred.
 Artifact mappings are facts from Apache Maven 3.9.11's handler reference, credited
 to Hervé Boutemy / The Apache Software Foundation. See the extracted facts and
 Apache LICENSE/NOTICE in third_party/maven-3.9.11/artifact-handlers.json.
@@ -15,9 +15,12 @@ from .maven_input import (
     MavenInputFailure, MavenInputSnapshot, MavenXMLElement, relative_parts,
 )
 from .maven_model import (
-    MavenArtifactKey, MavenContext, MavenDiscovery, MavenFieldBasis,
-    MavenFieldOrigin, MavenModelKey,
+    MavenArtifactKey, MavenCollection, MavenContext, MavenDiscovery, MavenFieldBasis,
+    MavenFieldOrigin, MavenModelKey, MavenOccurrence, MavenOccurrenceKey,
+    MavenReason, MavenSource, MavenVersionBasis, MavenVersionFact, MavenView,
 )
+from .maven_properties import PropertyFailure, ScalarProperty, expand_scalar, read_properties
+from .maven_version import VersionError, is_snapshot, parse_version
 
 MAX_PARENT_CHAIN = 16
 MAX_RECORDS = 10_000
@@ -27,6 +30,16 @@ _GROUP = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_-]*(?:\.[A-Za-z0-9_][A-Za-z0-9_-]*)
 _ATOM = re.compile(r"[A-Za-z0-9_][A-Za-z0-9_.-]*", re.ASCII)
 _VERSION = re.compile(r"[A-Za-z0-9][A-Za-z0-9._+-]*", re.ASCII)
 _FIELDS = ('version', 'scope', 'optional')
+# Names from the pinned 3.9.11 model reference, retained in model-facts.json.
+# Recognizing a container name does not evaluate its contents.
+_PROJECT_ELEMENTS = frozenset({
+    'modelVersion', 'parent', 'groupId', 'artifactId', 'version', 'packaging',
+    'name', 'description', 'url', 'inceptionYear', 'organization', 'licenses',
+    'developers', 'contributors', 'mailingLists', 'prerequisites', 'modules',
+    'scm', 'issueManagement', 'ciManagement', 'distributionManagement',
+    'properties', 'dependencyManagement', 'dependencies', 'repositories',
+    'pluginRepositories', 'build', 'reports', 'reporting', 'profiles',
+})
 _HANDLERS = {
     'pom': ('pom', None), 'jar': ('jar', None), 'test-jar': ('jar', 'tests'),
     'maven-plugin': ('jar', None), 'ejb': ('jar', None),
@@ -565,3 +578,407 @@ def build_project_graph(discovery: MavenDiscovery, snapshot_pom) -> MavenProject
         models[source] = model
     return MavenProjectGraph(discovery, tuple(projects.values()), tuple(models.values()),
                              _aggregations(projects, models))
+
+
+@dataclass
+class _FactContext:
+    properties: dict
+    blocked_properties: set
+    property_unknown: bool
+    trusted_properties: set
+    builtins: dict
+    direct_variants: set
+    managed_variants: set
+    unknown_profile: bool
+    extra_population: bool
+    association_variable: bool
+    imports_unknown: bool
+    management_unknown: bool
+    identity_variants: set
+
+    def expand(self, value):
+        return expand_scalar(value, self.properties, self.builtins,
+                             self.blocked_properties, unknown=self.property_unknown,
+                             trusted=self.trusted_properties)
+
+
+def _version_builtin(graph, model):
+    projects = {project.source_id: project for project in graph.projects}
+    for source in (model.context.source_id, *model.context.parent_sources):
+        root = projects[source].snapshot.xml
+        if not _absent(root, 'version'):
+            try:
+                value = _literal(root.scalar('version'), 'version')
+            except MavenInputFailure:
+                return None
+            if value is None:
+                return None
+            return ScalarProperty(value, MavenFieldOrigin(source, 'project.version', MavenFieldBasis.DEFAULT))
+    return None
+
+
+def _profile_effects(root, source, model, context, imports):
+    profiles = _container(root, 'profiles')
+    if profiles is None:
+        return
+    if any(child.name != 'profile' for child in profiles.children):
+        raise ValueError('unsupported profiles')
+    entries = profiles.elements('profile')
+    if len(entries) > MAX_PROFILES:
+        raise ValueError('profile budget')
+    ids = set()
+    base = {record.key: record for record in model.dependencies}
+    for profile in entries:
+        relevant = any(child.name in ('modules', 'properties', 'dependencies', 'dependencyManagement')
+                       for child in profile.children)
+        allowed = {'id', 'activation', 'build', 'modules', 'distributionManagement', 'properties',
+                   'dependencyManagement', 'dependencies', 'repositories', 'pluginRepositories',
+                   'reports', 'reporting'}
+        identity_writes = {'groupId', 'artifactId', 'version'}
+        context.identity_variants.update(child.name for child in profile.children if child.name in identity_writes)
+        if profile.text.strip() or any(child.name not in allowed | identity_writes for child in profile.children):
+            raise ValueError('unsupported profile shape')
+        identity = profile.scalar('id')
+        if identity is None:
+            identity = 'default'
+        if relevant and (not identity or identity in ids):
+            raise ValueError('ambiguous profile')
+        if identity:
+            ids.add(identity)
+        props, blocked, unknown = read_properties(_container(profile, 'properties'), source)
+        context.blocked_properties.update(props)
+        context.blocked_properties.update(blocked)
+        context.property_unknown |= unknown
+        if unknown:
+            context.trusted_properties.clear()
+        if profile.elements('modules'):
+            context.association_variable = True
+        records, ambiguous, issues = _records(_container(profile, 'dependencies'), source)
+        if ambiguous or any(problem.issue != ModelIssue.ARTIFACT for problem in issues):
+            raise ValueError('unsupported profile dependencies')
+        for record in records:
+            if record.key not in base:
+                context.extra_population = True
+            for field in record.fields:
+                current = base.get(record.key)
+                previous = current.field(field.origin.field_name) if current else None
+                if previous is None or previous.value != field.value:
+                    context.direct_variants.add((record.key, field.origin.field_name))
+        owner = _container(profile, 'dependencyManagement')
+        if owner is not None and any(child.name != 'dependencies' for child in owner.children):
+            raise ValueError('unsupported profile management')
+        records, ambiguous, issues = _records(
+            _container(owner, 'dependencies') if owner else None, source, True,
+        )
+        if any(problem.issue not in (ModelIssue.ARTIFACT, ModelIssue.DUPLICATE) for problem in issues):
+            context.management_unknown = True
+        context.managed_variants.update((key, name) for key in ambiguous for name in ('version', 'scope'))
+        context.imports_unknown |= any(key.type == 'pom' for key in ambiguous)
+        for record in records:
+            imports.append(record)
+            context.managed_variants.update((record.key, field.origin.field_name) for field in record.fields)
+
+
+def _fact_context(graph, model):
+    projects = {project.source_id: project for project in graph.projects}
+    models = {item.context.source_id: item for item in graph.models}
+    source = model.context.source_id
+    parent = models[model.context.parent_sources[0]] if model.context.parent_sources else None
+    context = _FactContext(
+        properties={}, blocked_properties=set(), property_unknown=False, trusted_properties=set(),
+        builtins={'project.version': _version_builtin(graph, model),
+                  'project.parent.version': _version_builtin(graph, parent) if parent else None},
+        direct_variants=set(), managed_variants=set(), unknown_profile=False,
+        extra_population=False, association_variable=False,
+        imports_unknown=not model.parent_chain_complete, management_unknown=False,
+        identity_variants=set(),
+    )
+    imports = []
+    for identity in (*reversed(model.context.parent_sources), source):
+        project = projects[identity]
+        root = project.snapshot.xml
+        if identity == source and 'version' in context.identity_variants:
+            context.builtins['project.parent.version'] = None
+        for name in ('groupId', 'artifactId', 'version'):
+            if not _absent(root, name):
+                context.identity_variants.discard(name)
+        try:
+            props, blocked, unknown = read_properties(_container(root, 'properties'), identity)
+            context.properties.update(props)
+            context.blocked_properties.difference_update(props)
+            context.blocked_properties.update(blocked)
+            context.property_unknown |= unknown
+            if unknown:
+                context.trusted_properties.clear()
+            elif context.property_unknown:
+                context.trusted_properties.update(props)
+            for key in blocked:
+                context.properties.pop(key, None)
+        except (MavenInputFailure, ValueError):
+            context.property_unknown = True
+            context.trusted_properties.clear()
+        # A child-written field masks an ancestor profile's same-field write.
+        for record in project.dependencies:
+            for field in record.fields:
+                context.direct_variants.discard((record.key, field.origin.field_name))
+        for record in project.management:
+            for field in record.fields:
+                context.managed_variants.discard((record.key, field.origin.field_name))
+        imports.extend(project.management)
+        try:
+            owner = _container(root, 'dependencyManagement')
+            if owner is not None:
+                if any(child.name != 'dependencies' for child in owner.children):
+                    context.management_unknown = True
+                _, ambiguous, issues = _records(_container(owner, 'dependencies'), identity, True)
+                context.management_unknown |= any(
+                    problem.issue not in (ModelIssue.ARTIFACT, ModelIssue.DUPLICATE) for problem in issues)
+                context.managed_variants.update((key, name) for key in ambiguous for name in ('version', 'scope'))
+                context.imports_unknown |= any(key.type == 'pom' for key in ambiguous)
+        except (MavenInputFailure, ValueError):
+            context.management_unknown = True
+        try:
+            _profile_effects(root, identity, model, context, imports)
+        except (MavenInputFailure, ValueError):
+            context.unknown_profile = True
+            context.extra_population = True
+            context.identity_variants.update(('groupId', 'artifactId', 'version'))
+    if 'version' in context.identity_variants:
+        context.builtins['project.version'] = None
+    context.imports_unknown |= context.management_unknown
+    for record in imports:
+        if record.key.type == 'pom' and record.field('scope') is not None:
+            try:
+                scope, _ = context.expand(record.field('scope').value)
+                context.imports_unknown |= scope == 'import'
+            except PropertyFailure:
+                context.imports_unknown = True
+    return context
+
+
+def _selected_field(record, managed, name, context):
+    field = record.field(name)
+    if field is not None:
+        return field
+    source = record.consumer_source
+    if name == 'optional':
+        return RawField('false', MavenFieldOrigin(source, name, MavenFieldBasis.DEFAULT))
+    if managed is not None and not context.management_unknown:
+        scope = managed.field('scope')
+        try:
+            ordinary = scope is None or context.expand(scope.value)[0] != 'import'
+        except PropertyFailure:
+            ordinary = False
+        candidate = managed.field(name)
+        if ordinary and candidate is not None and (
+                not context.imports_unknown or (candidate.origin.source_id == source
+                and candidate.origin.basis == MavenFieldBasis.CONSUMER_MANAGEMENT)):
+            return candidate
+    if name == 'scope' and not context.imports_unknown and not context.management_unknown:
+        return RawField('compile', MavenFieldOrigin(source, name, MavenFieldBasis.DEFAULT))
+    return None
+
+
+def _safe_request(text):
+    if text and text.isprintable() and len(text.encode('utf-8')) <= 16 * 1024:
+        return text
+    return None
+
+
+def _declared_occurrence(record, managed, context):
+    values = {}
+    origins = []
+    request = None
+    for name in _FIELDS:
+        field = _selected_field(record, managed, name, context)
+        if name == 'version' and field is not None:
+            request = _safe_request(field.value)
+        if field is None:
+            values[name] = None
+            continue
+        origins.append(field.origin)
+        variant = ((record.key, name) in context.direct_variants or (
+            record.field(name) is None and name != 'optional'
+            and (record.key, name) in context.managed_variants))
+        try:
+            if context.unknown_profile or variant:
+                raise PropertyFailure()
+            values[name], property_origins = context.expand(field.value)
+            origins.extend(property_origins)
+        except PropertyFailure:
+            values[name] = None
+    version = values['version']
+    identity_version = None
+    if version is not None:
+        if version.startswith('[') and version.endswith(']'):
+            version = version[1:-1]
+        try:
+            parsed = parse_version(version)
+            identity_version = parsed.exact
+            if is_snapshot(parsed):
+                version = None
+        except VersionError:
+            version = None
+    scope = values['scope']
+    if scope not in ('compile', 'runtime', 'test', 'provided', 'system'):
+        scope = None
+    optional = {'true': True, 'false': False}.get(values['optional'])
+    reason = MavenReason.TIME_BASIS_UNAVAILABLE
+    if version is None:
+        reason = MavenReason.UNSUPPORTED_VERSION
+    elif record.artifact_key is None or scope is None or optional is None:
+        reason = MavenReason.UNSUPPORTED_MODEL
+    fact = MavenVersionFact(MavenVersionBasis.DECLARED, request, version,
+                            tuple(dict.fromkeys(origins)), reason=reason)
+    row = MavenOccurrence(MavenOccurrenceKey(record.consumer_source, 'base_model', record.key),
+                          record.artifact_key, scope, optional, declared=fact)
+    return row, identity_version
+
+
+def _population_supported(graph, model):
+    if not model.parent_chain_complete:
+        return False
+    projects = {project.source_id: project for project in graph.projects}
+    expected_keys = set()
+    for source in (model.context.source_id, *model.context.parent_sources):
+        root = projects[source].snapshot.xml
+        try:
+            if any(child.name not in _PROJECT_ELEMENTS for child in root.children):
+                return False
+            _, ambiguous, issues = _records(_container(root, 'dependencies'), source)
+            if ambiguous or any(problem.issue != ModelIssue.ARTIFACT for problem in issues):
+                return False
+            expected_keys.update(record.key for record in projects[source].dependencies)
+        except (MavenInputFailure, ValueError):
+            return False
+    expected_keys.difference_update(model.ambiguous_dependencies)
+    return len(expected_keys) == len(model.dependencies)
+
+
+def _possible_associations(graph):
+    """Retain incoming conditional module edges without activating profiles.
+
+    Unknown paths can name any observed source. Missing literal targets add an
+    unknown member only to the affected possible component. Neither case changes
+    the independently certified emptiness of a source with no requirements.
+    """
+    sources = {project.source_id for project in graph.projects}
+    neighbours = {source: set() for source in sources}
+    uncertain = set()
+    unknown_members = set()
+    for component in graph.aggregations:
+        for source in component.source_ids:
+            neighbours[source].update(set(component.source_ids) - {source})
+        if not component.complete:
+            uncertain.update(component.source_ids)
+    for project in graph.projects:
+        source = project.source_id
+        if project.snapshot is None:
+            continue
+        root = project.snapshot.xml
+        try:
+            containers = [(root, False)]
+            profiles = _container(root, 'profiles')
+            if profiles is not None:
+                if any(child.name != 'profile' for child in profiles.children):
+                    raise ValueError('unsupported possible modules')
+                containers.extend((profile, True) for profile in profiles.elements('profile'))
+            for owner, conditional in containers:
+                container = _container(owner, 'modules')
+                if container is None:
+                    continue
+                if conditional:
+                    uncertain.add(source)
+                if any(child.name != 'module' for child in container.children):
+                    raise ValueError('unsupported possible module')
+                for entry in container.elements('module'):
+                    if entry.children:
+                        raise ValueError('unsupported possible module')
+                    target = _edge_target(source, entry.text.strip(), directory=True)
+                    if target is None:
+                        raise ValueError('unknown possible module path')
+                    if target in sources:
+                        neighbours[source].add(target)
+                        neighbours[target].add(source)
+                    else:
+                        uncertain.add(source)
+                        unknown_members.add(source)
+        except (MavenInputFailure, ValueError):
+            neighbours[source].update(sources - {source})
+            for other in sources - {source}:
+                neighbours[other].add(source)
+            uncertain.add(source)
+            unknown_members.add(source)
+    result = {}
+    remaining = set(sources)
+    while remaining:
+        pending = [min(remaining)]
+        members = set()
+        while pending:
+            source = pending.pop()
+            if source not in members:
+                members.add(source)
+                pending.extend(neighbours[source] - members)
+        remaining -= members
+        for source in members:
+            result[source] = (tuple(sorted(members)), not bool(members & uncertain),
+                              bool(members & unknown_members))
+    return result
+
+
+def declared_sources(graph: MavenProjectGraph) -> tuple[MavenSource, ...]:
+    """Establish supported external occurrences; no source admission or HTTP.
+
+    Unknown population retains safely attributable rows. Version/policy/date
+    refusal never turns an otherwise known external identity into a missing row.
+    """
+    models = {model.context.source_id: model for model in graph.models}
+    contexts = {model.context.source_id: _fact_context(graph, model) for model in graph.models
+                if next(project for project in graph.projects
+                        if project.source_id == model.context.source_id).snapshot is not None}
+    associations = _possible_associations(graph)
+    sources = []
+    for model in graph.models:
+        source = model.context.source_id
+        project = next(project for project in graph.projects if project.source_id == source)
+        if project.snapshot is None:
+            collection = MavenCollection(MavenView.DECLARED, None, (), False, MavenReason.UNSUPPORTED_MODEL)
+            sources.append(MavenSource(model.context, collection))
+            continue
+        context = contexts[source]
+        complete = _population_supported(graph, model) and not context.extra_population
+        # Uncertain membership considers all observed project candidates; an
+        # unrelated complete component never excludes a co-located namesake.
+        candidates, association_certain, unknown_member = associations[source]
+        managed = {record.key: record for record in model.management}
+        rows = []
+        for record in model.dependencies:
+            row, identity_version = _declared_occurrence(record, managed.get(record.key), context)
+            possible = []
+            for identity in candidates:
+                candidate = models[identity].identity
+                candidate_context = contexts.get(identity)
+                if candidate_context is not None:
+                    changes = {name: None for name, field in (
+                        ('group_id', 'groupId'), ('artifact_id', 'artifactId'), ('version', 'version'))
+                        if field in candidate_context.identity_variants}
+                    candidate = replace(candidate, **changes)
+                if (candidate.group_id in (None, record.key.group_id)
+                        and candidate.artifact_id in (None, record.key.artifact_id)):
+                    possible.append(candidate)
+            if unknown_member:
+                possible.append(ProjectIdentity(None, None, None))
+            if possible:
+                if identity_version is None or any(identity.version is None for identity in possible):
+                    complete = False
+                    continue
+                if any(identity.version == identity_version for identity in possible):
+                    if not association_certain:
+                        complete = False
+                    continue
+            rows.append(row)
+        collection = MavenCollection(MavenView.DECLARED, len(rows) if complete else None,
+                                     tuple(rows), bool(rows) or complete,
+                                     None if complete else MavenReason.POPULATION_UNKNOWN)
+        sources.append(MavenSource(model.context, collection))
+    return tuple(sources)

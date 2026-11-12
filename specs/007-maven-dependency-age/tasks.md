@@ -1,5 +1,16 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0013 / T005
+
+**T001–T005 COMPLETE. T006–T014 NOT STARTED.** T005 established supported declared
+facts and external occurrences after independent review and five bounded corrections.
+[Execution envelope](reviews.md#run007-0013--reviewed-task-execution-envelope)
+authorizes automatic sequential progression through remaining reviewed tasks while
+preserving consequential and explicit target/publication gates. T006 is dependency-
+ready and already authorized; no mechanical human task grant is required. Requirements
+and earlier statuses below remain unchanged/historical.
+
+
 ## Execution status — run007-0012
 
 **T001–T004 COMPLETE. T005–T014 NOT STARTED.** The human granted T004 only and,

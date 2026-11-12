@@ -77,3 +77,15 @@ classpath, dependency inclusion and language columns do not change project-direc
 population; custom handlers, runtime execution and variant availability remain
 unsupported. The approved T004 graph/raw-inheritance contract supplies the other
 implementation rules; no additional source access was necessary.
+
+## T005 model-framing facts
+
+[model-facts.json](model-facts.json) records one bounded read of the exact3.9.11
+model reference under the Feature007 derived public evidence authority. Its raw
+HTML SHA256, URL and retrieval UTC bind the retained project-child names and
+absent-profile-ID default. These facts prevent unknown relevant root containers
+from masquerading as complete population, while preserving the pinned default
+profile ID without activation. The complete HTML is temporary only. No adjacent
+source, script, asset, target or registry request was used. Apache attribution and
+transformation notice are retained alongside the existing LICENSE/NOTICE; no
+full-model evaluation or broader product grammar is authorized by this evidence.
