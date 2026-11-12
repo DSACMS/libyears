@@ -1,5 +1,15 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0010
+
+**T001/T002 COMPLETE. T003–T014 NOT STARTED.** The human authorized T002 only,
+including offline verification, independent review/correction and local commit.
+[T002 convergence](reviews.md#run007-0010--t002-local-input-convergence) records the
+bounded local inventory/XML implementation,98 Maven tests and native/portable
+refusal witnesses. Exact next gate: **T003 authority required**. Earlier execution
+and reviewed-baseline statuses below remain historical; requirements are unchanged.
+
+
 ## Execution status — run007-0009
 
 **T001 COMPLETE — independently converged. T002–T014 NOT STARTED.**

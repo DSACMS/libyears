@@ -1,5 +1,12 @@
 # Feature 007 review record
 
+Current007-0010: **T002 CONVERGED — T003 AUTHORITY REQUIRED.** The T002-only grant
+produced local inventory/byte/XML acquisition without Maven dependency semantics.
+Independent review found a candidate-budget bypass under metadata failures; bounded
+correction and fresh focused closure completed. Initial Observed and T001 summaries,
+existing siblings and all approved requirements remain unchanged. No T003 authority.
+
+
 Current007-0009: human T001-only implementation/local-commit authority exercised.
 **T001 CONVERGED — T002 AUTHORITY REQUIRED.**40 focused Maven tests and16 existing
 model/metric regressions pass; three fresh independent scopes and fresh test-addition
@@ -1225,3 +1232,133 @@ GitLeaks history/current files. No package manager/build tool/network request,
 public/private/alternate endpoint or target access/modification/execution. Current
 44-key handoff is /tmp/libyears-observations/007-0009.json, not appended here.
 Push performed: **NO**. Exact next human gate: authorize T002 separately.
+
+## Run007-0010 — T002 local input convergence
+
+The human authorizes T002 only, including deterministic tests, fresh review,
+bounded correction and one local commit; no T003 or target/network/build/private
+work. Start HEADd52e278, clean working tree. T001 and approved specification/plan /
+normative requirements are byte-identical to start; task changes are status-only.
+
+007-0009 original44-key baton and implementation digest verified, then appended
+exactly once with supplied session01a1d138-dff8-7901-8368-378599a922b7,
+GPT-6.1-Sol/openai/medium,0.160.0, reported935s and credits_after124. Explicit
+continuity permits credits_before123 from007-0008. Original notes/runtime
+classification/other fields and all60 prior row bytes preserved. No derived runtime /
+credit delta/current append or inferred current credit boundary.
+
+### T002 implementation and exact boundary
+
+- maven_discovery.py inventories exact pom.xml names in the approved bounded
+  directory projection: depth0–4,256 directories,10,000 inspected entries and100
+  POM filename shapes, including refused metadata probes. Excluded/hidden/link
+  directories are not traversed. Direct files do not activate Maven. Complete
+  absence is distinct from incomplete/unsafe/unavailable discovery; safe prior
+  candidates survive. Candidate refusals retain fixed issue categories. Counts
+  describe input inventory, **not dependency population**.
+- maven_input.py binds the selected root component-by-component from the filesystem
+  anchor without resolve()/ancestor links; descriptor-relative non-following reads
+  check namespace bindings and file identities before/after open/read/parse. Root /
+  parent replacement, reparse points, special files, changes and known size/capability
+  refusals do not become content reads. The reader is single-use, and its inventoried
+  eligible scope cannot be repaired by later mutations. Cache hits revalidate and
+  preserve identical bytes without another read/charge.
+- Immutable snapshots retain source_id, exact bytes, stable private file identity
+  and separate immutable XML representation. File mtime/ctime are race guards only,
+  never release dates or producer history. No target writes/temp files/cache/mode /
+  encoding changes. Exact source-ancestor .mvn controls only; unselected settings
+  can be observed for presence but are never opened. No host/user/global settings.
+- Whole UTF-8 XML framing rejects malformed input, unsupported encoding including
+  BOM-less UTF-16 autodetection, DTD/entities/XInclude and resource overages. Root /
+  modelVersion is a POM format guard, not dependency-version extraction. Structural
+  accessors reject duplicate/mixed/foreign-namespace/attributed fields when requested;
+  uninterpreted configuration remains uninterpreted. XML text normalization does
+  not alter retained raw BOM/CRLF bytes. No resolver/schema/network/file side effects.
+
+Enforced acquisition/framing bounds:1MiB/XML,32MiB total distinct XML snapshots,
+64KiB launch text, depth32,50,000 elements,32 attributes including namespace
+declarations,16KiB UTF-8 scalar/attribute and1,024-character/32-component relative
+paths. Model/parent/property/population/argument interpretation budgets belong to
+later tasks; T002 does not implement those semantics to claim completeness.
+
+No T001 changes, shared filesystem refactor, Maven dependency population, inheritance,
+properties/profiles, source policy, version facts/ordering/eligibility, metadata/date
+networking, age calculation, aggregates or CLI integration. No generic framework.
+
+### Frozen review and material finding
+
+Five-file freeze1, bytes retained in this run's temporary review directory:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_discovery.py | f999dd0f3582978c49224abb6ca1aeb31dac7b5fdb4d48295594cce9c5647204 |
+| libyears/maven_input.py | 14b65e3a8a8bc306c5905ce9bceef41f749a3e37d09ae52948b6abaf0b015cb1 |
+| tests/test_maven_discovery.py | 96abdd8323f69cd42cf05d2c050496ca2fd47355881400c8dc0aa45235fff910 |
+| tests/test_maven_input.py | c44c7b78ea1e90512dbedd580d2d1081fb3af8b924b82dce777e3b957eb8ac45 |
+| tests/test_maven_xml.py | 8ac57723fb11aaaddf60a7adbaa75c9f38777ff9d19697ad4e2b6d0a9f5d99f0 |
+
+Five fresh non-author scopes verified hashes and read governing T002/P2/B1/B2,
+implementation and tests. No current sibling conclusions shared before completion;
+no model/effort overrides requested; actual child settings/resources unobserved.
+
+| Reviewer | Completed scope / additional offline evidence | Disposition |
+| --- | --- | --- |
+| A | Task/scope/readability/byte-tree separation and T001 preservation;97 Maven tests | COMPLETE / APPROVE; no material finding |
+| B | Root/ancestor/no-follow/races/cache/budgets/portability;97 tests plus6 independent probes including stat/open, hardlink and ancestor replacement | COMPLETE / PASS scoped safety; no material counterexample |
+| C | Whole XML framing/encoding/entities/namespace/byte fidelity/side effects;97 tests and additional refusal/acceptance probes with file/network/process traps | COMPLETE / APPROVE; no material counterexample |
+| D | Inventory/budgets/absence-versus-unknown;97 tests plus unreadable-metadata attack | COMPLETE / REVISE D1:100-candidate bound bypass |
+| E | Test adequacy/mutation/sibling preservation;97 Maven and34 mixed-scan tests;5 unsafe mutants rejected | COMPLETE / APPROVE scoped; no material finding |
+
+D1: matching pom.xml names consumed a slot only after successful os.stat. With101
+unreadable metadata probes and a later readable POM, the102nd shape was accepted.
+Parent validated that resource-bound defect; other approvals did not override it.
+Correction moves counting before metadata I/O and retains refused probe records.
+The new regression includes a safe sibling,101 unreadable candidates and a readable
+later sibling: exactly100 records (1 safe +99 refused),99 failing POM stat calls,
+no later readable probe and incomplete budget_exceeded. No source/population policy
+changed and no later task was required.
+
+Freeze2 changes only discovery code/test:
+
+- maven_discovery.py:df0f355c19b20877ade66516a2cb170ef2f2420a58686fba8f6c8886a4e4a373;
+- test_maven_discovery.py:b7ca7e68217a6c0027053e14e0ac4b4be92e73cd95b239cee893879c53082e90;
+- other three freeze1 digests unchanged.
+
+Fresh F **COMPLETE / APPROVE** focused D1 closure/collateral. All98 tests pass;
+independent99/100/101/102-unreadable probes produce99/100/100/100 probes/records,
+exact100 remains allowed, overflow stops before the101st POM stat. Refused candidates
+remain ineligible after metadata becomes readable. Safe-prefix, immutable scope,
+ordering, changed/unsafe refusal and unknown discovery remain intact. This is
+focused correction verification, not a new full audit. D1 is the one tracked material
+finding and is closed. Parent reconciles evidence, not reviewer count.
+
+### Final actual verification and portability limits
+
+- 98 focused Maven tests PASS on this local POSIX host, no skips:58 T002 +40 T001.
+- Capability-disabled Maven run PASS:98 discovered,37 native cases intentionally
+  skipped,61 pure/portable tests executed. Unskipped tests assert no stat/open/read /
+  enumeration when required flags/support are absent; missing stat reparse constant
+  setup uses a portable numeric fallback. No native Windows positive or hosted
+  macOS/Linux/Windows evidence is claimed.
+- Existing NuGet discovery14/input26 regressions PASS; existing offline real-worker
+  lifecycle3 PASS. E independently reports34 mixed-scan regressions PASS. No shared
+  runtime/filesystem code changed; full deterministic suite is not required here.
+- E's5 rejected in-memory mutations cover foreign field/attribute acceptance,
+  malformed partial trees, false complete inventory at cap, capability bypass and
+  removed file O_NOFOLLOW. D1's new regression and F boundary probes add metadata-
+  failure budget sensitivity. No mutation edited repository files.
+- Frozen candidate, unchanged T001/approved spec/plan/requirements, exact raw-byte
+  fixtures, target-fixture immutability and resource cleanup verified. No actual
+  DPC/AB2D/private target inspected/modified/executed; no network/package manager /
+  build-tool/public/private/alternate package endpoint, user/machine config or
+  credential access. Only owned temporary fixtures and existing offline worker tests.
+- Documentation links/anchors, whitespace/git diff --check, ledger61x44 uniqueness /
+  prior60-row-byte preservation, configured GitLeaks complete history/current-files
+  and exact local commit boundary are checked before final reporting.
+
+**T002 acceptance fully satisfied — T002 CONVERGED — T003 AUTHORITY REQUIRED.**
+The coherent local commit containing this record includes the two new runtime
+modules, three new test files and task/review/prior-observation bookkeeping only.
+8441184/d52e278 remain unchanged. Its exact identity is recorded in the external
+handoff and final report; current44-key baton is
+/tmp/libyears-observations/007-0010.json, not appended here. Push: **NO**.
