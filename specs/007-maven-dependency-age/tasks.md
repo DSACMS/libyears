@@ -1,5 +1,16 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0014 / T011
+
+**T001–T011 COMPLETE. T012–T014 NOT STARTED.** The decomposed integrated adversarial
+checkpoint independently converged after one bounded unknown-dependency-syntax
+correction and fresh focused closure. [Checkpoint record](reviews.md#run007-0014--t011-integrated-adversarial-checkpoint)
+accounts for AC01–20, local/native/portable evidence and operational/matrix limits.
+T012 documentation/deterministic convergence is dependency-ready under the existing
+envelope. Actual DPC operational evidence remains pending GPUBLIC/T013.
+Earlier statuses remain historical; approved requirements are unchanged.
+
+
 ## Execution status — run007-0014 / T010
 
 **T001–T010 COMPLETE. T011–T014 NOT STARTED.** T010 ordinary directory/additive

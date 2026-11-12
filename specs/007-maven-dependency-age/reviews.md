@@ -2521,3 +2521,105 @@ scoped freeze/diff/cached-whitespace and configured current/history GitLeaks che
 T011 is the next already-authorized task and must complete its fresh decomposed
 integrated checkpoint before T012. GPUBLIC/target/private/publication gates remain
 unchanged. No push, release or tag occurred.
+
+## Run007-0014 — T011 integrated adversarial checkpoint
+
+T011 followed clean4330270 and configured GitLeaks8.30.1 history345 PASS, under
+persistent authority. No real target or public registry was accessed. Retained
+[Feature007 discovery](discovery.md) and [portfolio evidence](../../discovery/java-ecosystem-repodive.md)
+supply only adversarial shapes: DPC inheritance/BOMs/runtime tooling/classifier/
+child file repositories/build extension; AB2D external parent, typed/ordinary POM
+requirements and Maven/Gradle request-versus-lock divergence. Synthetic fixture
+N=6/M=3 is not actual DPC198/N, evaluated scope or promised yield.
+
+New test_maven_acceptance.py combines those shapes across local parsing, source
+admission, metadata, arithmetic and JSON/human boundaries. It checks independent
+module weighting/internal exclusion, unread-BOM facts, extension zero-lookups with
+retained population, conditional internal attribution with safe partial ages, all
+local checks complete before batch creation, selected credential-settings refusal/
+privacy, parser date refusal before arithmetic/older fallback, and native POM-only
+reads with Gradle/co-located settings left uninterpreted. No Gradle reader, target
+execution, supplier reader, broader parser grammar or policy workaround is added.
+
+### Decomposed independent checkpoint
+
+Frozen initial acceptance file plus immutable4330270 runtime received three fresh
+complete non-author slices; parent reconciled actual obligations across all three:
+
+| Slice | Completion/verdict and independent evidence |
+| --- | --- |
+| Local population/facts/identity, AC01–09/14–15 | COMPLETE / REVISE F1;117 model/project/fact/result/acceptance tests plus concrete two-row unsupported-syntax probe; other assigned obligations witnessed |
+| Security/metadata/authority, AC10–11/16–20 | COMPLETE / APPROVE;294 Maven tests, capability-disabled294/52skip PASS,12 extra framing/socketpair/forged-protocol/credential/profile/denied-GA assertions; no material finding |
+| Output/arithmetic/compatibility/ordinary fixture journey, AC01–03/09/12–16 | COMPLETE / APPROVE;294 Maven tests and full1077/1skip PASS;11 composition/JSON/normal/verbose, native ordinary CLI/injected metadata/CA, direct-file and incomplete-discovery probes; no material finding |
+
+F1: an unknown relevant child inside an ordinary dependency recorded STRUCTURE but
+retained the same record; N became unknown while that affected record still acquired
+an age and metadata work. The independent two-row probe yielded affected+safe M2/
+total2.0. B2/S3/P3 require dependent-scope refusal, so no new human decision was needed.
+
+The minimal correction raises through the existing known-key refusal path instead
+of logging and retaining unsupported dependency syntax. It omits the unsafe record,
+keeps source population unknown and preserves independent safe rows; the existing
+blocked-key propagation prevents convenient inherited fallback. Shared management
+parsing likewise refuses the unsupported key without restoring an older value;
+independent fully explicit facts survive. No new abstraction/flag/grammar is added.
+Three regression groups cover direct/foreign unknown children, inherited/local bad
+records versus valid same-key parent/cached GA, and child management masking parent
+while safe explicit direct fields remain measurable.
+
+Freeze2 project+acceptance files received a fourth fresh focused non-author review:
+COMPLETE / APPROVE, no residual finding. It independently replayed immutable4330270
+(M2/affected age/capability) versus correction (safe M1, no affected work, null
+coverage); tested valid/bad duplicates in both orders, inheritance, management,
+fully explicit same-key direct facts, refused-record budget-slot consumption and
+initial Observed null; all297 Maven tests PASS. Both preserved/current hashes match.
+This focused closure plus completed initial slices establishes the checkpoint;
+positive slices never overrode F1 and no full-audit-by-count claim is made.
+
+### AC reconciliation and actual evidence
+
+| AC | Executable accounting / limits |
+| --- | --- |
+| AC01 | Model/result contracts and prospective paired output fixture; no runtime reader inferred |
+| AC02 | Source/context/model-key, handler and graph/fact association refusal tests |
+| AC03 | Complete S6 result matrix, scan composition and synthetic DPC weighting |
+| AC04 | Project/fact inheritance/default/origin tests and DPC-shaped modules |
+| AC05 | Field-local management/import tests; unknown management fallback regression |
+| AC06 | Handler/model-key tests, ordinary POM and native AB2D-shaped typed variants |
+| AC07 | Property/builtin/consumer-context/version tests and inherited tooling property |
+| AC08 | Parent/profile/internal uncertainty tests and conditional-internal safe ages |
+| AC09 | Initial reader-unavailable model/scan/output and Maven/Gradle divergence fixture |
+| AC10 | Local contrary/system/policy tests, extension/settings zero-lookups and denied same-GA isolation |
+| AC11 | Whole registry/pinned version/date/age/output tests, exact zero only after date, missing maximum terminal |
+| AC12 | Paired output/state/reason tests and integrated credential/root privacy |
+| AC13 | Maven-only, four successful/empty sibling, mixed unavailable and unknown discovery output tests; independent sibling absence fixtures |
+| AC14 | Synthetic ordinary module/CLI usefulness preparation only; actual authorized DPC witness PENDING GPUBLIC/T013 |
+| AC15 | Retained AB2D shapes; native Maven-only reads leave Gradle/co-located settings untouched; no target reinspection |
+| AC16 | Offline guards/input integrity/worker/client/privacy tests; actual target integrity/network disclosure PENDING GPUBLIC/T013 |
+| AC17 | Exact repository/profile/launch/settings/mirror/filter policy and staged-before-batch tests |
+| AC18 | Discovery/XML/parent/property/expanded-record/policy/version/catalogue/header/body/scan budget refusals |
+| AC19 | Trusted isolated imports, closed protocol/deadline/death/blocked worker/no restart/deferred handle/native-capability refusal tests |
+| AC20 | Pinned vectors/aliases/snapshots/unknown-below versus equal-above/tie/budget tests and registry selection |
+
+Final verification: **10 integrated acceptance and297 Maven tests PASS. Full suite
+1080 run,1 skip,PASS; capability-disabled full1080/99skip PASS.** Native safety/
+cleanup/refusal witnesses run on this host; injected semantic and raw-response tests
+are not native portability proof. CI configuration is Linux/macOS/Windows × Python
+3.11–3.13; no current hosted matrix was executed/published, no positive Windows claim
+follows. Missing required primitives refuse. Mandatory actual DPC usefulness/integrity
+remains pending later authority, never substituted by mocks or these fixture counts.
+Existing docs are updated only in the next approved T012 documentation checkpoint.
+
+Final frozen SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_project.py | e14c7c213d17b1e9575d4ef304c5a399b34036f6684d3757a4c7cd3b5d31d150 |
+| tests/test_maven_acceptance.py | 0983c1a84b6a7611b513e36c82bfdc25cabfb571f8503100f865327fa4f21736 |
+
+Parent synthesis finds every deterministic T011 obligation accounted for and all
+material corrections independently closed: **T011 integrated checkpoint APPROVED /
+CONVERGED.** One coherent task commit follows scoped freeze/diff/cached-whitespace/
+configured current and history GitLeaks checks. T012 is dependency-ready and already
+authorized; GPUBLIC remains the next consequential external-target boundary after
+T012 deterministic convergence. No private access, publication, push, tag or release.

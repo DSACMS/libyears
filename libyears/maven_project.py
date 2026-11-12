@@ -241,7 +241,9 @@ def _records(container, source, management=False):
             allowed = {'groupId', 'artifactId', 'type', 'classifier', *_FIELDS,
                        'systemPath', 'exclusions'}
             if any(child.name not in allowed for child in entry.children):
-                problems.append(ModelProblem(source, ModelIssue.STRUCTURE))
+                # Reject this known key through the existing blocked-key path:
+                # unknown semantics cannot admit its facts or revive a parent.
+                raise ValueError('unsupported dependency field')
             fields = []
             for name in _FIELDS:
                 value = entry.scalar(name)
