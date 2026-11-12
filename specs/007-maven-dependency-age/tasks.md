@@ -1,5 +1,16 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0014 / T006
+
+**T001–T006 COMPLETE. T007–T014 NOT STARTED.** T006 local comparator admission and
+its independent authority/privacy checkpoint converged after four bounded findings
+and fresh focused closure. [Convergence record](reviews.md#run007-0014--t006-security-checkpoint)
+retains the original reviews, corrections, verification and evidence provenance.
+T007 is dependency-ready under the existing reviewed-task execution envelope;
+no new human task grant is required. HTTP remains disabled until T008 satisfies
+its own prerequisites. Requirements and earlier statuses below remain historical.
+
+
 ## Execution status — run007-0013 / T005
 
 **T001–T005 COMPLETE. T006–T014 NOT STARTED.** T005 established supported declared

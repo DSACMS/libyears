@@ -89,3 +89,8 @@ profile ID without activation. The complete HTML is temporary only. No adjacent
 source, script, asset, target or registry request was used. Apache attribution and
 transformation notice are retained alongside the existing LICENSE/NOTICE; no
 full-model evaluation or broader product grammar is authorized by this evidence.
+
+T006 policy-facts.json extracts the versioned model reference's fourteen direct
+build child names to refuse unsupported direct policy constructs while leaving
+ordinary resource filters and plugin configuration uninterpreted. ASF attribution,
+source digest, extraction notice and limits accompany the facts.

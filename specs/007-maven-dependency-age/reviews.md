@@ -1961,3 +1961,143 @@ GPUBLIC and private/target/build/disclosure/publication gates remain unchanged. 
 007-0013 has no supplied final runtime/credit telemetry; no per-task billing/duration
 is inferred. This one-task result plus one derived evidence read is not itself proof
 of improved multi-task convergence; prospective observation continues.
+
+## Run007-0014 — fresh-parent recovery and observation reconciliation
+
+Fresh parent confirmed clean HEAD9cdca81b188801d70c65909ef6fc9d0275bbb876 and converged
+T001–T005. AGENTS/routing/workflow, observation rules, approved specification/plan/
+tasks and normative companions, review disposition, implementation and pinned evidence
+recovered the task boundary and authority. The run007-0013 reviewed-task execution
+envelope persists across rollover: T006 needs no new task grant. The prior stop was
+a context/resource boundary, not a human authority stop. No substantive product,
+implementation, privacy, schema or authority decision occurred at that boundary.
+GPUBLIC after T012, private-target access and publication remain separately gated.
+
+The original007-0013 temporary44-key handoff and principal artifact digest were
+verified. It was appended exactly once with human-observed final telemetry:
+session01a1d188-8a40-7d93-8f62-f3365cf68aba, GPT-6.1-Sol/openai/medium/0.160.0,
+reported runtime1314s, account credits_after132. Original authority/interruption/
+context/confounding notes and fields are preserved. Credits_before remains blank:
+no direct pre-reading or explicit no-intervening-credit-work confirmation was supplied.
+No runtime subdivision, duration reconstruction or derived credit delta was stored.
+Prior ledger bytes remain an exact prefix;66 rows including header,44 columns,
+unique run IDs. Current007-0014 is not appended; its temporary handoff carries
+unobserved telemetry blank rather than inheriting the prior account/session values.
+
+The durable contract and derived public-evidence rule were sufficient. No important
+conversation-only normative dependency was found. Fresh context supported safe scope
+recovery but did not prevent author defects: independent review exposed four bounded
+issues below. This is prospective recovery evidence, not a causal claim about fresh
+context, speed, credits or general harness quality. No generalized harness or skill
+was created. Native children are orchestration within this parent observation;
+fresh contexts/no overrides were requested, actual child settings/resources unobserved.
+
+## Run007-0014 — T006 security checkpoint
+
+T006 implements only P4/B3–B5 local comparator admission. maven_policy.py checks
+nearest unconditional whole repository IDs, all possibly relevant parent/profile
+Central conclusions, literal public identity/release/layout, exact settings selection,
+mirrors, filters/extensions and sanitized failures. maven_launch.py keeps the finite
+retained argument/JVM grammar separate: inert flags/properties do not veto, relevant
+unknown mechanisms and offline exclusion refuse without reading values/paths or
+executing anything. maven_input.py adds only the explicitly selected contained XML
+snapshot route using existing descriptor/no-follow/race/cache/total-byte protections.
+Two closed Maven reasons distinguish unavailable policy inputs and policy budgets.
+
+maven.py coordinates established declared rows and source decisions, preserving
+population/version/origin facts on refusal. Only supported exact facts with an
+admitted local policy mint GA/version capabilities; parent-side occurrence associations
+stay separate from those capabilities. System refusal is row-local; no denied same-GA
+sibling borrows admission. The lookup seam is injected, with no default transport,
+worker, CLI activation or HTTP. Unsupported population and Observed remain unchanged.
+
+### Frozen independent reviews and corrections
+
+Freeze1 retained six files before two fresh non-author audits. Both completed their
+assigned scope and returned REVISE despite20 focused tests and the initial full987
+suite passing. Repository/mirror/coordinator review found R1 unsupported scope
+(including possible profile system scope) still minted lookup work, and R2 forbidden
+surrounding mirror-pattern/layout whitespace was stripped. Launch/reader/privacy
+review found S1 unknown direct root/build policy mechanisms were ignored even while
+safe local rows survived. Its complete B4 audit also covered selectors/sentinels,
+nested conflicts, harmless launch/JVM values, relevant filters/extensions, credential
+subtree refusal, fixed diagnostics, contained selected snapshots and reader budgets;
+no other material B4 finding was reported.
+
+Bounded correction gates capabilities on supported T005 facts; preserves raw mirror
+expressions; and refuses unknown direct root/profile/build/pluginManagement constructs
+while leaving ordinary resource filters/plugin configuration/reporting inert. Explicit
+missing-parent positive fixtures now supply independent compile/optional=false facts;
+unknown scope is not safe admission, while missing inherited population remains unknown.
+
+Freeze2 eight files received a third fresh focused non-author review. It independently
+reproduced all original findings against retained freeze1, confirmed all three closed,
+verified25 policy/209 Maven tests and the evidence extraction, then returned COMPLETE /
+REVISE for B1: duplicate repository IDs were globally poisoning known non-central
+alternates and unconditional ancestor Central records suppressed by a valid child
+whole record. B3 relevance/dominance determines this correction; no human decision
+was missing. Ambiguity now remains at its exact ID and refuses only when effective
+or possibly applicable Central is selected. Policy budgets still count all records.
+
+Freeze3 received a fourth fresh focused non-author review: COMPLETE / APPROVE B1
+closure and collateral, no remaining finding. It reproduced freeze2 failures,
+verified all eight current/frozen hashes,26 policy/210 Maven tests, effective/profile
+Central refusal, unsafe IDs/framing, budgets, source/occurrence isolation, retained
+population and the original three corrections. Original REVISE results remain
+historical evidence; this is focused closure plus parent synthesis of two complete
+initial audit slices, not approval by vote or a claim of a repeated full audit.
+All four findings were author-correctable under the existing contract.
+
+### Public evidence and acceptance
+
+One bounded derived-authority retrieval was necessary to distinguish ordinary build
+fields from unsupported direct policy mechanisms: the already pinned public
+https://maven.apache.org/ref/3.9.11/maven-model/maven.html.
+Raw HTML SHA2565716760b676e861c4854cc6114a068a1cf1ce922f5c487ec9a04286933f3c2fe.
+Only14 direct build-child names are retained in
+[policy-facts.json](../../third_party/maven-3.9.11/policy-facts.json), with exact URL,
+retrieval UTC/hash, ASF attribution, transformation notice and limits. The fresh
+closure reviewer independently extracted/matched all14 names and checked the hash.
+Raw HTML stays temporary outside Git; existing Apache LICENSE/NOTICE unchanged.
+No adjacent source, linked asset, target, registry metadata, private/sensitive identity,
+credential, action endpoint, code execution or new production trust relationship
+was involved. No human evidence-access relay was required.
+
+All T006 acceptance categories have executable policy witnesses: no-policy/alternate/
+file/parameterized alternate admission; nearest whole-ID and relevance; Central
+release/identity/layout refusals; all possible parent/profile effects; selected versus
+co-located settings and escaping/competing/nested selectors; exact/pattern/excluded/
+blocked mirrors; harmless/relevant launch/JVM properties and extension/filter unknowns;
+credential/host/alternate-endpoint non-access; safe native selected-file change/link
+refusal; policy/input/budget reasons and safe rows. Actual all-policy-refused N2/M0/
+coverage0/total0.0 invokes zero lookups; a denied same-GA sibling never acquires one.
+System/unknown scope stays row-local; independent safe missing-parent rows may admit.
+
+Final verification: **26 focused policy and210 Maven tests PASS. Full deterministic
+suite993 run,1 skip, PASS.** Capability-disabled discovery-before-import full suite:
+993 run,96 skips,PASS. That is refusal/semantic evidence, not native Windows execution
+or a completed hosted matrix. The existing filesystem capabilities and original
+project/property/version/results behavior remain intact. Shared metric, sibling
+modules, runtime CLI and approved specification/plan/companions are unchanged.
+No HTTP or later-task implementation occurred during T006 review/correction.
+Parent reconciled coverage against AC03/10/16–19 and P4/P8: the T006 independent
+source-authority/privacy checkpoint is **APPROVED before any T008 HTTP enablement**.
+
+Final frozen implementation/evidence SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_policy.py | 33c2a6f5256dc8d16653d483e8bbb774b7141989803f28935fdbf1ce8d91e3be |
+| libyears/maven_launch.py | d01aa6a6b1881e79f9dfe9cd304f479b9b11109d8eda33e120a07e34983d36a9 |
+| libyears/maven.py | 1db79a51a9e060209f0dad45ffd0e6c2f860131877bc2c0453d94400afe08131 |
+| libyears/maven_input.py | 1a3efb6d8569bad04442debb874178d920b16a047b21e5131428a251743227e9 |
+| libyears/maven_model.py | e62e3b365133da9e828c7599c1693c84b1899b4fdd5e523df9e3ae2d4571ad3d |
+| tests/test_maven_policy.py | fa448e17877385edff09a38face69d53a43a11a8ec0ba6251b2929849997e124 |
+| third_party/maven-3.9.11/policy-facts.json | 3a10adfb97eb9b6c51778de63f28ced85735f5efc1dc410f2b3d7e9f880e667e |
+| third_party/maven-3.9.11/README.md | be83fc2f185fe12978ca6253b3ccf741eea18526b39e08a3d56ae970977172f7 |
+
+T006 is independently CONVERGED and receives one coherent local Conventional Commit.
+Diff/cached whitespace, evidence/licensing/freeze and ledger shape/prefix/unique-ID
+checks pass. Configured GitLeaks8.30.1 history339 and current candidates pass before
+commit; the post-commit gate is checked separately. T007 is the next dependency-ready
+already-authorized task. No new task grant is required, no push is authorized/performed.

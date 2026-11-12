@@ -34,6 +34,8 @@ class MavenReason(StrEnum):
     UNSUPPORTED_VERSION = 'maven_unsupported_version'
     COMPARATOR_REFUSED = 'maven_comparator_refused'
     POLICY_UNKNOWN = 'maven_policy_unknown'
+    POLICY_INPUT_UNAVAILABLE = 'maven_policy_input_unavailable'
+    POLICY_BUDGET_EXCEEDED = 'maven_policy_budget_exceeded'
     OBSERVED_READER_UNAVAILABLE = 'maven_observed_reader_unavailable'
     CATALOGUE_UNAVAILABLE = 'maven_catalogue_unavailable'
     UNKNOWN_LATEST_ELIGIBILITY = 'unknown_latest_eligibility'

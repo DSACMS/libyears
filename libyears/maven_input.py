@@ -373,6 +373,15 @@ class MavenInputReader:
         xml = parts[-1] == 'extensions.xml'
         return self._snapshot(source_id, parts, xml=xml, pom=False)
 
+    def snapshot_selected_settings(self, source_id: str) -> MavenInputSnapshot:
+        """Only the policy layer's unique literal root selector calls this route.
+
+        The same descriptor containment, identity and shared XML budgets apply.
+        There is no settings discovery or ancestor/home fallback.
+        """
+        parts = relative_parts(source_id)
+        return self._snapshot(source_id, parts, xml=True, pom=False)
+
     def snapshot_pom(self, source_id: str) -> MavenInputSnapshot:
         parts = relative_parts(source_id)
         if source_id not in self._candidates:

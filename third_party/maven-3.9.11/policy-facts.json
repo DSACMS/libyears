@@ -1,0 +1,28 @@
+{
+  "source": "https://maven.apache.org/ref/3.9.11/maven-model/maven.html",
+  "version": "3.9.11",
+  "retrieved_at_utc": "2026-11-12T22:04:29.708343+00:00",
+  "sha256": "5716760b676e861c4854cc6114a068a1cf1ce922f5c487ec9a04286933f3c2fe",
+  "modifications": "Extracted only the fourteen direct build child names from the versioned model reference for T006 unknown-policy refusal framing. No prose, scripts, assets or complete HTML is vendored.",
+  "attribution": "Apache Maven model reference; The Apache Software Foundation; Apache-2.0. See LICENSE and NOTICE here.",
+  "build_children": [
+    "sourceDirectory",
+    "scriptSourceDirectory",
+    "testSourceDirectory",
+    "outputDirectory",
+    "testOutputDirectory",
+    "extensions",
+    "defaultGoal",
+    "resources",
+    "testResources",
+    "directory",
+    "finalName",
+    "filters",
+    "pluginManagement",
+    "plugins"
+  ],
+  "limitations": [
+    "Names distinguish ordinary inert build containers from unsupported direct policy mechanisms; no build contents are executed, paths followed or effective model claimed.",
+    "Approved Feature007 B3-B5 still govern comparator admission; repository resource filters are not remote repository filters."
+  ]
+}
