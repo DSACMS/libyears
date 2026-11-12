@@ -2377,3 +2377,35 @@ freeze/diff/cached-whitespace and configured current/history GitLeaks checks. T0
 T008 source/transport implementation, approved specification/plan/companions, sibling
 modules, metric arithmetic and runtime CLI are unchanged. T010 is already-authorized
 and dependency-ready. No publication, private-target or GPUBLIC authority follows.
+
+## Run007-0014 — bounded T009 catalogue-freshness correction before T010
+
+T010 contract inspection exposed an existing S7 retention gap: accepted target
+catalogue retrieval time was present in T007/T008 results but discarded when T009
+constructed MavenAge, preventing required truthful output. This is a determined
+implementation omission, not a new product/schema/metric or authority decision.
+Return the correction to its governing evidence seam before output integration;
+preserve the prior independently converged T009 commit and task boundary.
+
+MavenAge now independently retains optional catalogue_retrieved_at with aware/UTC
+validation. None represents absent model-only evidence without guessing; the runtime
+coordinator always passes the actual accepted target.retrieved_at. No POM modification
+time, local clock or release-date field supplies a substitute. Existing arithmetic,
+selection/source admission, date authority and unavailable Observed remain unchanged.
+One focused test plus runtime assertions verify separate freshness, UTC normalization,
+naive refusal and absence without inference. **15 scan and276 Maven tests PASS.**
+
+A fresh focused non-author verified the S7 requirement and original omission,
+current/preserved three-file hashes, minimal diff and all276 tests: COMPLETE / APPROVE,
+no finding or missing obligation. Diff whitespace passes. The correction receives
+its own coherent local fix commit; no previous history is amended and no T010 code
+is combined. T010 disclosure/CLI integration remains pending and already authorized.
+No new public evidence, HTTP, target/private/host configuration, execution or push.
+
+Frozen correction SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven.py | 6e705765952909047ce41c4a6ce6e0d535a87547c899fa1a568be09d85bef6a4 |
+| libyears/maven_model.py | 698bf6953efb1a2cd83834a694f6a986c269901bae28b9212736b0f70bcbf579 |
+| tests/test_maven_scan.py | 54ff6d79ba828cb2f3f205c1ef71c2f735e9f299905be4834abd18f7c934a205 |

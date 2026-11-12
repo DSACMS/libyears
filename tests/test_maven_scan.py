@@ -92,6 +92,8 @@ class MavenScanTests(unittest.TestCase):
         result = self.scan({'pom.xml': pom(dependencies(row()))})
         fact = result.sources[0].declared.rows[0].declared
         self.assertEqual(fact.age.libyears, 1.0)
+        self.assertEqual(fact.age.catalogue_retrieved_at, RETRIEVED)
+        self.assertNotEqual(fact.age.catalogue_retrieved_at, fact.age.comparison_version_pom_last_modified)
         self.assertEqual(result.summaries.declared.summary.dependencies_discovered, 1)
         self.assertEqual(result.summaries.declared.summary.coverage, 1.0)
         observed = result.summaries.observed.summary
@@ -100,6 +102,15 @@ class MavenScanTests(unittest.TestCase):
                          (None,) * 7)
         self.assertEqual(self.metadata.options, {'ca_bundle': 'explicit-ca.pem'})
         self.assertTrue(self.metadata.closed)
+
+    def test_catalogue_freshness_is_separate_utc_evidence_without_inference(self):
+        from libyears.maven_model import MavenAge
+        offset = timezone(timedelta(hours=-5))
+        age = MavenAge('2', OLD, NEW, 1.0, catalogue_retrieved_at=RETRIEVED.astimezone(offset))
+        self.assertEqual(age.catalogue_retrieved_at, RETRIEVED)
+        self.assertIsNone(MavenAge('2', OLD, NEW, 1.0).catalogue_retrieved_at)
+        with self.assertRaises(ValueError):
+            MavenAge('2', OLD, NEW, 1.0, catalogue_retrieved_at=datetime(2026, 11, 12))
 
     def test_same_version_needs_one_admitted_date_and_produces_exact_zero(self):
         result = self.scan({'pom.xml': pom(dependencies(row()))}, metadata=Metadata(targets={'a': '1'}))

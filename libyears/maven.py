@@ -108,7 +108,7 @@ def measure_admission(admission, *, ca_bundle=None, supervisor_factory=None):
                     continue
                 value, anomaly = libyears_between(measured.last_modified, comparison.last_modified)
                 age = MavenAge(target.version, measured.last_modified, comparison.last_modified,
-                               value, anomaly)
+                               value, anomaly, catalogue_retrieved_at=target.retrieved_at)
                 outcomes[capability] = (age, None)
     by_occurrence = {key: outcomes[capability] for key, capability in admission.work}
     sources = []

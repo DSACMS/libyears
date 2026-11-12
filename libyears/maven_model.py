@@ -173,6 +173,7 @@ class MavenAge:
     comparison_version_pom_last_modified: datetime
     libyears: float
     timestamp_order_anomaly: bool = False
+    catalogue_retrieved_at: datetime | None = None
     comparator_basis: str = field(init=False, default='conventional_central')
     time_basis: str = field(init=False, default='maven_conventional_pom_last_modified')
     ordering_basis: str = field(init=False, default='maven_comparable_version_3_9_11')
@@ -192,6 +193,11 @@ class MavenAge:
             if not isinstance(timestamp, datetime) or timestamp.utcoffset() is None:
                 raise ValueError('Maven time evidence must be timezone-aware')
             object.__setattr__(self, name, timestamp.astimezone(timezone.utc))
+        if self.catalogue_retrieved_at is not None:
+            timestamp = self.catalogue_retrieved_at
+            if not isinstance(timestamp, datetime) or timestamp.utcoffset() is None:
+                raise ValueError('Maven retrieval evidence must be timezone-aware')
+            object.__setattr__(self, 'catalogue_retrieved_at', timestamp.astimezone(timezone.utc))
 
 
 @dataclass(frozen=True, slots=True)
