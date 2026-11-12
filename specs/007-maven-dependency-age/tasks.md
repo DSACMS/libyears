@@ -1,5 +1,17 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0012
+
+**T001–T004 COMPLETE. T005–T014 NOT STARTED.** The human granted T004 only and,
+after the bounded evidence stop, exact public Maven3.9.11 handler-page retrieval.
+[T004 convergence](reviews.md#run007-0012--t004-resumed-convergence) records raw
+model/parent/module graphs and independent handler mapping,36 focused tests,
+114 predecessor regressions, two material corrections and fresh focused closure.
+Exact next gate: **T005 authority required**. No final external population,
+version resolution, comparator/network/CLI integration or T005 work is implied.
+Earlier statuses and all approved task requirements below remain unchanged.
+
+
 ## Execution status — run007-0011
 
 **T001–T003 COMPLETE. T004–T014 NOT STARTED.** The human authorized T003 only,

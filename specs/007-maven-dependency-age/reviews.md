@@ -1560,3 +1560,242 @@ harness/SKILL/framework was implemented.
 
 **T003 CONVERGED — T004 AUTHORITY REQUIRED.** One coherent local T003 commit follows
 this record and checks. T004 and later tasks remain NOT STARTED; no push authority.
+
+## Run007-0012 — T004 recovery and pinned handler evidence gate
+
+The human authorizes T004 only, its deterministic acceptance/regression tests,
+fresh independent review/correction and a coherent local commit after convergence.
+Starting HEAD9c16fd5731eae39e7abcf595b176a3be640e4730 is clean; lifecycle8441184,
+T001d52e278, T002c2edc95 and T0039c16fd5 are confirmed in history. Existing approved
+requirements and all prior implementation bytes remain unchanged.
+
+T004 covers local parent chains, literal project identity, raw same-model-key
+dependency/management field inheritance with consumer/source origins, module
+aggregation associations and separately applied pinned built-in artifact handlers.
+Acceptance includes relativePath/default/empty, GAV mismatch/escape/missing/cycle/
+depth16, aggregation versus inheritance/co-location, incompatible roots/duplicate
+GAVs, partial field merging, type/classifier aliases and refusal, excluded plugin/
+management-only/transitive population and no systemPath reads. Raw models cannot
+claim final external N; resolution/internal classification waits for T005. No CLI,
+networked measurement or later-task work is authorized.
+
+S2/S3, P3 and B1/B2 recover graph, containment and raw inheritance semantics locally.
+However P3 requires a built-in handler table pinned to Maven3.9.11; S2 supplies
+jar/test-jar/tests examples, not the entire table. Retained discovery/publication
+records link the exact authoritative handler page without retaining its contents.
+Existing third-party evidence contains only T003 ordering/snapshot source and
+licensing; it supplies no handler definitions. Neither a remembered table nor an
+invented smaller supported subset establishes the approved mapping.
+
+One fresh independent non-author boundary reviewer inspected T004/P3/S2/S3/B1/B2,
+retained evidence and available paths. **COMPLETE boundary review: evidence gap
+confirmed**, no product ambiguity/T005 dependency identified. No implementation
+candidate or code review is claimed. The prior exceptional upstream retrieval grant
+was T003-specific; the current human instruction expressly requires stopping for
+missing evidence-access authority. No retrieval or unauthorized source search ran.
+
+Smallest missing authority: read-only retrieval of the already-referenced public
+[Maven3.9.11 artifact-handler table](https://maven.apache.org/ref/3.9.11/maven-core/artifact-handlers.html),
+retain its provenance/hash and extract only type/extension/default-classifier facts
+needed by T004. No source/registry/target/build execution follows from that request.
+A text authorization request was issued; it remains pending at this recording.
+Existing T004 implementation authority persists. No T004 code/tests were started,
+acceptance is incomplete and no convergence commit is created. T005 remains forbidden.
+
+007-0011 was checked against its original44-key handoff and maven_version.py digest,
+then appended exactly once with supplied session01a1d188-8a40-7d93-8f62-f3365cf68aba,
+GPT-6.1-Sol/openai/medium/0.160.0, reported516s and credits_after128. Original notes,
+interactive authority interruption, human_intervention=yes/authority and unknown
+runtime-confounding classification are retained. No runtime subdivision or derived
+credit delta. Credits_before remains blank: neither a pre-run reading nor explicit
+no-intervening-work continuity confirmation for007-0010 to007-0011 was supplied.
+Earlier ledger bytes preserved;63x44 unique IDs; current007-0012 not appended.
+
+Verification: all114 T001/T002/T003 tests PASS. Approved spec/plan/companion hashes
+match approval, task graph unchanged, prior/shared/sibling code unchanged. No T004
+focused tests exist yet; sibling/full-suite reruns are unnecessary for this code-
+unchanged boundary. Configured GitLeaks8.30.1 full337-commit history PASS with zero
+findings; current review/ledger scan and diff/ledger checks complete before handoff.
+No network, target/private/DPC/AB2D access, Maven/Gradle/Java execution, commit or push.
+
+Reduced-prompt observation: T004 authority, scope, semantics, predecessor boundaries,
+review and observation protocol were recovered from repository artifacts without
+contract retransmission. Tasks.md supplied the scope baton; spec S2/S3, plan P3,
+source-policy B1/B2, current reviews, existing model/input code and retained evidence
+were necessary for execution detail and the missing handler evidence check. No
+material rule was found only in prior prompts/conversation. This is a continuing
+parent, not a claimed fresh-parent causal test. Independent review confirmed the
+missing evidence/access boundary. Additional human evidence authority is required;
+no in-run intervention has yet occurred. No generalized harness/SKILL was built.
+Current handoff is /tmp/libyears-observations/007-0012.json outside Git; telemetry
+remains unavailable rather than inferred.
+
+**T004 BLOCKED — HUMAN DECISION REQUIRED**, solely for the bounded pinned public
+handler-table evidence access. T004 product policy is not reopened.
+
+## Run007-0012 — T004 resumed convergence
+
+### Resumed authority and pinned handler facts
+
+Same substantive007-0012 baton, continued after its interactive evidence-access
+stop. Existing T004 implementation authority persisted. The human intervention
+was **bounded Maven3.9.11 handler-table evidence retrieval authorized**, solely
+for https://maven.apache.org/ref/3.9.11/maven-core/artifact-handlers.html.
+Repository artifacts recovered T004 scope/semantics and methodology; implementation
+stopped before guessing unavailable pinned evidence. The preceding blocked record
+remains historical, and no current-run ledger row is appended.
+
+Only that exact public page was retrieved. Its breadcrumb/project version identifies
+Maven3.9.11; published2025-07-12, author Hervé Boutemy, footer ASF2001–2025. Page
+SHA256:1d2148d1cb3875bb342272370cd35fd8ae5a33fc10c52cb3adc7ff7bb8ac4ea2.
+Initial sandbox DNS failure was retried with required escalation. No adjacent
+artifact was needed: the table directly supplies all eleven required mappings.
+No linked script/asset was executed or fetched. Complete HTML is retained only as
+temporary external evidence; the smallest durable representation is
+[artifact-handlers.json](../../third_party/maven-3.9.11/artifact-handlers.json),
+with exact URL, retrieval UTC, raw-page hash, explicit transformation/attribution,
+mapping facts and limitations. Existing exact Apache LICENSE/NOTICE are retained;
+README extends T003's provenance pattern. Independent extraction verifies every row:
+
+| Type | Extension | Default classifier |
+| --- | --- | --- |
+| pom | pom | absent |
+| jar | jar | absent |
+| test-jar | jar | tests |
+| maven-plugin | jar | absent |
+| ejb | jar | absent |
+| ejb-client | jar | client |
+| war | war | absent |
+| ear | ear | absent |
+| rar | rar | absent |
+| java-source | jar | sources |
+| javadoc | jar | javadoc |
+
+Explicit supported classifiers override defaults. These facts establish artifact
+identity only: no classpath, packaging-driven population, management equivalence,
+evaluated build, availability/history/compatibility or custom-extension claim.
+No further evidence/license authority was required.
+
+### T004 implementation and acceptance
+
+New maven_project.py consumes only inventoried T002 snapshots through the reader
+seam, stages each discovered POM once and retains immutable snapshot/context/raw
+records. Parent/module paths are logical contained associations, never new reads.
+No search by coordinate, ancestor traversal, BOM/systemPath/target read or fallback
+outside discovered inputs. Parent binding requires literal exact GAV; project group/
+version inherit only from accepted local parents. Default/literal/directory/empty
+relativePath, escapes, missing/mismatch/cycle and16-POM chain limits fail closed.
+Safe local rows survive unavailable ancestors; cyclic/over-depth inheritance is
+withheld. Aggregation follows unconditional modules independently from parents or
+co-location, detects incompatible roots, duplicate GAVs within a component and
+module cycles/missing/unsupported targets, retaining uncertainty. Independent roots
+remain separate even when coordinates match.
+
+Raw same-model-key dependency and management field inheritance preserves consumer
+and written-source origins, child-explicit precedence, explicit empty versus absent
+fields and per-field inherited bases. Scope/optional defaults and management
+application remain deferred. Aliases never merge model keys; duplicate keys block
+arbitrary selection/inheritance fallback. The pinned handler table is applied
+separately, including explicit classifiers, unknown-handler and empty-classifier
+refusal. Only project direct containers supply raw dependency records; plugins,
+management-only entries, BOM imports and nested transitives add no direct rows.
+No POM/management/optional filtering invents a production-only population.
+
+Raw records carry no final external N, resolved version, Observed reader or age.
+Property/management evaluation, profiles' dependent fact resolution and exact-GAV
+internal/external classification remain T005. Profiles are inspected here only for
+possible module writes and relevant container shape, never activated. Module100/
+profile128 and direct source/expanded scan10000 limits retain fixed uncertainty;
+no capped raw prefix is certified as complete. No CLI/comparator/HTTP integration.
+
+All T004 acceptance categories have executable witnesses in test_maven_project.py:
+parent literal/default/empty/directory/GAV/escape/missing/cycle/depth16; aggregation
+versus inheritance/co-location, nested/compatible and incompatible roots, duplicate
+GAV; child partial merge versus replacement and written/consumer origin; handler
+aliases/default/explicit classifier/custom/empty refusal; plugin/management/BOM/
+transitive exclusion, no secondary systemPath read; source/expanded/module budgets;
+unknown raw inputs, safe siblings, snapshot binding, deterministic ordering and
+immutable unresolved records. Inline small XML fixtures are semantic snapshots;
+one native descriptor-reader inventory test separately verifies actual integration
+and unchanged test-owned file hashes. T002's native safety/capability tests remain.
+
+**36 focused tests PASS;114 T001/T002/T003 regressions PASS (150 Maven total).**
+Capability-disabled T004 run:36 discovered,35 pure semantic tests PASS and1 native
+skip. This is not actual Windows positive evidence. No shared/sibling code changes;
+no full-suite/sibling rerun required at this isolated task boundary.
+
+### Independent frozen review, correction and closure
+
+Four implementation/test/provenance files were frozen before two fresh independent
+non-author reviews; hashes and bytes retained under this run's freeze1 directory.
+Reviewers independently read the controlling contracts and actual code/tests:
+
+| Review scope | Completion / verdict | Material finding |
+| --- | --- | --- |
+| Parent/model/module graph, raw inheritance, bounds, readability and acceptance | COMPLETE / REVISE | G1: malformed profiles container could falsely certify association; malformed raw-management container lost uncertainty |
+| Pinned handlers/identity separation, provenance/licensing, snapshot/read scope, hostile input/safe rows | COMPLETE / REVISE | H1: broad namespace validation on dependency list erased safe siblings when one entry was unsupported |
+
+Parent validated both findings against source/specification. G1 correction checks
+profiles' direct-child shape and retains structural uncertainty on unknown raw
+management children without erasing safe records. H1 validates each dependency
+entry separately, preserves safe siblings and source uncertainty, and counts refused
+entries before source caps. Five added tests cover both defects, namespace/attribute
+collateral, refusal-budget accounting and source binding. No T005 behavior added.
+
+Freeze2 contains revised source/tests with facts/README unchanged. A third fresh
+non-author independently verified both manifests, reproduced all three original
+failure shapes on freeze1 and inspected corrections/collateral on freeze2:
+**COMPLETE / APPROVE G1/H1 focused closure**. All36 focused tests pass; no remaining
+material issue. Closure is focused, not a new full semantic audit. Approval is
+reconciled evidence, not reviewer count.
+
+Independent in-memory mutation probes were rejected: parent-version mismatch ignored
+(2 test failures), child precedence reversed(3), chain17 allowed(2), duplicate-GAV
+refusal removed(2), test-jar default removed(3), java-source extension wrong(1),
+unknown-handler fallback(1), artifact aliases used as model keys(1). Closure rejects
+removed profiles check(3), removed management check(3), whole-list dependency
+validation(3), accepted-only budget counting(2), admitted foreign/attributed
+entries(3). Three-hop inherited identities/origins and independent HTML extraction
+also pass. No material semantic/licensing finding is left unresolved.
+
+Final frozen SHA256 values:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven_project.py | cf6095336dea915015e45c50ed43d36b5c1f2d865e3e50c9a130b9490eef8b53 |
+| tests/test_maven_project.py | 21cd407d67bfd616a79b122829a986ff7588edd184b538a7ce1ecc8c88c64152 |
+| third_party/maven-3.9.11/artifact-handlers.json | a8a7d97d488e015cef49c6276f289b2f3200b34ff341dd22e81a17634c3345d4 |
+| third_party/maven-3.9.11/README.md | 1c69b1d46a2c7895092e1c24093c15cd77ad386894b7b79496f1d543fc1afaf2 |
+
+### Observation, harness and verification
+
+007-0011 remains recorded exactly once with the human-supplied final516s/after128
+telemetry; prior interactive authority intervention and runtime-confounding notes /
+classification preserved. Credits_before remains blank because no direct reading
+or qualifying continuity confirmation was supplied. No runtime subdivision, credit
+delta or current007-0012 append. Ledger63x44 unique and earlier bytes preserved.
+Original007-0012 blocked handoff is retained outside Git; same-ID eventual handoff
+records human_intervention=yes/authority, its interruption and resumed outcome.
+Current runtime/model/credit telemetry is unavailable and remains blank.
+
+The reduced task prompt plus durable tasks/spec/plan/source-policy/reviews, existing
+model/input code and retained evidence recovered T004 authority, scope, semantics,
+prior boundaries, review and observation protocol. No material rule existed only in
+conversation. This is a continuing parent, not a fresh-parent causal comparison.
+The one narrow handler-page grant sufficed to resume and converge without contract
+retransmission. Independent review found and closed two bounded defects, preserving
+the quality gate despite reduced prompt detail; no causal efficiency/savings claim.
+Human intervention beyond the initiating grant was evidence-access authority only;
+no product/security/schema ambiguity or generalized harness/SKILL was introduced.
+
+Approved spec/plan/companion hashes and task requirements remain intact; only task
+execution status is added. Existing T001–T003/runtime/shared/sibling files and prior
+commits are preserved. Focused/predecessor/native/capability tests, final four-file
+freeze and HTML/facts/license/provenance checks, diff/whitespace, ledger/prefix and
+scoped commit-boundary verification pass. Configured GitLeaks8.30.1 full history
+and final current candidate scans pass with zero findings; committed history is
+checked after the authorized local commit. No private/DPC/AB2D/target access,
+registry metadata, package resolution or Maven/Gradle/Java/target execution.
+
+**T004 CONVERGED — T005 AUTHORITY REQUIRED.** One coherent local T004 commit follows
+this record/checks. T005 and later remain NOT STARTED. No push is authorized/performed.

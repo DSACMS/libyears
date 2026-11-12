@@ -1,0 +1,60 @@
+{
+  "source": "https://maven.apache.org/ref/3.9.11/maven-core/artifact-handlers.html",
+  "version": "3.9.11",
+  "retrieved_at_utc": "2026-11-12T21:16:20.818389+00:00",
+  "sha256": "1d2148d1cb3875bb342272370cd35fd8ae5a33fc10c52cb3adc7ff7bb8ac4ea2",
+  "attribution": "Default Artifact Handlers Reference, Hervé Boutemy; Copyright2001–2025 The Apache Software Foundation. Apache-2.0; see LICENSE and NOTICE in this directory.",
+  "modifications": "Changed from HTML documentation to type/extension/default-classifier facts only; omitted packaging, language, classpath and includesDependencies columns.",
+  "limitations": [
+    "Built-in handlers only; custom extensions are not executed.",
+    "An explicit supported classifier overrides the handler default.",
+    "Mapping supplies artifact identity, not management model-key equivalence, evaluated build facts, compatibility or variant availability.",
+    "The versioned page explicitly supplies every used mapping; no adjacent artifact was fetched."
+  ],
+  "handlers": {
+    "pom": {
+      "extension": "pom",
+      "default_classifier": null
+    },
+    "jar": {
+      "extension": "jar",
+      "default_classifier": null
+    },
+    "test-jar": {
+      "extension": "jar",
+      "default_classifier": "tests"
+    },
+    "maven-plugin": {
+      "extension": "jar",
+      "default_classifier": null
+    },
+    "ejb": {
+      "extension": "jar",
+      "default_classifier": null
+    },
+    "ejb-client": {
+      "extension": "jar",
+      "default_classifier": "client"
+    },
+    "war": {
+      "extension": "war",
+      "default_classifier": null
+    },
+    "ear": {
+      "extension": "ear",
+      "default_classifier": null
+    },
+    "rar": {
+      "extension": "rar",
+      "default_classifier": null
+    },
+    "java-source": {
+      "extension": "jar",
+      "default_classifier": "sources"
+    },
+    "javadoc": {
+      "extension": "jar",
+      "default_classifier": "javadoc"
+    }
+  }
+}

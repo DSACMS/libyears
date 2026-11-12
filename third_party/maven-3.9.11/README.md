@@ -57,3 +57,23 @@ claimed universally transitive. The alpha token excludes that candidate before
 latest selection. Fixed-corpus antisymmetry/transitivity checks cover ordinary
 eligible and unknown forms; catalogue permutation tests separately establish
 policy determinism. No upstream repair or eligibility-policy change is made.
+
+## T004 artifact-handler facts
+
+[artifact-handlers.json](artifact-handlers.json) records the exact versioned
+Apache Maven3.9.11 handler-reference URL, retrieval time, SHA256 of the temporary
+HTML and the eleven type/extension/default-classifier mappings used by T004.
+The page identifies version3.9.11 and directly supplies all required facts; no
+adjacent source, linked assets, scripts or secondary page was retrieved/executed.
+Its author is Hervé Boutemy and its footer credits The Apache Software Foundation
+(2001–2025); those credits and the existing Apache LICENSE/NOTICE are retained.
+The JSON explicitly identifies its transformation from the table. Only factual
+mapping columns are retained; the complete HTML remains a temporary evidence input.
+
+libyears/maven_project.py applies these facts after raw model-key construction.
+It does not turn handler aliases into management-key equality or evaluated build
+behavior. Explicit supported classifiers override handler defaults. Packaging,
+classpath, dependency inclusion and language columns do not change project-direct
+population; custom handlers, runtime execution and variant availability remain
+unsupported. The approved T004 graph/raw-inheritance contract supplies the other
+implementation rules; no additional source access was necessary.
