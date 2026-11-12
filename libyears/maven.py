@@ -1,8 +1,10 @@
-"""Local Maven admission boundary. Metadata transport is not enabled here."""
+"""Maven directory orchestration with local admission and independent metadata."""
 
 from dataclasses import dataclass, replace
 
-from .maven_model import MavenOccurrenceKey, MavenReason, MavenSource
+from .maven_model import (
+    MavenDiscovery, MavenOccurrenceKey, MavenReason, MavenSource, MavenSummaries,
+)
 from .maven_policy import source_policy
 from .maven_project import declared_sources
 from .maven_version import VersionError, is_snapshot, parse_version
@@ -61,3 +63,88 @@ def admit_sources(graph, reader):
 def admitted_lookups(admission, lookup):
     """Injected verification seam; no transport/default lookup exists in T006."""
     return tuple((key, lookup(capability)) for key, capability in admission.work)
+
+
+@dataclass(frozen=True, slots=True)
+class MavenScanReport:
+    discovery: MavenDiscovery
+    sources: tuple[MavenSource, ...]
+    summaries: MavenSummaries
+
+
+def measure_admission(admission, *, ca_bundle=None, supervisor_factory=None):
+    """Share metadata only after admission; reattach by original occurrence key."""
+    if not admission.capabilities:
+        return admission.sources
+    from .metric import libyears_between
+    from .maven_model import MavenAge
+    if supervisor_factory is None:
+        from .maven_supervisor import MavenSupervisor
+        supervisor_factory = MavenSupervisor
+
+    grouped = {}
+    for capability in admission.capabilities:
+        grouped.setdefault((capability.group_id, capability.artifact_id), set()).add(capability)
+    outcomes = {}
+    with supervisor_factory(admission.capabilities, ca_bundle=ca_bundle) as supervisor:
+        for ga in sorted(grouped):
+            capabilities = sorted(grouped[ga], key=lambda item: item.version)
+            representative = capabilities[0]
+            target = supervisor.select_target(representative)
+            if target.reason is not None:
+                for capability in capabilities:
+                    outcomes[capability] = (None, target.reason)
+                continue
+            comparison = supervisor.pom_date(representative, target.version)
+            if comparison.reason is not None:
+                for capability in capabilities:
+                    outcomes[capability] = (None, comparison.reason)
+                continue
+            for capability in capabilities:
+                measured = (comparison if capability.version == target.version
+                            else supervisor.pom_date(capability))
+                if measured.reason is not None:
+                    outcomes[capability] = (None, measured.reason)
+                    continue
+                value, anomaly = libyears_between(measured.last_modified, comparison.last_modified)
+                age = MavenAge(target.version, measured.last_modified, comparison.last_modified,
+                               value, anomaly)
+                outcomes[capability] = (age, None)
+    by_occurrence = {key: outcomes[capability] for key, capability in admission.work}
+    sources = []
+    for source in admission.sources:
+        rows = []
+        for row in source.declared.rows:
+            if row.key in by_occurrence:
+                age, reason = by_occurrence[row.key]
+                row = replace(row, declared=replace(row.declared, age=age, reason=reason))
+            rows.append(row)
+        sources.append(replace(source, declared=replace(source.declared, rows=tuple(rows))))
+    return tuple(sources)
+
+
+def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=None):
+    """Scan a directory without executing or resolving its dependency system."""
+    from .maven_input import MavenInputFailure, MavenInputIssue, MavenInputReader
+    from .maven_project import build_project_graph
+    from .maven_results import summarize_sources
+
+    if reader_factory is None:
+        reader_factory = MavenInputReader
+    try:
+        with reader_factory(root) as reader:
+            discovery = reader.inventory().discovery
+            if discovery.complete and not discovery.source_ids:
+                return None
+            graph = build_project_graph(discovery, reader.snapshot_pom)
+            admission = admit_sources(graph, reader)
+    except MavenInputFailure as failure:
+        if failure.issue == MavenInputIssue.NOT_DIRECTORY:
+            return None
+        discovery = MavenDiscovery(False, (), MavenReason.DISCOVERY_UNAVAILABLE)
+        sources = ()
+    else:
+        sources = measure_admission(admission, ca_bundle=ca_bundle,
+                                    supervisor_factory=supervisor_factory)
+    summaries = summarize_sources(sources, discovery_complete=discovery.complete)
+    return MavenScanReport(discovery, sources, summaries)

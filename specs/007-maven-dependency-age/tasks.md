@@ -1,5 +1,15 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0014 / T009
+
+**T001–T009 COMPLETE. T010–T014 NOT STARTED.** T009 source orchestration and admitted
+age results independently converged. [Convergence record](reviews.md#run007-0014--t009-source-orchestration-and-age-results)
+retains occurrence authority, source composition, arithmetic and failure evidence.
+T010 is dependency-ready under the persistent execution envelope; no new human
+implementation grant is required. CLI/output integration remains T010 work.
+Earlier statuses remain historical; approved requirements are unchanged.
+
+
 ## Execution status — run007-0014 / T008
 
 **T001–T008 COMPLETE. T009–T014 NOT STARTED.** T008 supervised fixed-public metadata

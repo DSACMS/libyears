@@ -2301,3 +2301,79 @@ Conventional Commit follows freeze/diff/cached-whitespace and configured current
 history GitLeaks checks. Approved specification/plan/companions, T006/T007 code,
 siblings, arithmetic and runtime CLI remain unchanged. T009 is the next already-
 authorized dependency-ready task. No push or live/target/publication authority follows.
+
+## Run007-0014 — T009 source orchestration and age results
+
+T009 began after independently converged T008 caf66355c673d54947e03052244d10075b961071;
+its clean boundary and configured GitLeaks8.30.1 history342 were verified. Persistent
+sequential authority sufficed; no new task grant, product decision or public evidence
+retrieval was needed. No later-task CLI/output work began during this task.
+
+maven.py now scans/stages all local project and source-policy evidence before creating
+one admitted metadata batch. Complete absence omits Maven; incomplete empty discovery
+returns explicit unknown presence/population, with no invented rows. Reader capability
+failure stays unavailable. Sources remain independent, and Observed has no reader.
+A MavenScanReport carries discovery, sources and independently composed view summaries.
+
+Accepted work is grouped by exact GA for shared evidence, sorted deterministically;
+measured strings use lexical scheduling only, never maximum selection. Target and
+target-date refusal terminate dependent age attempts without older/unnecessary date
+requests. Each independently admitted measured version gets its own exact POM date;
+same-string target reuses the admitted date once. Existing libyears_between alone
+supplies arithmetic/anomaly behavior. Outcomes attach only through original admitted
+occurrence keys, preserving repeated module weights and denied-sibling isolation.
+No generic release-time row, invented observed fact or cross-view arithmetic is added.
+Safe version/origin/population records and completed ages survive source/GA/date/worker
+failure. The exact explicit CA option reaches the one supervisor without host lookup.
+
+Fourteen focused scan tests plus predecessor contracts cover every S6 composition:
+known all-policy/version/BOM failures N/M0/coverage0/total0; successful siblings and
+occurrence weighting; unknown discovery/inheritance with safe measured subset and
+null N/coverage; known-N whole-unavailable siblings with null coverage; every whole
+collection unavailable with null M/numerics; certified emptiness and empty siblings.
+Known-N whole-unavailable is a model fixture, not a new population/Observed intake.
+Exact same-string successful date produces0.0; missing date cannot. Distinct strings
+remain separate; reversed POM timestamps clamp/flag without changing the selected
+version. Target/date failure cannot request an older fallback. Native local staging/
+input integrity and unavailable-primitives witnesses remain separate from semantics.
+A preliminary fixture assumed source ordering; it was corrected by explicit source
+identity before the independently reviewed candidate, with no implementation change.
+
+A fresh complete non-author review verified retained/current candidate hashes,
+**275 Maven tests (14 focused) PASS**, diff whitespace, all assigned T009/P1/P4–P6 /
+S1/S3/S6/S7 obligations, readability and three independent probes: distinct
+comparison-equivalent1/1.0 dates, shared-GA three-version scheduling/weighting, and
+semantic operation with native filesystem capabilities disabled. COMPLETE / APPROVE;
+no material finding or missing task obligation. A minor stale opening docstring was
+corrected; the same independent reviewer verified final frozen3 hashes, exact
+single-docstring difference and AST equality otherwise, retaining APPROVE. This is
+an advisory acknowledgement, not a material-correction or new-full-audit claim.
+
+The parent and reviewer also probed an unreaped-worker context-manager edge: command
+cancellation returns at its10s bound, then context exit can add a separate bounded
+0.5s deferred cleanup attempt. Retained handles remain, no new command/request/restart
+occurs, and explicit later reap clears state. P6 expressly permits bounded deferred
+cleanup; the scan300s constraint governs metadata command/I/O admission/deadlines,
+without claiming final cleanup always finishes within300s for unreapable processes.
+This disclosed finite cleanup behavior is not treated as an unbounded wait, source
+failure, missing human gate or proof of maximum native scheduling latency.
+
+No full suite is required for this additive coordinator task; last mandatory T008
+checkpoint1044run/1skip PASS and capability-disabled1044/96skip PASS remain recorded.
+T010 requires its own full integration/sibling suite. No network, real target,
+Maven/Gradle/Java/resolver execution, private endpoint/host Maven configuration,
+archive or package-manager operation occurred.
+
+Final frozen SHA256:
+
+| File | SHA256 |
+| --- | --- |
+| libyears/maven.py | bf8ef70d14959a36460cf6fb704ccb7c344f689bc1a02f86ca7c6d690e0f9c00 |
+| tests/test_maven_scan.py | bf7a2c1ab96f93e63315e68afcb7483774fb2b1e70e952ee9855b654160b20f5 |
+
+Parent reconciled the complete review and witnesses against T009/AC01–03/09–11/18–20:
+**T009 independently CONVERGED.** One coherent local task commit follows scoped
+freeze/diff/cached-whitespace and configured current/history GitLeaks checks. T006–
+T008 source/transport implementation, approved specification/plan/companions, sibling
+modules, metric arithmetic and runtime CLI are unchanged. T010 is already-authorized
+and dependency-ready. No publication, private-target or GPUBLIC authority follows.
