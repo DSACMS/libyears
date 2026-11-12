@@ -214,3 +214,25 @@ separately authorize publication; collect actual hosted results for its changed
 tests/workflows asynchronously after publication. Separately select and authorize
 Feature007's bounded next stage. The deferred profiling and upstream warnings do
 not block safely beginning separately authorized feature work.
+
+## Published-boundary follow-up — Java discovery run 007-0001
+
+The commissioning human reports both github/main and cms/main published at
+`1cd937f2942550c7140e379931d0853a16f7ea1d`; local HEAD matches that exact
+boundary at discovery start. This supersedes the pending-publication/hosted
+statements above for this boundary only. No remote query or new CI maintenance
+was performed in the discovery run.
+
+Human-observed hosted evidence for that published boundary: GitLeaks PASS;
+Tier 2 PASS with checkout v7 and setup-node v7 executing successfully; exact
+1cd937f hosted macOS real-worker 3 PASS, full deterministic 783 tests PASS with
+one expected filesystem/platform skip, unittest runtime 49.999 seconds, and
+`git diff --check` PASS. These are accepted human observations, not independently
+retrieved logs or evidence for every matrix job. The Ubuntu 26 migration notice
+for ubuntu-latest is an upstream runner-image WATCH item, not candidate failure
+or authority to pin an older image. Existing Pages warnings remain monitored.
+
+The expected immediately preceding `/tmp` 006-0035 JSON baton was absent at its
+identified location. The ledger ends at006-0034 (52 unique rows,44 columns).
+No0035 row, missing runtime or account boundary was reconstructed; the current
+Java discovery uses007-0001 and its own external baton. No credit delta stored.

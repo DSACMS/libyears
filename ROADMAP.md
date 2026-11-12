@@ -74,7 +74,8 @@ An evidence-backed problem or learning opportunity is required.
 | [Ecosystem analyzer boundary](#8-ecosystem-analyzer-boundary) | EXPLORE | Architecture evidence | Bounded maintainability investigation |
 | [Dependency-metadata providers](#9-dependency-metadata-providers) | EXPLORE | Evidence sources | Provider landscape investigation |
 | [Human-centered agentic-development harness](#10-human-centered-agentic-development-harness) | EXPLORE | Methodology | Cross-project evidence and distribution study |
-| [Java ecosystem repodive](#11-java-ecosystem-repodive) | EXPLORE | Java discovery | Human-requested bounded investigation |
+| [Java ecosystem repodive](#11-java-ecosystem-repodive) | SELECTED (007 Maven plural views) | Java contract | Public Maven-first SDD |
+| [Plural dependency-age views across ecosystems](#23-plural-dependency-age-views-across-ecosystems) | EXPLORE | Evidence/output semantics | Separate future selection |
 
 ### 3. Project-root discovery/listing
 
@@ -225,14 +226,20 @@ scan/output branches; cumulative tests and cross-platform fixtures expose testin
 and integration pressure. Maintenance hours or a scaling law were not measured.
 
 **Why this state:** The approved retrospective recommends evidence gathering;
-no interface, migration or generic plugin framework is selected. This run performs
-no exploration.
+no interface, migration or generic plugin framework is selected. Java discovery
+adds observational evidence below, without an interface experiment.
 
 **Success signal:** A concrete change-history/test-cost map and bounded comparison
 show lower maintenance burden with equivalent domain, privacy and failure witnesses.
 
 **Stop condition:** Indirection hides ecosystem rules or supplies no demonstrated
 benefit over current explicit boundaries.
+
+**007-0001 evidence:** Java discovery observes source/population/version/comparator
+questions; public metadata lookup and Java reporting remain prospective. Maven inheritance and
+Gradle configuration/variant scope make a universal source interface premature.
+See [analyzer observations](discovery/java-ecosystem-repodive.md#methodology-and-architecture-observations).
+No seam/refactor selected.
 
 **References:** [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md#architectural-complexity).
 
@@ -252,7 +259,26 @@ hash mismatch and no measurable age. Registry identity, source authority, dates
 and provider fidelity are separate questions; no alternative provider was tested.
 
 **Why this state:** Human-requested future evidence gathering, not adoption or a
-selected solution to the observed mismatch. No provider research occurs here.
+selected solution to the observed mismatch. At this entry's original post006
+boundary, no provider research had occurred.
+
+**007-0005 concrete Maven evidence:** One bounded [alternative-age investigation](specs/007-maven-dependency-age/age-evidence-alternatives.md)
+examines ecosyste.ms, deps.dev, Libraries.io and Socket. Open adapters/documentation
+show modification-time derivations rather than independent publication authority;
+deps.dev asserts publication but its Maven derivation remains unestablished.
+ecosyste.ms also exposes a separate current version-record creation time; this is
+not first-ever observation or Central publication, and its maintenance utility /
+historical stability require human judgment. Sonatype cataloging has a distinct
+event definition and product API, without an established anonymous public date
+route. This use case concretely strengthens provenance/semantics research, not
+provider adoption. State remains EXPLORE; no provider is SELECTED. Source caching,
+derivation and observation are different trust relationships; schema names alone
+do not establish the event. Exact findings and limits are in the linked record.
+Human007-0006 rejects provider-row creation for Feature007 product use, retaining
+the investigation as evidence. The [final tooling-practice investigation](specs/007-maven-dependency-age/ecosystem-practice.md)
+does not reopen provider adoption: independently repeated modification-date use
+can support only an explicitly conventional claim, never publication authority.
+Opportunity9 remains EXPLORE; no provider is selected.
 
 **Success signal:** Concrete comparative evidence on coverage, source/content/date
 fidelity, reproducibility and operational cost under the existing metric boundary.
@@ -278,6 +304,66 @@ use internal orchestration and prospective observations. The qualitative17K prom
 signal motivated durable information architecture; measured attention savings and
 cross-project generality remain absent.
 
+**007-0001 evidence:** Repository lifecycle/baton/frozen review rules transferred
+to Java discovery; the prompt still supplied new external/public-only authority,
+no-execution boundaries and six review scopes. Missing prior baton remains a real
+handoff limit. This is another feature in libyears, not cross-project validation;
+no prompt-size or attention saving was measured. Continuation007-0002 recovers
+portfolio context without reinventory; new plural product authority, conditional
+stage authority and public-only disclosure still required a substantial prompt.
+The human reports roughly22K for007-0001; exact comparable prompt measurements
+remain absent. Twelve decomposed review contexts closed11 author issues and
+rejected unnecessary schema/granularity human gates, leaving one actual source-
+policy choice plus technical date evidence. This is not an efficiency or optimal-
+reviewer-count claim. In007-0003 the human applies the durable006 evidence-floor
+principle to Maven, while technical research separates Maven eligibility/mirrors/
+filters and publication events. The principle transfers; the algorithm does not.
+Run007-0004 begins in a fresh parent context created by the human/orchestrator
+after reported approximately89% context utilization. Durable artifacts recovered
+the plural contract, H1 decision, prior corrections and technical stop without
+target reinventory. The substantial initiating prompt retransmitted task boundaries,
+research questions, review scopes and new telemetry/continuity authority. No material
+reasoning loss was identified, but absent methodology cannot be proven absent.
+Decomposed date/interface/catalogue/order/variant/cascade reviews make coverage
+inspectable; no reviewer-resource or net attention saving is measured. This is a
+within-repository handoff observation, not a generalized harness validation.
+Run007-0005 continues in the same parent context. Durable negative evidence narrows
+research to four credible providers and current cataloging interfaces, rather than
+repeating Central's rejected field hunt. New human authority permits alternative
+public-provider research and analysis of different claims, but selects neither.
+The prompt still retransmits extensive boundaries, questions and review scopes;
+net prompt/attention savings remain unmeasured. Decomposed reviews must challenge
+both unsupported publication labels and first-observation claims inferred from
+database creation timestamps. Version basis versus time basis is retained as
+prospective evidence, with no harness/skill or architecture implementation.
+Run007-0006 uses those durable negatives to restrict the final authorized rung to
+ecosystem practice. New human authority permits assessing a labeled convention,
+not reclassifying old dates as publication; provider bookkeeping is now explicitly
+rejected for product use. Unrelated implementations, primary versus fallback use,
+date-free modernization and observation-based cooldowns must stay distinct in
+synthesis. The prompt still carries substantial restrictions/questions; no measured
+prompt/context/attention saving or generalized harness result follows. No skill
+or tooling framework is implemented.
+Run007-0007 starts in a fresh parent at a human product-decision boundary,
+recovering the publication-negative/provider-negative/moderate-convention chain
+from durable dirty-tree artifacts. New authority selects the conventional POM
+Last-Modified claim; technical ordering is agent-resolvable while stable eligibility
+remains normative. Extensive prompt retransmission persists, with no comparable
+prompt-size/attention series or measured saving. The decision-boundary handoff is
+usable here, not generalized harness validation; no harness/SKILL.md is implemented.
+Run007-0008 continues that parent with only conservative latest eligibility newly
+selected. Durable state avoids repeated portfolio/date/provider/practice research;
+source-policy/parser/worker bounds are resolved technically. Fresh whole-specification
+review finds collection-admission ambiguity; subsequent focused reviews catch a
+residual numeric predicate and nullable-record collateral before final closure.
+Plan and sequential tasks independently converge with no new product gate. The
+immediate next human authority is implementation; live public/private validation
+remain separate future gates. The extensive prompt and two internal concern-scope
+clarifications show continuing retransmission burden; no measured attention savings
+or fresh-parent causal benefit follows. No generalized harness or SKILL.md is built.
+No shrinking burden or cross-project generality is established. See the
+[discovery observations](discovery/java-ecosystem-repodive.md#methodology-and-architecture-observations).
+
 **Why this state:** Reusable practice merits evaluation, not a selected tool,
 mandatory premium-model workflow or immediate skill implementation.
 
@@ -291,7 +377,8 @@ repository-specific authority, or relies on unobserved resource claims.
 
 ### 11. Java ecosystem repodive
 
-**State:** EXPLORE
+**State:** SELECTED in007-0002 for Maven-first plural declared/observed specification;
+no implementation authority.
 
 **Area:** Java discovery
 
@@ -300,17 +387,64 @@ repository-specific authority, or relies on unobserved resource claims.
 **Opportunity:** A future bounded Java ecosystem repository investigation to identify
 actual direct declarations, retained selection and source/publication evidence.
 
-**Evidence:** The human explicitly requests preserving this opportunity in the
-006-0017 closure commission. This closure supplies no new Java repository evidence.
+**Evidence:** Authorized discovery007-0001 inspected seven public CMSgov clones:
+four Maven-only, two Gradle-only, one mixed. Sixty-five project POMs contain864
+written dependency elements (not an accepted denominator); AB2D retains20 Gradle
+locks with configuration-specific selections but no directness/source attribution.
+See the [repodive](discovery/java-ecosystem-repodive.md) and
+[independent review](discovery/java-ecosystem-repodive-review.md).
 
-**Why this state:** Human demand supports future evidence gathering; no Feature007,
-Java support or external repository access is selected/authorized here.
+**Why this state:** The human selects two independent views, declared and observed,
+with external direct module-qualified occurrences, DPC primary and AB2D adversarial.
+Initial Maven observed evidence may be unavailable; never substitute declarations,
+add the two totals or retrofit siblings. Independent specification/correction reviews
+close11 author issues and support additive schema3, not a new schema authority gate.
+Human007-0003 resolves H1=NO: mere alternate/file eligibility is not a Central
+comparator veto. The claim-specific cascade retains positive contrary refusals and
+separate acquisition/content assurance. [T1 research](specs/007-maven-dependency-age/publication-history.md)
+did not establish suitable public release-publication date authority. Four changed-
+area independent reviews approve the bounded evidence stop/cascade, with no material
+findings; whole specification remains unapproved. No plan/tasks or implementation
+started. H1 is resolved; the current blocker is technical date authority, not a new
+comparator vote. See the linked review record for the exact missing evidence bridge.
+Dedicated007-0004 research also fails to establish an authoritative public historical
+publication/availability timestamp binding. Catalogue and named ordering evidence
+are retained; stable eligibility/latest admission remain unapproved. Stop for human
+product direction: defer Java, authorize investigation of a different truthful date
+claim, or another bounded direction. No proxy metric or implementation is selected.
+The human007-0005 accepts that result and commissions the linked
+[alternative-provider/date investigation](specs/007-maven-dependency-age/age-evidence-alternatives.md).
+Public provider record creation is a narrower available fact for human evaluation;
+no provider or time basis is selected, and publication T1 remains open.
+Human007-0006 rejects row creation and authorizes the final
+[ecosystem-convention rung](specs/007-maven-dependency-age/ecosystem-practice.md).
+An explicitly conventional POM-date candidate now awaits human selection; it is
+not authoritative first publication. Specification approval, plans/tasks and
+implementation remain unstarted; no additional timestamp hunt is selected.
+Human007-0007 now selects that narrower conventional basis, consciously leaving
+publication authority unestablished. [Latest-policy alternatives](specs/007-maven-dependency-age/latest-policy.md)
+isolate conservative unknown-refusing versus broad unknown-admitting eligibility;
+pinned Maven precedence and current GA catalogue are technical contract decisions.
+Specification remains blocked for that human policy choice, with technical source-
+policy/budget completion still required before approval. No plan/tasks/implementation.
+Human007-0008 selects conservative eligibility: unknown below maximum is harmless;
+unknown at/above maximum refuses. Bounded source policy and metadata transport are
+complete. Fresh whole-specification review plus focused correction closure approves
+the specification; [plan](specs/007-maven-dependency-age/plan.md) and
+[sequential graph](specs/007-maven-dependency-age/tasks.md) independently approve.
+All implementation tasks remain NOT STARTED. No runtime/target/private authority
+follows; exact next human gate is T001 implementation authorization.
+See [human decision](specs/007-maven-dependency-age/discovery.md),
+[specification draft](specs/007-maven-dependency-age/spec.md) and
+[approval/gates](specs/007-maven-dependency-age/reviews.md).
 
-**Success signal:** Separately authorized real repository evidence establishes a
-useful bounded workflow without executing a resolver inside libyears.
+**Success signal:** Human-selected truthful ordinary journey supported by the
+observed evidence; no resolver execution inside libyears. Declaration versions
+must never silently become selected-version claims.
 
-**Stop condition:** Evidence requires unapproved target access, execution, unsupported
-selection assumptions or ecosystem implementation before product selection.
+**Stop condition:** Unapproved target/registry access or execution, false joins or
+combined view arithmetic, unresolved consequential source/schema/date policy, or
+implementation without separate authority.
 
 **References:** [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md#what-we-would-do-differently-and-human-handoff).
 
@@ -616,7 +750,8 @@ resolver. **Reference:** [Snapshot limitations](maintenance/nuget-snapshot-popul
 ### 20. Hosted action-runtime maintenance observations
 
 **State:** WATCH for upstream managed Pages warnings; owned action maintenance
-completed in006-0035, pending separately authorized publication/hosted validation.
+completed in006-0035; published1cd937f hosted evidence subsequently supplied
+by the human (see the housekeeping follow-up). Ubuntu26 migration is upstream WATCH.
 **Evidence:** Human-supplied72dc9a2 hosted checks ultimately GREEN. Recurring
 checkout@v4/setup-node@v4 Node20-to-Node24 runtime warning likely belongs to
 repository action maintenance. deploy-pages@v5 DEP0040 punycode ownership and
@@ -798,6 +933,18 @@ complete scope from a partially understood Gemfile.
 - [Feature 004 discovery](specs/004-rubygems-support/discovery.md)
 - [Feature 004 reviews](specs/004-rubygems-support/reviews.md)
 
+### 23. Plural dependency-age views across ecosystems
+
+**State:** EXPLORE; no sibling contract or implementation selected.
+**Opportunity:** Investigate independent declared and retained-evidence age views
+outside Feature007. **Evidence:** Human007-0002 selects plural Maven views; the
+[applicability table](specs/007-maven-dependency-age/discovery.md#methodology-and-prospective-applicability)
+finds reusable fact/availability distinctions but ecosystem-specific scope/joins.
+**Success signal:** Separately authorized real evidence supports a useful second
+view without false joins, hidden defaults, duplicate totals or rewritten existing
+fields. **Stop condition:** A conceptual analogy is treated as implementation or
+public-namespace authority. No universal aggregate/analyzer is implied.
+
 ## How Opportunities Move
 
 WATCH -> EXPLORE when evidence justifies bounded investigation.
@@ -817,5 +964,12 @@ remain unchanged for long periods. The radar is deliberately selective.
 The [post-feature retrospective](specs/006-nuget-selected-evidence/methodology-retrospective.md)
 and [next-feature methodology handoff](specs/006-nuget-selected-evidence/methodology-handoff.md)
 reconcile the journey through published `0eabe303…`. They select no new ecosystem.
-Feature007/Java remains unstarted; human roadmap selection and next-stage authority
-remain required. Cross-cutting actor guidance lives in AGENT_ROUTING.md.
+At that retrospective boundary Feature007/Java was unstarted; human roadmap
+selection and next-stage authority remained required. Cross-cutting actor guidance
+lives in AGENT_ROUTING.md.
+
+Java discovery007-0001 subsequently reconciled the published housekeeping boundary
+1cd937f using explicitly supplied human hosted observations. Bounded public Java
+discovery completed without selection in007-0001. Human007-0002 subsequently
+selects Maven-first plural views for specification under the linked feature record.
+The historical handoff remains evidence of its earlier state.

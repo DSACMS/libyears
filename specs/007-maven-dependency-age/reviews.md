@@ -1,0 +1,1112 @@
+# Feature 007 review record
+
+Current007-0008: conservative eligibility selected; complete source-policy and
+metadata companions received fresh whole-specification review and focused correction
+closure. **SPECIFICATION, PLAN AND TASK GRAPH APPROVED; IMPLEMENTATION AUTHORITY REQUIRED.**
+Current staged plan/task dispositions
+are recorded in the run007-0008 sections below. Earlier current-status paragraphs
+remain historical; no runtime implementation or target/private validation is authorized.
+
+Current007-0007: the human selects the explicitly conventional public versioned
+POM Last-Modified time basis. Publication authority remains unestablished. Eight
+fresh non-author scopes complete with no material findings; [reviewed latest-policy
+alternatives](latest-policy.md) await the exact human eligibility choice.
+**Specification NOT APPROVED; no plan/tasks/implementation.** The latest
+[reconciliation](#run007-0007--conventional-time-basis-and-latest-policy-decision-review)
+supersedes earlier current-disposition paragraphs, which remain historical.
+
+Current007-0006: [final ecosystem-practice investigation](#run007-0006-ecosystem-practice-review)
+examines a narrow conventional POM-date candidate. The human rejects ecosyste.ms
+row creation for product use. No conventional basis is adopted, publication T1
+remains unestablished and the specification remains unapproved. Older disposition
+paragraphs below retain their historical context.
+
+Current007-0005: [bounded alternative-age investigation](#run007-0005-alternative-age-evidence-review)
+finds no publication solution and a narrow provider-record date for human
+evaluation. No provider/time basis is selected; T1 and specification approval stay
+open. Earlier current-disposition paragraphs retain their historical context.
+
+Current disposition007-0004: [focused research and six-scope review](#run007-0004-focused-research-and-independent-review)
+complete; T1 NOT ESTABLISHED, whole specification NOT APPROVED. Stop for human
+product direction; H1 remains settled and no proxy is selected. Earlier disposition
+paragraphs below describe their historical runs.
+
+Current continuation:007-0003 records human H1=NO; prior H1-pending text below is
+historical. T1 and latest changed-area review disposition appear at the end.
+
+Run007-0002: human-selected Maven-first plural declared/observed direction.
+Specification draft is under independent review; **not approved**. No plan/tasks
+or implementation authorized. See [authority/evidence](discovery.md) and
+[specification](spec.md). Initial H1/H2/T1 gates are explicit, not silently settled.
+
+## Initial specification review — frozen candidate
+
+Specification SHA256:
+`39ffaca72a09f1bfe5f7447bed9de260625971bd7f0211c66d25119a517611cf`.
+Decision/evidence SHA256:
+`c13628df19131771597b6dcc91e6207d17fd121e003daf49f7ab061e2d15458a`.
+Reviewed bytes are retained in the current run's temporary observation directory.
+Seven fresh non-author reviewers received decomposed scopes, these digests and
+verbatim no-private/no-registry/no-target-execution/no-implementation restrictions.
+No sibling conclusions were shared before reports completed. No overrides were
+requested; actual child configuration/resource telemetry is unobserved.
+
+| Reviewer | Coverage | Complete? | Initial disposition / findings |
+| --- | --- | --- | --- |
+| A | Plural facts, joining, summaries | Yes | REVISE: source states did not fully determine mixed-availability repository composition. False-join and independent-view invariants otherwise sound. |
+| B | Maven population/inheritance/management/profiles | Yes | REVISE: distinguish field merge from occurrence deduplication; establish static aggregation before internal exclusion; freeze bounded management/property precedence; consider profile effects on external population. No new population human gate needed. |
+| C | Type/classifier and metadata identity | Yes | REVISE: T1 granularity remains unresolved; handler/model mapping sound. Clarify empty-classifier refusal and alias/duplicate acceptance witnesses. |
+| D | Observed meaning and four terminology pairs | Yes | APPROVE scoped: retain Declared/Observed with explicit retained-selection definition; no extra terminology human gate. Suggested capability-specific unavailable wording and no successful/current-build implication. |
+| E | Comparator, source/privacy and date authority | Yes | REVISE: H1 is genuinely unresolved; define precise alternate-eligibility choice. T1 is an evidence prerequisite, not a human vote making a timestamp authoritative. Disclosure boundary sound. |
+| F | Schema/output compatibility and siblings | Yes | REVISE: necessary incompatible schema change not established. Add Maven plural subtree with explicit unavailable legacy scalar projection; preserve existing null/partial-summary semantics and sibling rows. |
+| G | Ordinary DPC usefulness | Yes | APPROVE scoped: useful attributable request/limitation journey, no promised198 denominator or positive yield. Suggested reasons for declared limitations, concrete module weighting and non-yield-dependent usefulness witness. |
+
+Six material author-correctable issues are tracked as A1, B1–B4 and F1; C/D/G
+clarifications and E's unresolved-policy precision are retained separately. A REVISE
+because a known authority/evidence gate remains is not an implementation defect.
+The parent checked the cited model-building sequence, aggregation and artifact
+semantics against official Maven documentation and current SPEC/output contracts.
+No candidate reinspection was necessary; **all seven reviewers report no target
+access**. This run therefore makes no new candidate-integrity claim or portfolio
+inventory. Prior007-0001 revision/status evidence remains the target baseline.
+
+## Corrections prepared for focused review
+
+Revised specification SHA256:
+`b2a74ecfd95fb8a48c14a4acff9c15ab18025bfd8a1d3d917b6de64f9ce0030a`.
+Revised decision/evidence SHA256:
+`6316fe1782d4e0cae0d1c1f5850d44758d7151b90611d29775c74910be6737ef`.
+
+- A1: explicit per-view composition table, measured-subset M versus null coverage,
+  safe sibling statistics and union-of-occurrences arithmetic; no averaged summaries.
+- B1–B4: explicit field/default order and provenance; literal aggregation components
+  rather than co-location; narrowly enumerated management/property/builtin subset,
+  unresolved-import refusal; ancestor profile effects on internal/external attribution.
+- C/D/G: explicit empty classifier handling, artifact alias collision witnesses,
+  capability-based observed unavailability, no successful/current-build claim, normal
+  declared limitation reasons and concrete DPC usefulness without positive-yield demand.
+- F1: schema3 additive Maven records/views and representation-specific legacy
+  unavailability. **H2 is withdrawn as a necessary human schema gate**, subject to
+  focused compatibility closure. No default Java view or sibling relabeling.
+- E/C: H1 reduced to the alternate-eligibility veto choice; T1 remains technical
+  date/latest evidence work. H3 identifies public-history granularity as a potential
+  claim decision rather than confusing it with technical artifact-handler mapping.
+  These policies remain open; no human answer or date field is invented.
+
+Reviewer F completed five in-memory representation probes against existing helpers,
+covering four siblings and Maven-only unavailability. Its first NuGet fixture probe
+used the wrong evidence object and was corrected; this is probe-fixture repair,
+not product failure. Parent independently ran three pure serialization/summary
+probes with sockets forbidden: unchanged successful PyPI rows/evidence/summary in
+mixed output, Maven-only all-null legacy projection, and an admitted empty sibling's
+partial zero with null repository coverage. All PASS. These establish existing
+representation capacity only; they do not implement Maven or validate the future
+plural reader. Other sibling witnesses remain explicit future acceptance obligations.
+
+No technical plan or task graph was drafted while specification review was pending.
+
+## First focused correction round
+
+Three new non-author scopes reviewed the revised digests above. All completed;
+none accessed targets or registries or edited files.
+
+- **S — APPROVE A1/F1 corrections:** source composition and additive3 semantics
+  are coherent; no incompatible field reinterpretation demonstrated. Eight pure
+  composition representations, union statistics, four ecosystem serialization
+  comparisons, Maven-only nulls and empty-sibling partial zero passed with sockets
+  forbidden. These are representational probes, not Maven implementation tests.
+- **M — REVISE B corrections:** three remaining technical defects: Maven optional
+  is not managed; scalar property handling needed reserved-model/noninheritance
+  exclusions; consumer-local management admission needed field-level rather than
+  merged-record provenance. Other inheritance/aggregation/profile/alias corrections
+  were satisfactory. These are author defects, not missing human authority.
+- **P — REVISE policy corrections:** H3 was an unnecessary mandatory human gate;
+  possible datasets alone do not change the selected version-age claim. T1's
+  stop point differed between spec and handoff. H1 precision, D terminology and G
+  journey corrections approved. No new schema authority is established.
+
+The parent verified optional's management exclusion against the official
+[management injector](https://maven.apache.org/ref/3.9.11/maven-model-builder/xref/org/apache/maven/model/management/DefaultDependencyManagementInjector.html)
+and reserved model-value precedence against the
+[interpolator](https://maven.apache.org/ref/3.9.11/maven-model-builder/xref/org/apache/maven/model/interpolation/AbstractStringBasedModelInterpolator.html).
+The revision defaults optional only after direct-dependency inheritance, never
+from management; reserves model namespaces, rejects project.directory request
+interpolation and prevents project.version property shadowing; and applies unknown-
+import exceptions only to independently supported consumer-written fields.
+AC04/05/07 now require discriminating counterexamples.
+
+**H3 is withdrawn** as an automatic human gate. T1 now consistently precedes
+specification approval and any technical planning. Only an actual proposal changing
+the version-age claim would create additional human authority. H2 remains technically
+resolved by additive3; **H1 is the one current consequential HUMAN policy gate**.
+T1 remains a technical evidence obligation, not a human truth vote.
+
+Second revision SHA256:
+`16a1d38072f24f2b8e6aaa81c5b5dd0a2e2455b1b88543bc4f3e8e31e4bb927b`.
+Decision/evidence SHA256:
+`53cb56f95fabf70cb4d8b3c15dc2461b1d7ec1c5ded601e3aedc382052cc987a`.
+This round adds five author-correctable findings (M1–M3,P1–P2), bringing the defined
+count to11 across these two review rounds; policy/evidence blockers and nonblocking
+suggestions are not included in that count.
+
+## Final focused closure and stopping disposition
+
+Two further fresh non-author reviewers independently read the second-revision
+specification/decision digests above and the authorized prior bytes:
+
+- **M2 — COMPLETE / APPROVE M1–M3 and B collateral:** optional exclusion from
+  management, builtin/noninheritance refusals and field-level import provenance
+  are correct; no regressions in earlier inheritance, aggregation, profile,
+  management/directness or artifact-alias corrections. Acceptance obligations are
+  specification witnesses, not executed implementation tests.
+- **P2 — COMPLETE / APPROVE P1–P2 and gate collateral:** H3 withdrawn, T1 consistently
+  before specification approval/planning, H1 sole current HUMAN policy choice, H2
+  no necessary schema-version gate. S6 and S8 are byte-identical to S's approved
+  candidate; independent views, public-only disclosure and no-execution boundaries
+  remain intact.
+
+All11 tracked author-correctable issues are closed. **Whole specification is NOT
+APPROVED.** Current status: **SPECIFICATION BLOCKED — HUMAN DECISION REQUIRED**.
+No majority vote, scoped approval or product-direction clarity supplies missing
+policy or date evidence. No technical plan, task graph or implementation was begun.
+
+**Exact next human gate (H1):** should applicable, unassigned alternate/file
+repository eligibility alone veto a conventional Central comparison? Recommend
+**yes**, accepting that this can withhold otherwise ordinary requests in DPC's
+file-repository children. The alternative requires explicit Java-specific risk
+acceptance and qualification; neither permits positive private/fork assignment,
+Central exclusion/override or unsafe/unknown relevant policy to reach HTTP.
+
+After that decision, finish the bounded source-policy input/refusal contract and
+T1's authoritative version/date identity, granularity, stable ordering/completeness
+and missing/conflicting-date rules; then independently re-review the specification.
+T1 is technical evidence work, not a request to declare undocumented timestamps
+true. Documentation research may continue within existing authority; registry
+contact still requires explicit lifecycle authorization. Planning waits for approved
+specification. Implementation remains separately unauthorized even after future
+plan/task reviews.
+
+## Observation, methodology and verification
+
+007-0001 was verified against its original44-key baton and principal artifact
+digest, then appended exactly once with human-supplied session, GPT-6.1-Sol/openai/
+medium, agent0.160.0, reported759 seconds and credits_after107. credits_before remains
+blank because no account continuity was established. Original runtime notes and
+unknown confounding were preserved. All52 preceding ledger records remain byte-
+identical; ledger now53 records/44 columns with unique IDs. No006-0035 reconstruction,
+credit delta or current007-0002 row was stored.
+
+Repository artifacts recovered the portfolio and its corrections without target
+reinventory. New prompt authority supplied plural semantics, Maven-first scope,
+public-only future disclosure and conditional stage continuation. Twelve fresh
+review contexts (seven initial, three first correction, two final correction)
+produced bounded counterexamples and removed two unnecessary human-gate hypotheses.
+No net cost/attention benefit or optimal reviewer count follows; actual child
+resource telemetry and comparable prompt measurements remain unavailable. The
+human's roughly22K discovery-prompt observation is qualitative. No shrinking burden
+or cross-project harness generality is claimed. Durable feature artifacts now carry
+the plural invariant and public/private split, rather than leaving them only in
+this prompt. No harness/skill/analyzer or sibling pluralization was implemented.
+
+There is **one current HUMAN policy gate** (H1), plus T1 technical evidence work.
+Later implementation, private validation and publication retain their distinct
+future authority boundaries; they are not current bookkeeping interruptions.
+
+Verification at closure:
+
+- Original discovery artifact unchanged; no candidate was reinspected, modified,
+  executed or contacted. Prior target-integrity evidence is retained, not rerun.
+- No private target identification/access; no registry/alternate endpoint calls;
+  only official public documentation research. Existing serializers/arithmetic
+  helpers were used for isolated in-memory representation probes with sockets
+  forbidden. No Maven/Gradle/Java/Ant/scripts/builds/install/resolution occurred.
+- Product/runtime/schema/CLI/metric files, existing tests/workflows and sibling
+  behavior unchanged. No full deterministic suite required or run.
+- Local document links/anchors:117 PASS; Markdown whitespace and `git diff --check`
+  PASS. Configured GitLeaks8.30.1 full history:333 commits PASS, zero findings;
+  current documents/ledger stdin scan PASS. No suppression/config change.
+- Current007-0002 observation has a separate44-key `/tmp` baton before final report;
+  it is not appended here. Unobserved runtime/account/model fields remain blank.
+- No commits or push. Current-run edits are three new feature Markdown files,
+  ROADMAP selection/future-opportunity updates and the prior observation append.
+  Four inherited007-0001 documentation changes remain in the working tree, with
+  ROADMAP additionally updated by this run; they were not silently committed.
+
+
+## Run007-0003 — H1 resolution and T1 evidence investigation
+
+The human resolves H1=**NO**: alternate/file eligibility alone does not veto a
+conventional Central comparator. Stronger accepted claim-specific evidence takes
+precedence, positive contrary/unsafe relevant evidence refuses, and acquisition /
+content/producer/resolver/runtime claims remain separate. Public research needed
+for T1 is authorized; live DPC measurement, target execution and private validation
+are not. No earlier term, plural population, identity or additive3 question reopens.
+
+007-0002 was verified against its44-key baton and frozen principal digest, then
+appended exactly once with supplied session/model/provider/effort/version,
+reported1505s and credits_after109. Explicit human continuity after007-0001 permits
+credits_before107. Original runtime notes/unknown confounding and all53 prior row
+bytes remain; no credit delta/current007-0003 row is stored. Ledger54x44, unique.
+
+Two independent bounded researchers completed separate Maven source-policy and
+version/identity/latest investigations. They used prior portfolio artifacts and
+primary documentation/tagged implementation, without candidates or private access.
+Parent independently inspected Indexer7.1.6 timestamp assignments, Maven metadata,
+Central Search/Publisher/Portal definitions and a generic Central component page.
+The [T1 record](publication-history.md) preserves the exact semantic distinctions
+and access limits; no authoritative stable-release date contract is asserted.
+
+Frozen changed-area review candidate:
+
+- specification SHA25633966de54bc57b131461ba7915997b655ce919a0abe34341ba7af950ba4aa39a;
+- publication-history SHA256b5d8f492205f3b16c8e1030a54a408fd673c5d05ee0e5ce432782149f52c8ad7;
+- decision/evidence SHA25691bedb076256b1ba4dbb5d98876f55880f0265ae80c7a467e107d6617cba6d34.
+
+Four fresh non-author changed-area reviewers have separate scopes: A comparator /
+contrary-evidence semantics; B publication authority, explicitly trying to disprove
+the negative result; C ordering/stability/completeness/variant identity; D privacy,
+plural non-substitution and ordinary usefulness/gate discipline. No sibling answers
+were provided before completion. Scoped review is not whole-spec approval. No plan
+or task graph is drafted while the publication floor is unestablished.
+
+## Run007-0003 changed-area review disposition
+
+All four scopes completed against the frozen digests above, with independent
+primary-source checks. **No material corrective finding**; no prior007-0002 issue
+reopened. These are approvals of the changed contract/evidence and stopping
+behavior, not a vote approving the whole specification.
+
+| Reviewer | Scoped disposition | Evidence / limit |
+| --- | --- | --- |
+| A — cascade and source semantics | COMPLETE / APPROVE | No alternate/file/parameterized-addition veto, no mirror-pattern confusion, terminal attributable contrary evidence, no invented Maven package mapping or stronger reader; exact bounded policy grammar remains unapproved |
+| B — publication event, actively challenging the stop | COMPLETE / APPROVE bounded negative conclusion | Sought a counterexample; publication event/state exists but suitable current public timestamp-to-event mapping remains unestablished. No acquisition/content/producer or exact-physical-instant requirement imposed |
+| C — latest/order/stability/completeness/identity | COMPLETE / APPROVE | Last-added != greatest stable; Maven comparison != identity; current catalogue can suffice, without all-ever history or atomic truth. No new classifier or ordering gate invented |
+| D — privacy/plural output/usefulness/methodology | COMPLETE / APPROVE | H1=NO and public/private split preserved; no Observed synthesis, default view, cross-view addition or sibling retrofit; DPC/AB2D roles do not imply live measurement |
+
+B found the strongest additional primary counterexample in Sonatype's archived
+[Nexus UI book](https://github.com/sonatype/nexus-book/blob/master/chapter-using-nexus-ui.asciidoc):
+its advanced-search Age concept describes time available on Central. The parent
+independently read that passage. It is positive operator evidence for an availability-
+age concept, not a demonstrated current field/retrieval/event binding. Sonatype's
+[2011 Search introduction](https://www.sonatype.com/blog/2011/06/you-dont-need-a-browser-to-use-maven-central)
+describes a last-updated date; its [2011 architecture explanation](https://www.sonatype.com/blog/2011/06/maven-central-search-architecture-overview)
+explicitly discusses different index schemas/field contents. Inferring today's
+Search timestamp semantics from Indexer or this UI would still need the missing
+bridge. Neither historical documentation nor access failures were discarded or
+misclassified as proof that useful Central dates can never exist.
+
+Reviewers independently checked the metadata/event distinctions recorded in T1.
+A documented GAV-level publication/availability date, with stated granularity and
+an adequate bounded current catalogue, could suffice. The missing fact is the
+meaning and identity association of the date, not stronger supply-chain assurance.
+All four report no candidate/private/external-filesystem/config/cache/credential
+access, no metadata probes, no execution or edits. Public reads used official
+Apache/Sonatype documentation and official source; B additionally read the generic
+maven-core page/OpenAPI page, without a usable extracted date. Parent's one generic
+Search probe failed at tool access; this does not diagnose the registry or establish
+field semantics. No target-derived coordinate lookup or private/alternate endpoint
+was contacted.
+
+## Run007-0003 stopping point and next gate
+
+**T1: FAIL — required publication-date authority not established.** Whole
+specification **NOT APPROVED**. H1 is resolved NO and needs no repeated vote.
+No new consequential comparator/schema/terminology/identity choice is identified.
+This is the user's explicit stop-on-unestablished-date boundary, not a product
+implementation failure or evidence that Java is permanently nonviable.
+
+No technical plan, task graph or runtime implementation was prepared. Source-policy
+selection/filter grammar, stable eligibility/order/equal-maximum/date admission and
+adequate current-catalogue enumeration still need a complete technical contract,
+but none can repair an undocumented publication date through implementation.
+
+**Exact next gate:** obtain authoritative operator documentation or implementation
+binding a public exact-version timestamp to a suitable release publication /
+availability event, with units/granularity and retrieval/history scope; independently
+verify it, complete T1 and source admission, then re-review the specification.
+No human can approve an undocumented timestamp into truth. If no such evidence
+route is available, the human may defer this direction or separately authorize
+investigating a different date claim; no proxy was selected here. No operator
+message or credential/access request was sent. Planning and task preparation
+remain conditional on specification approval; implementation requires separate
+explicit authority even after those future gates.
+
+For the requested reporting vocabulary this stop is **SPECIFICATION BLOCKED — HUMAN
+DECISION REQUIRED**: the current technical blocker is T1 evidence, not an unresolved
+H1 decision. Do not infer a missing source-policy vote from that label.
+
+## Run007-0003 methodology and verification
+
+The006 principle transfers directly: separate claims, use strongest accepted facts,
+require only sufficient truthful evidence for the narrower claim, and stop at that
+floor. Maven adapts the mechanism through eligibility/order, IDs, mirrors, native
+filters, system assignment and relocation; no NuGet mapping/algorithm was copied.
+The human supplied the genuinely new H1=NO authority and public T1 research scope.
+Repository artifacts recovered the rest without portfolio/terminology reinvestigation.
+
+Two research contexts and four fresh review contexts supplied technical answers and
+challenged date authority without relaying routine corrections through the human.
+No material correction cycle was required in this run. **Zero unresolved new policy
+votes** remain; there is one technical evidence stop. Future implementation/private
+validation/publication retain their separate authority boundaries. This is another
+feature within libyears, not cross-project generality. Exact comparative prompt
+measurements and net attention/runtime/credit savings remain unobserved; the earlier
+rough22K prompt signal remains human-reported qualitative context. The principle,
+H1 decision, distinctions, evidence limits and next gate are now durable here and
+in S7/T1, rather than trapped in a new giant prompt. No harness/skill/analyzer was
+implemented.
+
+Verification:
+
+- Ledger54 records/44 columns, unique IDs; prior53 record bytes preserved. Verified
+  007-0002 enrichment107/109 uses explicitly confirmed continuity and1505 seconds
+  is supplied reported runtime. Original notes/unknown confounding remain. No derived
+  credit delta,006-0035 reconstruction or current007-0003 append.
+- Original007-0002 reviewed bytes are retained in the current external handoff
+  directory; previously corrected spec sections outside S7/status/traceability/next
+  gate remain unchanged. No executable/product/schema/runtime/metric/sibling/test/CI
+  implementation file changed. No full product suite required or run.
+- No candidate repository reinspected or modified, no private target identified or
+  accessed, no build/package/resolver/target script executed. Prior candidate-integrity
+  evidence remains prior evidence; no new before/after claim is fabricated.
+- Local document links/anchors125 PASS; Markdown whitespace and git diff --check
+  PASS. Configured GitLeaks8.30.1 complete333-commit history PASS, zero findings;
+  current documentation/ledger stdin scan PASS. No suppression/configuration change.
+- Current007-0003 has a separate44-key temporary baton before final report; current
+  runtime, account boundaries and model/session telemetry remain unobserved. No
+  credits_before109 is inferred for this run from the prior after-reading.
+- No commits or push. Current-run work changes the three Feature007 documents,
+  adds the T1 evidence record, updates ROADMAP and appends the prior observation.
+  Earlier uncommitted discovery/housekeeping changes are preserved.
+
+## Run007-0004 focused research and independent review
+
+The human commissions a fresh-context external technical-research pass following
+007-0003's T1 stop. Repository artifacts, including the dirty tree, supplied prior
+authority. No DPC/AB2D reinventory or private target identification was necessary.
+H1=NO, independent Declared/Observed views, module weighting, additive3 and the
+withdrawn H2/H3 hypotheses remain as previously reviewed. No new product policy
+is chosen in order to obtain measurement.
+
+Three independent researchers examined publication-event authority, Search/HTTP/
+Indexer interfaces, and catalogue/order/variant semantics. Parent checked primary
+sources and reconciled their reports into the appended
+[focused evidence](publication-history.md#run007-0004-focused-publication-history-investigation).
+The record retains positive historical availability-age language and the current
+catalogue/ordering facts, while distinguishing absent event binding from absent
+data or universal impossibility. It adds the typed Indexer record/file distinction,
+current first-cataloging Age definition, support-assisted deployment audit route,
+and limited staging testimony. None is silently admitted as a publication date.
+
+Frozen independent-review candidate (bytes retained outside Git in this run's
+temporary frozen directory):
+
+| Artifact | SHA256 |
+| --- | --- |
+| publication-history.md | beb7871c812c7e13104317fc58a4fbec86056935b8b66a9858aa60330b1cbdc2 |
+| spec.md | 738c679351ed421b0fa37ff92632bfc4cd753e609e9c9b35904341812607bf1b |
+| discovery.md | 919505f6c7929211b66caaa488e47be0487d0b4aeaf3a20adb8042fc727238e6 |
+| ROADMAP.md | 4fd5c2423781fd742c44baf2d3a5e077f513247c5e178ab8d6c34d018e1ae086 |
+
+Six **fresh non-author** reviewers, separate from the three researchers, received
+decomposed scopes and the frozen manifest. Each verified all four digests and
+independently checked relevant primary evidence. No current sibling conclusions
+were supplied before completion. No model/effort override was requested; actual
+child model, effort and resource telemetry remain unobserved.
+
+| Reviewer | Completed scope | Disposition / material findings |
+| --- | --- | --- |
+| A | Publication-event semantics; historic availability versus current cataloging; publisher and audit routes | COMPLETE / APPROVE bounded negative conclusion; no material correction |
+| B | Search/Portal/index/HTTP authority; raw i/m versus FILE_MODIFIED/REC_MODIFIED; staging testimony; probe limits | COMPLETE / APPROVE; no observed behavior promoted into contract; no material correction |
+| C | Current catalogue completeness; metadata last additions; search/index lag; missing/deleted/changed versions | COMPLETE / APPROVE; no all-ever or atomic completeness demand; no material correction |
+| D | ComparableVersion3.9.11 source/tests; aliases/transitions/equalities; GenericVersionScheme and Maven3/4 limits | COMPLETE / APPROVE; precedence not stability or exact identity; no material correction |
+| E | Model/type/classifier/packaging/handler/extension versus GA/GAV public history | COMPLETE / APPROVE; conditional GA-version claim retains variants/limitations without H3 reopening; no material correction |
+| F | Adversarial evidence cascade, both convenient weak evidence and excessive evidence demands; lifecycle and plural invariants | COMPLETE / APPROVE scoped stop; no proxy, namesake, older-date or ordering rescue; no material correction |
+
+Parent reconciliation is based on the evidence, not vote count. No material
+factual/research correction was required by these reviews, so no correction-round
+approval is claimed. Review approvals concern the accuracy and bounded stopping
+behavior of this research; **none approves the specification or admits a date**.
+Operational concerns were covered within A/B/C; no separate reviewer G was needed.
+
+### Disposition and remaining gate
+
+**Outcome C — NOT ESTABLISHED. T1 remains open. Whole specification NOT APPROVED.**
+No suitable public historical per-version publication/availability timestamp
+interface was established. Catalogue semantics and concrete Maven-native ordering
+are retained technical evidence; complete stable eligibility, equal-order maxima,
+candidate/date admission and source-policy grammar remain unapproved. A future
+named comparator is technically possible; a universal Maven stable predicate is
+not established. No eligibility choice is requested to disguise the date gap.
+
+The missing technical bridge is exact: documented public historical timestamp
+meaning, identity/granularity and retrievability for a suitable Central event,
+with inspectable limitations. It need not prove upstream release, acquired bytes,
+producer history, exact physical timing, all-ever history or variant availability.
+If that bridge is supplied later, it needs verification plus completion of the
+remaining technical/eligibility contract and fresh whole-specification review.
+
+The human next chooses whether to defer Java, authorize investigation of another
+truthful date claim, or select another bounded direction. H1 is not reopened. No
+proxy, technical plan, task graph, runtime implementation or sibling semantic
+change follows from this run. No operator was messaged.
+
+### Observation, fresh-context recovery and verification
+
+007-0003 was verified against its original44-key baton and original principal
+artifact digest. It was appended exactly once with supplied session, GPT-6.1-Sol,
+openai, medium,0.160.0, reported801s and credits_after111. Explicit human confirmation
+of no intervening work after007-0002 permits credits_before109. Original runtime
+notes/unknown confounding and all54 preceding row bytes are preserved; no runtime
+or credit delta is derived. Ledger55x44, unique; current007-0004 is not appended.
+
+The human/orchestrator created the fresh parent after reporting approximately89%
+prior context use; Codex did not perform that harness action. Repository artifacts
+restored the selected product, prior corrections, H1 and T1 without target access.
+The initiating prompt supplied new research/review authority and prior telemetry,
+and retransmitted substantial question/boundary/methodology detail. No material
+reasoning loss was identified; this does not prove no conversational knowledge was
+lost. Nine fresh child contexts (three researchers, six reviewers) expose independent
+coverage, not measured cost savings or an optimal decomposition. No new human
+product intervention occurred during execution; net attention/prompt burden and
+actual child resources remain unmeasured. The key methodology and stop are now
+durable here; no general harness, SKILL.md or cross-project claim is implemented.
+
+Verification at closure:
+
+- Authoritative evidence URLs were read successfully through primary documentation,
+  source or official historical documentation; unavailable optional schema/data
+  probes are explicitly labeled. Current publication-history/spec/discovery/ROADMAP
+  bytes match the independently reviewed freeze. Local links/anchors checked.
+- Bounded generic Search/Portal and historical POM/header observations are recorded
+  with endpoints/values/limits. Initial access/DNS failures and authorized retries
+  are distinguished. No target-derived coordinates, private/alternate repositories,
+  private target, settings/cache/credential access, index/archive download or
+  Maven/Gradle/Java/build/package/resolver execution occurred. No TLS bypass.
+- Six current-run paths only: publication-history.md, spec.md, discovery.md,
+  reviews.md, ROADMAP.md and observations/agent-runs.csv. Earlier housekeeping and
+  portfolio-discovery files are byte-identical to run start. Earlier feature text
+  is preserved, with narrow status additions and appended investigation/review.
+- Product/executable/test/workflow files and arithmetic unchanged. No product tests
+  required or run for this documentation-only research. git diff --check PASS.
+- python3 tools/check_gitleaks.py: configured GitLeaks8.30.1 full333-commit history
+  PASS, zero findings. Current candidate documentation/ledger stdin scan PASS;
+  no configuration changes or suppressions.
+- Current44-key handoff: /tmp/libyears-observations/007-0004.json, outside Git;
+  unavailable telemetry blank, no current credit-boundary continuity inferred.
+- Existing dirty tree preserved; no commit, stash/reset/normalization or push.
+
+## Run007-0005 alternative-age evidence review
+
+The human accepts007-0004's negative publication result and authorizes one bounded
+pass over alternative public providers and different Sonatype-native date claims.
+No production provider, changed time basis, proxy, permanent deferral or Java
+implementation is selected. The [new evidence record](age-evidence-alternatives.md)
+is separate from the preserved publication-history investigation. Existing Maven
+ordering, H1, plural views and sibling semantics were not reopened.
+
+Three independent researchers investigated ecosyste.ms, other credible providers,
+and Sonatype cataloging/access. Parent checked pinned date fallback/serialization,
+Libraries.io transformation, IQ event definitions, Guide schema and operational
+documentation. The serious provider set stops at ecosyste.ms, deps.dev, Libraries.io
+and Socket; a brief Software Heritage origin-visit comparison establishes no GAV
+route. Only two generic version-data probes ran, one each to ecosyste.ms and deps.dev.
+No new native Central timestamp probe repeated007-0004.
+
+### Frozen initial review and parent reconciliation
+
+Five-file candidate retained outside Git in this run's frozen directory:
+
+| Artifact | SHA256 |
+| --- | --- |
+| age-evidence-alternatives.md | 41010bb07a93a5ee4207d5bfaf2c6f5414d3bd5ddcce7cda960bc37333e405dd |
+| publication-history.md | b6b7d9210444ff9798f952efb3d7aa53f84c3144e6c2d17a5d269893a9b1b40e |
+| discovery.md | 7e883dd7e2c3462b3484e826ea8b2eded8ac2cb69946f5247b1da2c0b7771425 |
+| spec.md (unchanged) | 738c679351ed421b0fa37ff92632bfc4cd753e609e9c9b35904341812607bf1b |
+| ROADMAP.md | 6298edada79b08b5d88ef1440adb75d1431cf44dec6f3815dc42649c4e014de3 |
+
+Six fresh non-author reviewers, distinct from the three researchers, verified the
+manifest and independently inspected relevant primary evidence. No current sibling
+conclusions were shared before reports completed. No model/effort overrides were
+requested; actual child configuration/resources are unobserved.
+
+| Reviewer | Completed scope | Disposition and findings |
+| --- | --- | --- |
+| A | Third-party date semantics/provenance; deps.dev assertion versus substantiation; Libraries.io/Socket derivation | COMPLETE / APPROVE scoped; no material factual correction |
+| B | ecosyste.ms adapter, fallback, serialization, ingestion/history, identity and operations | COMPLETE / APPROVE narrow row-date claim; additional important integrity-based row-reuse caveat supplied |
+| C | Sonatype cataloging, IQ product access, Guide schema/migration, historical availability bridge | COMPLETE / APPROVE scoped; no material factual correction |
+| D | Existing publication claim versus changed claim; evidence-cascade discipline | COMPLETE / APPROVE; no publication admission or excessive first-ever/content requirement imposed on narrow row fact |
+| E | Maintenance utility, misleading-risk, sibling comparability, plural-view composition | COMPLETE / APPROVE; optional ingestion-wave counterexample suggested, no adoption vote |
+| F | Operational sustainability, terms, quota discrepancy, public/authenticated access and disclosure | COMPLETE / APPROVE; no entitlement, new disclosure authority or production-fitness claim |
+
+Approvals concern evidence accuracy and bounded stop, not a majority decision about
+product policy. D also covers the optional cascade scope; no separate G was needed.
+No publication date was admitted. Parent treats deps.dev's contract as affirmative
+provider testimony without claiming demonstrated falsity or independent Maven-event
+derivation. Open modification-date transformations remain modification facts.
+
+### Bounded clarification and fresh focused review
+
+B identified a stronger identity limitation in pinned Package#update_versions:
+integrity matching can reuse an existing row and assign metadata including version
+number. The parent independently read that method. Maven supplies artifact SHA1
+integrity, so the current row's creation timestamp need not date its association
+with its current GAV. The literal surviving-row claim was already narrow enough
+for B's approval; this important caveat is nevertheless made explicit for human
+utility assessment. E's hypothetical old/new release ingestion example was also
+added, without claiming a reproduced live measurement.
+
+Revised age-evidence-alternatives.md SHA256:
+bd83bd1909582c828db4276941ec1a58cd7a09b293c66cf64ddebf27895020f4.
+Other four manifest digests remain unchanged; both frozen byte sets are retained.
+Fresh non-author B2 independently verified both frozen versions and the pinned
+ingestion/Maven integrity source: **COMPLETE / APPROVE**, no material correction.
+It confirms that top/table/body/utility consistently exclude current-GAV arrival,
+first observation and publication, preserve hypothetical-versus-observed distinctions,
+and leave T1/human selection/non-adoption boundaries intact. No later evidence edit
+followed this focused approval.
+
+### Disposition and observation
+
+Existing publication-age claim: **not established; T1 remains open**. The distinct
+publicly retrievable fact is ecosyste.ms' reported creation timestamp of its
+surviving version row, with no first-ever observation or current-GAV-arrival claim.
+Sonatype first cataloging is documented and has an IQ product API, but no anonymous
+public historical date interface was established. No current Central availability
+binding or provider first-ever observation field was found. Different time-basis
+selection and production fitness belong to the human; no metric, schema, plan,
+tasks, runtime, provider fallback or sibling change is authorized.
+
+007-0004 was verified against its original44-key baton and principal artifact
+digest, then recorded exactly once with human-supplied session, GPT-6.1-Sol/openai/
+medium,0.160.0, reported593s and credits_after113. Explicit confirmation of no
+intervening work after007-0003 permits credits_before111. Original runtime notes /
+unknown confounding and all55 preceding row bytes are preserved; no runtime or
+credit delta derived. Ledger56x44 unique; current007-0005 is not appended.
+
+This is a continuation in the same fresh parent context used for007-0004, not a
+new parent created by Codex. Durable negative evidence narrowed research instead
+of restarting the rejected Central-field search. New human authority permits the
+provider/native-alternative pass and utility analysis, but selects neither. The
+substantial prompt still retransmits boundaries/questions/reviews; exact comparable
+prompt burden, net attention savings and child resources remain unmeasured. No
+new human product intervention occurred during execution. Decomposition exposed a
+useful additional identity caveat; no causal efficiency claim follows. Version
+basis versus time basis is retained as prospective product/methodology evidence,
+not architecture, a generalized harness or SKILL.md.
+
+Closure verification:
+
+- Primary provider/operator references and pinned source were read successfully
+  where available; Libraries.io documentation/terms403 and other access failures
+  remain explicitly unknown. Two generic public version responses and a public
+  Guide schema snapshot are recorded with values, identity and limits. Failed
+  sandbox DNS requests were retried with required escalation; no TLS bypass.
+- Final evidence candidate matches the B2 freeze, with four other manifest files
+  unchanged. Local documentation links/anchors, whitespace including untracked
+  files, git diff --check, ledger shape/uniqueness and earlier-byte preservation
+  checks PASS. Original spec, portfolio-discovery and housekeeping bytes unchanged.
+- python3 tools/check_gitleaks.py: GitLeaks8.30.1 configured full333-commit history
+  PASS, zero findings. Final current documentation/ledger stdin scan PASS; no
+  configuration or suppression changes.
+- Six current-run paths: new age-evidence-alternatives.md, publication-history.md
+  pointer, discovery.md pointer, reviews.md, ROADMAP.md and observations/agent-runs.csv.
+  Earlier uncommitted007-0001–0004 work remains; no reset/stash/normalization/commit.
+- Product/executable/test/workflow/schema/arithmetic/sibling files unchanged. No
+  product tests required or run for documentation-only research. No private target
+  identification/access, DPC/AB2D reinspection, host configuration/cache/credentials,
+  target-derived query, private/alternate package endpoint, artifact/index archive,
+  Java/Maven/Gradle/build/resolver/install/target execution, authenticated service
+  call or operator message. Public provider source mentioning a mirror does not
+  mean that mirror was contacted.
+- Current44-key handoff: /tmp/libyears-observations/007-0005.json, outside Git;
+  current run not appended, unavailable telemetry blank, no current credit boundary
+  inherited without continuity authority. Push performed: **NO**.
+
+**Final research disposition: DIFFERENT TRUTHFUL AGE BASIS AVAILABLE — HUMAN
+SELECTION REQUIRED**, limited to the current provider-row timestamp. This does
+not establish that it is useful enough to adopt. Publication T1 and the whole
+specification remain unapproved; no plan/task graph or implementation follows.
+
+## Run007-0006 ecosystem-practice review
+
+The human accepts007-0005's evidence and rejects provider-row creation for
+Feature007 product use. It is bookkeeping, potentially predating association with
+the current GAV, and does not answer a sufficiently useful maintenance question.
+One **final** bounded investigation is authorized: established ecosystem practice,
+which can support only a labeled conventional claim. No additional native-event
+or provider census is authorized; no time basis or provider is selected.
+
+Three research contexts cover Central/MvnRepository UI, Renovate/Dependabot and
+OpenRewrite. Parent independently reads pinned bot transformations and Scala
+Steward's first-seen cache/cooldown, plus current operator documentation. A small
+historical Versions Plugin lookup was already inspected and is labeled historical.
+Sonatype/deps.dev/Libraries.io provenance uses retained007-0005 evidence rather
+than reopening providers. The [practice companion](ecosystem-practice.md) keeps
+direct use, fallback use, date-free selection and different date events distinct.
+
+### Frozen candidate and independent scopes
+
+Reviewed bytes retained outside Git in this run's frozen directory:
+
+| Artifact | SHA256 |
+| --- | --- |
+| ecosystem-practice.md | 2030f30f43b953db3d4795c6a17603edef4e99354b911ca3b11b91ea472b6043 |
+| age-evidence-alternatives.md | 64456ee606d0d94aa0305625d670e43311a4558a81fe1759d427ce276c92af20 |
+| discovery.md | 7c3aa7bb2a7b14dada38dce657f13a44dc6e52325ffd486617aee2c52636a87f |
+| spec.md | e5c48f6b634b3494c61a8e470794497ee5d91bf49cec02cbe0dd4a60dff163c4 |
+| ROADMAP.md | e38c76e507e7623a2c0256fcbcfdc333c29301007524fc9d4dc2556b805a26fd |
+
+Six fresh non-author reviewers received decomposed scopes, the manifest, underlying
+authority and no-private/no-execution/no-adoption boundaries. No current sibling
+results were supplied before completion. No model/effort override was requested;
+actual child configuration/resource telemetry is unobserved.
+
+| Reviewer | Coverage | Disposition |
+| --- | --- | --- |
+| A | Central/MvnRepository display labels, cached extraction limits, opaque provenance and unequal sample dates | COMPLETE / APPROVE scoped; no material correction |
+| B | Dependabot Maven directory dates, exact POM fallback, cooldown and ordinary version selection | COMPLETE / APPROVE scoped; no material correction |
+| C | Renovate POM GET/header transformation, documented releaseTimestamp/cooldown and qualifier rules | COMPLETE / APPROVE scoped; no material correction |
+| D | OpenRewrite path, historical Versions Plugin sample, Scala Steward observation-based cooldown | COMPLETE / APPROVE scoped; no material correction |
+| E | Cross-tool synthesis, actively challenging false consensus and convention sufficiency | COMPLETE / APPROVE narrow MODERATE classification; no material correction |
+| F | Truthfulness/utility, publication versus convention, plural model and product/lifecycle boundaries | COMPLETE / APPROVE scoped; no material correction |
+
+### Parent reconciliation and disposition
+
+All six scopes completed with independent primary-source checks. No material
+factual/reasoning correction or correction-round approval is claimed. Optional
+latest/operations scope G is covered within B/C/D/F. B additionally confirms the
+actual Maven cooldown callsite and that inherited missing-date handling is not a
+universal hard refusal; a tool's operational policy cannot become libyears policy
+by transplant. No code/tests were executed to establish these source facts.
+
+The strongest synthesis objection is that Dependabot's POM path is conditional,
+its historical longevity/deployment is not proven, and cooldown use does not
+validate historical version-to-version age differences. The frozen candidate
+retains those limitations. E's adversarial false-consensus review finds no need to
+downgrade the **exact narrow claim** to weak: there is repeated operational use in
+unrelated implementations, not merely similar UI labels. Wider practices remain
+fragmented and materially different. F confirms that convention never launders
+modification evidence into publication authority, and that human metric utility
+selection remains separate. Parent validates these findings against the code and
+documentation; the result is not a majority vote or approval of product policy.
+
+**MODERATE CONVENTION — credible narrow POM-date surrogate for HUMAN SELECTION.**
+The exact field is the versioned public POM's Last-Modified, interpreted as the
+repository-reported representation modification date. Its conventional role is
+supported by Renovate direct use and Dependabot's tested operational fallback.
+Directory timestamps, index rollups, Search values, ingestion and provider-row
+creation are not silently interchangeable with that field. No first publication,
+first availability, upstream release, acquisition or content claim follows.
+
+**T1 publication authority remains unestablished; specification NOT APPROVED.**
+No time basis/provider is adopted and no plan/tasks/implementation follows. The
+human next accepts or rejects further product specification of this explicitly
+conventional basis, or defers/redirects Maven age. Accepting it would authorize a
+different claim, not make the old publication claim true. The currently authorized
+evidence cascade is complete at this rung; no additional timestamp/provider search
+is selected or recommended. Prior negative routes stay closed absent genuinely
+new evidence. The human's provider-row-creation rejection is durable in the prior
+evidence record, discovery, spec status and ROADMAP.
+
+### Observation, methodology and verification
+
+007-0005 was checked against its original44-key baton and principal artifact
+digest, then recorded exactly once with supplied session, GPT-6.1-Sol/openai/medium,
+agent0.160.0, reported782s and credits_after115. Explicit human confirmation of no
+intervening work after007-0004 permits credits_before113. Original runtime notes /
+unknown confounding and all56 prior row bytes are preserved. Ledger57x44 unique;
+no runtime/credit delta or current007-0006 row is stored.
+
+Repository artifacts and continuing context supplied the two exhausted evidence
+routes and selected plural model. The prompt supplied new conventional-claim
+research authority and the consequential rejection of provider bookkeeping. Three
+research contexts and six fresh reviewer contexts separated implementation facts,
+display labels, operational purposes and convention synthesis; actual child costs
+remain unknown. Prior native/provider dates were compared as retained evidence,
+not reinspected to obtain another publication-shaped field. This final-rung
+structure proved usable within this repository, not as a measured cross-project
+harness result. Substantial prompt restrictions/questions remain; no measured
+prompt/context/attention saving follows. No new human product intervention occurred
+during execution, no generalized harness/SKILL.md or architecture was implemented.
+
+Verification at closure:
+
+- Primary documentation and pinned source/test references were inspected; tests
+  were not executed. Cached Central/MvnRepository extraction and direct403/429
+  access limits are explicit. deps.dev/Libraries.io UI access failures supply no
+  chronology claim. No new provider/API data or native timestamp probe was used
+  to reopen rejected evidence. Initial sandbox DNS failures were retried with
+  required escalation; no TLS bypass or security exception.
+- Current evidence/status/ROADMAP files match the frozen reviewed manifest.
+  Normative spec sections S1–S10 are byte-identical to run start. Original native
+  publication-history, housekeeping and portfolio-discovery files unchanged;
+  earlier feature text retained in order, ledger prefix byte-preserved. No broad
+  normalization, reset/stash, commit or working-tree cleanup.
+- Local documentation links/anchors and whitespace, including untracked feature
+  documents, PASS; git diff --check PASS; ledger shape/uniqueness PASS.
+- python3 tools/check_gitleaks.py: configured GitLeaks8.30.1 complete333-commit
+  history PASS, zero findings. Final current documentation/ledger stdin scan
+  PASS; no configuration/suppression changes.
+- Seven current-run paths: new ecosystem-practice.md, age-evidence-alternatives.md
+  rejection pointer, discovery.md, spec.md status only, reviews.md, ROADMAP.md and
+  observations/agent-runs.csv. Product/executable/test/workflow/schema/arithmetic /
+  sibling files unchanged; no product suite required or run.
+- No private target identification/access, candidate modification/reinspection,
+  host credentials/configuration/cache, target-derived coordinate, authenticated
+  service call, private/alternate package endpoint, archive/index download or
+  Java/Maven/Gradle/build/install/resolver/target execution. Public source that
+  mentions other repositories was read, never executed or followed to those hosts.
+- Current44-key handoff outside Git: /tmp/libyears-observations/007-0006.json;
+  current run not appended, unobserved telemetry blank, no current credit boundary
+  inferred from the preceding115. Push performed: **NO**.
+
+## Run007-0007 — conventional time basis and latest-policy decision review
+
+### Authority and recovered state
+
+Fresh parent commissioned at a human product-decision boundary. Repository plus
+existing dirty tree recovered007-0001–0006, including eleven closed specification
+corrections, H1=NO, independent plural views and additive3. No portfolio/date/provider
+investigation was repeated. The new human authority consciously selects the
+moderate conventional versioned public POM Last-Modified basis and forbids further
+date fallback; it neither establishes publication history nor selects eligibility.
+
+Exact claim: **the public repository's reported modification time for the versioned
+POM representation, used as a conventional Maven release-age surrogate**. No upstream
+release, first publication/availability/receipt/upload, artifact/classifier date,
+acquisition/content/producer/resolver/deployment/runtime claim follows. S7 now
+provides human/verbose/machine/future ECOSYSTEMS disclosure, terminal missing-date
+behavior and the separation of version, comparator and time evidence.
+
+One read-only technical researcher distinguished current GA metadata catalogue and
+ComparableVersion3.9.11 artifact precedence from GenericVersionScheme range
+resolution. Bounded Apache ordering source checks confirmed aliases, equal-order
+identities, snapshot recognition and the current-prose/pinned-source underscore
+difference. No technical ordering question was escalated to the human.
+
+### Frozen candidate and fresh non-author review
+
+Reviewed bytes and baseline retained outside Git under this run's temporary
+observation directory. No sibling conclusions were supplied before reviewers
+completed. No model/effort overrides requested; actual child configuration and
+resource telemetry remain unavailable. The researcher did not serve as a reviewer.
+
+| Artifact | SHA256 |
+| --- | --- |
+| spec.md | e0d439da5fa871766b373a9ca0f0f6ed3429fb9e6fb961706253c34f8307998a |
+| latest-policy.md | df6b32c1f7e127fa7c39cd07ae2c0ea18948394004dd8b8899aed9f24811218c |
+| discovery.md | c0e9ce1cdfae68d2d6295e7337c1a61d92352c1e6a7cdefe367358acb72bfc4f |
+| publication-history.md | be1079cec75a60a0c84e85b45aa3479a0a2fe7a6047d4fc624444c5c564a5c82 |
+| age-evidence-alternatives.md | c0962aab91dff38e9e3ca09e32f74fb70d44a7723320ee7ce03343c8c71d6da8 |
+| ecosystem-practice.md | 873d595f40a75c720a4adc34989c21be5f64656bd0995362815d5af41b9b1d4c |
+| ROADMAP.md | 719cc5e59b13dcfec53b771ed33abf6fe14eba1171e25a2000d224ec1d0588dd |
+
+| Reviewer | Completed scope | Disposition / material findings |
+| --- | --- | --- |
+| A | Conventional claim and possible publication overstatement | COMPLETE / APPROVE scoped; modification fact, staging testimony, error-date and variant limitations remain distinct; none |
+| B | Terminal cascade, missing dates and row/source availability | COMPLETE / APPROVE scoped; no fallback, older maximum or synthetic same-version zero; row failures versus whole-version-evidence nulls coherent; none |
+| C | Current GA catalogue and pinned Maven-native ordering | COMPLETE / APPROVE scoped; last-added != greatest, ComparableVersion is a defensible technical selection for this claim, not Resolver equivalence; none |
+| D | Stable/prerelease/snapshot/qualifier eligibility alternatives | COMPLETE / APPROVE decision presentation; whitelist and unknown refusal versus broad unknown admission make tradeoffs explicit; no policy selected; none |
+| E | Occurrence/model/artifact/variant preservation | COMPLETE / APPROVE scoped; original population/handler and join rules retained; GA/POM time does not certify variants; none |
+| F | Plural output, additive3, legacy/sibling compatibility and basis disclosure | COMPLETE / APPROVE scoped; independent facts/statistics and explicit modification fields, no scalar Java projection or sibling reinterpretation; none |
+| G | DPC ordinary utility, cross-ecosystem risk, AB2D/private boundaries | COMPLETE / APPROVE scoped; declared-only utility without promised N/yield, separately labeled sibling subset and known legacy-consumer risk; none |
+| H | Historical negative evidence and later conscious selection | COMPLETE / APPROVE scoped; original native/provider negatives and row-date rejection preserved, no retrospective publication admission; none |
+
+Parent checked the findings against the frozen contract and retained evidence,
+including ordinary missing-date and classifier counterexamples. No material defect
+or bounded correction cycle resulted; no fresh correction-round approval is claimed.
+C/D performed only bounded Apache technical source checks, not a renewed ecosystem
+survey. D's attempted delegated Artifact constant source view was unavailable;
+pinned ArtifactUtils snapshot recognition was inspected, not executed. Later offline
+conformance remains required. Eight scoped approvals do **not** approve the whole
+specification or select the human eligibility convention. This is no majority vote.
+
+### Reconciled decision and stopping point
+
+[Reviewed alternatives](latest-policy.md):
+
+- Recommend conservative numeric/release-alias/service-pack eligibility, refusing
+  a potentially maximal unknown qualifier rather than silently choosing an older
+  known-stable candidate.
+- Alternative: conventional broad eligibility excluding known prerelease/snapshot
+  tokens while accepting unknown qualifiers, with its false-positive risk explicit.
+
+Both bundles admit service packs and release aliases, exclude recognized alpha /
+beta / milestone / rc aliases and snapshots including timestamped snapshots, refuse
+multiple distinct maximum identities, and use a global GA maximum without request-
+family filtering or variant-availability promises. No eligibility bundle is selected.
+GA catalogue and ComparableVersion3.9.11 are technical contract decisions. Exact
+source-policy selection/filter grammar and finite budgets remain already-identified
+engineering work before full approval, not additional current human policy gates.
+
+**Whole specification NOT APPROVED. SPECIFICATION BLOCKED — LATEST POLICY HUMAN
+DECISION REQUIRED.** No plan or task graph prepared. No implementation authority
+inferred. Exact next human gate: select conservative unknown-refusing eligibility
+(recommended) or broad conventional unknown-admitting eligibility, with the stated
+service-pack/global/tie rules, or explicitly revise those product choices.
+
+### Observation and harness-generalization evidence
+
+007-0006 original44-key baton and principal digest verified before edits; appended
+exactly once. Human enrichment: session01a1d0f2-0ef4-7c93-a9cf-094058a4b81c,
+GPT-6.1-Sol/openai/medium,0.160.0, reported850s, credits_after118. Explicit no-
+intervening-work confirmation permits inherited credits_before115 from007-0005.
+Original notes/runtime classification and every other baton field remain unchanged;
+all57 previous row bytes preserved. Ledger58x44 unique; no derived delta/runtime,
+current007-0007 append or inferred current credit boundary.
+
+The fresh-context handoff recovers the native-negative → providers-negative →
+moderate-convention → human-selection chain. It identifies new authority accurately
+without private/target access or repeated research. The substantial prompt still
+retransmits evidence summaries, boundaries, review decomposition and reporting;
+exact comparable prompt size and attention/resource savings remain unmeasured.
+A deliberate product-decision boundary gives clear task scope here, not causal
+proof of better harness performance. Technical catalogue/ordering were resolved
+internally; genuinely normative eligibility remains human. No new intervention
+during execution; the initiating prompt supplies consequential human authority and
+is not counted as an in-run intervention. Operational orchestration/review setup and
+status enrichment are still prompt-supplied assignment deltas. No generalized
+harness/SKILL.md, architecture matrix or sibling retrofit was implemented.
+
+### Verification and preserved boundaries
+
+- Reviewed candidate hashes remain exact. Local documentation links/anchors and
+  whitespace, ledger shape/uniqueness/provenance, and git diff --check checked.
+- All original evidence-companion lines preserved in order; prior housekeeping and
+  portfolio files byte-identical. Baseline snapshot confirms only nine authorized
+  documentation/ledger paths changed in this run (including new latest-policy.md).
+- Product/executable/tests/workflows/schema runtime/arithmetic unchanged. No unit
+  suite needed or run for this documentation-only contract/decision work.
+- python3 tools/check_gitleaks.py: configured8.30.1 full333-commit history PASS,
+  zero findings. Final current documentation/ledger stdin scan also PASS; no
+  suppression/configuration change.
+- No DPC/AB2D/candidate reinspection, execution or modification; no private target
+  identification/access, host config/cache/credentials, target-derived registry
+  request, private/alternate package endpoint, authenticated call, archive,
+  Maven/Gradle/Java/build/install/resolver or target code execution. Only bounded
+  public Apache ordering/model source research; no date/provider reopening.
+- Existing dirty work remains. No reset/stash/discard/normalization, commit or push.
+  Current44-key observation handoff is outside Git at
+  /tmp/libyears-observations/007-0007.json; current run is not appended.
+
+## Run007-0008 — whole-specification convergence
+
+The human selects conservative latest eligibility from007-0007. Unknown below the
+known eligible maximum cannot affect it; unknown at/above it, or relevant inability
+to compare safely, refuses. Inability to prove prerelease is not authority to call
+stable. No other product decision is reopened. Publication-negative/provider-
+negative/row-creation-rejected/moderate-convention/selected-convention history remains.
+
+007-0007 original44-key baton and principal digest verified before edits; appended
+once with supplied session01a1d138-dff8-7901-8368-378599a922b7,
+GPT-6.1-Sol/openai/medium,0.160.0, reported528s and credits_after119. Explicit account
+continuity permits credits_before118 from007-0006. All original runtime notes and
+other handoff fields plus58 preceding row bytes preserved. No derived runtime or
+credit delta, current007-0008 append or inferred current account boundary.
+
+A technical author completed the new source-policy companion, using bounded
+Apache configuration/settings/merger evidence only. Parent completed the metadata
+transport/date companion. No portfolio/date/provider/practice investigation was
+repeated; no target/private/config/cache/credential access or build execution.
+The scope is a static disclosed projection, not evaluated settings or resolution.
+
+### Whole-review freeze and coverage
+
+Five-file freeze1 retained outside Git in this run's spec-freeze1 directory:
+
+| Artifact | SHA256 |
+| --- | --- |
+| spec.md | c3c7be633523f8ad09426507cc6c00c649d56f9346b3a5a50b68e7740a8dd3d2 |
+| source-policy.md | ef27918a00c51e8fb4468a002078dc871e41af9f021d410f8189913e314a08d8 |
+| metadata-contract.md | 0074ce7c4c14f0dc4806c80d96f3e267ebbb0c678f7af0525f0927da386f6008 |
+| latest-policy.md | 24fba9200d4d56e3be09330ed138bdca0d91f1378276ecd6acdd7539dca8af72 |
+| discovery.md | b54d373769b6fd37c0b5018de8d2a8d928347406bf1b4db08a679468483a9ceb |
+
+Six fresh non-author contexts verified the frozen candidate and read the **whole**
+S1–S10 contract, normative companions and authority. This is not merely changed-
+area approval. Decomposition assigned deeper surfaces; all reviewers checked whole-
+product coherence. No sibling findings were shared before their reports completed.
+No model/effort overrides requested; actual child settings/resources unobserved.
+
+| Reviewer | Deep focus and completed whole-contract coverage | Disposition |
+| --- | --- | --- |
+| A | Ordinary utility; plural/non-substitution; summary/null/partial rules; additive3; siblings; DPC | COMPLETE / REVISE A1: source/view collection admission not explicit for all-missing-version/all-policy-refused rows |
+| B | Population/module weighting; inheritance/management/properties/profiles; identity/type/classifier; AB2D | COMPLETE / APPROVE whole reviewed contract; no material finding |
+| C | Source/comparator; policy grammar/native precedence/mirrors; public/private disclosure | COMPLETE / APPROVE whole reviewed contract; no material finding |
+| D | Catalogue; pinned ordering; conservative eligibility/unknowns/ties; conventional time and terminal dates | COMPLETE / APPROVE whole reviewed contract; no material finding |
+| E | Transport/worker/deadlines/budgets/platform capability refusal and security | COMPLETE / APPROVE whole reviewed contract; no material finding |
+| F | Adversarial integration with explicit21-area reconciliation and ordinary usefulness | COMPLETE / APPROVE whole reviewed contract; no material finding |
+
+The21 requested areas reconcile to A/F ordinary usefulness and plural semantics;
+B/F population/local model/identity; C/E/F source/privacy/grammar; D/E/F conventional
+time/terminal dates/catalogue/order/eligibility/ties; A/E/F null/partial/schema/siblings;
+A/B/F DPC/AB2D; all scopes stronger-claim restraint. Parent validated the material
+finding despite other approvals: known N alone had not selected M=0 versus null.
+
+### Correction, residuals and fresh focused closure
+
+A1 correction defines collection acceptance from safe countable external identities
+or certified complete emptiness, independently of successful version/policy/date.
+All missing BOM-derived versions and all pre-HTTP policy refusals become row failures:
+known N, M=0/coverage0/total0.0 when N>0; mean/median/maximum null. No accepted
+collection gives null measurement/numerics; initial Observed remains all-null.
+Safe rows plus unknown population remain partial. AC03 adds discriminating examples.
+
+Freeze2: spec f1b9a3913ecbf146c925edfa704f076332fe54a657066ccae89baafb3f4e5620;
+metadata companion44aa5bbd20984907c728fa297987273d06d373972ffda82413164a487949a141;
+other three freeze1 hashes unchanged. Two new fresh non-author reviewers:
+
+- G COMPLETE / REVISE A1a: following composition sentence still said every source's
+  **age evidence** unavailable meant M=null, contradicting all-row-failure M=0.
+- H COMPLETE / APPROVE focused predicate/collateral. Parent validated G's residual;
+  H's approval did not override it.
+
+Freeze3 spec38545874fe5162f0087535b617e360028777d1c49d3fd6c1c45de8ae0cebab5c
+replaces residual M/coverage/table predicates with **collection** unavailability.
+Fresh I COMPLETE / REVISE A1b: numeric contradiction closed, but S8 required a
+present fact record to have request or version, while S6 allowed both null for
+known occurrences with missing BOM-derived version. Parent validated the collateral.
+
+Freeze4 permits independently nullable request/version in a present declared
+record with a fixed reason; presence does not assert an available version fact.
+Fresh J COMPLETE / APPROVE **all correction and collateral closure**, explicitly
+checking S4/S6/S7/S8, AC03, policy/no-HTTP, date, privacy, independent views,
+legacy3/sibling isolation, empty/unknown/unavailable and1/3 sibling composition.
+J is a focused correction audit, not a new full audit. All3 tracked material issues
+A1/A1a/A1b are closed. Correction rounds and conflicting scoped verdicts remain
+visible; no approval by count or omitted finding.
+
+Final approved frozen contract:
+
+| Artifact | SHA256 |
+| --- | --- |
+| spec.md | b4afb6f1bc92df5c28d707ae6d161da1914a28300af466e3e5321ca77170e85a |
+| source-policy.md | ef27918a00c51e8fb4468a002078dc871e41af9f021d410f8189913e314a08d8 |
+| metadata-contract.md | 44aa5bbd20984907c728fa297987273d06d373972ffda82413164a487949a141 |
+| latest-policy.md | 24fba9200d4d56e3be09330ed138bdca0d91f1378276ecd6acdd7539dca8af72 |
+| discovery.md | b54d373769b6fd37c0b5018de8d2a8d928347406bf1b4db08a679468483a9ceb |
+
+**Parent reconciliation: WHOLE SPECIFICATION APPROVED.** Complete independent whole
+reviews plus focused correction closure cover AC01–AC20 and the21 human concerns.
+No unresolved product/security/schema decision remains. Technical plan preparation
+and independent review are now authorized by the initiating prompt. This approval
+establishes no implementation/platform conformance/live yield or private authority.
+
+## Run007-0008 — independent plan review
+
+Plan was prepared only after whole-specification approval above. Frozen plan
+SHA25649f5bc4e27852bf06a18150269d49085da65c54f3d59e5ad4af3ad9883766721;
+bytes retained in this run's plan-freeze1 directory. Three fresh non-author contexts
+verified that digest and approved specification hashes, read the full plan and
+relevant approved/implementation interfaces; no sibling conclusions were supplied.
+
+| Reviewer | Completed scope | Disposition |
+| --- | --- | --- |
+| PA | Static model/local readers/source authority/identity/readability and whole architecture coherence | COMPLETE / APPROVE; no material finding |
+| PB | HTTP/process/protocol/budgets/ordering/date/security/platform feasibility | COMPLETE / APPROVE; no material finding |
+| PC | Collections/summaries/schema/output/siblings/test and prospective validation traceability | COMPLETE / APPROVE; no material finding |
+
+Parent reconciliation finds no unresolved architectural issue or new product gate.
+PC identifies an implementation watchpoint, not a defect: existing legacy repository
+helpers default some unavailable totals to0.0; S8/P7 require explicit null numerics
+for Maven-only/all-unavailable legacy projection while leaving non-Maven behavior
+unchanged. The task graph must carry this witness explicitly.
+
+**TECHNICAL PLAN APPROVED.** One-GET commands bound blocked DNS without sending raw
+catalogues through16KiB IPC. No generic framework/shared-registry/NuGet lifecycle
+refactor is selected. Actual native safety, protocol/ordering conformance and live
+usefulness remain future verification; no product code/tests/target action occurred.
+Sequential task preparation and independent review are now authorized. No runtime
+implementation authority follows.
+
+## Run007-0008 — independent sequential task-graph review
+
+Tasks were prepared only after plan approval. Frozen tasks SHA256
+ a9df078ef0db8613dc277deb5c63d448d4ee645dc18d5b545fdd17f7919845b2
+(bytes retained in this run's tasks-freeze1 directory). Three new fresh non-author
+contexts verified task/approved-plan/spec hashes and read the complete graph and
+its governing contracts; no sibling conclusions were provided before completion.
+
+| Reviewer | Completed scope | Disposition |
+| --- | --- | --- |
+| TA | Sequential dependencies, bounded task acceptance, predecessor practicality and AC mapping | COMPLETE / APPROVE; no material finding |
+| TB | Source/network/native security, independent checkpoint ordering and human target/private boundaries | COMPLETE / APPROVE; no material finding |
+| TC | Collection/null/schema/sibling regressions, complete acceptance traceability and ordinary/operational gates | COMPLETE / APPROVE; no material finding |
+
+Parent reconciliation confirms T003 precedes version-dependent model facts, T004
+raw records cannot claim final population before T005, and T006's independent
+source/privacy checkpoint precedes any HTTP in T008. T010 explicitly witnesses the
+legacy-null watchpoint from plan review. T012 deterministic convergence does not
+claim the required operational evidence; GPUBLIC remains a future human gate before
+T013, and T014 cannot complete before that actual authorized witness.
+
+**SEQUENTIAL TASK GRAPH APPROVED — REVIEWED TASK GRAPH READY — IMPLEMENTATION
+AUTHORITY REQUIRED.** All14 tasks remain NOT STARTED. No task acceptance/test/live
+result has been represented as completed by design review. No plan/task material
+correction cycle was necessary. This is evidence reconciliation, not reviewer count.
+
+### Acceptance reconciliation
+
+Specification review/architecture/task coverage are complete. Every row below is
+**execution pending**, not a passed product test or operational result.
+
+| AC | Primary tasks / negative or composition witness |
+| --- | --- |
+| AC01 | T001/T009/T010 — independent declared/observed/paired/unknown model, no fake intake |
+| AC02 | T001/T004/T011 — source/context/model keys and false-join refusal |
+| AC03 | T001/T005/T006/T009/T010 — all S6 states, all-BOM/all-policy failures,1/3 versus null sibling coverage |
+| AC04 | T004/T005 — field inheritance/default timing/module weighting |
+| AC05 | T005 — imports/management no population, optional unmanaged, field-local exceptions |
+| AC06 | T004/T005/T007 — type/handler/model alias discrimination, included scopes/tooling/POMs, no systemPath |
+| AC07 | T003/T005 — reserved/property/origin/range/snapshot refusal |
+| AC08 | T002/T004/T005 — missing parent/ambiguous graph/profile-sensitive external N |
+| AC09 | T001/T009/T010/T011 — initial Observed unavailable, no declaration/tree/Gradle synthesis |
+| AC10 | T006/T008/T009 — no lookup before source admission, no denied-sibling capability borrowing |
+| AC11 | T003/T007–T010/T012 — conventional field claim/terminal dates/maxima/arithmetic/disclosure |
+| AC12 | T001/T009/T010 — human paired null/zero/partial/reason distinctions |
+| AC13 | T010/T011 — explicit all-unavailable legacy nulls, four successful/empty sibling contracts |
+| AC14 | T005/T010/T012/T013 — ordinary root journey, no N/yield promise, actual DPC gate |
+| AC15 | T004/T005/T011 — retained AB2D typed/missing-parent/selection divergence, no Gradle intake |
+| AC16 | T002/T006–T008/T011–T014 — no target execution, offline/public/private boundaries and integrity |
+| AC17 | T006 — exact source-policy/native/mirror/unknown relevance and before-HTTP refusal |
+| AC18 | T002–T009/T011 — every local/model/catalogue/HTTP budget with safe partial survival |
+| AC19 | T002/T006/T008/T011 — trusted isolated worker, deadlines/protocol/platform capability and no fallback |
+| AC20 | T003/T007/T009/T011 — unknown below/equal/above, snapshot/aliases/service packs and exact maximum ties |
+
+### Harness observation and final verification boundary
+
+The current parent continues from007-0007; it does **not** claim another fresh-parent
+transition. Durable state plus the narrow human eligibility delta recovered the
+feature without portfolio/publication/provider/practice/latest-policy reinvestigation.
+New work resolved source/settings/mirror/parser/worker details technically, not by
+inventing human gates. The prompt explicitly renews conditional preparation through
+reviewed tasks; it does not grant runtime implementation or live/private validation.
+
+One technical author, six whole-specification reviewers, four fresh correction
+reviewers, three plan reviewers and three task reviewers were orchestrated here.
+Actual child configuration/resource telemetry is unavailable. The three tracked
+specification findings demonstrate why a positive sibling review cannot overrule
+a validated residual; repeated correction was useful, but it is not evidence of
+optimal routing or measured savings. No new human intervention occurred during
+execution; the initiating conservative choice is consequential human authority,
+not an in-run intervention. The immediate remaining human gate is implementation;
+public/private validation and publication remain distinct future gates.
+
+The initiating prompt still retransmits extensive settled facts/boundaries/review
+and reporting obligations despite durable artifacts. Two child scope-clarification
+messages supplied prompt-only concern-number mappings; the parent supplied them
+internally, without human relay. This review and acceptance map now retain the
+obligations durably. No comparable prompt/attention/runtime/resource series or
+fresh-parent causal benefit is established. No harness/SKILL.md/framework was built.
+
+Final checks cover frozen hashes, local links/anchors/whitespace, observation
+59x44 shape/uniqueness/prior58-row-byte preservation, original evidence and unrelated
+dirty files, product/executable files unchanged, git diff --check and configured
+GitLeaks full333-commit history/current documents. Product tests were neither required
+nor run because implementation is unauthorized. Current observation is a separate
+44-key /tmp/libyears-observations/007-0008.json baton, not appended here. No target
+access/modification/build execution/private or alternate endpoint contact, commit,
+reset/stash/history rewrite or push. Exact next authority: T001 only, new Maven
+records/collection summaries and focused offline tests; a local commit only if
+explicitly included. No later task/network/target/private/publication authority.
