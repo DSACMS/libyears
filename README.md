@@ -97,9 +97,10 @@ unknown model facts, contrary policy or missing dates can leave partial/unavaila
 results. No Maven/Gradle/Java, restore or resolver is run. Dates establish neither
 first publication nor upstream release; comparison establishes no classifier
 availability or compatibility. See [Maven scope and limitations](ECOSYSTEMS.md#maven)
-and the [deterministic/operational verification status](specs/007-maven-dependency-age/verification.md).
-This source-checkout capability is unreleased; the separately authorized real DPC
-operational witness remains pending.
+and the [deterministic verification](specs/007-maven-dependency-age/verification.md).
+The [public DPC operational witness](specs/007-maven-dependency-age/validation.md)
+confirmed useful partial request reporting with no measured ages or admitted network
+requests under discovery/source-policy limits. This source-checkout capability is unreleased.
 
 ## Common usage
 

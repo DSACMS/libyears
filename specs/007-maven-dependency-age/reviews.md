@@ -2887,3 +2887,35 @@ Configured GitLeaks8.30.1 precommit full347-commit history and exact six-file cu
 candidate scans PASS, zero findings; whitespace and42 local Markdown file links PASS.
 The six-file task boundary includes prior uncommitted recovery records and authorized
 prior observation append. No runtime/spec/plan/test or security-policy change.
+
+
+## Run007-0016 — T014 finding and bounded shipping-status correction
+
+The fresh whole T014 reviewer identified a material documentation inconsistency:
+README, ECOSYSTEMS, SPEC and the curated Unreleased Maven changelog entry still
+presented the public DPC witness as pending authorization/execution after independently
+converged T013. Parent reproduced all four stale passages. This is an author-correctable
+T012 documentation-checkpoint defect, not a new product/metric/schema/trust decision.
+The initial T014 disposition remains REVISE until this correction is independently
+closed; positive other acceptance evidence does not waive it.
+
+The bounded correction updates only those four status/link passages: actual public
+validation is complete, useful partial request reporting is established, no ages or
+network requests were admitted, and positive live date fitness remains unestablished.
+Unreleased status, historical T012 verification evidence, approved contracts, runtime,
+tests and actual operational artifacts are unchanged. This correction receives its
+own independently reviewed local commit before the separate T014 final boundary.
+No full-suite rerun is justified by status/link-only edits after the1080/1skip PASS;
+Markdown/whitespace/current-content/history security checks and fresh focused
+non-author closure are required. No target rerun or new network/disclosure authority
+is needed to correct a stale documentation statement.
+
+
+Fresh focused non-author correction verification **COMPLETE / APPROVE**, no material
+findings: independently matched all five frozen digests, four status/link-only diffs,
+Unreleased/partial/no-age/no-admitted-request/live-fitness limits and exact179-row
+summary facts. All143 inspected local references/anchors and whitespace PASS. No
+runtime/test/contract/policy change, network or external target read. Parent exact
+five-file current GitLeaks scan PASS, zero findings; complete348-commit history
+was already scanned after T013, PASS. The correction is closed without new human
+relay and receives its own local commit; final whole T014 reconciliation follows.

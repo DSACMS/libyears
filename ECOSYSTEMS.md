@@ -932,8 +932,10 @@ The worker uses shared default verified TLS trust selection; the explicit
 Maven support in this unreleased source checkout follows approved [Feature007](specs/007-maven-dependency-age/spec.md),
 its [bounded source policy](specs/007-maven-dependency-age/source-policy.md) and
 [metadata contract](specs/007-maven-dependency-age/metadata-contract.md).
-[Verification status](specs/007-maven-dependency-age/verification.md) distinguishes
-passed offline conformance from the pending authorized DPC operational witness.
+[Deterministic verification](specs/007-maven-dependency-age/verification.md) and the
+[completed public DPC witness](specs/007-maven-dependency-age/validation.md) distinguish
+offline conformance from actual partial request reporting with no measured ages or
+admitted network requests; positive live date fitness remains unestablished.
 
 Run ordinary directory/JSON/verbose commands; there are no Java-specific options.
 A direct POM-file argument does not activate Maven. `--resolved` remains Python-only.

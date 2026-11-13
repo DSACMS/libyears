@@ -48,8 +48,9 @@ Notable changes to Libyears are documented here.
   conventional versioned-POM Last-Modified dates; keep Observed unavailable without
   an accepted reader, preserve module occurrence weights and honest partial coverage,
   and retain sibling results through an additive schema3 subtree with unavailable
-  Maven legacy scalar projection. No Maven/Gradle/Java or resolver runs. Operational
-  DPC validation remains pending separate authorization (Feature007).
+  Maven legacy scalar projection. No Maven/Gradle/Java or resolver runs. Public DPC
+  validation confirmed useful partial request reporting with no measured ages under
+  bounded discovery and source-policy limits (Feature007).
 
 - Automatically select qualified current NuGet repository project/lock snapshots
   when declaration-first population is unsupported. Require bidirectional literal

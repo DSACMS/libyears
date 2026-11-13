@@ -1073,7 +1073,9 @@ The approved [Feature007 specification](specs/007-maven-dependency-age/spec.md),
 and [metadata contract](specs/007-maven-dependency-age/metadata-contract.md) govern
 this extension and supersede original MVP single-view/release-date assumptions for
 Maven only. [Deterministic verification](specs/007-maven-dependency-age/verification.md)
-records conformance and the still-pending separately authorized operational witness.
+records offline conformance; the [completed public DPC witness](specs/007-maven-dependency-age/validation.md)
+records useful partial request reporting with no measured ages or admitted network
+requests. It establishes no positive live date fitness or complete evaluated population.
 
 Ordinary directory scans discover bounded regular pom.xml sources with no Java
 flags; direct files do not activate Maven. Each consuming source owns independent
