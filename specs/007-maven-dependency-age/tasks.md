@@ -1,5 +1,33 @@
 # Feature 007 sequential task graph
 
+## Execution status — run007-0016 / T013
+
+**T001–T013 COMPLETE. T014 READY UNDER EXISTING AUTHORITY.** Actual ordinary public
+DPC human/JSON/verbose journeys completed at the exact discovery revision, clean
+before/after. Nine sources and179 occurrence records survive bounded discovery;
+Declared M0 with unknown N/coverage, independently unavailable Observed, zero admitted
+capabilities/requests. Fresh useful-journey and security/privacy reviews COMPLETE /
+APPROVE, no material findings. [Validation](validation.md) retains evidence and limits.
+No target repair, runtime correction, private validation or publication occurred.
+T014 follows automatically; no new authority is requested. Earlier statuses remain
+historical and approved task requirements are unchanged.
+
+
+## Execution status — run007-0015 / GPUBLIC recovery
+
+**T001–T012 COMPLETE. GPUBLIC GRANTED. T013 OPERATIONAL WITNESS PENDING;
+T014 NOT STARTED.** The human grants bounded read-only public DPC validation and
+policy-admitted fixed-endpoint coordinate disclosure, preserving all target/private/
+transport/publication boundaries. Exact available target location is not recoverable
+from durable repository evidence; the original007-0014 observation baton is also
+absent. [Recovery record](reviews.md#run007-0015--published-boundary-recovery-and-gpublic-grant)
+retains remote verification, human-observed hosted CI, independent boundary review,
+missing evidence and limits. No Maven request or target-content read occurred.
+Existing reviewed-task authority persists; no new T013/T014 authorization is needed.
+Earlier pending-GPUBLIC statements are historical. Approved task requirements below
+are unchanged.
+
+
 ## Execution status — run007-0014 / T012
 
 **T001–T012 COMPLETE. T013–T014 NOT STARTED. GPUBLIC REQUIRED.** Fresh independent

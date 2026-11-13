@@ -1,0 +1,839 @@
+{
+  "target_repository": "CMSgov/dpc-app",
+  "revision": "d1e413caff5a80f590682d9055962f8103a9a527",
+  "branch": "main",
+  "before_status": "clean",
+  "after_status": "clean",
+  "bounded_input_identity_and_bytes_unchanged": true,
+  "trusted_libyears_commit": "925fa76279d101a8d3b624007336a35c05f12dd2",
+  "ordinary_forms": [
+    {
+      "arguments": "PUBLIC_DPC_PATH",
+      "exit": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "arguments": "PUBLIC_DPC_PATH --json",
+      "exit": 0,
+      "stderr_bytes": 0
+    },
+    {
+      "arguments": "PUBLIC_DPC_PATH --verbose",
+      "exit": 0,
+      "stderr_bytes": 0
+    }
+  ],
+  "discovery": {
+    "state": "unavailable",
+    "reason": "maven_discovery_unavailable"
+  },
+  "discovery_budget": {
+    "inventory_issue": "budget_exceeded",
+    "first_budget_exception": {
+      "directories": 256,
+      "entries": 1216,
+      "pom_count": 9,
+      "depth": 2
+    },
+    "source_count": 9
+  },
+  "captured_occurrence_records": 179,
+  "exact_declared_versions": 36,
+  "views": {
+    "declared": {
+      "population_state": "unknown",
+      "availability": "partial",
+      "reason": "maven_discovery_unavailable",
+      "reasons": [
+        "maven_discovery_unavailable",
+        "maven_population_unknown",
+        "maven_unsupported_version",
+        "maven_policy_unknown"
+      ],
+      "version_basis": "supported_local_base_model_request",
+      "comparator_basis": "conventional_central",
+      "time_basis": "maven_conventional_pom_last_modified",
+      "ordering_basis": "maven_comparable_version_3_9_11",
+      "eligibility_policy": "maven_conservative_stable_v1",
+      "limitations": [
+        "static_base_model_not_evaluated",
+        "module_occurrence_weighted",
+        "correspondence_assumed",
+        "acquisition_not_established",
+        "content_not_established",
+        "producer_history_not_established",
+        "runtime_state_not_established",
+        "machine_settings_not_inspected"
+      ],
+      "summary": {
+        "dependencies_discovered": null,
+        "dependencies_measured": 0,
+        "coverage": null,
+        "total_libyears": 0.0,
+        "mean_libyears": null,
+        "median_libyears": null,
+        "max_libyears": null
+      }
+    },
+    "observed": {
+      "population_state": "unknown",
+      "availability": "unavailable",
+      "reason": "maven_discovery_unavailable",
+      "reasons": [
+        "maven_discovery_unavailable",
+        "maven_observed_reader_unavailable",
+        "maven_population_unknown"
+      ],
+      "version_basis": null,
+      "comparator_basis": "conventional_central",
+      "time_basis": "maven_conventional_pom_last_modified",
+      "ordering_basis": "maven_comparable_version_3_9_11",
+      "eligibility_policy": "maven_conservative_stable_v1",
+      "limitations": [
+        "static_base_model_not_evaluated",
+        "module_occurrence_weighted",
+        "correspondence_assumed",
+        "acquisition_not_established",
+        "content_not_established",
+        "producer_history_not_established",
+        "runtime_state_not_established",
+        "machine_settings_not_inspected"
+      ],
+      "summary": {
+        "dependencies_discovered": null,
+        "dependencies_measured": null,
+        "coverage": null,
+        "total_libyears": null,
+        "mean_libyears": null,
+        "median_libyears": null,
+        "max_libyears": null
+      }
+    }
+  },
+  "source_views": [
+    {
+      "source_id": "dpc-aggregation/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version",
+            "maven_policy_unknown"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-api/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version",
+            "maven_policy_unknown"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-attribution/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-bluebutton/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version",
+            "maven_policy_unknown"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-common/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version",
+            "maven_policy_unknown"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-macaroons/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version",
+            "maven_policy_unknown"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-one-ecosystem/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-queue/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version",
+            "maven_policy_unknown"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    },
+    {
+      "source_id": "dpc-testing/pom.xml",
+      "views": {
+        "declared": {
+          "population_state": "unknown",
+          "availability": "partial",
+          "reason": "maven_population_unknown",
+          "reasons": [
+            "maven_population_unknown",
+            "maven_unsupported_version",
+            "maven_policy_unknown"
+          ],
+          "version_basis": "supported_local_base_model_request",
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": 0,
+            "coverage": null,
+            "total_libyears": 0.0,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        },
+        "observed": {
+          "population_state": "unknown",
+          "availability": "unavailable",
+          "reason": "maven_observed_reader_unavailable",
+          "reasons": [
+            "maven_observed_reader_unavailable",
+            "maven_population_unknown"
+          ],
+          "version_basis": null,
+          "comparator_basis": "conventional_central",
+          "time_basis": "maven_conventional_pom_last_modified",
+          "ordering_basis": "maven_comparable_version_3_9_11",
+          "eligibility_policy": "maven_conservative_stable_v1",
+          "limitations": [
+            "static_base_model_not_evaluated",
+            "module_occurrence_weighted",
+            "correspondence_assumed",
+            "acquisition_not_established",
+            "content_not_established",
+            "producer_history_not_established",
+            "runtime_state_not_established",
+            "machine_settings_not_inspected"
+          ],
+          "summary": {
+            "dependencies_discovered": null,
+            "dependencies_measured": null,
+            "coverage": null,
+            "total_libyears": null,
+            "mean_libyears": null,
+            "median_libyears": null,
+            "max_libyears": null
+          }
+        }
+      }
+    }
+  ],
+  "network": {
+    "admitted_capabilities": 0,
+    "maven_worker_starts": 0,
+    "maven_GETs": 0,
+    "coordinate_disclosures": 0,
+    "endpoint_contacted": null,
+    "reason": "No admitted occurrence capability; all exact facts withheld by local policy."
+  },
+  "guarded_replay": {
+    "events": [],
+    "results": [
+      {
+        "form": "ordinary.txt",
+        "exit": 0,
+        "stdout_matches_ordinary_capture": true,
+        "stderr_empty": true
+      },
+      {
+        "form": "result.json",
+        "exit": 0,
+        "stdout_matches_ordinary_capture": true,
+        "stderr_empty": true
+      },
+      {
+        "form": "verbose.txt",
+        "exit": 0,
+        "stdout_matches_ordinary_capture": true,
+        "stderr_empty": true
+      }
+    ]
+  },
+  "input_digests": {
+    "dpc-aggregation/pom.xml": {
+      "sha256": "b61c6fb36388087e03876508035e34081bb05c54c49021804d90fafb62a391e8",
+      "bytes": 10168
+    },
+    "dpc-api/pom.xml": {
+      "sha256": "058946a15e678e864afeabceb72ec2dadefe7d390604b3bab841221240d0916b",
+      "bytes": 14516
+    },
+    "dpc-attribution/pom.xml": {
+      "sha256": "b853414e8e03a4ba8ca4c3dacb6afd96cdea4837cd5d75319a0ea516590480e0",
+      "bytes": 11696
+    },
+    "dpc-bluebutton/pom.xml": {
+      "sha256": "9030bc1efef5ae676aceb73d19bbcfd528f79ba1cdc212a4b5e91eeaf019077b",
+      "bytes": 3387
+    },
+    "dpc-common/pom.xml": {
+      "sha256": "6576bdc7e95f0b55d9110c47037d9aa7b945a63450bd369391d4b536e42cb12a",
+      "bytes": 8745
+    },
+    "dpc-macaroons/pom.xml": {
+      "sha256": "6a4b631fb848b36699fddf9d4ec85d8659d09ca22e131f95aeb2620b0f424719",
+      "bytes": 4220
+    },
+    "dpc-one-ecosystem/pom.xml": {
+      "sha256": "67323fe34203538259980b13d5ce3ff5e51b7672d0e24bf0a344eadd5d8e86b9",
+      "bytes": 1105
+    },
+    "dpc-queue/pom.xml": {
+      "sha256": "7abdf9308eb211a8ab3971ba39391e5d1ffab486016a01ab8182cede7315a298",
+      "bytes": 5155
+    },
+    "dpc-testing/pom.xml": {
+      "sha256": "90bb37e04704a5f711bfda69aeec6c787b15d43459b6319804d7b8d9acd1c9d5",
+      "bytes": 4498
+    },
+    ".mvn/extensions.xml": {
+      "sha256": "4a908f2bbc94623b1327f89edf391d618098bb91ed460211da15545b9af69e5a",
+      "bytes": 442
+    }
+  },
+  "capture_digests": {
+    "ordinary.txt": "d9d1a4b40a0be024c364f7dcb3ef5ea3bbc984d3f9e1f143c54bc7f5a5a37399",
+    "result.json": "ab3dac7c9c9b7b48b58414a64535d1ca297c0168d6d9f69f4714c7d6362e6897",
+    "verbose.txt": "003494943cd2cf66b518acfac1227233ed8a821e5d1563d1bd33a08029ba4863"
+  }
+}

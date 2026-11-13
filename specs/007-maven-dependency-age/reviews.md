@@ -2692,3 +2692,198 @@ temporary for the next recorder; unobserved telemetry/credit-before stay blank.
 One coherent authorized local T012 commit follows. **Stop at GPUBLIC**, as required
 by the approved graph; autonomous implementation authority is not revoked by the
 context rollover. No push, release, tag, private access or T013/T014 work.
+
+
+## Run007-0015 — published-boundary recovery and GPUBLIC grant
+
+Fresh parent independently verified clean local HEAD and both `cms/main` and
+`github/main` at `925fa76279d101a8d3b624007336a35c05f12dd2` using read-only remote
+queries. Initial sandbox DNS failures were retried with the required escalation;
+both remote queries succeeded. No fetch, target access, package metadata request,
+publication or push occurred. T001–T012 remain converged. The reviewed sequential
+execution envelope survives publication and this fresh context: T013 followed by
+T014 needs no mechanical next-task grant once actual prerequisites pass.
+
+### Human-supplied hosted evidence
+
+The initiating human reports overnight hosted CI GREEN for that exact T012 commit.
+The supplied Windows log facts identify Windows Server2025 / windows-2025-vs2026,
+all three real NuGet worker lifecycle tests passing, full deterministic1080 tests
+in233.973s, OK with109 skips, and git diff --check PASS. These are human-observed
+hosted facts, not a log independently retrieved by this run. Capability skips are
+not native positive Maven filesystem evidence. The hosted report supplements the
+local/native evidence and does not replace it or establish unspecified matrix jobs.
+
+### Consequential authority and unresolved target identity
+
+The human explicitly grants GPUBLIC for the already-selected PUBLIC CMSgov DPC
+proving ground, including establishing its exact local checkout/revision/branch/
+cleanliness and approved before-state, read-only ordinary root/JSON/verbose journeys,
+policy-admitted public Maven coordinate disclosure through the existing supervised
+fixed public transport, safe evidence capture, independent non-author review and
+before/after integrity. DPC must remain read only. No Maven/Gradle/Java, target code,
+resolver, ambient configuration/cache/credential access, alternate endpoint, new
+trust/disclosure route or target repair is authorized. Private validation and
+push/tag/release/publication remain prohibited. Ordinary admission is independently
+controlling; public repository status does not waive a refusal.
+
+The durable discovery identifies CMSgov/dpc-app at historical revision
+`d1e413caff5a80f590682d9055962f8103a9a527`, but deliberately omits the absolute
+candidate-root location. No repository-contained alternate exact target path was
+found. One narrow candidate-path existence check found no checkout; its exact local
+path and result are retained outside Git. This does not establish the absence of
+other checkouts or a current target revision. No broad external directory search
+or target-content inspection followed.
+
+Fresh non-author read-only recovery review completed: the NuGet collection path
+cannot establish the Java candidate root, and broader external searching could
+cross the private-target prohibition. Exact available public checkout/candidate-root
+location is the smallest missing target-selection evidence. The parent requested
+that location, rather than renewing already-granted implementation/GPUBLIC authority.
+No operational invocation, Declared/Observed result, coverage, conventional-time
+fitness, useful-user-journey result or before/after target integrity is claimed.
+There were zero Maven requests and zero target-coordinate disclosures. T013 has
+not converged; T014 cannot begin before its operational prerequisite.
+
+### Observation reconciliation and harness limits
+
+The exact required007-0014 temporary JSON handoff is absent. Ledger65 records retain
+44 columns and unique IDs, ending007-0013. No007-0014 row was reconstructed or
+appended. Restoration/location of the original baton was requested. Supplied final
+telemetry is retained pending reconciliation: session
+01a1d1c1-65ea-7ee2-805f-51991a91d5e8, GPT-6.1-Sol/openai/medium, agent0.160.0,
+reported_runtime_s6609 and credits_after141. Credits_before remains unknown: neither
+a direct pre-reading nor explicit no-intervening-credit-work continuity was supplied.
+No runtime subdivision across T006–T012, credit delta or current-run telemetry is
+inferred. Existing context/autonomous-task observations remain untouched.
+
+Reviewed-graph authority and hosted evidence were recoverable without reopening the
+contract. GPUBLIC remains a consequential target/network/disclosure grant, distinct
+from implementation authority. Actual target identity and the prior observational
+baton were not durably recoverable from this repository/environment. This is a
+handoff availability limit, not an observed product defect or new schema decision.
+T013→T014 automation, real-target finding routing, useful journey, actual disclosure
+and target integrity have not yet been exercised. No current context compaction was
+observed; prior compaction observations are not reconstructed. No generalized
+harness/SKILL, cross-project generality or resource/attention savings claim follows.
+Fresh reviewer settings/resources were not independently observed.
+
+Current local checks:297 Maven tests PASS; configured GitLeaks8.30.1 full347-commit
+history PASS, zero findings; initial whitespace and ledger shape/uniqueness PASS.
+No runtime/test/approved contract or prior ledger bytes changed. This recovery
+record and task-status addition remain uncommitted while the operational task is
+incomplete; no T013/T014 completion commit is manufactured. Current44-key handoff
+and local recovery details are retained outside Git for the next authorized recorder.
+
+
+Fresh focused non-author review of this recovery record and the task-status addition
+completed **APPROVE**, no material findings. It independently confirmed the two-file
+scope, unchanged65-record/44-column unique ledger and whitespace check; test/security
+results remain explicitly parent-observed. Final exact current-content GitLeaks scan
+and git diff --check PASS. No task-completion commit was created.
+
+
+## Run007-0016 — resumed GPUBLIC and T013 convergence
+
+**COMPLETE / APPROVE / CONVERGED.** The human supplied factual environment recovery:
+workstation restart destroyed the original007-0014 temporary baton, no retained copy
+exists, and the public candidate-root location is now explicitly identified. No
+original observation fields were reconstructed, no007-0014 row synthesized, and no
+further restoration request is needed. Its previously supplied final telemetry remains
+human-observed evidence in the preceding recovery record. This is an observation-
+artifact durability gap, not missing Feature007 authority. The prior mistaken narrow
+candidate-path absence has no bearing on the now-established target.
+
+The original007-0015 JSON44-key handoff and principal artifact digest were verified,
+then appended exactly once with human-observed session
+01a1d59a-422d-7580-bf5b-7cb059cf415f, GPT-6.1-Sol/openai/medium/0.160.0,
+reported runtime217s and credits_after144. Original context/runtime/confounding notes
+were retained. Credits_before remains blank absent a direct pre-reading or explicit
+no-intervening-credit-work confirmation; no credit delta or runtime subdivision.
+Ledger66 records retain44 columns and unique IDs; earlier bytes remain a prefix.
+Current007-0016 is not appended. Its eventual44-key handoff is external.
+
+### Established target, actual journey and classification
+
+Bounded immediate-child Git-origin inspection within the supplied public candidate
+collection uniquely identifies CMSgov/dpc-app. Current clean main HEAD is
+`d1e413caff5a80f590682d9055962f8103a9a527`, exactly historical discovery. Exact local
+path/revision/branch/status and before/after identities are retained externally;
+personal absolute topology is omitted from public prose and product output.
+The [validation record](validation.md) and minimal sanitized
+[summary](public-validation/summary.json) / [occurrences](public-validation/occurrences.csv)
+retain actual ordinary root, JSON and verbose evidence from trusted unchanged925fa76
+runtime: all exit0, empty stderr, no special Maven option or fake Observed intake.
+
+Preflight security review required excluding Git include/worktree configuration,
+ambient excludes and submodule traversal, plus identity-safe bounded snapshot reads.
+These capture adjustments were applied before content capture. No target scripts,
+build tool, cache, credentials/settings or alternate endpoint were accessed. Initial
+capture's extra complete-inventory assertion was removed before product execution;
+partial discovery is approved behavior, not a new product decision.
+
+Real DPC reaches256 directories/1,216entries/nine POMs before sorted traversal reaches
+root pom.xml. Nine child models retain179 occurrence records,36 exact-version facts
+and143 unsupported/missing-version facts. Missing discovered parent/aggregation
+means no complete N or coverage. Nonempty root extensions sentinel makes36 potential
+comparisons policy-unknown; no admitted capability, worker, GET or coordinate
+disclosure. Declared partial has M0, total0.0(empty measured subset), null N/coverage/
+mean/median/max; Observed unavailable has all-null summaries. Conventional POM
+Last-Modified disclosure remains explicit, but no timestamp/network fitness was
+established. Legacy scalar projection stays unavailable. No positive yield was
+promised. These surprises are determined by the approved bounds/refusals; neither
+review found an implementation defect or need for new consequential product authority.
+No product correction or target repair occurred.
+
+### Fresh independent verification
+
+Two fresh non-author reviews completed independently, each **COMPLETE / APPROVE**,
+with no material findings; parent validated coverage rather than voting by count.
+
+- Useful journey: inspected S6/S9/B1/B4/T013, actual three captures and sanitized
+  projections; reproduced bounded discovery and extension evidence, verified an exact
+  datadog1.38.0 request through the trusted reader and matching input digest, truthful
+  null/zero distinctions and independent Observed. Attributable requests plus clear
+  limitations satisfy approved usefulness despite no measured ages. Normal44KB /
+  verbose127KB output is a practical convenience limit, not a new blocking requirement.
+- Security/privacy: independently checked179-row CSV and view projections, all three
+  capture hashes, no output path/URL/raw-policy leakage, clean-main exact revision
+  and equal before/after ten input identities/digests. Reproduced graph/admission:
+  zero capabilities. Independently repeated all three byte-identical CLI forms under
+  rejection of socket/subprocess audit events: events empty. Inspected closed endpoint/
+  path, redirect/status refusal, isolated environment/configuration/auth/trust and
+  early all-denied return. Independently54 HTTP/policy/worker tests PASS after correcting
+  a fixture import-path test-loading invocation. Live transport branches were never
+  exercised, and no packet-capture/whole-tree-byte proof is claimed.
+
+Raw local before/after records match exactly, including revision/branch/empty status,
+nine POMs plus root extension snapshot identities/bytes and sentinel set. Integrity
+is bounded to Git state and product-input evidence, not arbitrary ignored/generated
+content. All captures/scripts remain outside the target. No target modification,
+private access or target-derived data beyond GPUBLIC was observed.
+
+Parent full deterministic suite:1080 tests in17.396s, OK(one skip). This is local
+execution, separate from retained human-observed hosted Windows1080/109skip evidence.
+Native capability limitations remain explicit. Current/historical GitLeaks and final
+whitespace/ledger/frozen-candidate checks accompany the local task commit.
+
+Reviewed implementation authority survived publication, reboot and fresh-parent
+recovery. Repository state survived; ephemeral007-0014 observation bytes did not;
+local candidate-root knowledge required human recovery. The intervention supplies
+facts/location/lifecycle, not product policy. GPUBLIC itself is a consequential
+human target/network/disclosure gate, not an internal task-approval relay. T013→T014
+progression now occurs under existing authority. Real-target limitations were
+classified within the approved contract; no correction/new decision was necessary.
+No new context compaction was observed, no important conversation-only normative
+rule identified, and no generalized harness/SKILL/cross-project/resource-saving claim
+is made. T014 is dependency-ready. No push, release, tag or private validation.
+
+
+Final focused non-author T013 record review **COMPLETE / APPROVE**, no findings:
+verified accurate zero-capability/rejecting-replay versus packet-capture distinction,
+bounded integrity, result projections, prior ledger-prefix/field preservation,
+only one enriched007-0015 row, absent synthetic007-0014 row and blank credits_before.
+Configured GitLeaks8.30.1 precommit full347-commit history and exact six-file current
+candidate scans PASS, zero findings; whitespace and42 local Markdown file links PASS.
+The six-file task boundary includes prior uncommitted recovery records and authorized
+prior observation append. No runtime/spec/plan/test or security-policy change.
