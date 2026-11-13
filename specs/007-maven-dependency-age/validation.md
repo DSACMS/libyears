@@ -140,3 +140,10 @@ material findings. Both independently reproduced core factual/integrity evidence
 the security reviewer additionally repeated the rejecting audit journey and54
 HTTP/policy/worker tests PASS. T013 is converged; T014 assesses the whole contract
 and actual witness. Parent full deterministic suite:1080 tests,1 skip,PASS.
+
+## Post-convergence positive-witness investigation
+
+Run007-0017 separately [ranked the public candidates and attempted AB2D](positive-validation.md)
+under new bounded human authority. It admitted42 comparison occurrences but obtained
+no ages because compiled default TLS trust was unavailable before connection.
+DPC's evidence and acceptance remain unchanged; positive date yield remains unestablished.

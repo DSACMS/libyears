@@ -110,3 +110,22 @@ claim, test/provenance companions and real zero-yield witness. Any extension sup
 discovery redesign, Observed reader, private proving ground or new evidence provider
 requires its own appropriate authority. Stop at the reviewed pre-publication boundary
 after independent T014 approval. Push/release/tag remain unauthorized.
+
+## Post-convergence positive demonstration — 007-0017
+
+The [bounded public investigation](positive-validation.md) autonomously ranked the
+established candidates using unchanged admission code. QPP initially offered the
+best known-coverage story, but its ordinary root journey would also disclose five
+Python pins outside the Maven-only grant. That selection oversight was retained,
+corrected before network disclosure and independently reviewed. AB2D became the
+best qualifying ordinary journey, with42 admitted occurrences and unknown complete
+population; the SDK remained an untested fallback. This extends the selection lesson:
+whole-invocation disclosure matters alongside ecosystem-local admission.
+
+AB2D exposed unavailable compiled default TLS trust before connection, rather than
+positive age yield. No fallback could repair that environment and none was tried.
+DPC's valid source-refusal witness remains intact. The single live grant supported
+attempted validation, with network sandbox escalation and a remaining explicit trust
+input/environment gate; no evidence or TLS rule was weakened to improve the demo.
+Repository-resident contracts and discovery roles supplied routing; no generalized
+harness or resource-saving conclusion follows. Positive live dates remain pending.

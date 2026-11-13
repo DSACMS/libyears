@@ -3012,3 +3012,114 @@ SKILL implementation is claimed. Preserve historical compaction observations unc
 search/access. The smallest remaining consequential action is human publication
 permission if publication is desired. Private validation remains a separate optional
 future gate with its own complete authority, not a task begun by this closure.
+
+## Run007-0017 — positive-witness investigation
+
+The human authorizes bounded post-convergence local selection among the established
+PUBLIC CMSgov Java candidates, then one qualifying ordinary Maven validation,
+fresh independent review and local documentation commits. No semantic relaxation,
+target change, private access or publication is authorized. Initial clean local and
+both remote main heads: `a28c758765760b6223e179ed787e55246e3c6cac`.
+
+### Selection and correction before live disclosure
+
+The [investigation](positive-validation.md) preserves all seven exact revisions,
+local counts, original ranking and final qualification. Unchanged local safe-reader/
+graph/admission analysis ran with rejecting socket/subprocess hooks. All candidate
+Git states and inspected snapshots remained equal. First fresh selection review
+COMPLETE / APPROVE independently reproduced all seven results, but its scope did
+not catch the ordinary sibling disclosure route. Before any live run, author
+preflight found QPP's five exact Python pins, which would exceed the Maven-only
+network grant. Original QPP recommendation and oversight are retained, not hidden.
+
+Fresh focused non-author qualification review COMPLETE / APPROVE independently
+checked absent AB2D/SDK Python/npm/Ruby inputs, complete empty NuGet discovery and
+zero sibling lookups under rejecting offline seams. It verified QPP's additional
+87-byte input digest/identity and unchanged Git states. AB2D was selected before any
+live attempt as the strongest whole-journey-eligible candidate:42 admitted occurrences/
+11GA, with unknown complete population. SDK remained an untested fallback. No
+sibling behavior, comparator policy or target was modified.
+
+Selection reviews also required an owned external temporary scratch area, bounded
+passive protocol reads, cleanup-race handling and full admitted-GA reconciliation
+rather than treating a captured contiguous prefix as proof of the final schedule.
+Those capture corrections occurred before live validation; runtime was untouched.
+
+### Actual result and independent security/integrity review
+
+All ordinary forms exit0, empty stderr, with Declared M0/unknownN/nullcoverage,
+empty-subset total0.0 and null mean/median/maximum. Observed stays independently
+unavailable/all-null. Four captures include the same-target escalated human rerun;
+complete11GA command/result schedules each record11 reservations and zero bytes.
+No catalogue target or date was acquired. Sandbox DNS failure was separately
+observed, but default TLS context creation fails before connection and is the
+supported actual scan classification. No live fallback was attempted.
+
+Fresh security/integrity review **COMPLETE / APPROVE**, no material findings,
+verified the exact seven-file frozen candidate, all four closed protocol schedules,
+raw output hashes and source admission. It independently reran all seven candidate
+analyses with exact Git/bounded input equality and rechecked QPP's extra input.
+A rejecting connection constructor/socket audit over the unchanged HTTP client
+confirmed11 reservations, zero connection constructors/socket events/bytes; default
+trust preflight fails. This supports zero GETs and zero target-coordinate disclosure,
+explicitly code-path/preflight evidence rather than packet capture. Independent54
+HTTP/worker/policy tests PASS. Fixed endpoint/TLS/isolation/no alternate behavior
+remains unchanged; no date or positive yield claim is supported.
+
+The environmental trust gate cannot be repaired by selecting SDK or weakening TLS.
+Further positive validation needs working default trust or human-identified explicitly
+authorized valid CA material through the existing override. No trust material was
+searched, downloaded or installed. DPC's accepted adversarial evidence remains intact.
+
+### Result review, parent reconciliation and stop
+
+A separate fresh result review **COMPLETE / APPROVE**, no material findings,
+verified all frozen paths, summary/127 CSV rows against ordinary JSON,42 admitted
+occurrences,46 version/39 model/42 catalogue refusal reasons, unknownN/coverage,
+independent unavailable Observed and all-null legacy summary. It reconciled every
+captured11GA schedule against actual admission, all output hashes and identical
+human rerun. It independently reproduced default TLS refusal under socket/subprocess
+audit rejection. Selection fairness, usefulness limits, DPC relationship and prior
+observation provenance were included, not inferred from the security review.
+
+Parent reconciliation: all six requested review obligations are covered; no
+unaudited material obligation or implementation defect remains within this bounded
+investigation. Positive output itself remains **NOT ESTABLISHED**, not converged.
+The retained128-line CSV contains127 occurrence rows plus its header; no row has an
+age or invented selected/Observed version. No product code/test/spec/plan/task
+requirement changed. No target-specific exception or source/date/eligibility/TLS
+relaxation was used. Original selection oversight is the one author-correctable
+process finding; correction and fresh qualification approval precede all live runs.
+
+Parent deterministic suite:1080 tests in17.284s,PASS,one expected skip. Independent
+security54PASS. Configured GitLeaks8.30.1 full350-commit history and exact current
+frozen content PASS, zero findings. Diff/JSON/CSV/ledger/frozen-input/output/privacy
+checks pass. No new hosted/native Windows or live TLS success claim follows.
+
+The original007-0016 JSON was checked against schema and appended once with human
+final telemetry (reported942s,credits_after146); all other original fields and notes
+were preserved except authorized enrichment. Credits_before stays blank without
+confirmed continuity; no canonical derived delta. Ledger67 unique records/44columns;
+no007-0014 reconstructed row and no current007-0017 append. External current handoff
+is required before final reporting. Harness observations are bounded in the report:
+autonomous ranking worked after a pre-disclosure sibling-qualification correction,
+one target grant supported attempts, real sandbox/trust limits remained, and no
+semantic weakening or conversation-only inherited selection rule was introduced.
+
+**STOP: HUMAN DECISION REQUIRED.** Supply a trust-working execution environment or
+identify/authorize valid CA material for the existing override before bounded
+same-target revalidation. No additional target network validation follows by momentum.
+Publication/private access remain separate gates; no push/tag/release is authorized.
+
+Final focused non-author bookkeeping review **COMPLETE / APPROVE**, no findings:
+all eight final hashes verified, original seven reviewed artifacts unchanged,
+prior review history preserved; stop/gate, counters-versus-GET distinction and
+verification claims accurate. Parent link check151 PASS; final current-content
+GitLeaks PASS. This disposition adds no new product or validation authority.
+
+Final staged whitespace checking exposed CRLF in the new evidence CSV (the earlier
+unstaged check did not include untracked files). Author normalized that artifact to
+LF only. Fresh focused non-author correction review **COMPLETE / APPROVE** verified
+exactly128 CR bytes removed and all127 data rows/every field identical, with no
+measurement or admission change. The normalized file passes whitespace checking;
+final cached checking is required before the authorized local commit.

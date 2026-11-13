@@ -1,0 +1,375 @@
+{
+  "run_id": "007-0017",
+  "baseline": "a28c758765760b6223e179ed787e55246e3c6cac",
+  "selected_target": "CMSgov/ab2d",
+  "revision": "9c785d41da3f7dd72f5be62cfc42ee7b1bf74459",
+  "branch": "main",
+  "clean_before_after": true,
+  "candidates": [
+    {
+      "repository": "CMSgov/ab2d",
+      "revision": "9c785d41da3f7dd72f5be62cfc42ee7b1bf74459",
+      "branch": "main",
+      "clean_before_after": true,
+      "source_count": 8,
+      "discovery": {
+        "state": "unavailable",
+        "reason": "maven_discovery_unavailable"
+      },
+      "safe_occurrence_records": 127,
+      "declared_population": null,
+      "exact_request_versions": 81,
+      "admitted_occurrences": 42,
+      "admitted_unique_GA": 11,
+      "input_snapshot_count": 8,
+      "input_digest_map_sha256": "c3f6dba18ac0bf9a7d0d04adde5ca21b59c5e130310381ce04d76aae0aeace45"
+    },
+    {
+      "repository": "CMSgov/beneficiary-fhir-data",
+      "revision": "58683caaccd1f311a9db124f2832f4f7a17e07a1",
+      "branch": "master",
+      "clean_before_after": true,
+      "source_count": 35,
+      "discovery": {
+        "state": "unavailable",
+        "reason": "maven_discovery_unavailable"
+      },
+      "safe_occurrence_records": 369,
+      "declared_population": null,
+      "exact_request_versions": 90,
+      "admitted_occurrences": 0,
+      "admitted_unique_GA": 0,
+      "input_snapshot_count": 35,
+      "input_digest_map_sha256": "a0bf227ece8c69af8e4f355421ea66f21929918712c5dcf90b91b5b3cae7c2a4"
+    },
+    {
+      "repository": "CMSgov/cms-bb2-java-sdk",
+      "revision": "1d0fd40d1bf06392073172f270d4dd99063407b9",
+      "branch": "main",
+      "clean_before_after": true,
+      "source_count": 1,
+      "discovery": {
+        "state": "complete",
+        "reason": null
+      },
+      "safe_occurrence_records": 1,
+      "declared_population": 1,
+      "exact_request_versions": 1,
+      "admitted_occurrences": 1,
+      "admitted_unique_GA": 1,
+      "input_snapshot_count": 1,
+      "input_digest_map_sha256": "c9b67ef550dbb3e093158e69c224e541ddf78fa8afffc668d49e164c678ff681"
+    },
+    {
+      "repository": "CMSgov/dpc-app",
+      "revision": "d1e413caff5a80f590682d9055962f8103a9a527",
+      "branch": "main",
+      "clean_before_after": true,
+      "source_count": 9,
+      "discovery": {
+        "state": "unavailable",
+        "reason": "maven_discovery_unavailable"
+      },
+      "safe_occurrence_records": 179,
+      "declared_population": null,
+      "exact_request_versions": 36,
+      "admitted_occurrences": 0,
+      "admitted_unique_GA": 0,
+      "input_snapshot_count": 10,
+      "input_digest_map_sha256": "27ac2b73113b5107728316c73efe3c5e477210a46067eed56b1d264d982e5878"
+    },
+    {
+      "repository": "CMSgov/qpp-conversion-tool",
+      "revision": "8fc113e31ed82c5d3f45505d066d8491102fc543",
+      "branch": "develop",
+      "clean_before_after": true,
+      "source_count": 11,
+      "discovery": {
+        "state": "complete",
+        "reason": null
+      },
+      "safe_occurrence_records": 107,
+      "declared_population": 107,
+      "exact_request_versions": 50,
+      "admitted_occurrences": 34,
+      "admitted_unique_GA": 26,
+      "input_snapshot_count": 11,
+      "input_digest_map_sha256": "bca371e7369cb289337c5afec101c5a2b1c7e0546a7f376c9fb7213597289e8f"
+    },
+    {
+      "repository": "CMSgov/nimbus-pub-code-scanning-1",
+      "revision": "3353b6d99e07d82c5bada6aefb8cd622ba2e302b",
+      "branch": "master",
+      "clean_before_after": true,
+      "source_count": 0,
+      "discovery": {
+        "state": "complete",
+        "reason": null
+      },
+      "safe_occurrence_records": 0,
+      "declared_population": null,
+      "exact_request_versions": 0,
+      "admitted_occurrences": 0,
+      "admitted_unique_GA": 0,
+      "input_snapshot_count": 0,
+      "input_digest_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "repository": "CMSgov/nimbus-pub-github-action-poc",
+      "revision": "9d5e4468921cae999e66b79d9e3c23c3c18656e6",
+      "branch": "master",
+      "clean_before_after": true,
+      "source_count": 0,
+      "discovery": {
+        "state": "complete",
+        "reason": null
+      },
+      "safe_occurrence_records": 0,
+      "declared_population": null,
+      "exact_request_versions": 0,
+      "admitted_occurrences": 0,
+      "admitted_unique_GA": 0,
+      "input_snapshot_count": 0,
+      "input_digest_map_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    }
+  ],
+  "forms": {
+    "human": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 11,
+      "body_bytes": 0,
+      "stdout_sha256": "6d2cf6fd2a8a5b069a267e672cf9c839f20b0ecbc0acae7e836dbffea3e2e0de",
+      "commands": 11,
+      "schedule_complete": true,
+      "GETs": 0,
+      "coordinate_disclosures": 0
+    },
+    "human-network": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 11,
+      "body_bytes": 0,
+      "stdout_sha256": "6d2cf6fd2a8a5b069a267e672cf9c839f20b0ecbc0acae7e836dbffea3e2e0de",
+      "commands": 11,
+      "schedule_complete": true,
+      "GETs": 0,
+      "coordinate_disclosures": 0
+    },
+    "json": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 11,
+      "body_bytes": 0,
+      "stdout_sha256": "ce5b3151c1a93b0ed5873534e1122636e5b28ed96033a18fbb0f29270430892f",
+      "commands": 11,
+      "schedule_complete": true,
+      "GETs": 0,
+      "coordinate_disclosures": 0
+    },
+    "verbose": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 11,
+      "body_bytes": 0,
+      "stdout_sha256": "0e848e48dbd2377ab7df458d08a6496b6dd18ef7277961e907b6f0f36c80fdfc",
+      "commands": 11,
+      "schedule_complete": true,
+      "GETs": 0,
+      "coordinate_disclosures": 0
+    }
+  },
+  "views": {
+    "declared": {
+      "population_state": "unknown",
+      "availability": "partial",
+      "reason": "maven_discovery_unavailable",
+      "reasons": [
+        "maven_discovery_unavailable",
+        "maven_population_unknown",
+        "maven_unsupported_version",
+        "maven_catalogue_unavailable",
+        "maven_unsupported_model"
+      ],
+      "version_basis": "supported_local_base_model_request",
+      "comparator_basis": "conventional_central",
+      "time_basis": "maven_conventional_pom_last_modified",
+      "ordering_basis": "maven_comparable_version_3_9_11",
+      "eligibility_policy": "maven_conservative_stable_v1",
+      "limitations": [
+        "static_base_model_not_evaluated",
+        "module_occurrence_weighted",
+        "correspondence_assumed",
+        "acquisition_not_established",
+        "content_not_established",
+        "producer_history_not_established",
+        "runtime_state_not_established",
+        "machine_settings_not_inspected"
+      ],
+      "summary": {
+        "dependencies_discovered": null,
+        "dependencies_measured": 0,
+        "coverage": null,
+        "total_libyears": 0.0,
+        "mean_libyears": null,
+        "median_libyears": null,
+        "max_libyears": null
+      }
+    },
+    "observed": {
+      "population_state": "unknown",
+      "availability": "unavailable",
+      "reason": "maven_discovery_unavailable",
+      "reasons": [
+        "maven_discovery_unavailable",
+        "maven_observed_reader_unavailable",
+        "maven_population_unknown"
+      ],
+      "version_basis": null,
+      "comparator_basis": "conventional_central",
+      "time_basis": "maven_conventional_pom_last_modified",
+      "ordering_basis": "maven_comparable_version_3_9_11",
+      "eligibility_policy": "maven_conservative_stable_v1",
+      "limitations": [
+        "static_base_model_not_evaluated",
+        "module_occurrence_weighted",
+        "correspondence_assumed",
+        "acquisition_not_established",
+        "content_not_established",
+        "producer_history_not_established",
+        "runtime_state_not_established",
+        "machine_settings_not_inspected"
+      ],
+      "summary": {
+        "dependencies_discovered": null,
+        "dependencies_measured": null,
+        "coverage": null,
+        "total_libyears": null,
+        "mean_libyears": null,
+        "median_libyears": null,
+        "max_libyears": null
+      }
+    }
+  },
+  "source_count": 8,
+  "safe_occurrence_records": 127,
+  "exact_request_versions": 81,
+  "admitted_occurrences": 42,
+  "admitted_unique_GA": 11,
+  "network": {
+    "fixed_endpoint": "https://repo.maven.apache.org:443/maven2/",
+    "reserved_attempts_all_four_invocations": 44,
+    "HTTP_GETs": 0,
+    "coordinate_disclosures": 0,
+    "classification": "compiled_default_TLS_trust_unavailable_before_connection",
+    "GET_count_evidence": "Unchanged transport creates required verified TLS context before connection; direct default-context preflight fails. Protocol attempts count reservations, not sent GETs. No packet capture."
+  },
+  "schedule": [
+    {
+      "group_id": "com.datadoghq",
+      "artifact_id": "dd-java-agent",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "com.okta.jwt",
+      "artifact_id": "okta-jwt-verifier-impl",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "gov.cms.ab2d",
+      "artifact_id": "ab2d-filters",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-impl",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-jackson",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "org.apache.httpcomponents.core5",
+      "artifact_id": "httpcore5",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "org.mockito",
+      "artifact_id": "mockito-core",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "org.testcontainers",
+      "artifact_id": "junit-jupiter",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "org.testcontainers",
+      "artifact_id": "localstack",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "org.testcontainers",
+      "artifact_id": "postgresql",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    },
+    {
+      "group_id": "org.testcontainers",
+      "artifact_id": "testcontainers",
+      "operation": "select_target",
+      "outcome": "maven_catalogue_unavailable"
+    }
+  ],
+  "input_digests": {
+    "api/pom.xml": {
+      "sha256": "628203869d562b11b00f150da04124e4b343a850daf0f8be67cbb291065871f9",
+      "bytes": 9097
+    },
+    "common/pom.xml": {
+      "sha256": "c41a6513efb7913d6a6c264eda0d8ceb2877f06d42b44a69a4587d7626de52e4",
+      "bytes": 8723
+    },
+    "coverage/pom.xml": {
+      "sha256": "8bfd565b1bec276aa582483c054d0c895fbb5bd831680ef24903b043fc53e95c",
+      "bytes": 5470
+    },
+    "e2e-bfd-test/pom.xml": {
+      "sha256": "fd4bb961119f0bb2d96506518f89e3556b0db3174cff97088da9b2b3adf024fd",
+      "bytes": 2412
+    },
+    "e2e-test/pom.xml": {
+      "sha256": "02251439c9c0b2498cded415693df8fe6925ba9395aecf55e7c78f0d0abb0f12",
+      "bytes": 5242
+    },
+    "job/pom.xml": {
+      "sha256": "2aa90f72250c88fff82e4e7126b7bcac15995c9accd807e5f38f798093407a7b",
+      "bytes": 4857
+    },
+    "pom.xml": {
+      "sha256": "036a3062bb22e6f1629e38eff4bf795eb865ddaddb27fe78a9dc794507899deb",
+      "bytes": 12724
+    },
+    "worker/pom.xml": {
+      "sha256": "6f2d8b82e41ca92d8933f9cf91525bf8521aa958627d0a59545580da97d6fea5",
+      "bytes": 11111
+    }
+  },
+  "integrity": {
+    "all_seven_git_and_bounded_inputs_equal": true,
+    "qpp_requirements_bytes_identity_equal": true,
+    "scope": "Git revision/branch/status and bounded inspected inputs; not whole ignored-tree proof"
+  },
+  "limitations": "No date or positive age acquired; no fallback tried; no product behavior changed. A trust-working environment or explicitly supplied valid CA is required for further operational validation."
+}

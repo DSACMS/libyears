@@ -473,6 +473,8 @@ private access or positive live date-fitness claim. Final
 [retrospective](specs/007-maven-dependency-age/retrospective.md) preserve the evidence
 and remaining pre-publication boundary.
 
+**007-0017 positive-witness investigation:** [Local public ranking and AB2D attempt](specs/007-maven-dependency-age/positive-validation.md) retain42 admitted occurrences, unknown complete population and zero ages. Compiled default TLS trust fails before connection; positive yield remains unestablished. QPP ordinary sibling PyPI disclosure was excluded before live validation; SDK fallback untested. No product change or weakened refusal. Next operational gate: trust-working environment or explicitly supplied valid CA material; publication remains separately unauthorized.
+
 ### 12. NuGet repository project sources
 
 **State:** SELECTED in run `006-0022`. The human approves source-qualified
