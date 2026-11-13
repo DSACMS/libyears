@@ -51,8 +51,8 @@ def build_parser() -> argparse.ArgumentParser:
                         help="accept one explicit supplier witness per root-relative project in ordinary "
                              "repository mode (repeatable; exactly one =; v1 event, v2 namespace or v3 fallback population assertions)")
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
-    parser.add_argument("--ca-bundle", metavar="FILE", help="verified CA bundle for PyPI HTTPS")
-    parser.add_argument("--verbose", action="store_true", help="show concise registry failure diagnostics")
+    parser.add_argument("--ca-bundle", metavar="FILE", help="explicit verified HTTPS CA bundle; see ecosystem trust rules")
+    parser.add_argument("--verbose", action="store_true", help="show discovery, evidence, limitations and diagnostics")
     return parser
 
 

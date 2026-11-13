@@ -177,8 +177,8 @@ class MixedScanTests(unittest.TestCase):
         human = format_human(report, str(self.root))
         self.assertIn("npm manifest discovery failed", human)
         self.assertIn("alpha", human)
-        self.assertIn("Repository: null coverage", human)
-        self.assertIn("npm: null coverage", human)
+        self.assertIn("unknown coverage", human)
+        self.assertIn("npm: unknown coverage", human)
         self.assertIn("pypi: 100.0% coverage", human)
 
     def test_invalid_lockfile_remains_dependency_level_and_pypi_survives(self):
@@ -588,8 +588,8 @@ class MixedScanTests(unittest.TestCase):
                     human = format_human(report, ".")
                     self.assertIn(explanation, human)
                     self.assertIn(source, human)
-                    self.assertIn("npm: null coverage", human)
-                    self.assertIn("Repository: null coverage", human)
+                    self.assertIn("npm: unknown coverage", human)
+                    self.assertIn("unknown coverage", human)
                     self.assertNotIn("ValueError", human)
                     self.assertNotIn("Traceback", human)
                     self.assertNotIn("invalid key", human)

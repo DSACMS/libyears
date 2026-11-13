@@ -84,7 +84,7 @@ class DiscoveryFilesystemTests(unittest.TestCase):
         result = discover_nuget_candidates(self.root)
         self.assertEqual((result.status, len(result.candidates)), ('complete', 100))
         self.candidate('overflow.csproj')
-        self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete'))
+        self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete', positive_local_evidence=True))
 
     def test_directory_cap_and_cap_plus_one(self):
         for index in range(discovery.MAX_DIRECTORIES - 1):
@@ -104,11 +104,11 @@ class DiscoveryFilesystemTests(unittest.TestCase):
         self.candidate('a/One.csproj')
         self.candidate('b/Two.csproj')
         with patch.object(discovery, 'MAX_CANDIDATES', 1):
-            self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete'))
+            self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete', positive_local_evidence=True))
         # Root has two entries; each child adds another, so a per-directory cap
         # would miss this overflow.
         with patch.object(discovery, 'MAX_ENTRIES', 3):
-            self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete'))
+            self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete', positive_local_evidence=True))
 
     def test_symlinks_and_special_files_are_not_candidates_or_followed(self):
         self.candidate('real/Actual.csproj')
@@ -183,7 +183,8 @@ class DiscoveryFilesystemTests(unittest.TestCase):
             return original_stat(path, **kwargs)
 
         with patch.object(os, 'stat', side_effect=mutate_stat):
-            self.assertEqual(discover_nuget_candidates(self.root), NuGetRecognition('incomplete'))
+            self.assertEqual(discover_nuget_candidates(self.root),
+                             NuGetRecognition('incomplete', positive_local_evidence=True))
 
     def test_success_closes_directory_handles_and_scan_iterators(self):
         self.candidate('child/Found.csproj')

@@ -208,6 +208,8 @@ class SourceResult:
     source_present: bool = True
     diagnostics: tuple[tuple[str, str], ...] = ()
     source_id: str | None = None
+    # None uses source_present; false marks a discovery-only sentinel.
+    presentation_relevant: bool | None = None
 
 
 @dataclass(frozen=True, slots=True)

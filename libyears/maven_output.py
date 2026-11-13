@@ -133,11 +133,14 @@ def _number(value):
 
 
 def maven_human_lines(report, *, verbose=False):
-    data = maven_to_dict(report)
+    return _maven_data_human_lines(maven_to_dict(report), verbose=verbose)
+
+
+def _maven_data_human_lines(data, *, verbose=False):
+    """Render the same safe projection used by JSON, including retained reports."""
     views = data['views']
     lines = ['Conventional Maven dependency age',
              'Time basis: Maven conventional (versioned public POM Last-Modified)',
-             'Declared uses static local base-model requests; repeated consumer modules count separately.',
              '', f"{'Measure':28} {'Declared':>18} {'Observed':>18}"]
     for name, label in (('dependencies_discovered', 'Dependencies discovered'),
                         ('dependencies_measured', 'Dependencies measured'),
@@ -162,14 +165,26 @@ def maven_human_lines(report, *, verbose=False):
         lines.append(f"{name.title()}: {view['availability']}" + (f' ({reasons})' if reasons else ''))
     if 'maven_observed_reader_unavailable' in views['observed']['reasons']:
         lines.append('Observed is unavailable: no accepted Maven retained-selection reader.')
-    if not report.discovery.complete:
+    if data['discovery']['state'] != 'complete':
         lines.append('Discovery incomplete: Maven presence/population cannot be certified complete.')
     if (views['declared']['summary']['dependencies_measured'] == 0
             and views['declared']['summary']['dependencies_discovered'] != 0):
         lines.append('No declared ages measured; zero total describes an empty measured subset.')
     if data['sources']:
         lines.append('Sources: ' + ', '.join(json.dumps(s['source_id'], ensure_ascii=True) for s in data['sources']))
+    if verbose:
+        lines.append('Declared uses static local base-model requests; repeated consumer modules count separately.')
+    refused = {}
     for occurrence in data['occurrences']:
+        if not verbose:
+            for view in ('declared', 'observed'):
+                fact = occurrence[view]
+                if fact is not None and fact['age'] is None:
+                    key = (view, fact['reason'])
+                    refused[key] = refused.get(key, 0) + 1
+            if not any(fact is not None and fact['age'] is not None
+                       for fact in (occurrence['declared'], occurrence['observed'])):
+                continue
         key = occurrence['key']
         facts = []
         for name in ('declared', 'observed'):
@@ -185,6 +200,11 @@ def maven_human_lines(report, *, verbose=False):
         classifier = key['classifier'] if key['classifier'] is not None else '(absent)'
         identity += f" type={key['type']} classifier={classifier}"
         lines.append(identity + ' | Declared: ' + facts[0] + ' | Observed: ' + facts[1])
+    for (view, reason), count in sorted(refused.items(), key=lambda item: (item[0][0], item[0][1] or '')):
+        lines.append(f"  {view.title()} unmeasurable: {count} — " + _REASON_TEXT.get(reason, 'unavailable age'))
+    if not verbose:
+        lines.append('Declared: static request occurrences; totals cover measured rows only, not evaluated/runtime state.')
+        lines.append('Central correspondence is assumed; POM modification times do not establish first publication.')
     if verbose:
         lines.extend(['', 'Public repository-reported modification times of versioned POM representations are a conventional release-age surrogate.',
                       'First publication, upstream release and classifier availability/compatibility are not established.',

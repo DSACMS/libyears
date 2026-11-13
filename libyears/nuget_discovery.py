@@ -23,6 +23,8 @@ _SCANDIR = os.scandir
 class NuGetRecognition:
     status: str = 'complete'
     candidates: tuple[str, ...] = ()
+    # Incomplete inventories still discard names and all population authority.
+    positive_local_evidence: bool = False
 
 
 def discovery_available() -> bool:
@@ -62,11 +64,12 @@ def discover_nuget_candidates(root: str | Path) -> NuGetRecognition:
         return NuGetRecognition('unavailable')
     flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW | os.O_NONBLOCK
     candidates = []
+    positive_local_evidence = False
     directory_count = 0
     entry_count = 0
 
     def visit(descriptor, relative, depth):
-        nonlocal directory_count, entry_count
+        nonlocal directory_count, entry_count, positive_local_evidence
         directory_count += 1
         if directory_count > MAX_DIRECTORIES:
             raise _IncompleteRecognition
@@ -77,7 +80,11 @@ def discover_nuget_candidates(root: str | Path) -> NuGetRecognition:
                 entry_count += 1
                 if entry_count > MAX_ENTRIES:
                     raise _IncompleteRecognition
-                entries.append((entry.name, entry.stat(follow_symlinks=False)))
+                metadata = entry.stat(follow_symlinks=False)
+                entries.append((entry.name, metadata))
+                if (entry.name.endswith('.csproj') and stat.S_ISREG(metadata.st_mode)
+                        and not _reparse_point(metadata)):
+                    positive_local_evidence = True
 
         for name, metadata in sorted(entries):
             if _reparse_point(metadata):
@@ -112,5 +119,5 @@ def discover_nuget_candidates(root: str | Path) -> NuGetRecognition:
         finally:
             os.close(descriptor)
     except (OSError, ValueError, NotImplementedError, _IncompleteRecognition):
-        return NuGetRecognition('incomplete')
+        return NuGetRecognition('incomplete', positive_local_evidence=positive_local_evidence)
     return NuGetRecognition(candidates=tuple(sorted(candidates)))

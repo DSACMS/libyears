@@ -164,14 +164,15 @@ class RepositoryNuGetReader(ScopedNuGetReader):
         self.directory = None
 
 
-def _unavailable(source_id: str | None, reason: str) -> NuGetSource:
+def _unavailable(source_id: str | None, reason: str, *, positive_local_evidence=False) -> NuGetSource:
     name = 'repository' if source_id is None else source_id.rsplit('/', 1)[-1]
     evidence = NuGetSourceEvidence(name if source_id else None, 'packages.lock.json',
                                   include_format=True, scope='explicit_direct_packagereference',
                                   publication_basis='nuget_org_first_receipt_created')
     return NuGetSource(SourceResult('nuget', (), (),
         (SourceError('nuget', name, reason, source_id),), evidence, None, False,
-        source_id=source_id))
+        source_id=source_id,
+        presentation_relevant=source_id is not None or positive_local_evidence))
 
 
 def _attribute_source(source: NuGetSource, source_id: str) -> NuGetSource:
@@ -192,7 +193,8 @@ def read_repository_sources(root: Path, witnesses=()) -> tuple[NuGetSource, ...]
     mapping = validate_witnesses(witnesses)
     inventory = discover_nuget_candidates(root)
     if inventory.status != 'complete':
-        return (_unavailable(None, 'nuget_discovery_' + inventory.status),)
+        return (_unavailable(None, 'nuget_discovery_' + inventory.status,
+                             positive_local_evidence=inventory.positive_local_evidence or bool(mapping)),)
     sources = []
     parent_counts = Counter(project.rpartition('/')[0] for project in inventory.candidates)
     for project in inventory.candidates:

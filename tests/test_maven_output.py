@@ -67,7 +67,7 @@ class MavenOutputTests(unittest.TestCase):
         report = self.report()
         normal = format_human(report, '/private/secret/root')
         verbose = format_human(report, '/private/secret/root', verbose=True)
-        self.assertLess(normal.index('Declared'), normal.index('Legacy subset'))
+        self.assertIn('Ecosystems: maven', normal)
         self.assertIn('Observed', normal)
         self.assertIn('no accepted Maven retained-selection reader', normal)
         self.assertEqual(normal.count('Time basis: Maven conventional (versioned public POM Last-Modified)'), 1)
@@ -75,7 +75,8 @@ class MavenOutputTests(unittest.TestCase):
         self.assertIn('catalogue_retrieved_at: 2026-11-12T00:00:00Z', verbose)
         self.assertNotIn('/private/secret/root', verbose)
         self.assertIn('comparison_version_pom_last_modified', verbose)
-        self.assertIn('Legacy subset (incomplete scalar projection', normal)
+        self.assertNotIn('Legacy subset', normal)
+        self.assertIn('Legacy subset (incomplete scalar projection', verbose)
 
     def test_nullable_safe_requests_versions_and_policy_failures_keep_known_rows(self):
         bad_request = 'https://name:credential@private.invalid/absolute/path'

@@ -417,8 +417,79 @@ def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bo
     return "\n".join(lines) + "\n"
 
 
+def _ordinary_ecosystems(report: MixedScanReport) -> list[str]:
+    """Positive local evidence controls display, never discovery or JSON truth."""
+    ecosystems = {source.ecosystem for source in report.source_results
+                  if (source.source_present if source.presentation_relevant is None
+                      else source.presentation_relevant)}
+    if report.maven is not None and (report.maven.positive_local_evidence
+                                    or report.maven.discovery.source_ids or report.maven.sources):
+        ecosystems.add('maven')
+    return sorted(ecosystems)
+
+
+def _human_count(value) -> str:
+    return 'unknown' if value is None else str(value)
+
+
+def _summary_line(label, summary) -> str:
+    coverage = 'unknown' if summary.coverage is None else _coverage(summary.coverage)
+    return (f"{label}: {coverage} coverage; "
+            f"{_human_count(summary.dependencies_measured)} / "
+            f"{_human_count(summary.dependencies_discovered)} measured; "
+            f"total {_number(summary.total_libyears)}, mean {_number(summary.mean_libyears)}, "
+            f"median {_number(summary.median_libyears)}, max {_number(summary.max_libyears)} libyears")
+
+
+def _format_ordinary_mixed(report: MixedScanReport, path: str) -> str:
+    ecosystems = _ordinary_ecosystems(report)
+    scalar = [name for name in ecosystems if name != 'maven']
+    # Preserve privacy guards even when their ecosystem section is suppressed.
+    protected = report.maven is not None or any(
+        source.ecosystem == 'nuget' and source.source_present for source in report.source_results)
+    if protected:
+        path = 'selected repository'
+    visible = replace(report, maven=None,
+        source_results=tuple(source for source in report.source_results if source.ecosystem in scalar),
+        source_errors=tuple(error for error in report.source_errors if error.ecosystem in scalar),
+        by_ecosystem={name: value for name, value in report.by_ecosystem.items() if name in scalar},
+        diagnostics=() if protected else report.diagnostics,
+        tls_trust=None if protected else report.tls_trust)
+    if scalar:
+        # The aggregate remains the original full-report scalar, including nulls.
+        rendered = _format_scalar_human(visible, path, verbose=False,
+            incomplete_scalar=report.maven is not None or bool(set(report.by_ecosystem) - set(ecosystems)),
+            concise_summary=True)
+        if 'maven' in ecosystems:
+            lines = rendered.splitlines()
+            lines[1] = 'Ecosystems: ' + ', '.join(ecosystems)
+            rendered = '\n'.join(lines) + '\n'
+    else:
+        rendered = f"Libyears: {path}\nEcosystems: {', '.join(ecosystems) or 'none detected'}\n"
+    if 'maven' in ecosystems:
+        from .maven_output import maven_human_lines
+        rendered += '\n' + '\n'.join(maven_human_lines(report.maven)) + '\n'
+    if not ecosystems:
+        rendered += '\nNo positively detected supported ecosystems; no measurement displayed.\n'
+    if report.maven is not None or 'nuget' in ecosystems or set(report.by_ecosystem) - set(ecosystems):
+        rendered += ('\nUse --verbose for discovery, evidence and limitations; --json for the full report.\n'
+                     'Undisplayed ecosystems are not certified absent.\n')
+    return rendered
+
+
 def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
                         nuget_recognition: NuGetRecognition | None = None) -> str:
+    precision = not report.nuget_repository and any(
+        source.ecosystem == 'nuget' and source.source_present for source in report.source_results)
+    if not verbose and not precision and (nuget_recognition is None or
+            (nuget_recognition.status == 'complete' and not nuget_recognition.candidates)):
+        return _format_ordinary_mixed(report, path)
+    return _format_scalar_human(report, path, verbose=verbose, nuget_recognition=nuget_recognition)
+
+
+def _format_scalar_human(report: MixedScanReport, path: str, *, verbose: bool,
+                         nuget_recognition: NuGetRecognition | None = None,
+                         incomplete_scalar: bool = False, concise_summary: bool = False) -> str:
     if report.maven is not None:
         from .maven_output import maven_human_lines
         lines = ['Libyears: selected repository', '', *maven_human_lines(report.maven, verbose=verbose),
@@ -461,7 +532,8 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
             nuget_disclosure = _nuget_repository_disclosure(report, verbose=verbose)
         else:
             nuget_disclosure = _nuget_disclosure(nuget_source, report.by_ecosystem["nuget"], verbose=verbose)
-    if len(ecosystems) == 1 and not report.source_errors:
+    if (len(ecosystems) == 1 and not report.source_errors
+            and not incomplete_scalar):
         ecosystem = ecosystems[0]
         ecosystem_label = 'Ecosystem scanned for measurement' if recognition_lines else 'Ecosystem'
         lines = [heading, f"{ecosystem_label}: {ecosystem}", ""]
@@ -512,20 +584,20 @@ def _format_mixed_human(report: MixedScanReport, path: str, *, verbose: bool,
     lines.extend(recognition_lines)
     lines.extend(ruby_disclosure)
     lines.extend(nuget_disclosure)
-    lines.append(
-        f"Repository: {_coverage(summary.coverage)} coverage; "
-        f"{summary.dependencies_measured} / {summary.dependencies_discovered} measured; "
-        f"total {_number(summary.total_libyears)}, mean {_number(summary.mean_libyears)}, "
-        f"median {_number(summary.median_libyears)}, max {_number(summary.max_libyears)} libyears"
-    )
-    for ecosystem in sorted(report.by_ecosystem):
-        item = report.by_ecosystem[ecosystem]
-        lines.append(
-            f"{ecosystem}: {_coverage(item.coverage)} coverage; "
-            f"{item.dependencies_measured} / {item.dependencies_discovered} measured; "
-            f"total {_number(item.total_libyears)}, mean {_number(item.mean_libyears)}, "
-            f"median {_number(item.median_libyears)}, max {_number(item.max_libyears)} libyears"
-        )
+    if concise_summary:
+        label = 'Repository scalar subset (incomplete)' if incomplete_scalar or summary.dependencies_discovered is None else 'Repository'
+        lines.append(_summary_line(label, summary))
+        if summary.dependencies_discovered is None:
+            lines.append('Repository coverage is unknown; ecosystem summaries describe their own evidence.')
+        for ecosystem in sorted(report.by_ecosystem):
+            lines.append(_summary_line(ecosystem, report.by_ecosystem[ecosystem]))
+    else:
+        for label, item in [('Repository', summary), *sorted(report.by_ecosystem.items())]:
+            lines.append(
+                f"{label}: {_coverage(item.coverage)} coverage; "
+                f"{item.dependencies_measured} / {item.dependencies_discovered} measured; "
+                f"total {_number(item.total_libyears)}, mean {_number(item.mean_libyears)}, "
+                f"median {_number(item.median_libyears)}, max {_number(item.max_libyears)} libyears")
     if report.measurements:
         ordered = sorted(report.measurements, key=lambda item: item.libyears, reverse=True)
         table = _measurement_table(ordered, ecosystem_column=True, source_column=True)
@@ -589,6 +661,8 @@ def _nuget_repository_disclosure(report, *, verbose=False) -> list[str]:
         item.nuget_evidence is not None
         and item.nuget_evidence.comparator_basis in ('repository_mapping', 'conventional_public_policy')
         for item in (*report.unmeasurable, *(m.dependency for m in report.measurements)))
+    if not verbose:
+        lines = ["NuGet counts direct occurrences separately for each project."]
     lines.extend(_nuget_policy_lines(verbose=verbose, conventional=conventional, automatic=automatic))
     for source in sources:
         summary = report.by_nuget_source[source.source_id]
@@ -636,7 +710,11 @@ def _nuget_policy_lines(*, verbose=False, conventional=False, automatic=False) -
         lines.insert(2, "A private namesake or fork may have a different history; public lookup discloses the package identity.")
         lines.insert(3, "Comparator policy does not establish acquisition, content correspondence or producer/restore history.")
     if not verbose:
-        return lines
+        if conventional:
+            return ["NuGet: conventional nuget.org comparison assumes namespace correspondence.",
+                    "An undisclosed private namesake or fork may differ; public queries disclose package identities.",
+                    "Comparator policy does not establish acquisition or content correspondence."]
+        return [lines[0]]
     return lines + [
         "Scope: all supported explicit direct PackageReferences, including test, tool, analyzer and PrivateAssets references.",
         "Trust basis: explicit version-1 producer testimony, version-2 retained snapshot/namespace testimony, or version-3 fallback population/namespace testimony.",
@@ -662,6 +740,8 @@ def _nuget_disclosure(source, summary, *, verbose=False) -> list[str]:
         f"NuGet declaration source: {evidence.declaration_source}; version snapshot: {evidence.snapshot_source}; "
         f"provenance source: {evidence.provenance_source or 'not supplied'}.",
     ]
+    if not verbose:
+        lines = [lines[0]]
     lines.extend(_nuget_policy_lines(verbose=verbose))
     lines.extend(_nuget_population_lines(evidence, verbose=verbose))
     lock_state = 'accepted' if evidence.format == 'packages_lock_v1' else 'unavailable'

@@ -70,6 +70,8 @@ class MavenScanReport:
     discovery: MavenDiscovery
     sources: tuple[MavenSource, ...]
     summaries: MavenSummaries
+    # Display relevance only; never population or admission evidence.
+    positive_local_evidence: bool = False
 
 
 def measure_admission(admission, *, ca_bundle=None, supervisor_factory=None):
@@ -131,9 +133,12 @@ def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=
 
     if reader_factory is None:
         reader_factory = MavenInputReader
+    positive_local_evidence = False
     try:
         with reader_factory(root) as reader:
-            discovery = reader.inventory().discovery
+            inventory = reader.inventory()
+            discovery = inventory.discovery
+            positive_local_evidence = bool(discovery.source_ids or getattr(inventory, "candidates", ()))
             if discovery.complete and not discovery.source_ids:
                 return None
             graph = build_project_graph(discovery, reader.snapshot_pom)
@@ -147,4 +152,4 @@ def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=
         sources = measure_admission(admission, ca_bundle=ca_bundle,
                                     supervisor_factory=supervisor_factory)
     summaries = summarize_sources(sources, discovery_complete=discovery.complete)
-    return MavenScanReport(discovery, sources, summaries)
+    return MavenScanReport(discovery, sources, summaries, positive_local_evidence)

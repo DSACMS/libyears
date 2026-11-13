@@ -616,7 +616,7 @@ class ScopedRubyJsonTests(unittest.TestCase):
                     for verbose in (False, True):
                         human = format_human(report, '.', verbose=verbose)
                         self.assertIn(text, human)
-                        self.assertIn(counts, human)
+                        self.assertIn(counts if verbose else counts.replace("None", "unknown"), human)
                         if lock is None:
                             self.assertIn('Gemfile.lock recognition: unavailable', human)
 
