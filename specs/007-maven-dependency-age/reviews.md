@@ -3123,3 +3123,68 @@ LF only. Fresh focused non-author correction review **COMPLETE / APPROVE** verif
 exactly128 CR bytes removed and all127 data rows/every field identical, with no
 measurement or admission change. The normalized file passes whitespace checking;
 final cached checking is required before the authorized local commit.
+
+## Run007-0018 — explicit trust precedent investigation
+
+**COMPLETE / APPROVE — EXISTING OVERRIDE SUFFICIENT; LOCAL TRUST INPUT REQUIRED.**
+The human authorizes repository-only recovery of the Python/npm trust precedent
+and comparison with existing Maven explicit trust. No workstation certificate
+search, trust export, target access or live AB2D rerun is authorized by this step.
+Starting local HEAD `83bfffb`, clean. AB2D selection and the prior zero-connection
+baseline are unchanged.
+
+The [bounded investigation](trust-precedent.md) recovers shared verified explicit
+input/default/pip-fallback behavior from policy, code, tests and Git history. The
+npm sandbox networking witness is not misrepresented as a certificate-specific
+failure. Historical human-established temporary combined trust input for the shared
+transport is recovered separately from RubyGems validation; its destination-specific
+cause and old authorization do not establish Maven certificate identity or authority
+to discover/export any current material.
+
+Maven already accepts the same kind of explicit PEM CA file through CLI validation,
+scan forwarding, bounded stable regular no-follow input, private staged0600 file,
+isolated installed worker and verified TLS context. Its different ambient/default
+trust boundary remains deliberate: no environment/pip/Maven/home discovery route,
+endpoint expansion, redirect fallback, new dependency or semantic unification.
+No runtime, test, approved contract or target changed. No product defect established.
+
+Fresh non-author security/evidence review **COMPLETE / APPROVE**, no material
+findings, independently verified the frozen three-file candidate, shared/Maven code,
+policy/test/history and historical local-procedure distinctions. It reran all53
+focused existing tests PASS with injected ambient empty trust/pip-discovery mocks
+and parent socket rejection. Worker tests use synthetic input and no-request
+readiness. This is deterministic mechanism evidence, not actual certificate parsing,
+current verified endpoint success or positive dependency-age yield.
+
+Both author and reviewer explicitly inspected new durable text and the prior-run
+append for certificate/environment sensitivity beyond GitLeaks: no certificate
+body/PEM/base64, fingerprint, distinguished name, internal organization/host identity,
+trust inventory, actual CA path, user/home topology, environment value or secret
+configuration is retained. Repository artifact digests and observation session IDs
+remain provenance, not certificate identity. No actual trust material was inspected,
+staged, printed, exported or committed. No network or candidate access occurred.
+
+Author configured GitLeaks8.30.1 full351-commit history and exact current content
+PASS, zero findings;16 local links/anchors and diff checks PASS. No full-suite rerun
+was needed for this documentation-only investigation. Existing independently reviewed
+transport/security constraints remain binding; no new cross-platform claim follows.
+
+007-0017 original44-key baton/digest was verified against its baseline and appended
+once with supplied final telemetry (reported976s,credits_after148 and supplied
+identity/configuration). Other fields and original notes/confounding classifications
+remain unchanged. Earlier ledger bytes preserved;68 unique records/44columns.
+Credits_before remains blank without direct observation or explicit continuity;
+no credit delta and no lost007-0014 reconstruction. Current007-0018 receives an
+external handoff and is not appended by this run.
+
+The harness observation is narrow: durable artifacts recovered an environmental
+pattern without human retransmission, while preserving differences in causes,
+automatic discovery and worker staging. No generalized harness or resource claim.
+**Next operational fact/authority:** human stages an approved PEM bundle outside Git,
+privately identifies the exact file and authorizes read/private staging for bounded
+AB2D revalidation using the existing override. No certificate identity or workstation
+search is requested. Stop until supplied; no push/tag/release or private validation.
+
+Final focused bookkeeping review **COMPLETE / APPROVE**, no findings: all four
+manifest hashes matched, original three reviewed artifacts stayed unchanged, and
+the sensitivity exclusions/human input gate remained accurate without new authority.

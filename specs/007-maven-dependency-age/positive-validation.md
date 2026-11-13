@@ -166,3 +166,10 @@ remains blank without a direct reading or explicit no-intervening-work continuit
 Original notes/confounding classifications remain; no derived credit delta.
 The known reboot loss of007-0014 is preserved without reconstruction. Current007-0017
 gets a separate44-key external handoff and is not appended to the canonical ledger.
+
+## Trust-precedent follow-up — 007-0018
+
+The [repository-only trust investigation](trust-precedent.md) establishes that Maven's
+existing explicit override supports an approved PEM CA bundle with private bounded
+worker staging. No product change or live rerun occurred. Human-supplied local input
+and read/staging authority remain required; the007-0017 baseline is unchanged.
