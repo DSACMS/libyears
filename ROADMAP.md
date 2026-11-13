@@ -364,6 +364,19 @@ or fresh-parent causal benefit follows. No generalized harness or SKILL.md is bu
 No shrinking burden or cross-project generality is established. See the
 [discovery observations](discovery/java-ecosystem-repodive.md#methodology-and-architecture-observations).
 
+**007-0016 recovery and authority observation:** Reviewed-graph authority/state
+survived publication, reboot and fresh-parent recovery. The original007-0014 ephemeral
+observation baton did not survive the human-confirmed reboot; no original fields or
+row were reconstructed. Public candidate-root knowledge required human factual
+recovery. GPUBLIC separately supplied real target/network/disclosure authority;
+T013→T014 progression required no routine next-task approval. Hosted evidence retains
+human provenance and native-capability skip limits. No real-target implementation
+defect or new product decision arose; approved budget/extension refusals preserved
+useful partial facts with zero requests. Operational location/temporary bytes were
+missing despite durable normative authority. No new compaction, cross-project
+generality, quantified savings or generalized harness/SKILL is claimed. See the
+[retrospective](specs/007-maven-dependency-age/retrospective.md).
+
 **Why this state:** Reusable practice merits evaluation, not a selected tool,
 mandatory premium-model workflow or immediate skill implementation.
 
@@ -377,8 +390,9 @@ repository-specific authority, or relies on unobserved resource claims.
 
 ### 11. Java ecosystem repodive
 
-**State:** SELECTED in007-0002 for Maven-first plural declared/observed specification;
-no implementation authority.
+**State:** SELECTED; Feature007 COMPLETE through independently converged T014 at
+the reviewed pre-publication boundary. Earlier states below retain the selection
+and decision history; no release, push or private validation is implied.
 
 **Area:** Java discovery
 
@@ -447,6 +461,17 @@ combined view arithmetic, unresolved consequential source/schema/date policy, or
 implementation without separate authority.
 
 **References:** [Feature 006 retrospective](specs/006-nuget-selected-evidence/retrospective.md#what-we-would-do-differently-and-human-handoff).
+
+**007-0016 public reality:** [Actual ordinary DPC validation](specs/007-maven-dependency-age/validation.md)
+retains nine safe sources/179 occurrence records/36 exact request facts after the
+256-directory discovery bound, with unknown N/coverage, zero measured ages and
+independent unavailable Observed. Nonempty extension evidence denies all comparison;
+zero capabilities/requests/disclosures, unchanged clean exact discovery revision.
+Fresh useful-journey/security reviews APPROVE. No target repair, relaxed policy,
+private access or positive live date-fitness claim. Final
+[convergence](specs/007-maven-dependency-age/convergence.md) and
+[retrospective](specs/007-maven-dependency-age/retrospective.md) preserve the evidence
+and remaining pre-publication boundary.
 
 ### 12. NuGet repository project sources
 

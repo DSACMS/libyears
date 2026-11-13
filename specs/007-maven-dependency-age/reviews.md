@@ -2919,3 +2919,96 @@ runtime/test/contract/policy change, network or external target read. Parent exa
 five-file current GitLeaks scan PASS, zero findings; complete348-commit history
 was already scanned after T013, PASS. The correction is closed without new human
 relay and receives its own local commit; final whole T014 reconciliation follows.
+
+
+## Run007-0016 — T014 final convergence and handoff
+
+**COMPLETE / APPROVE / CONVERGED. T001–T014 COMPLETE.** The reviewed public
+pre-publication Feature007 boundary is reached. T014 began automatically after
+T013 local7726b52, under the persistent human-reviewed execution envelope. The
+fresh whole reviewer returned COMPLETE / REVISE for one material stale shipping-
+status finding, without a runtime/security/metric/schema defect. Bounded correction
+6ccafa4 was freshly independently verified and committed separately. Original
+finding and closure are retained above; no human message relay or new product
+permission was required. Final whole reconciliation completed **APPROVE**, no
+remaining material finding or unaudited required obligation.
+
+### Complete review coverage and parent reconciliation
+
+The fresh whole reviewer read approved spec/plan/tasks, normative/evidence/provenance
+companions, actual runtime/tests/shipping docs, final convergence/retrospective/
+roadmap, observation record and real public artifacts. It delegated two bounded
+fresh independent slices, then synthesized the whole gate rather than summing votes.
+Actual child model/effort/resources are unobserved; no overrides were requested.
+
+- Static/model slice: direct discovery/input/XML/model/project/property/version/
+  results code and tests against AC01–09, local18 and20;184 tests PASS. Independent
+  nullable views, exact association, field inheritance/defaults/import refusal,
+  consumer expansion, module/internal ambiguity, budget/capability and maximum
+  semantics were inspected. No findings; policy/network/output delegated elsewhere.
+- Security slice: direct policy/admission/registry/HTTP/protocol/supervisor/worker/
+  output/results against AC10–20 applicable portions;297 Maven tests and four new
+  offline refusal probes PASS. Verified offline/JVM-agent/extension zero-worker/
+  socket refusal and relocation refusal. No edits/network/external-target reads.
+- Whole reviewer: actual integration/dispatch/output/shipping status and every AC;
+ 36 output/scan/acceptance tests PASS. Independently reconciled all179 CSV rows,
+  36 exact/143 unavailable versions, every source/repository view projection, three
+  capture hashes and ten bounded input size/digest records; before/after structures
+  match, only the extension sentinel is present and no tracked gitlinks exist.
+  Independent views/null arithmetic/legacy exclusion/output privacy, fixed endpoint/
+  request refusal, authority/harness/retrospective/ledger/provenance limitations and
+  all three initial T014 frozen hashes were directly checked. It inspected the
+  capture/audit-replay scripts; prior independent T013 reproduction supplies actual
+  zero-event operational evidence. No new live request or hosted-log retrieval.
+
+Parent validated the single finding and correction, reconciled slice boundaries
+against the20-AC map in [final convergence](convergence.md), and retained the actual
+ordinary-usefulness/security evidence in [validation](validation.md). No acceptance
+criterion is passed only by a test count. All required approved deterministic and
+operational obligations are satisfied within their stated limits. No additional
+private/positive-yield/first-publication/native-capability requirement was invented.
+
+### Final state, evidence and limits
+
+Runtime/tests/approved contracts remain unchanged from published925fa76. Parent
+1080 tests/one skip PASS remains applicable after documentation-only correction;
+independent focused tests above supplement it, not replace hosted evidence. The
+human-observed exact925fa76 Windows1080/109skip/worker3 results remain explicitly
+attested, with no native Maven primitive claim from a capability skip.
+
+Public DPC remains clean main at exact discovery revision, with final capture again
+matching original before-state, including all ten bounded input identities/bytes.
+No tracked gitlinks are present; submodule exclusion did not conceal tracked submodule
+state. Zero admitted capabilities/workers/requests/coordinate disclosures; no age,
+complete external denominator, live date fitness, acquisition/evaluated/runtime or
+whole ignored-tree byte claim. Captures and exact local identity are external;
+committed evidence uses public identity and root-relative source names only.
+
+The frozen convergence and retrospective candidates retain their reviewed bytes;
+this separate approval record establishes their final disposition. Roadmap and task
+status receive only the resulting final-state bookkeeping after approval. Three
+independently auditable boundaries are retained: T013 witness7726b52, bounded
+shipping-status correction6ccafa4, then the T014 local closure commit. No history rewrite.
+
+Configured GitLeaks8.30.1 full348-commit history after T013 and exact T014/correction
+current-content scans passed with zero findings. Final precommit history/current
+content, local links/anchors, whitespace, ledger-prefix/schema/uniqueness and
+postcommit history/clean-tree checks accompany closure; no policy exceptions or
+suppressions. Current007-0016 handoff is external, not appended. Only the verified
+prior007-0015 row was appended;007-0014 original bytes remain unavailable after the
+human-confirmed restart, with no synthesized row, runtime subdivision or credit delta.
+
+Repository authority/state survived publication/reboot/fresh-parent recovery;
+ephemeral observation bytes did not; target-root knowledge required factual human
+recovery. Hosted testimony incorporated without reopening the contract. GPUBLIC
+provided distinct consequential target/network/disclosure authority. Internal
+T013→T014 and correction→fresh review→closure required no routine next-task approval.
+The real target revealed approved bounds/refusals; final audit found a bounded docs
+defect, not a new product decision. No current compaction, conversation-only normative
+rule, causal prompt/resource saving, cross-project generality or generalized harness/
+SKILL implementation is claimed. Preserve historical compaction observations unchanged.
+
+**Push performed: NO.** No tag/release/publication or private-target identification/
+search/access. The smallest remaining consequential action is human publication
+permission if publication is desired. Private validation remains a separate optional
+future gate with its own complete authority, not a task begun by this closure.
