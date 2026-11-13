@@ -16,6 +16,12 @@ Notable changes to Libyears are documented here.
 
 ### Changed
 
+- Keep ordinary directory reports focused on positively relevant ecosystems, with
+  concise Maven/NuGet limitations and full discovery/evidence detail in verbose
+  output and unchanged schema-v3 JSON. Label incomplete scalar repository summaries.
+- Document durable private storage for explicitly supplied approved CA bundles,
+  without automatic certificate discovery or new trust defaults.
+
 - Ordinary NuGet scans can date qualified selected versions against a disclosed
   conventional nuget.org reference unless supported repository evidence establishes
   a contrary comparator or unsupported package-specific policy. Unassigned alternate

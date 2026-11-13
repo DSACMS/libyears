@@ -974,6 +974,22 @@ view without false joins, hidden defaults, duplicate totals or rewritten existin
 fields. **Stop condition:** A conceptual analogy is treated as implementation or
 public-namespace authority. No universal aggregate/analyzer is implied.
 
+### 24. Explicit trust bundle preparation
+
+**State:** EXPLORE; no helper or automatic discovery selected.
+**Opportunity:** Investigate a human-controlled preparation helper only if durable
+private storage documentation plus explicit `--ca-bundle` proves insufficient.
+**Evidence:** The public Maven witness used approved explicit trust, but a reboot
+removed its temporary bundle and required manual restaging. The [bounded UX pass](maintenance/cross-ecosystem-ux.md)
+recommends user-managed durable private storage outside Git without new trust behavior.
+**Success signal:** Separately reviewed need, product/security/platform scope and
+human-selected additional trust material; any helper performs only explicit
+composition, permissions and validation into durable private output.
+**Stop condition:** Workstation certificate enumeration/export, ambient trust decisions,
+auto-discovery, retained certificate identity/material, or a new environment/config
+route without human authority. Existing Python defaults differ from Maven's isolated
+trust policy; documentation does not unify those policies. No helper implemented.
+
 ## How Opportunities Move
 
 WATCH -> EXPLORE when evidence justifies bounded investigation.

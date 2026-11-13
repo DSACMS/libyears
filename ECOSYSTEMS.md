@@ -75,6 +75,36 @@ coverage is not 0%. A low total with incomplete coverage describes only the
 measured subset. [SPEC](SPEC.md#13-measurement-coverage) and the ecosystem sections
 below define the exact known/unknown/unavailable cases.
 
+### Ordinary and verbose output
+
+Ordinary directory output shows positively relevant ecosystems: existing supported
+source-presence facts for Python/npm/Ruby, explicitly selected NuGet inputs or
+concrete project candidates observed by its bounded inventory, and Maven candidates
+observed by its bounded inventory (including a refused POM). These facts indicate
+relevance, not supported syntax, accepted population, public namespace or measurement.
+A discovery failure before any candidate is observed does not force an ordinary
+section. A candidate observed before later discovery failure retains a concise
+relevant/unavailable section; incomplete NuGet inventories still discard their names.
+Explicit witness requests also retain a NuGet unavailable result.
+
+**Undisplayed does not mean certified absent.** JSON keeps every source error,
+unknown population and unavailable view, including discovery-only failures suppressed
+in ordinary output. `--verbose` recovers discovery qualifications, basis, admission,
+provenance, refusal details and limitations. Privacy guards remain active even when
+a section is suppressed. Relevant source failures stay visible in ordinary output.
+
+Existing scalar summaries and tables remain available. When the legacy repository
+aggregate is incomplete, ordinary output labels it **Repository scalar subset
+(incomplete)** and uses `unknown` for its missing counts/coverage. Those values are
+not recalculated from displayed sections. Ecosystem summaries answer their own
+questions; Maven's two views never enter a combined scalar. An empty population's
+null coverage also remains distinct from a measured nonempty population.
+
+NuGet ordinary output preserves per-project occurrence identity, source availability,
+snapshot basis and material comparator warnings. Detailed search, ProjectReference,
+witness and assurance mechanics are in verbose/JSON and the sections below. The
+explicit precision interface retains its own established summary structure.
+
 ### JSON output
 
 JSON schema version 3 reports ecosystem-keyed version evidence, repository and
@@ -154,6 +184,20 @@ Python's standard environment override is also supported:
 SSL_CERT_FILE=/path/to/approved-ca-bundle.pem \
 python3 -m libyears PATH --resolved resolved.txt
 ```
+
+For trust that must survive restarts, keep a human-approved bundle in a user-managed
+private directory outside the repository and outside temporary storage. Restrict
+access to the intended user under your operating system's permissions and follow
+your organization's trust maintenance policy. Pass `/path/to/approved-ca-bundle.pem`
+explicitly on each invocation. Documenting durable storage introduces no implicit
+trust path: libyears does not scan that directory, remember the path, enumerate or
+export certificates, or regenerate the bundle. The human chooses approved trust
+material; libyears only consumes the supplied input through existing verified TLS.
+
+Existing Python environment/default fallback behavior documented here does not imply
+a new cross-ecosystem configuration or environment override. A bundle-preparation helper
+would need separate product/security/platform review; automatic enterprise trust
+store discovery is not authorized. See [the bounded loop-closing record](maintenance/cross-ecosystem-ux.md).
 
 An explicit `--ca-bundle` is authoritative and validated before scanning. If no
 trusted CA source is available, requests fail with verification enabled.
@@ -1024,9 +1068,12 @@ is separate freshness evidence, never a version date.
 
 ### Maven output and coverage
 
-Normal output begins with **Conventional Maven dependency age**, paired Declared /
-Observed summaries and **Time basis: Maven conventional (versioned public POM
-Last-Modified)**. Verbose adds exact date/freshness/basis/origin/limitation details
+For positively relevant Maven sources, normal output shows **Conventional Maven
+dependency age**, paired Declared / Observed summaries and **Time basis: Maven conventional (versioned public POM
+Last-Modified)**. Ordinary output lists measured rows and groups repeated per-view
+refusal reasons; verbose retains every attributable request/occurrence, including
+unsupported ones. Relevant partial/unavailable states and unknown coverage remain
+explicit. Verbose adds exact date/freshness/basis/origin/limitation details
 without raw XML/headers/source URLs/credentials/absolute roots. Unsafe unsupported
 request text may be null rather than disclosing a URL or location.
 

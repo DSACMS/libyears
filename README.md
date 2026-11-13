@@ -31,8 +31,12 @@ Median:   2.06
 Maximum:  2.24
 ```
 
-The report also lists measured dependencies and explains why others could not be
-measured. A repository without supported evidence may return no measurement;
+Ordinary output shows ecosystems with positive local evidence and keeps relevant
+partial/unavailable results visible. Use `--verbose` for discovery, evidence and
+limitations, or `--json` for the full machine-readable report. An undisplayed
+ecosystem is not certified absent. The report lists measured dependencies and
+explains why others could not be measured. A repository without supported evidence
+may return no measurement;
 that is useful information, rather than a zero-age result.
 
 ## What libyears measures
@@ -85,22 +89,12 @@ python3 -m libyears PATH --json
 python3 -m libyears PATH --verbose
 ```
 
-Maven output begins with **Conventional Maven dependency age**, separate Declared /
-Observed summaries and **Time basis: Maven conventional (versioned public POM
-Last-Modified)**. Declared describes supported local base-model requests. Observed
-requires retained dependency-system selection evidence; this version has no accepted
-Maven reader, so that view remains unavailable. `--resolved` supplies Python only.
-
-The static projection includes direct test/provided/optional/tooling/POM requirements
-and weights each consuming project independently. Unread BOMs, missing parents,
-unknown model facts, contrary policy or missing dates can leave partial/unavailable
-results. No Maven/Gradle/Java, restore or resolver is run. Dates establish neither
-first publication nor upstream release; comparison establishes no classifier
-availability or compatibility. See [Maven scope and limitations](ECOSYSTEMS.md#maven)
-and the [deterministic verification](specs/007-maven-dependency-age/verification.md).
-The [public DPC operational witness](specs/007-maven-dependency-age/validation.md)
-confirmed useful partial request reporting with no measured ages or admitted network
-requests under discovery/source-policy limits. This source-checkout capability is unreleased.
+Maven output keeps independent **Declared** and **Observed** summaries and discloses
+its conventional POM modification-time basis. Declared covers supported static
+requests; Observed remains unavailable without an accepted retained-selection reader.
+Partial totals cover measured occurrences only. `--resolved` supplies Python only.
+See [Maven scope, evidence and limitations](ECOSYSTEMS.md#maven); this capability is
+unreleased.
 
 ## Common usage
 
@@ -116,12 +110,15 @@ python3 -m libyears --help
 ```
 
 - `--json` emits stable schema version 3 for automation. [Example and field guidance](ECOSYSTEMS.md#json-output).
-- `--verbose` adds human diagnostics without changing JSON.
+- `--verbose` expands discovery, evidence, limitations and diagnostics without changing JSON.
 - `--resolved` supplies exact Python versions while repository declarations still
   define direct scope. [Snapshot workflow](ECOSYSTEMS.md#resolved-snapshot-workflow).
 - `--ruby-group` selects the union of explicitly named declared groups within a
   conservative static subset. [Group examples and restrictions](ECOSYSTEMS.md#select-declared-ruby-groups).
-- For enterprise TLS, see [CA bundle configuration](ECOSYSTEMS.md#tls-and-enterprise-environments).
+- `--ca-bundle /path/to/approved-ca-bundle.pem` supplies explicit approved HTTPS trust.
+  Keep user-managed bundles outside Git in a durable private location if they must
+  survive restarts; temporary directories are unsuitable. Supply the path explicitly.
+  [Ecosystem trust rules differ](ECOSYSTEMS.md#tls-and-enterprise-environments).
 - For NuGet supplier testimony or precision/debugging, see [witness mappings](ECOSYSTEMS.md#ordinary-discovery-and-witness-mappings)
   and the [explicit single-project interface](ECOSYSTEMS.md#explicit-nuget-project-snapshots).
 

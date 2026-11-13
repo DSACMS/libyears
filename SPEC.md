@@ -1150,3 +1150,29 @@ Existing CLI exit categories remain0/1/2. Public coordinate disclosure and undis
 private namesake/fork misattribution are accepted limitations; stronger acquisition,
 producer/evaluated/runtime claims never follow. Live target validation, private access
 and publication remain separate lifecycle permissions, not implied by offline tests.
+
+
+## Cross-ecosystem human presentation correction — 007-0020
+
+The human-authorized [bounded presentation correction](maintenance/cross-ecosystem-ux.md)
+supersedes earlier always-leading Maven/legacy human presentation requirements only.
+Ordinary directory output uses positive local relevance evidence, not inability to
+certify absence, to select ecosystem sections. Relevant partial/unavailable evidence
+remains visible; no-positive-evidence discovery failures remain in verbose and JSON.
+Existing source presence, bounded candidate observations and explicit NuGet requests
+supply display relevance only. Retained booleans never supply population, selection,
+comparator authority or permission to read/look up anything. Refused Maven candidates
+and positive observations followed by incomplete discovery remain display-relevant.
+No extra traversal or filename grammar is introduced.
+
+Maven Declared/Observed remain independent with concise conventional-time disclosure.
+Repeated unmeasurable Maven requests may be grouped by fixed reason in ordinary output;
+verbose preserves attributable rows and detailed evidence. NuGet occurrence/source,
+namespace, population and assurance semantics are unchanged. Existing scalar totals
+remain the original full-report incomplete subset where applicable, clearly labeled;
+unknown counts are never converted into a displayed-ecosystem denominator. Schema3,
+all JSON evidence/nulls/errors, arithmetic and privacy boundaries remain unchanged.
+
+Durable private storage guidance for explicitly supplied approved CA bundles adds
+no automatic trust location, environment/config route, certificate discovery,
+regeneration, transport or TLS-policy change.
