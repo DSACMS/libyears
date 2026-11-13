@@ -475,6 +475,8 @@ and remaining pre-publication boundary.
 
 **007-0017 positive-witness investigation:** [Local public ranking and AB2D attempt](specs/007-maven-dependency-age/positive-validation.md) retain42 admitted occurrences, unknown complete population and zero ages. Compiled default TLS trust fails before connection; positive yield remains unestablished. QPP ordinary sibling PyPI disclosure was excluded before live validation; SDK fallback untested. No product change or weakened refusal. Next operational gate: trust-working environment or explicitly supplied valid CA material; publication remains separately unauthorized.
 
+**007-0019 positive witness:** [AB2D explicit-trust revalidation](specs/007-maven-dependency-age/positive-witness.md) measures40 Declared occurrences, total9.268079 libyears, with unknown complete population/coverage and independently unavailable Observed. Verified TLS succeeded; request-count uncertainty remains explicit. No product correction or target change. DPC and007-0017 zero-connection evidence remain intact; publication authority remains separate.
+
 ### 12. NuGet repository project sources
 
 **State:** SELECTED in run `006-0022`. The human approves source-qualified

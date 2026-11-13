@@ -935,7 +935,10 @@ its [bounded source policy](specs/007-maven-dependency-age/source-policy.md) and
 [Deterministic verification](specs/007-maven-dependency-age/verification.md) and the
 [completed public DPC witness](specs/007-maven-dependency-age/validation.md) distinguish
 offline conformance from actual partial request reporting with no measured ages or
-admitted network requests; positive live date fitness remains unestablished.
+admitted network requests. A complementary [public AB2D witness](specs/007-maven-dependency-age/positive-witness.md)
+using human-approved explicit trust measured40 Declared occurrences, with unknown
+complete population/coverage and unavailable Observed. This bounded positive POM-time
+witness establishes neither publication history nor general Maven compatibility.
 
 Run ordinary directory/JSON/verbose commands; there are no Java-specific options.
 A direct POM-file argument does not activate Maven. `--resolved` remains Python-only.

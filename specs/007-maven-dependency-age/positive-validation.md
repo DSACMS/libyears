@@ -1,5 +1,9 @@
 # Post-convergence public positive-witness investigation
 
+Current follow-up: [007-0019 establishes a positive AB2D witness](positive-witness.md)
+with explicitly approved trust. The007-0017 investigation and zero-connection
+baseline below remain historical evidence; their facts are unchanged.
+
 Run007-0017, baseline `a28c758765760b6223e179ed787e55246e3c6cac`, clean.
 Both remote main heads independently matched that revision. The human authorizes
 read-only selection among the established public clones and one qualified ordinary

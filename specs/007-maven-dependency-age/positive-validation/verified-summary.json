@@ -1,0 +1,560 @@
+{
+  "run_id": "007-0019",
+  "baseline_commit": "1b8d085d5e9e30cafd7e8b36277a86e9a2332665",
+  "public_target": "CMSgov/ab2d",
+  "revision": "9c785d41da3f7dd72f5be62cfc42ee7b1bf74459",
+  "branch": "main",
+  "clean_before_after": true,
+  "source_count": 8,
+  "safe_occurrence_records": 127,
+  "nonnull_exact_version_candidates": 81,
+  "admitted_occurrences": 42,
+  "admitted_unique_GA": 11,
+  "trust": "human-approved explicit CA bundle",
+  "verified_TLS_succeeded": true,
+  "private_staging_and_cleanup_verified": true,
+  "views": {
+    "declared": {
+      "population_state": "unknown",
+      "availability": "partial",
+      "reason": "maven_discovery_unavailable",
+      "reasons": [
+        "maven_discovery_unavailable",
+        "maven_population_unknown",
+        "maven_unsupported_version",
+        "maven_unsupported_model",
+        "maven_catalogue_unavailable"
+      ],
+      "version_basis": "supported_local_base_model_request",
+      "comparator_basis": "conventional_central",
+      "time_basis": "maven_conventional_pom_last_modified",
+      "ordering_basis": "maven_comparable_version_3_9_11",
+      "eligibility_policy": "maven_conservative_stable_v1",
+      "limitations": [
+        "static_base_model_not_evaluated",
+        "module_occurrence_weighted",
+        "correspondence_assumed",
+        "acquisition_not_established",
+        "content_not_established",
+        "producer_history_not_established",
+        "runtime_state_not_established",
+        "machine_settings_not_inspected"
+      ],
+      "summary": {
+        "dependencies_discovered": null,
+        "dependencies_measured": 40,
+        "coverage": null,
+        "total_libyears": 9.268079163180976,
+        "mean_libyears": 0.23170197907952442,
+        "median_libyears": 0.0,
+        "max_libyears": 1.524357270514868
+      }
+    },
+    "observed": {
+      "population_state": "unknown",
+      "availability": "unavailable",
+      "reason": "maven_discovery_unavailable",
+      "reasons": [
+        "maven_discovery_unavailable",
+        "maven_observed_reader_unavailable",
+        "maven_population_unknown"
+      ],
+      "version_basis": null,
+      "comparator_basis": "conventional_central",
+      "time_basis": "maven_conventional_pom_last_modified",
+      "ordering_basis": "maven_comparable_version_3_9_11",
+      "eligibility_policy": "maven_conservative_stable_v1",
+      "limitations": [
+        "static_base_model_not_evaluated",
+        "module_occurrence_weighted",
+        "correspondence_assumed",
+        "acquisition_not_established",
+        "content_not_established",
+        "producer_history_not_established",
+        "runtime_state_not_established",
+        "machine_settings_not_inspected"
+      ],
+      "summary": {
+        "dependencies_discovered": null,
+        "dependencies_measured": null,
+        "coverage": null,
+        "total_libyears": null,
+        "mean_libyears": null,
+        "median_libyears": null,
+        "max_libyears": null
+      }
+    }
+  },
+  "reason_counts": {
+    "maven_unsupported_version": 46,
+    "maven_unsupported_model": 39,
+    "measured": 40,
+    "maven_catalogue_unavailable": 2
+  },
+  "exact_zero_measured_occurrences": 25,
+  "forms": {
+    "human": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 11,
+      "body_bytes": 0,
+      "private_staging_observed": true,
+      "worker_starts": 1,
+      "scratch_empty_after": true,
+      "stdout_sha256": "6d2cf6fd2a8a5b069a267e672cf9c839f20b0ecbc0acae7e836dbffea3e2e0de",
+      "confirmed_body_producing_GETs": 0,
+      "sent_GETs_lower_bound": 0,
+      "sent_GETs_upper_bound": 11,
+      "complete_schedule_verified": true,
+      "protocol_sha256": "b64f6693e19dc86f53a0e1762169e24a95cdfcde5f995242278440e628b12845"
+    },
+    "human-network": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 27,
+      "body_bytes": 80817,
+      "private_staging_observed": true,
+      "worker_starts": 1,
+      "scratch_empty_after": true,
+      "stdout_sha256": "e5108d8ee7df54f5bda22922fc9aad1d740ae6f4560b2c1d35f062c9c285e7c7",
+      "confirmed_body_producing_GETs": 26,
+      "sent_GETs_lower_bound": 26,
+      "sent_GETs_upper_bound": 27,
+      "complete_schedule_verified": true,
+      "protocol_sha256": "02b937f089f26dc404fc1881e866c6d24fc33c7858b7f26c8d9e8649a199ce0e"
+    },
+    "json": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 27,
+      "body_bytes": 80817,
+      "private_staging_observed": true,
+      "worker_starts": 1,
+      "scratch_empty_after": true,
+      "stdout_sha256": "2d17ce7b3f8da92c9deff253a9611502da3d799289c325406e7ce69c48caf0c8",
+      "confirmed_body_producing_GETs": 26,
+      "sent_GETs_lower_bound": 26,
+      "sent_GETs_upper_bound": 27,
+      "complete_schedule_verified": true,
+      "protocol_sha256": "1f713857acfcdb9d769d0a0faf028a376e998bb0c3ba2228e34f2e68c1e3e16a"
+    },
+    "verbose": {
+      "exit": 0,
+      "stderr_empty": true,
+      "attempts": 27,
+      "body_bytes": 80817,
+      "private_staging_observed": true,
+      "worker_starts": 1,
+      "scratch_empty_after": true,
+      "stdout_sha256": "aff6cd3c9e8a8f4089dc981d791642e16f8d18caf96d33b4ec5b826db8f18307",
+      "confirmed_body_producing_GETs": 26,
+      "sent_GETs_lower_bound": 26,
+      "sent_GETs_upper_bound": 27,
+      "complete_schedule_verified": true,
+      "protocol_sha256": "043bfefb397ed1bd8e1acbd61d656ac0cabe922f361a14fb3c93e9f266a31ab0"
+    }
+  },
+  "network": {
+    "fixed_endpoint": "https://repo.maven.apache.org:443/maven2/",
+    "network_enabled_reserved_attempts": 81,
+    "network_enabled_confirmed_GETs": 78,
+    "network_enabled_sent_GETs_bounds": [
+      78,
+      81
+    ],
+    "all_four_reserved_attempts": 92,
+    "all_four_confirmed_GETs": 78,
+    "all_four_sent_GETs_bounds": [
+      78,
+      92
+    ],
+    "confirmed_unique_GA_disclosures": 10,
+    "possible_additional_GA_disclosures": 1,
+    "confirmed_POM_GAVs": 16,
+    "limitations": "Attempt counters reserve before connection. Positive body deltas confirm GETs; zero-body reservations do not establish whether a GET was sent. The sandbox DNS failure is separately observed, not retrospective packet capture. No exact HTTP failure status is established."
+  },
+  "common_network_schedule": [
+    {
+      "sequence": 1,
+      "operation": "select_target",
+      "group_id": "com.datadoghq",
+      "artifact_id": "dd-java-agent",
+      "version": null,
+      "selected_version": "1.68.2",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:29.162027Z",
+      "reason": null,
+      "response_body_bytes": 10085
+    },
+    {
+      "sequence": 2,
+      "operation": "pom_date",
+      "group_id": "com.datadoghq",
+      "artifact_id": "dd-java-agent",
+      "version": "1.68.2",
+      "selected_version": null,
+      "last_modified": "2026-11-10T18:30:14Z",
+      "retrieved_at": "2026-11-13T17:58:29.386164Z",
+      "reason": null,
+      "response_body_bytes": 1122
+    },
+    {
+      "sequence": 3,
+      "operation": "pom_date",
+      "group_id": "com.datadoghq",
+      "artifact_id": "dd-java-agent",
+      "version": "1.63.0",
+      "selected_version": null,
+      "last_modified": "2026-06-01T13:45:05Z",
+      "retrieved_at": "2026-11-13T17:58:29.627726Z",
+      "reason": null,
+      "response_body_bytes": 1122
+    },
+    {
+      "sequence": 4,
+      "operation": "select_target",
+      "group_id": "com.okta.jwt",
+      "artifact_id": "okta-jwt-verifier-impl",
+      "version": null,
+      "selected_version": "0.5.14",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:29.869916Z",
+      "reason": null,
+      "response_body_bytes": 844
+    },
+    {
+      "sequence": 5,
+      "operation": "pom_date",
+      "group_id": "com.okta.jwt",
+      "artifact_id": "okta-jwt-verifier-impl",
+      "version": "0.5.14",
+      "selected_version": null,
+      "last_modified": "2026-03-16T04:49:11Z",
+      "retrieved_at": "2026-11-13T17:58:30.112415Z",
+      "reason": null,
+      "response_body_bytes": 4961
+    },
+    {
+      "sequence": 6,
+      "operation": "select_target",
+      "group_id": "gov.cms.ab2d",
+      "artifact_id": "ab2d-filters",
+      "version": null,
+      "selected_version": null,
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:30.126656Z",
+      "reason": "maven_catalogue_unavailable",
+      "response_body_bytes": 0
+    },
+    {
+      "sequence": 7,
+      "operation": "select_target",
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-impl",
+      "version": null,
+      "selected_version": "0.13.0",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:30.610409Z",
+      "reason": null,
+      "response_body_bytes": 1070
+    },
+    {
+      "sequence": 8,
+      "operation": "pom_date",
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-impl",
+      "version": "0.13.0",
+      "selected_version": null,
+      "last_modified": "2025-08-20T23:31:52Z",
+      "retrieved_at": "2026-11-13T17:58:30.850060Z",
+      "reason": null,
+      "response_body_bytes": 2532
+    },
+    {
+      "sequence": 9,
+      "operation": "pom_date",
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-impl",
+      "version": "0.12.6",
+      "selected_version": null,
+      "last_modified": "2024-06-21T19:53:04Z",
+      "retrieved_at": "2026-11-13T17:58:31.070761Z",
+      "reason": null,
+      "response_body_bytes": 2532
+    },
+    {
+      "sequence": 10,
+      "operation": "select_target",
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-jackson",
+      "version": null,
+      "selected_version": "0.13.0",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:31.305595Z",
+      "reason": null,
+      "response_body_bytes": 1073
+    },
+    {
+      "sequence": 11,
+      "operation": "pom_date",
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-jackson",
+      "version": "0.13.0",
+      "selected_version": null,
+      "last_modified": "2025-08-20T23:31:52Z",
+      "retrieved_at": "2026-11-13T17:58:31.550017Z",
+      "reason": null,
+      "response_body_bytes": 2884
+    },
+    {
+      "sequence": 12,
+      "operation": "pom_date",
+      "group_id": "io.jsonwebtoken",
+      "artifact_id": "jjwt-jackson",
+      "version": "0.12.6",
+      "selected_version": null,
+      "last_modified": "2024-06-21T19:53:17Z",
+      "retrieved_at": "2026-11-13T17:58:31.798541Z",
+      "reason": null,
+      "response_body_bytes": 2884
+    },
+    {
+      "sequence": 13,
+      "operation": "select_target",
+      "group_id": "org.apache.httpcomponents.core5",
+      "artifact_id": "httpcore5",
+      "version": null,
+      "selected_version": "5.4.4",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:32.086561Z",
+      "reason": null,
+      "response_body_bytes": 2310
+    },
+    {
+      "sequence": 14,
+      "operation": "pom_date",
+      "group_id": "org.apache.httpcomponents.core5",
+      "artifact_id": "httpcore5",
+      "version": "5.4.4",
+      "selected_version": null,
+      "last_modified": "2026-09-20T19:46:01Z",
+      "retrieved_at": "2026-11-13T17:58:32.323610Z",
+      "reason": null,
+      "response_body_bytes": 3946
+    },
+    {
+      "sequence": 15,
+      "operation": "pom_date",
+      "group_id": "org.apache.httpcomponents.core5",
+      "artifact_id": "httpcore5",
+      "version": "5.4.3",
+      "selected_version": null,
+      "last_modified": "2026-06-21T17:56:01Z",
+      "retrieved_at": "2026-11-13T17:58:32.576558Z",
+      "reason": null,
+      "response_body_bytes": 3946
+    },
+    {
+      "sequence": 16,
+      "operation": "select_target",
+      "group_id": "org.mockito",
+      "artifact_id": "mockito-core",
+      "version": null,
+      "selected_version": "5.24.0",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:32.827816Z",
+      "reason": null,
+      "response_body_bytes": 12083
+    },
+    {
+      "sequence": 17,
+      "operation": "pom_date",
+      "group_id": "org.mockito",
+      "artifact_id": "mockito-core",
+      "version": "5.24.0",
+      "selected_version": null,
+      "last_modified": "2026-09-23T14:06:33Z",
+      "retrieved_at": "2026-11-13T17:58:33.133934Z",
+      "reason": null,
+      "response_body_bytes": 2467
+    },
+    {
+      "sequence": 18,
+      "operation": "pom_date",
+      "group_id": "org.mockito",
+      "artifact_id": "mockito-core",
+      "version": "5.16.1",
+      "selected_version": null,
+      "last_modified": "2025-03-15T19:35:36Z",
+      "retrieved_at": "2026-11-13T17:58:33.358612Z",
+      "reason": null,
+      "response_body_bytes": 2469
+    },
+    {
+      "sequence": 19,
+      "operation": "select_target",
+      "group_id": "org.testcontainers",
+      "artifact_id": "junit-jupiter",
+      "version": null,
+      "selected_version": "1.21.4",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:33.574399Z",
+      "reason": null,
+      "response_body_bytes": 2429
+    },
+    {
+      "sequence": 20,
+      "operation": "pom_date",
+      "group_id": "org.testcontainers",
+      "artifact_id": "junit-jupiter",
+      "version": "1.21.4",
+      "selected_version": null,
+      "last_modified": "2025-12-16T00:08:41Z",
+      "retrieved_at": "2026-11-13T17:58:33.825177Z",
+      "reason": null,
+      "response_body_bytes": 1538
+    },
+    {
+      "sequence": 21,
+      "operation": "select_target",
+      "group_id": "org.testcontainers",
+      "artifact_id": "localstack",
+      "version": null,
+      "selected_version": "1.21.4",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:34.042345Z",
+      "reason": null,
+      "response_body_bytes": 2829
+    },
+    {
+      "sequence": 22,
+      "operation": "pom_date",
+      "group_id": "org.testcontainers",
+      "artifact_id": "localstack",
+      "version": "1.21.4",
+      "selected_version": null,
+      "last_modified": "2025-12-16T00:11:13Z",
+      "retrieved_at": "2026-11-13T17:58:34.260354Z",
+      "reason": null,
+      "response_body_bytes": 1522
+    },
+    {
+      "sequence": 23,
+      "operation": "select_target",
+      "group_id": "org.testcontainers",
+      "artifact_id": "postgresql",
+      "version": null,
+      "selected_version": "1.21.4",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:34.497771Z",
+      "reason": null,
+      "response_body_bytes": 3697
+    },
+    {
+      "sequence": 24,
+      "operation": "pom_date",
+      "group_id": "org.testcontainers",
+      "artifact_id": "postgresql",
+      "version": "1.21.4",
+      "selected_version": null,
+      "last_modified": "2025-12-16T00:21:12Z",
+      "retrieved_at": "2026-11-13T17:58:34.719282Z",
+      "reason": null,
+      "response_body_bytes": 1520
+    },
+    {
+      "sequence": 25,
+      "operation": "select_target",
+      "group_id": "org.testcontainers",
+      "artifact_id": "testcontainers",
+      "version": null,
+      "selected_version": "2.0.5",
+      "last_modified": null,
+      "retrieved_at": "2026-11-13T17:58:35.000950Z",
+      "reason": null,
+      "response_body_bytes": 3885
+    },
+    {
+      "sequence": 26,
+      "operation": "pom_date",
+      "group_id": "org.testcontainers",
+      "artifact_id": "testcontainers",
+      "version": "2.0.5",
+      "selected_version": null,
+      "last_modified": "2026-04-20T18:00:10Z",
+      "retrieved_at": "2026-11-13T17:58:35.262366Z",
+      "reason": null,
+      "response_body_bytes": 2451
+    },
+    {
+      "sequence": 27,
+      "operation": "pom_date",
+      "group_id": "org.testcontainers",
+      "artifact_id": "testcontainers",
+      "version": "1.21.4",
+      "selected_version": null,
+      "last_modified": "2025-12-16T00:27:45Z",
+      "retrieved_at": "2026-11-13T17:58:35.506511Z",
+      "reason": null,
+      "response_body_bytes": 2616
+    }
+  ],
+  "three_network_result_projections_agree": true,
+  "historical_baseline": {
+    "run_id": "007-0017",
+    "admitted_occurrences": 42,
+    "admitted_unique_GA": 11,
+    "reserved_attempts": 44,
+    "HTTP_GETs": 0,
+    "coordinate_disclosures": 0,
+    "measured": 0,
+    "reason": "Default TLS trust unavailable before connection",
+    "unchanged": true
+  },
+  "integrity": {
+    "before_after_and_historical_input_equality": true,
+    "scope": "Selected target revision/branch/clean status and bounded inspected input identities/bytes; not exhaustive ignored/generated tree proof",
+    "input_digests": {
+      "api/pom.xml": {
+        "sha256": "628203869d562b11b00f150da04124e4b343a850daf0f8be67cbb291065871f9",
+        "bytes": 9097
+      },
+      "common/pom.xml": {
+        "sha256": "c41a6513efb7913d6a6c264eda0d8ceb2877f06d42b44a69a4587d7626de52e4",
+        "bytes": 8723
+      },
+      "coverage/pom.xml": {
+        "sha256": "8bfd565b1bec276aa582483c054d0c895fbb5bd831680ef24903b043fc53e95c",
+        "bytes": 5470
+      },
+      "e2e-bfd-test/pom.xml": {
+        "sha256": "fd4bb961119f0bb2d96506518f89e3556b0db3174cff97088da9b2b3adf024fd",
+        "bytes": 2412
+      },
+      "e2e-test/pom.xml": {
+        "sha256": "02251439c9c0b2498cded415693df8fe6925ba9395aecf55e7c78f0d0abb0f12",
+        "bytes": 5242
+      },
+      "job/pom.xml": {
+        "sha256": "2aa90f72250c88fff82e4e7126b7bcac15995c9accd807e5f38f798093407a7b",
+        "bytes": 4857
+      },
+      "pom.xml": {
+        "sha256": "036a3062bb22e6f1629e38eff4bf795eb865ddaddb27fe78a9dc794507899deb",
+        "bytes": 12724
+      },
+      "worker/pom.xml": {
+        "sha256": "6f2d8b82e41ca92d8933f9cf91525bf8521aa958627d0a59545580da97d6fea5",
+        "bytes": 11111
+      }
+    }
+  },
+  "limitations": [
+    "Static base-model requests, not evaluated or resolved Maven state",
+    "Incomplete discovery and unavailable external parent: complete population and coverage unknown",
+    "Module occurrence weighting; 127 retained records are not a complete denominator",
+    "Conventional POM Last-Modified, not publication/acquisition/content/producer/runtime evidence",
+    "No Observed reader; no cross-view arithmetic",
+    "One public witness does not establish general Maven compatibility"
+  ]
+}

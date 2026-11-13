@@ -3188,3 +3188,116 @@ search is requested. Stop until supplied; no push/tag/release or private validat
 Final focused bookkeeping review **COMPLETE / APPROVE**, no findings: all four
 manifest hashes matched, original three reviewed artifacts stayed unchanged, and
 the sensitivity exclusions/human input gate remained accurate without new authority.
+
+## Run007-0019 — public AB2D positive witness
+
+The human supplied and explicitly authorized private consumption/staging of a
+human-approved trust input through Maven's existing override. Existing public AB2D
+read-only/network/disclosure authority persists. No candidate reselection, additional
+certificate investigation, private target, alternate endpoint, target execution or
+publication was authorized. Starting clean local HEAD `1b8d085`.
+
+The [positive witness](positive-witness.md) retains actual ordinary human/JSON/verbose
+captures at clean public CMSgov/ab2d revision
+`9c785d41da3f7dd72f5be62cfc42ee7b1bf74459`, branchmain. All forms exited0, empty
+stderr. The first sandbox human attempt returned11 reservations/zero body bytes;
+same-target network escalation then human/JSON/verbose each returned27 reservations,
+26 confirmed body-producing GETs and80,817bytes. Verified TLS succeeded using the
+existing explicit mechanism; private staging/cleanup were observed in each run.
+No sensitive trust path, certificate material/identity or environment details are
+retained. The source trust input was not modified or inventoried.
+
+### Fresh independent security and disclosure review
+
+Frozen eight-file candidate received a fresh non-author security review:
+**COMPLETE / APPROVE**, no material findings. It inspected unchanged transport/
+worker/supervisor/admission code, private capture method without quoting its input,
+all92 closed command/result pairs, actual outputs and sanctioned target evidence.
+The closed protocol and operation codecs passed for every pair. Every scheduled
+GA/version derives from the42 occurrence capabilities/11GA or that same GA's accepted
+catalogue target. No refused row borrows a sibling's authority. Confirmed response
+bodies and admitted date results support verified TLS success; worker readiness alone
+would not. Installed isolation, empty environment, private staging and bounded
+cleanup remain unchanged; no redirect, proxy/auth, ambient configuration or other
+product transport was introduced.
+
+The reviewer challenged attempt-counter interpretation. Accepted final accounting:
+three network-enabled invocations have81 reservations,78 confirmed GETs, actual sent
+GETs bounded78–81; including11 unresolved zero-body sandbox reservations gives92
+reservations and actual sent GETs bounded78–92. Ten unique admitted GA identities
+and16 POM GAVs were confirmed disclosed; the eleventh GA may have been disclosed.
+No exact failed HTTP status or complete packet trace is established. The separately
+observed sandbox DNS failure supports an environment classification, not retrospective
+certainty about each earlier reservation. This limitation is preserved throughout
+summary/report rather than weakening any admission rule or claiming an exact count.
+
+It independently verified all40 own-source capability/version/target/date bindings,
+three identical result projections, private-input exclusion from output/error/protocol
+and staged-storage cleanup. Its selected-target safe recapture exactly matched current
+before/after and original007-0017 local Git/input/admission records. Original17 summary
+and CSV remain byte-identical; prose adds only a clearly labeled later-result pointer.
+Explicit certificate/environment sensitivity inspection and independent frozen-content
+GitLeaks PASS;79 focused existing security/transport/worker/scan/shared-trust tests
+PASS under injected ambient trust and parent socket rejection. No new live request,
+certificate inspection or target mutation was performed by the reviewer.
+
+### Fresh independent measurement/usefulness review and reconciliation
+
+A separate fresh non-author measurement review returned **COMPLETE / APPROVE**, no
+material findings. It independently checked every127-row local/JSON/CSV fact and
+all40 own-source admission/version/comparator/date bindings, without borrowing the
+security verdict. It independently recomputed ages and union statistics, checked25
+strict same-version zeros, all three complete identical27-command result projections,
+correct40/46/39/2 disposition accounting, unknown N/null coverage, unavailable
+Observed and all-null legacy projection. Normal/verbose/schema3 output remains an
+understandable positive but partial Declared story;127 safe records are never treated
+as a complete denominator. Module occurrence weighting and conventional POM time,
+not publication/selection/acquisition/runtime proof, remain explicit.
+
+It also verified original baseline preservation, selected-target input/Git equality,
+prior007-0018 original baton fields/notes and ledger prefix/schema/enrichment.
+Independent65 pure registry/version/results tests PASS, no network or trust discovery.
+Closed worker results are the retained metadata evidence; raw HTTP catalogue/POM
+bodies and packet traces were not retained or independently fetched. That evidentiary
+limit and sent-GET uncertainty remain stated; no stronger transmission/publication
+claim is inferred from the successful ages. No new target/certificate/network action
+was performed by this reviewer.
+
+Parent synthesis covers every requested independent review obligation: verified TLS,
+private explicit staging, sensitivity exclusion, admitted/fixed-endpoint scheduling,
+truthful request-count bounds, admitted dates/ages, independent views, target integrity
+and preserved zero-connection evidence. **POSITIVE PUBLIC WITNESS CONVERGED**, bounded
+to this public AB2D revision and the disclosed static/conventional claim. No material
+finding, author-correctable product defect or unresolved product/security decision.
+No fallback live test, semantic relaxation, target repair or implementation correction.
+DPC remains the primary complexity/adversarial witness, complemented rather than erased.
+
+Declared M40, N/coverageunknown, total9.268079163180976, mean0.23170197907952442,
+median0.0, maximum1.524357270514868; independent Observedallnull/unavailable.
+Parent53 focused existing offline tests PASS; two independent suites79/65 PASS.
+Runtime/tests/approved spec/plan/task requirements unchanged, so no new full-suite
+or hosted/platform success claim is made. GitLeaks8.30.1 configured352-commit history
+and exact current frozen content PASS, zero findings. Parent explicit sensitivity
+inspection supplements GitLeaks and checks actual supplied-input exclusion as well
+as certificate/body/fingerprint/DN/organization/domain/path/environment categories.
+No such private value is introduced into durable records or commit text.
+
+Prior007-0018 handoff/digest was verified and appended once with human telemetry:
+reported392s,credits_after149 and supplied identity/configuration. Other original
+fields/notes and confounding classifications remain, credits_beforeblank without
+qualifying direct observation/continuity. Ledger69 unique records/44columns; no
+canonical derived delta, lost007-0014 reconstruction or current007-0019 append.
+Current external handoff is required before final reporting. The public witness
+closes the operational trust-input gate without turning private trust into project
+data. No generalized harness, resource or broad compatibility conclusion follows.
+
+The next consequential gate is **human publication authority if desired**. Private
+validation, other targets, new policy, release and tag remain separately unauthorized.
+The human authorizes the smallest coherent local sanitized evidence/documentation
+commit after convergence. No push is authorized or performed.
+
+Final focused non-author bookkeeping review **COMPLETE / APPROVE**, no findings:
+all nine final hashes matched, original eight reviewed artifacts remained unchanged,
+and metrics, request bounds, review/test claims, privacy exclusions and authority
+gates were accurate. Final sensitivity/current-content checks precede staging;
+publication is not implied by this local reviewed evidence commit.

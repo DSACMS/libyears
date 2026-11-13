@@ -129,3 +129,14 @@ attempted validation, with network sandbox escalation and a remaining explicit t
 input/environment gate; no evidence or TLS rule was weakened to improve the demo.
 Repository-resident contracts and discovery roles supplied routing; no generalized
 harness or resource-saving conclusion follows. Positive live dates remain pending.
+
+## Positive witness with explicit trust — 007-0019
+
+The [AB2D follow-up](positive-witness.md) establishes40 measured Declared occurrences
+with verified TLS, using the existing explicitly approved trust input and unchanged
+product behavior. Complete population/coverage remain unknown; Observed unavailable.
+The007-0017 preconnection baseline and DPC refusals remain valid. Private trust was
+consumed without certificate identity discovery or durable disclosure. Evidence
+distinguishes confirmed GETs from unresolved reserved attempts rather than inventing
+precise transmission counts. This bounded success does not generalize Maven support
+or turn environmental trust handling into a new product policy.
