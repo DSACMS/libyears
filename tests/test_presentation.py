@@ -51,12 +51,15 @@ class PresentationTests(unittest.TestCase):
                 self.assertNotIn('Maven', normal)
                 self.assertNotIn('NuGet', normal)
                 self.assertNotIn('maven_plural_projection_unavailable', normal)
-                self.assertIn('Repository scalar subset (incomplete)', normal)
-                self.assertIn('unknown coverage', normal)
+                self.assertNotIn('Repository scalar', normal)
+                self.assertNotIn('Repository:', normal)
                 self.assertNotIn('None', normal)
                 self.assertIn('Conventional Maven dependency age', verbose)
                 self.assertIn('nuget_discovery_incomplete', verbose)
-                self.assertIn('not certified absent', normal)
+                self.assertNotIn('not certified absent', normal)
+                self.assertIn('not certified absent', verbose)
+                self.assertIn('Use --verbose', normal)
+                self.assertNotIn('ecosystems are absent', normal.lower())
                 self.assertNotIn('private-root', normal + verbose)
                 self.assertEqual(format_json(report, '.'), before)
                 self.assertIn('"maven"', before)
@@ -87,7 +90,31 @@ class PresentationTests(unittest.TestCase):
             self.assertNotIn('NuGet', normal)
             self.assertEqual(report.summary.dependencies_measured, 2 if python else 1)
             self.assertIsNone(report.summary.dependencies_discovered)
-            self.assertIn('unknown coverage', normal)
+            self.assertNotIn('unknown coverage', normal)
+            self.assertNotIn('Repository:', normal)
+
+    def test_complete_repository_scalar_remains_available(self):
+        (self.root / 'package.json').write_text('{"dependencies":{"alpha":"*"}}')
+        (self.root / 'requirements.txt').write_text('beta>=1\n')
+        report = scan_mixed_repository(self.root, maven_scan=lambda *a, **k: None)
+        normal = format_human(report, '.')
+        self.assertIn('Repository: 0.0% coverage; 0 / 2 measured', normal)
+        self.assertIn('npm: 0.0% coverage; 0 / 1 measured', normal)
+
+    def test_maven_and_opportunistic_python_relevance_are_independent(self):
+        (self.root / 'requirements.txt').write_text('beta>=1\n')
+        reader = Reader({'pom.xml': pom(dependencies(row('a', '${missing}')))}, complete=False)
+        maven = scan_maven('fixture', reader_factory=lambda root: reader)
+        report = scan_mixed_repository(self.root, maven_scan=lambda *a, **k: maven)
+        before = format_json(report, '.')
+        normal = format_human(report, '.')
+        self.assertIn('Ecosystems: maven, pypi', normal)
+        self.assertIn('Declared: partial', normal)
+        self.assertIn('No declared ages measured', normal)
+        self.assertIn('Observed: unavailable', normal)
+        self.assertIn('pypi: 0.0% coverage; 0 / 1 measured', normal)
+        self.assertIsNone(maven.summaries.declared.summary.dependencies_discovered)
+        self.assertEqual(format_json(report, '.'), before)
 
     def test_maven_relevance_flag_changes_display_without_changing_json_or_summary(self):
         report = self.scan()
@@ -156,6 +183,32 @@ class PresentationTests(unittest.TestCase):
         self.assertTrue(report.maven.positive_local_evidence)
         self.assertEqual(report.maven.discovery.source_ids, ())
         self.assertIn('Declared: unavailable', format_human(report, '.'))
+
+    @unittest.skipUnless(filesystem_available(), 'safe Maven input primitives unavailable')
+    def test_maven_candidate_before_limit_keeps_relevance_without_population(self):
+        (self.root / 'pom.xml').write_bytes(pom(dependencies(row('a', '${missing}'))))
+        (self.root / 'z').mkdir()
+        with patch('libyears.maven_discovery.MAX_DIRECTORIES', 1):
+            maven = scan_maven(self.root)
+        self.assertTrue(maven.positive_local_evidence)
+        self.assertFalse(maven.discovery.complete)
+        report = scan_mixed_repository(self.root, maven_scan=lambda *a, **k: maven)
+        normal = format_human(report, '.')
+        self.assertIn('Ecosystems: maven', normal)
+        self.assertIn('No declared ages measured', normal)
+        self.assertIn('Observed: unavailable', normal)
+        self.assertIsNone(maven.summaries.declared.summary.dependencies_discovered)
+        with patch('libyears.maven_discovery.MAX_ENTRIES', 0):
+            unseen = scan_maven(self.root)
+        self.assertFalse(unseen.positive_local_evidence)
+        self.assertEqual(unseen.discovery.source_ids, ())
+
+    def test_disabled_maven_capability_does_not_invent_relevance(self):
+        with patch('libyears.maven_input.filesystem_available', return_value=False), \
+                patch('libyears.maven_input.os.open', side_effect=AssertionError('open')):
+            maven = scan_maven(self.root)
+        self.assertFalse(maven.positive_local_evidence)
+        self.assertEqual(maven.sources, ())
 
     @unittest.skipUnless(discovery_available(), 'safe NuGet enumeration unavailable')
     def test_candidate_before_budget_failure_retains_only_relevance(self):

@@ -93,12 +93,13 @@ in ordinary output. `--verbose` recovers discovery qualifications, basis, admiss
 provenance, refusal details and limitations. Privacy guards remain active even when
 a section is suppressed. Relevant source failures stay visible in ordinary output.
 
-Existing scalar summaries and tables remain available. When the legacy repository
-aggregate is incomplete, ordinary output labels it **Repository scalar subset
-(incomplete)** and uses `unknown` for its missing counts/coverage. Those values are
-not recalculated from displayed sections. Ecosystem summaries answer their own
-questions; Maven's two views never enter a combined scalar. An empty population's
-null coverage also remains distinct from a measured nonempty population.
+Ordinary output leads with ecosystem summaries when the legacy repository aggregate
+is incomplete; that scalar remains in verbose/JSON. Complete repository summaries
+and dependency tables remain available. No values are recalculated from displayed
+sections. Ecosystem summaries answer their own questions; Maven's two views never
+enter a combined scalar. An empty population's null coverage also remains distinct
+from a measured nonempty population. The absence qualification above is retained in
+verbose output and documentation rather than repeated in each ordinary report.
 
 NuGet ordinary output preserves per-project occurrence identity, source availability,
 snapshot basis and material comparator warnings. Detailed search, ProjectReference,

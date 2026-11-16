@@ -327,7 +327,10 @@ def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bo
                  nuget_recognition: NuGetRecognition | None = None) -> str:
     """Format a scan report for terminal readers."""
     if isinstance(report, MixedScanReport):
-        return _format_mixed_human(report, path, verbose=verbose, nuget_recognition=nuget_recognition)
+        rendered = _format_mixed_human(report, path, verbose=verbose, nuget_recognition=nuget_recognition)
+        if verbose:
+            rendered += '\nUndisplayed ecosystems are not certified absent.\n'
+        return rendered
     summary = report.summary
     evidence = "Version evidence: requirements.txt"
     if report.snapshot_source is not None:
@@ -472,8 +475,7 @@ def _format_ordinary_mixed(report: MixedScanReport, path: str) -> str:
     if not ecosystems:
         rendered += '\nNo positively detected supported ecosystems; no measurement displayed.\n'
     if report.maven is not None or 'nuget' in ecosystems or set(report.by_ecosystem) - set(ecosystems):
-        rendered += ('\nUse --verbose for discovery, evidence and limitations; --json for the full report.\n'
-                     'Undisplayed ecosystems are not certified absent.\n')
+        rendered += '\nUse --verbose for discovery, evidence and limitations; --json for the full report.\n'
     return rendered
 
 
@@ -585,10 +587,10 @@ def _format_scalar_human(report: MixedScanReport, path: str, *, verbose: bool,
     lines.extend(ruby_disclosure)
     lines.extend(nuget_disclosure)
     if concise_summary:
-        label = 'Repository scalar subset (incomplete)' if incomplete_scalar or summary.dependencies_discovered is None else 'Repository'
-        lines.append(_summary_line(label, summary))
-        if summary.dependencies_discovered is None:
-            lines.append('Repository coverage is unknown; ecosystem summaries describe their own evidence.')
+        # An incomplete scalar adds no repository-wide answer to the independent
+        # ecosystem summaries. Keep it in verbose/JSON without changing its values.
+        if not incomplete_scalar and summary.dependencies_discovered is not None:
+            lines.append(_summary_line('Repository', summary))
         for ecosystem in sorted(report.by_ecosystem):
             lines.append(_summary_line(ecosystem, report.by_ecosystem[ecosystem]))
     else:

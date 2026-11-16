@@ -1176,3 +1176,12 @@ all JSON evidence/nulls/errors, arithmetic and privacy boundaries remain unchang
 Durable private storage guidance for explicitly supplied approved CA bundles adds
 no automatic trust location, environment/config route, certificate discovery,
 regeneration, transport or TLS-policy change.
+
+### Bounded ordinary-output polish — 007-0021
+
+The subsequent human-authorized presentation pass suppresses the incomplete
+repository scalar in ordinary output in favor of independent ecosystem summaries.
+It preserves complete repository summaries and all aggregate calculations and JSON
+semantics. The undisplayed-does-not-mean-absent qualification remains in verbose
+output and documentation; ordinary output retains its verbose/JSON pointer.
+This changes no relevance, discovery, evidence or measurement admission rule.

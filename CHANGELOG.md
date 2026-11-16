@@ -18,7 +18,8 @@ Notable changes to Libyears are documented here.
 
 - Keep ordinary directory reports focused on positively relevant ecosystems, with
   concise Maven/NuGet limitations and full discovery/evidence detail in verbose
-  output and unchanged schema-v3 JSON. Label incomplete scalar repository summaries.
+  output and unchanged schema-v3 JSON. Prefer ecosystem summaries when the repository
+  scalar is incomplete; retain discovery/absence qualifications in verbose and docs.
 - Document durable private storage for explicitly supplied approved CA bundles,
   without automatic certificate discovery or new trust defaults.
 
