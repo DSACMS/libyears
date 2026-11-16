@@ -195,15 +195,65 @@ with human_intervention=no. Preserve that decision in the durable feature record
 and concise context/authority notes; the intervention field alone does not measure
 human participation or attention cost.
 
-### Temporary handoff and authorized append
+### Local handoff and authorized append
 
-When a run's instructions use a temporary observation JSON baton, write it before
-final reporting, with all 44 schema-v1 keys in header order and null/empty values
-for unavailable observations. Verify that the JSON parses and that its run ID and
-keys match. Keep it outside Git and retain it for the authorized next recorder;
-Feature 005's missing 005-0006 baton delayed a later commit despite completed
-product verification. The task prompt determines the exact temporary destination
-and whether the current run or only a prior run may be appended.
+Use three distinct storage classes:
+
+- **Tracked canonical evidence:** this methodology, reviewed records and
+  `observations/agent-runs.csv` survive as project history.
+- **Repository-associated local working state:** unreconciled observation batons
+  live under `<resolved-git-dir>/libyears-harness/observations/`. They survive
+  ordinary reboot but are not canonical evidence, tracked files or a backup.
+- **Ephemeral scratch:** `/tmp` remains appropriate for recreatable tests, captures
+  and worker staging. It must not be the sole location for cross-session batons.
+
+From the current checkout, locate local batons with:
+
+```sh
+python tools/observation_handoff.py directory
+```
+
+The [helper](../tools/observation_handoff.py) asks Git for its absolute Git directory;
+it does not assume `.git` is a directory. In linked worktrees it uses that worktree's
+own Git directory, not the shared common directory. A linked worktree's removal or
+Git metadata cleanup can remove its local state; copy unreconciled evidence before
+intentionally removing that checkout. No `.gitignore` entry is needed. Running from
+a nested directory requires addressing the helper by its repository-relative or
+absolute script path; Git still identifies the same checkout.
+Bare repositories refuse. A custom Git directory placed inside the working tree
+outside a reserved `.git` component also refuses: Git can expose that metadata as
+untracked content, so it cannot provide the required exclusion by construction.
+
+Before final reporting, prepare human-readable JSON with all 44 schema-v1 keys in
+header order and null/empty values for unavailable observations, then write it with:
+
+```sh
+python tools/observation_handoff.py write RUN_ID prepared-handoff.json
+```
+
+The prepared input is not committed; stdin is also accepted when the file argument
+is omitted. The helper validates JSON, ordered keys and run identity, writes exact
+bytes to a sibling temporary file, flushes/fsyncs/closes it, then atomically replaces
+`RUN_ID.json`. Failed replacement preserves the previous final file. It does not
+fsync the parent directory or promise power-loss recovery; concurrent writers are
+not coordinated. Keep one writer per run ID. These are local working files, not a
+database or global service. Retain them for the authorized next recorder.
+
+For a specifically authorized existing baton migration only:
+
+```sh
+python tools/observation_handoff.py migrate RUN_ID SOURCE.json
+```
+
+Migration copies existing bytes, verifies their SHA-256 after writing, retains the
+source, and refuses a different existing destination. It never fills missing data.
+Missing historical handoffs, including lost `007-0014`, remain missing; do not
+reconstruct them or rewrite historical records of actual `/tmp` locations. Feature
+005's missing `005-0006` baton delayed a later commit despite completed verification;
+repeated reboot loss motivates this storage correction, not historical normalization.
+
+The task prompt still determines recording authority, including whether only a
+prior run may be appended. Local write/migration never appends a canonical row.
 
 Before an authorized append, check whether the run already exists. Verify an
 existing row against its handoff plus authorized enrichment rather than duplicating

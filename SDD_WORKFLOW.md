@@ -174,14 +174,21 @@ Follow [observations/README.md](observations/README.md) for the schema and exact
 recording protocol; this guide adds no columns or telemetry requirements.
 The normal baton is:
 
-`substantive run -> write /tmp handoff before final report -> human /status -> next substantive run records prior handoff plus authorized status enrichment -> next work proceeds`
+`substantive run -> write Git-directory local handoff before final report -> human /status -> next substantive run records prior handoff plus authorized status enrichment -> next work proceeds`
 
-The commissioning prompt identifies the handoff destination and recording
-authority. Verify its keys and run identity before reporting. Before appending,
+Use `python tools/observation_handoff.py directory` from the checkout root to locate
+`<resolved-git-dir>/libyears-harness/observations/`; the helper handles `.git` files
+and linked worktrees. Use its atomic `write` command as documented in
+[the observation protocol](observations/README.md#local-handoff-and-authorized-append).
+This reboot-persistent local working state is noncanonical and untracked by
+construction; `/tmp` is for recreatable scratch, not the sole cross-session baton.
+The commissioning prompt determines recording authority. Verify keys and run
+identity before reporting. Before appending,
 check for an existing row; verify it rather than duplicating it. Preserve earlier
 bytes and all handoff fields except explicitly authorized enrichment, including
-runtime notes and confounding classifications. Keep temporary handoffs outside
-Git. Do not reconstruct missing observations from memory.
+runtime notes and confounding classifications. Canonical reconciliation still goes
+to `observations/agent-runs.csv`. Do not reconstruct missing observations from memory
+or rewrite historical temporary-path references.
 
 Children do not receive ledger rows; they are orchestration within the parent
 observation. Do not invent unavailable child model, effort or resource telemetry
