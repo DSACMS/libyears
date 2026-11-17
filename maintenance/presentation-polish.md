@@ -244,3 +244,67 @@ findings; required GitLeaks 8.30.1 full-history gate passes on the 361-commit st
 history. Final postcommit gate and clean-tree result are retained in the current
 durable handoff. No deterministic product suite was rerun for this evidence-only
 record. No product defect was established; no repair was implemented.
+
+## Configured AB2D comparison preparation — 007-0028
+
+Starting HEAD `c360f293d127fb255230c7c956dc73eb3be55f99` matches the authorized
+boundary; staged, unstaged and untracked state is empty. Published product boundary
+remains `a1340056585d37fee00e9a39d690389348624e5a`; the intervening local commit
+contains only the preceding smoke record and observation reconciliation.
+
+**BLOCKED: exact approved explicit trust input not recovered.** The current
+[trust procedure](../specs/007-maven-dependency-age/trust-precedent.md) and
+[positive witness](../specs/007-maven-dependency-age/positive-witness.md), durable
+repository-associated handoffs and retained trust-input references were inspected.
+They establish the approved mechanism but supply no exact approved durable bundle
+path. Specifically referenced older temporary engineering records are absent.
+No absent evidence was reconstructed and no approval was inferred from filenames.
+One concise question requests the missing path/approval, or a private record
+containing them. No further trust investigation is authorized by momentum.
+
+Actual CLI help confirms `python3 -m libyears ROOT --ca-bundle FILE`. Existing
+validation requires verified TLS loading, regular non-symlink stable bounded input
+and private staging through the isolated worker. None of those checks can validate
+an unidentified file. No bundle was read, staged, discovered, exported or generated;
+no certificate stores or unrelated files were inspected. No target inspection,
+configured invocation, JSON invocation or registry request occurred in this run.
+Thus no new target integrity witness, elapsed invocation time, measurement count,
+libyear total or transport diagnosis exists. Previously captured target integrity
+and historical measurements remain historical evidence only.
+
+The preceding no-option run's 42 catalogue-unavailable occurrences do not establish
+TLS failure. Historical explicit-trust success (40 measured occurrences) is neither
+a current result nor a required yield. Complete population/coverage remain unknown
+in those retained results; Observed remains independently unavailable. This run
+establishes a missing operational input, not a product defect or new transport
+failure. No prospective runtime correction is justified by missing input alone.
+
+Original durable `007-0027` validates against the helper's ordered 44-key interface
+and its principal artifact digest before append. It is reconciled once with the
+supplied session, GPT-6.1-Sol/openai/medium, agent 0.160.0, reported runtime 385
+seconds, and confirmed account readings 160/161. Original notes/runtime
+qualifications, original JSON and all earlier ledger bytes remain unchanged.
+Ledger: 77 unique rows, 44 columns. No derived delta or current-run row.
+
+Resume only after the human supplies an exact approved file/reference and applicable
+read/private-staging approval. Then capture fresh AB2D identity/bounded integrity,
+validate through existing safety checks, run one configured ordinary invocation
+with private output/status/wall-time capture, obtain JSON only if needed, and
+verify after-state. Do not repeat trust recovery, rerun the no-option matrix, or
+change endpoint, trust, population, date, metric or Observed-reader policy.
+Review/check/commit disposition and current durable resumable handoff are retained
+at closure. No executable changes, product-suite rerun, push, tag or release.
+
+Fresh non-author review: **COMPLETE / APPROVE, no material findings** in this
+blocked-preparation scope. A newly created child context independently inspected
+the frozen two-file candidate, original baton, canonical trust/validation records
+and historical/current distinctions. No overrides were requested; actual child
+configuration/resources are unobserved. No configured measurement or fresh target
+integrity is claimed by the reviewer. Parent validated its conclusions.
+
+Documentation checks pass: 10 local links/anchors, exact supplied enrichment and
+ledger-prefix/shape/uniqueness, manual sensitivity inspection and whitespace.
+Configured GitLeaks current content and 8.30.1 full 362-commit starting history pass
+with zero findings. Final committed-history gate, local commit and clean/dirty
+boundary are retained in the current durable handoff. Smallest next action remains
+the single requested missing approved trust input/reference; no runtime repair.
