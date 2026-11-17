@@ -154,3 +154,93 @@ generalized harness, broad Maven or cross-project causal claim follows.
 The next consequential gate after reviewed local convergence is human publication
 authority. An original failing invocation would reopen a bounded diagnostic task;
 it does not authorize filesystem/evidence-policy changes. No push/tag/release.
+
+## Published ordinary-user smoke — 007-0027
+
+Tested published libyears `a1340056585d37fee00e9a39d690389348624e5a`.
+Local HEAD and both actual remote main refs (`cms`, `github`) matched; starting
+staged, unstaged and untracked state was empty. The human reports all required
+hosted checks GREEN for this candidate. Job details/logs were not independently
+inspected. This bounded read-only public smoke changes no product or policy.
+
+| Public target | Disposition | Actual no-option ordinary result |
+| --- | --- | --- |
+| medicare_monthly_enrollment_dashboard | PASS | npm only; aligned 10-row table, 10/10 measured, 100% coverage, total 18.64, mean 1.86, median 2.05, maximum 2.97 libyears |
+| dpc-app | PARTIAL | Maven presence visible; 9 sources, unknown complete population/coverage, 0 measured; 143 unsupported/unresolved version and 36 source-policy refusals; independent Observed unavailable |
+| ab2d | BLOCKED (age validation) | Maven presence visible; 8 sources, unknown complete population/coverage, 0 measured; 42 catalogue-unavailable, 39 unsupported-model and 46 unsupported-version rows; independent Observed unavailable |
+
+All three exact-root `python3 -m libyears ROOT` invocations exited 0 with empty
+stderr. Their complete stdout/stderr/status are retained in noncanonical durable
+local run storage under the resolved Git directory, alongside before/after
+integrity evidence. No raw captures or local operational paths enter this record.
+
+npm's compact table and ecosystem summary are useful and show no unrelated
+Maven/NuGet sections. Both Java reports display conventional versioned public POM
+Last-Modified time basis, positive local sources, incomplete discovery, and the
+explicit warning that zero total describes an empty measured subset. Neither
+claims absence, complete population, coverage, or Observed measurements.
+
+One DPC JSON view confirms schema 3, independent partial Declared M=0 and unknown
+N/coverage, unavailable Observed with null numerics, source/version refusals,
+material limitations and all-null legacy scalar projection. An additional NuGet
+incomplete-discovery record in JSON is uncertainty, not positive NuGet presence.
+One AB2D verbose view retains occurrence requests, origins, version/comparator/time
+bases, model limitations and matching refusal counts. Both supplemental views exit
+0 with empty stderr; no further network repetitions were made. npm needed no
+additional view to explain its successful ordinary result.
+
+DPC is a valid zero-yield adversarial witness: refusal occurs at exact-version and
+source-admission layers, alongside incomplete discovery/population. No positive
+yield was promised. AB2D reaches catalogue metadata unavailability after local
+admission; these CLI views do not distinguish trust, transport or metadata-response
+causes within that fixed reason. **A TLS cause is not established by this run.**
+No dates or real Java ages were obtained under default configuration. No explicit
+`--ca-bundle` run occurred: authorized durable handoffs and repository trust records
+do not recover an exact approved durable bundle path plus read/staging authority.
+No trust store, certificate, configuration directory or guessed path was searched.
+This operational evidence limit is not a demonstrated product defect.
+
+The retained [AB2D positive witness](../specs/007-maven-dependency-age/positive-witness.md)
+established 40 real Declared ages with a separately approved explicit CA input.
+That historical configured success remains distinct from this no-option failure;
+counts/values are not freshness assertions. Current AB2D revision matches that
+witness; its successful historical dates are not substituted into current results.
+No schema, metric, admission, assurance or target-execution boundary changes.
+
+Bounded before/after baselines compare revision, Git index entries and complete
+tracked/untracked status, plus depth-4/256-directory/10,000-entry inventory using
+existing discovery exclusions and regular supported input hashes (4 MiB/file cap).
+All targets started clean and remain identical: npm 105 entries/2 input hashes,
+DPC 1,149/22, AB2D 613/8. This establishes equality of captured Git state, inventory
+metadata and bounded input bytes, not all ignored/generated content or atomic
+whole-filesystem immutability. No target mutation/build/install/resolution occurred.
+
+The original durable `007-0026` handoff validates through the actual helper's
+44-key interface and matches its ledger artifact digest before append. It is
+reconciled exactly once with supplied human telemetry (430 seconds; GPT-6.1-Sol,
+openai, medium, agent 0.160.0; supplied session; after-reading 160). Existing
+before-reading 160 follows documented confirmed continuity from `007-0025`.
+Original JSON, factual notes, runtime qualifications and all earlier ledger bytes
+are preserved. Ledger: 76 unique rows, 44 columns. No delta, reconstructed handoff
+or current `007-0027` row is stored.
+
+Fresh non-author review and final documentation/security verification are recorded
+below after completion. No implementation, full-suite rerun, push or release.
+Recommended next action: have the human identify the exact approved durable CA
+input and read/staging grant, then authorize one bounded configured AB2D comparison
+to isolate the operational difference from the retained positive witness.
+
+Fresh non-author review: **COMPLETE / APPROVE, no material findings**. A newly
+created child context inspected the frozen record/ledger and underlying captures,
+JSON/verbose, before/after baselines, original baton, trust-authority records and
+historical witness. No model/effort overrides were requested; actual child
+configuration/resources are unobserved. Parent validated the review against the
+same evidence. Review performed no network or target reruns.
+
+Documentation verification: 8 local links/anchors pass; ledger shape/uniqueness,
+original-byte preservation and exact two-file scope pass; whitespace and manual
+sensitivity inspection pass. Configured current-content GitLeaks reports zero
+findings; required GitLeaks 8.30.1 full-history gate passes on the 361-commit starting
+history. Final postcommit gate and clean-tree result are retained in the current
+durable handoff. No deterministic product suite was rerun for this evidence-only
+record. No product defect was established; no repair was implemented.
