@@ -102,3 +102,65 @@ Canonical evidence remains the reviewed repository record and ledger; local bato
 are working state and are not promoted wholesale into Git history.
 The next consequential gate after convergence is human publication authority.
 No push, tag, release, history rewrite or broader harness work is authorized.
+
+## Hosted closure and publication actors — 007-0024
+
+The earlier convergence and pending-publication statements above describe their
+historical boundaries. Run `007-0023` subsequently published the converged work and
+its one-file observation reconciliation as candidate
+`899ca1f63cb57b984680dae245e8fbfe32aab75b`. Its original durable handoff validates
+against the referenced repository ledger at that commit. The agent executed both
+`git push github main:main` and `git push cms main:main`, then verified actual remote
+refs against local HEAD. These execution/ref observations are retained separately
+from later hosted results.
+
+The initiating publication prompt remains accessible in the retained conversation.
+It names `github` and `cms`, destination `main`, the converged `7c1dd77`/`4abe72f` set
+plus only minimal observation bookkeeping, and required publication checks. Its
+PUBLISH instruction states: “This prompt explicitly grants publication authority
+for this bounded converged set.” This is retained initiating authority for that
+specific publication, not retrospective authorization inferred from success.
+The supplied transcript explicitly shows a one-time GitHub tool approval; that
+technical permission is distinct from the initiating delegation. No broader or
+standing authority follows from either. Original observation classifications and
+runtime qualifications remain unchanged.
+
+For this exact published candidate, the human now reports **all required hosted
+CI/security checks GREEN**. This closes the hosted evidence boundary on
+**human-observed evidence**, not agent verification. No attachment is accessible in
+this session. The human also reports that the macOS log showed the exact candidate
+checkout, three passing real-worker tests and 1,111 tests with one skip; those
+individual log details remain attributed to that report, not an inspected log.
+No workflow IDs, URLs, timings or Windows counts are supplied or inferred. Historical
+local results and the original hosted-pending handoff are preserved.
+
+The human's prospective policy is now canonical in
+[Publication actors and delegation](../SDD_WORKFLOW.md#publication-actors-and-delegation),
+linked by the pre-push guidance: agent preparation/verification/local commit,
+human publication by default, with explicitly bounded agent delegation as an
+exception. This policy does not silently normalize earlier agent pushes as the
+default or reclassify the prior publication as unauthorized.
+
+Run `007-0023` is reconciled once from its unchanged 44-key Git-directory baton,
+with supplied telemetry and original notes/confounding retained. Its referenced
+ledger digest was verified before append; all earlier ledger bytes remain an exact
+prefix. The human's confirmed sequential continuity and the preceding recorded
+credits_after 156 support credits_before 156 for that run; credits_after is 157.
+No derived delta, invented reading, runtime subdivision or lost-baton reconstruction.
+The ledger now has 73 unique records and 44 columns. Current `007-0024` is not appended.
+
+This run changes documentation/observation bookkeeping only, with one fresh
+non-author review and one coherent local commit after verification. No executable,
+product contract, trust, target or CI configuration changes. No push is authorized
+in this run. The next gate is **HUMAN PUBLICATION AUTHORITY** for this documentation
+commit; the already-published candidate's human-observed hosted closure is separate.
+
+Fresh non-author review completed **COMPLETE / APPROVE**, with no material finding.
+The reviewer independently verified all four frozen file digests, original baton
+and referenced baseline digest, exact ledger-prefix preservation, permitted
+telemetry/continuity enrichment, historical actor/authority fidelity and scope.
+Parent checks confirm 73 unique 44-column records, 18 local links/anchors and clean
+whitespace. Configured GitLeaks 8.30.1 current-content and 358-commit precommit history
+checks pass with zero findings. No product-suite rerun is required or claimed for
+this documentation-only change. The final commit, postcommit history and durable
+`007-0024` handoff verification are recorded in the local handoff and final report.

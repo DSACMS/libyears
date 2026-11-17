@@ -5,6 +5,10 @@ pushing. Record exact commit, tool versions, results and gaps. This checklist do
 not authorize a push or security exception, and local success never establishes
 actual hosted CI success.
 
+Apply the [publication actor and delegation policy](../SDD_WORKFLOW.md#publication-actors-and-delegation)
+before selecting who executes the push. Keep preparation/check evidence, human
+authorization, tool permission, execution and subsequent observation distinct.
+
 From the repository root:
 
 ```sh

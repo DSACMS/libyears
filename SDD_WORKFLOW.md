@@ -77,6 +77,28 @@ external-target access or package-manager/target execution, push/release/publica
 or a gate explicitly designated HUMAN by durable authority. Required evidence
 and mandatory task predecessors still apply.
 
+## Publication actors and delegation
+
+By default, the agent prepares, verifies and commits locally; the human executes
+publication/push. This prospective actor policy does not reclassify historical
+agent-executed publications.
+
+The human may explicitly delegate a bounded publication to the agent. The grant
+must identify the remotes, destination branch/ref, reviewed commit boundary or
+commit set, required checks and permitted operation. A grant for one remote does
+not cover another. Passing tests, local commit authority, tool permission approval
+or an earlier delegated push does not independently grant standing publication
+authority. Ordinary push delegation grants no force-push, history rewrite, branch
+deletion, tags, releases or broader publication.
+
+Keep the actors and evidence distinct: the human decides and authorizes; the agent
+prepares and verifies the exact commit/ref boundary and required checks; the human
+or explicitly delegated agent executes. Tool approval grants technical permission
+to run an action, not independent publication authority. After execution, observe
+and record actual remote refs and subsequent hosted results, separately from local
+verification. Attribute human-observed hosted reports to the human; do not promote
+them to agent verification or invent inaccessible job details.
+
 ## Operational smoke and publication evidence
 
 Convergence records contract conformance on its inspected evidence. For work
