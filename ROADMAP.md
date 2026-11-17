@@ -477,6 +477,123 @@ and remaining pre-publication boundary.
 
 **007-0019 positive witness:** [AB2D explicit-trust revalidation](specs/007-maven-dependency-age/positive-witness.md) measures40 Declared occurrences, total9.268079 libyears, with unknown complete population/coverage and independently unavailable Observed. Verified TLS succeeded; request-count uncertainty remains explicit. No product correction or target change. DPC and007-0017 zero-connection evidence remain intact; publication authority remains separate.
 
+**007-0033 diagnosis closure:** [Captured scope context](maintenance/maven-scope-context.md)
+establishes historical eight-POM correspondence and 127-row local-fact replay.
+All 39 scope refusals are expected under the supported contract: no scope-default
+implementation defect was established. The [measurement audit](maintenance/maven-yield-audit.md)
+and historical measurements/limitations remain unchanged. Correct refusal does not
+establish sufficient real-world coverage. This closes the scope-default diagnosis,
+not the usefulness question or a new capability gate.
+
+#### External-management evidence intake — unselected follow-up
+
+**State: EXPLORE, proposal only (007-0033).** This extends opportunity 11; no
+external-management scope, discovery execution, specification, plan, task graph
+or implementation is selected or authorized. Existing Feature 007 remains complete
+under its current [contract](specs/007-maven-dependency-age/spec.md).
+
+**User outcome:** Recover attributable missing Declared management facts where
+supported. The 39 AB2D refusals motivate investigation, not a promise of 39 new
+ages, a complete denominator or sufficient coverage. Comparator/date availability
+and other missing facts remain independent. Date basis, metric, module-occurrence
+weighting and independent Declared/Observed semantics are settled and unchanged.
+
+| Candidate route | Authority and operational tradeoff to investigate |
+| --- | --- |
+| Explicitly supplied retained parent/BOM documents | Human explicitly accepts the documents' applicability to named consumer inputs and model roles. Intake can be offline/repeatable without model-document coordinate disclosure, but assembly and recursive closure may be incomplete. Later age lookups still require separate comparator admission. Neither a file's presence nor matching GAV proves acquisition/history. No automatic target-file, cache or configuration discovery. |
+| Optional bounded public POM retrieval | Would require a separate explicit model-applicability and coordinate-disclosure policy/grant. Proposed fixed public Maven endpoint and exact safe GAV POM paths only; no metadata search, archives, repository-URL following or private/unknown-source fallback. Less manual assembly, but adds trust, transport, disclosure, availability and mutable-representation risks. A successful GET cannot prove that the public model applies to the consumer. |
+
+Permission to compare a package's age with Central does **not** authorize fetching
+a parent/BOM or establish that its public namesake is the applicable model.
+Document acquisition/applicability provenance and public-comparator admission
+remain separate. Existing positive contrary/unknown source-policy refusals must
+survive; supplied management evidence grants no namesake lookup authority.
+
+**Candidate boundaries and questions for discovery, not adopted rules:**
+
+- Bind exact consumer input bytes and source/context/role to requested exact GAVs,
+  every supplied/retrieved document's bytes and declared identity, and explicit
+  parent/import edges. A revision is corroboration, not a substitute for bytes.
+  Refuse mismatched identities or conflicting documents rather than choosing the
+  first file. Reuse bytes only with identity checks; evaluate attribution and
+  applicability independently for each consumer context.
+- Follow only supported recursive parent/import edges. Establish effective GAV
+  and supported property context from the accepted graph before any optional
+  request; unresolved identities stop that edge. Determine pinned inheritance,
+  exact model-key matching, management/import precedence and consumer property
+  overrides with offline witnesses. Preserve explicit fields; never default scope
+  across unresolved management. Detect cycles, duplicate/conflicting keys and
+  unsupported constructs without evaluation or fallback through uncertainty.
+- Keep existing supported XML/property restrictions initially. No DTD/entity,
+  XInclude/schema fetch, host/environment/settings expansion, profile activation,
+  extension/plugin execution or arbitrary Maven evaluation. Relevant unknown
+  constructs withhold dependent facts; independent safe siblings survive.
+- Management-only entries never become direct occurrences. Surface any ordinary
+  parent requirements and resulting population implications; do not silently drop
+  known inherited requirements or certify complete N from a management manifest.
+  Preserve partial/unknown population and null coverage where closure is not proven.
+  This is not an evaluated model, resolved/Observed selection, runtime or deployment
+  claim. A material population-scope gap returns to human product authority.
+- Preserve safe no-follow bounded file reads, private raw evidence and sanitized
+  provenance. Optional transport would retain verified TLS/hostname checks,
+  explicit approved trust inputs, isolation/deadline enforcement and no credential,
+  ambient proxy/configuration or alternate-endpoint route. Never publish private
+  paths, document bodies, environment values or raw transport exceptions.
+- Distinguish parent policy inheritance from BOM acquisition routing using pinned
+  semantics; do not assume all imported policy becomes consumer policy. Unknown
+  relevant admission semantics still refuse before an HTTP request.
+
+**Proposed ceilings for a future candidate, subject to discovery/review:**
+
+| Resource | Proposal, not current product policy |
+| --- | --- |
+| Additional external graph | At most 8 parent/import edges from the first external document; cycles refuse; existing local-chain limits remain |
+| Documents | 16 distinct external documents scan-wide, shared by both routes and all consumers; no per-module reset |
+| Bytes/XML | 1 MiB per document, 8 MiB external bytes total within the existing total XML ceiling; retain existing safe XML framing limits |
+| Optional acquisition | 16 reserved request attempts scan-wide, one attempt per distinct exact document identity; no automatic retry or silent fallback |
+| Time | 10 seconds per optional request including DNS/TLS/body, 60 seconds for the entire external acquisition/analysis batch with cleanup reserve; no nested reset |
+| Redirects/endpoints | Zero redirects; proposed existing fixed public Maven host/port and exact versioned POM paths only; no document-supplied URL or authentication |
+
+These are starting technical bounds, not human-selected values or an instruction
+to weaken any existing stricter limit. Missing or over-budget recursive evidence
+must leave affected facts unavailable rather than accepting a capped closure.
+
+**Success evidence:** Offline fixtures must demonstrate byte/GAV/context binding,
+recursive parent/import precedence, property overrides, cycles/duplicates,
+unsupported constructs, delayed defaults and independent siblings. Include
+management-only versus ordinary type=pom dependencies, ordinary parent population
+effects, partial/unknown coverage and refused same-GA capability/cache controls.
+Optional transport needs deterministic no-disclosure-before-admission, verified
+TLS, timeout, redirect, framing/size and error-sanitization witnesses. No fixture
+result is a new real-target measurement or a proof of complete closure.
+
+Later real-target validation requires separate exact-target/read, document
+acceptance, disclosure/network and trust authority as applicable. Bind baseline
+and candidate facts to the same captured inputs, check before/after integrity,
+report actual additional supported facts and measured yield separately, and retain
+all refusals/unknowns. Test supplied-only operation first; validate public retrieval
+only if that route is later selected. No live run is authorized here.
+
+**Smallest next gate:** Human selection of one bounded **offline, supplied-evidence-
+first discovery**, or defer. Use a human-identified retained/sample corpus; a missing
+corpus is an input gap, not acquisition permission. Produce an identity/precedence/
+refusal and recoverability matrix, then stop before specification. Only if that
+evidence supports a useful bounded capability should a prospective specification
+be commissioned. Optional public acquisition/applicability and its disclosure-risk
+assumption are a separate consequential human decision if later proposed; technical
+precedence and numeric budget tuning are discovery/review work, not new human votes.
+
+**Stop condition:** Useful scope requires implicit model applicability, private or
+unknown-source retrieval, target/build/resolver execution, unsupported evaluation,
+false completeness, or changing settled metric/date/view decisions. No current
+product scope is expanded by this opportunity preparation.
+
+**007-0033 review:** One fresh non-author review completed **APPROVE, no material
+findings**, covering causal fidelity, proposal/current-contract separation,
+privacy/admission and yield claims. Ledger provenance, relevant links, whitespace,
+sensitivity and configured GitLeaks checks pass; final commit/check details remain
+in the durable handoff. No product suite, target/trust access, network or push.
+
 ### 12. NuGet repository project sources
 
 **State:** SELECTED in run `006-0022`. The human approves source-qualified
