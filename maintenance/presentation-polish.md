@@ -308,3 +308,100 @@ Configured GitLeaks current content and 8.30.1 full 362-commit starting history 
 with zero findings. Final committed-history gate, local commit and clean/dirty
 boundary are retained in the current durable handoff. Smallest next action remains
 the single requested missing approved trust input/reference; no runtime repair.
+
+## Configured AB2D comparison resumed — 007-0028
+
+The human supplied the exact approved bundle path in response to the pending
+question. The existing grant authorizes reading/private staging of that exact
+input. This resolves the preceding preparation blocker without a trust search or
+new trust policy. Resume HEAD `e49addae6994222616a0b47a0bf40f84c0a6db75` is the clean,
+reviewed preparation commit; executable bytes remain those of published
+`a1340056585d37fee00e9a39d690389348624e5a`. The preceding blocked record is retained
+as history. `007-0027` is already reconciled and is not appended again.
+
+**PASS for configured positive measurement; partial population remains.** One
+ordinary configured invocation and one JSON reconciliation invocation used the
+existing `python3 -m libyears ROOT --ca-bundle APPROVED_FILE` interface. Both exited
+0 with empty stderr; elapsed subprocess wall time was 11.455 and 11.534 seconds,
+respectively. JSON was needed for exact dates, arithmetic and null-state checks;
+no verbose run, no-option repetition or retry matrix occurred.
+
+| Declared measure | Current configured result |
+| --- | ---: |
+| Measured occurrences | 40 |
+| Total libyears | 9.29860822749512 |
+| Mean | 0.232465205687378 |
+| Median | 0.0 |
+| Maximum | 1.524357270514868 |
+| Exact same-version zeros | 25 |
+| Complete population / coverage | unknown / null |
+
+Eight sources retain 127 safe records, not a complete denominator. Forty-two
+occurrences across 11 unique GA identities are locally admitted. Remaining rows:
+46 unsupported-version, 39 unsupported-model and 2 catalogue-unavailable. The last
+two share one GA. No particular HTTP status, private-origin claim or exact
+transport failure follows from that fixed catalogue reason. Observed remains
+independently unavailable with null numeric fields; legacy scalar values remain
+null. Forty divided by 127 is not coverage.
+
+Time basis remains **conventional versioned public POM Last-Modified**, not first
+publication, acquisition, content correspondence, producer history or runtime
+state. Offline reconciliation verifies every measured row's two dates against
+captured worker results, independent 365.25-day arithmetic and aggregate values.
+Ordinary and JSON worker result projections agree after excluding retrieval times.
+No schema, admission, comparator, date, metric or Observed-reader change occurred.
+
+Compared with the prior no-option smoke, configured measurement now succeeds
+where 42 admitted occurrences previously had catalogue-unavailable results.
+This does not retroactively prove TLS caused the no-option failure. Current
+verified TLS success uses the explicit approved input; no no-option causal probe
+was performed. Historical configured success had the same measured count but a
+different total (9.268079163180976); it is not substituted for this result. For
+example the current dd-java-agent comparison version is 1.69.0, whereas the
+retained historical witness used 1.68.2. Live catalogue changes are expected.
+
+Safety checks accept the exact regular bounded input and verified TLS loading.
+The existing supervisor performs stable no-follow bounded reading/private copying;
+passive observation confirms staged mode 0600 and worker cleanup for both forms.
+Certificate and hostname verification remain required. The passive observer
+reads only closed protocol JSON and staging metadata, never certificate bytes or
+identity. Each invocation records 27 reserved attempts, 26 body-producing responses
+and 80,849 body bytes. One zero-body failure does not reveal whether a request was
+sent: sent GETs are bounded 26–27 per invocation, not an asserted exact 27.
+Captured command identities bind to locally admitted coordinates or same-GA
+selected comparison versions; no refused identity or alternate/private endpoint
+is scheduled. Success proves the configured route works, not universal transport
+fitness or the cause of the one remaining unavailable catalogue.
+
+Current AB2D remains at `9c785d41da3f7dd72f5be62cfc42ee7b1bf74459`, clean before and
+after. Bounded integrity equality passes for revision, index entries, full
+tracked/untracked status, 613 inventory entries and 8 supported input hashes,
+using the established depth-4/256-directory/10,000-entry procedure and exclusions.
+This is not an atomic or all-ignored-content claim. No target changes, scripts,
+build tools, dependency installation or resolution occurred.
+
+Necessary private operational reference and approval are retained under the
+repository-associated durable run directory, with restrictive permissions; neither
+path nor bundle enters Git or the observation handoff. Original blocked handoff
+bytes are retained privately before current handoff replacement. Captures include
+ordinary/JSON output, status, wall time, bounded worker messages, before/after
+integrity and sanitized verification summary. No raw sensitive exceptions,
+certificate identities, contents, fingerprints or environment values are retained.
+The runtime investigation stops here: no product defect is established and no
+runtime diagnostic repair is implemented. Review and final checks follow below.
+
+Fresh result review: **COMPLETE / APPROVE, no material findings**. A newly created
+non-author child context independently checked both captures, date bindings and
+arithmetic, null coverage/Observed, admission-bound commands, counters, staging
+metadata/cleanup and bounded integrity equality. It performed no network, target
+or certificate access. No model/effort overrides requested; actual child
+configuration/resources unobserved. Parent validated the conclusions.
+
+Documentation-only verification passes: 10 local links/anchors, exact one-file
+completion scope, unchanged 77-row ledger with no repeated prior/current append,
+whitespace, manual sensitive-input exclusion and configured current-content
+GitLeaks. GitLeaks 8.30.1 starting full 363-commit history passes with zero findings;
+final commit/history/tree results are retained in the updated durable handoff.
+No full product suite was rerun. Smallest next action: use the documented explicit
+approved configuration for subsequent authorized AB2D measurements. No further
+investigation is needed to establish that the existing configured path works.
