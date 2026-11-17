@@ -183,3 +183,8 @@ configured GitLeaks current content and full-history gates (final commit details
 in the durable handoff). No product suite rerun for documentation-only changes.
 Local tracking refs remain `a134005…`; actual remote state is not queried under
 this run's no-network boundary. No publication is performed.
+
+Follow-up: [007-0031 scope-evidence diagnosis](maven-scope-evidence.md) traces all
+39 refusals to an unselected scope with a closed management-uncertainty default
+gate. No implementation defect or new measurable occurrence is established;
+original per-row context remains a bounded evidence-capture prerequisite.
