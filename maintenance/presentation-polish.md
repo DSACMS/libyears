@@ -405,3 +405,34 @@ final commit/history/tree results are retained in the updated durable handoff.
 No full product suite was rerun. Smallest next action: use the documented explicit
 approved configuration for subsequent authorized AB2D measurements. No further
 investigation is needed to establish that the existing configured path works.
+
+## Configured-smoke closure — 007-0029
+
+The [completed configured comparison](#configured-ab2d-comparison-resumed--007-0028)
+remains the measurement evidence: no result or historical claim is changed.
+A byte-identical user-owned private trust copy was prepared from the explicitly
+approved input, with owner-only directory/file permissions, safe regular-file
+checks, unchanged source and successful offline verified Python TLS loading.
+This proves local copy/load validity only; **the new copy has not undergone a live
+endpoint smoke test**. No registry request or target access occurred at closure.
+Operational references and local checks remain private, durable and outside Git;
+no trust path, material, identity, fingerprint or bundle digest is published.
+
+Original completed and preserved blocked `007-0028` handoffs validate against their
+completion artifacts/revisions. The observation is appended once, preserving its
+blocked/resumed history and original qualifications. Supplied resumed telemetry
+reports 366 seconds and account after-reading 163; the first-segment runtime and
+intermediate account boundary remain unavailable. The run-level scalar runtime
+stays blank; no segment sum/substitution or active-compute duration is inferred.
+Confirmed continuity retains before-reading 161. Ledger: 78 unique 44-column rows;
+current `007-0029` is not appended. Original handoff bytes remain unchanged.
+
+Fresh non-author closure review: **COMPLETE / APPROVE, no material findings**;
+provenance, sensitivity, private-copy procedure and claim limits inspected without
+network, target or bundle access. Newly created child context; no overrides
+requested, actual child configuration/resources unobserved. Parent validation,
+11 local links/anchors, ledger checks, whitespace and configured current-content
+GitLeaks pass; full GitLeaks 8.30.1 history gate passes before/following the local
+commit (final details in durable handoff). No product suite rerun for this
+bookkeeping-only change. Next gate: human publication of reviewed documentation;
+pinned commands are prepared and syntax-checked locally, not executed.
