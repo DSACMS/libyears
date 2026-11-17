@@ -219,3 +219,9 @@ handoff. No runtime or tracked test files changed, so full-suite,
 capability-disabled and worker reruns for code corrections are not applicable.
 No target/trust/private input access, package endpoint, build, live measurement,
 push, tag or release. Any source capture requires separate access authorization.
+
+Follow-up: [007-0032 captured scope context](maven-scope-context.md) establishes
+historical eight-POM correspondence and resolves the 39 original local refusal
+paths: 38 lack matching management, one matches only an import entry; all retain
+external-parent/BOM uncertainty. No runtime defect or scope-default repair is
+established. The earlier missing-snapshot limitation above remains historical.
