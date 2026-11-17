@@ -7,15 +7,17 @@ is not to maximize model capability on every task. It is to obtain sufficient,
 inspectable evidence with proportionate resources while preserving human control
 and accessibility.
 
-**PROVISIONAL WORKING STRATEGY** — for human contributors structuring
-agent-assisted repository work. This is neither permanent policy nor a benchmark
-report or vendor/model leaderboard. Existing [AGENTS.md](AGENTS.md), approved
-feature contracts, and human authorization continue to govern the work. Revise
-this strategy as further prospective observations become available.
+Model, effort and routing recommendations are a **PROVISIONAL WORKING STRATEGY**
+for human contributors, not permanent policy, a benchmark or a vendor/model
+leaderboard. Revise those heuristics as prospective observations become available.
 
-For canonical lifecycle, review, authority and handoff mechanics, see
-[SDD_WORKFLOW.md](SDD_WORKFLOW.md). This document retains provisional routing
-guidance and its supporting observations.
+The adopted [review roles and isolation](#review-roles-and-isolation) and
+[actor responsibilities](#actors-capabilities-and-authority) are standing repository
+instructions. This document owns delegation and reviewer-execution guidance;
+[SDD_WORKFLOW.md](SDD_WORKFLOW.md) owns lifecycle, authority, freeze/correction gates
+and handoff mechanics. Neither standing roles nor provisional recommendations
+grant new work: [AGENTS.md](AGENTS.md), approved feature contracts and human task
+authority continue to govern scope.
 
 ## Evidence and limits
 
@@ -130,6 +132,31 @@ Continuing context may better serve tightly related execution steps when
 independence is not the objective. Feature 004 used sequential approved tasks
 and separate review gates; neither approach implies fresh context is inherently
 better. A fresh context also cannot repair missing evidence or supply authority.
+
+### Review roles and isolation
+
+Use the actual available isolation mechanism for a fresh non-author reviewer,
+such as a newly created child context; report requested versus observed setup and
+unavailable model/effort/resource telemetry honestly. Self-identification is not
+model telemetry. A parent may delegate but cannot reset its own conversation or
+make the human start a new session as a routine continuation step. Compaction does
+not create review independence. If required isolation is unavailable, report the
+review limitation rather than claiming it occurred.
+
+Give each reviewer the question, authority, frozen candidate identity, evidence
+locations and completion obligations. Include verbatim exceptional preconditions
+and STOP conditions when compliance is under review; a summary can omit the
+controlling restriction. Reviewers inspect the actual candidate and underlying
+evidence; recover truncated reads before claiming coverage. Keep implementation
+authorship separate from review. Withhold current sibling conclusions until the
+independent reviews finish; historical reviews remain available as history.
+
+Scale review to risk and the controlling task/phase policy, not maximum reviewer
+count. A clerical change need not acquire a new approval bureaucracy; required
+independent gates still require non-author evidence. The parent validates findings
+and collateral coverage under the [workflow's review/correction gates](SDD_WORKFLOW.md#freeze-independent-review-and-correction),
+not by counting votes, and retains original findings and dispositions through
+bounded corrections and focused verification.
 
 ### 6. Repository context is the normal durable handoff
 
@@ -336,7 +363,9 @@ not authorize policy; an approved plan does not prove execution.
 | ChatGPT / orchestrator | User request, available harness controls, session metadata where exposed, agent reports | Route work and select session/context/model within human authority; cannot invent trust or publication permission | Create a new top-level session where the harness supports it, assign prompts, collect reports | Actual requested setup where observable, coverage and stopping gates | Setup/request provenance and handoff. Assigning orchestrator-only actions inside a worker prompt makes desired state unenforceable. |
 | Prompt (assignment artifact) | Nothing independently; it carries supplied observations and instructions | Conveys attributed new authority; is not an independent authority holder | Directs a capable authorized actor; does not execute or create context | Nothing by itself; claims need evidence | Intent, delta, exact exceptional restrictions, relevant evidence pointers. Treating copied prose as proof or restating stale state can override current contracts accidentally. |
 | Codex parent agent | Authorized repository/files/tool results and available harness state | Routine implementation and bounded correction determined by approved authority; stop on new consequential choices | Read, edit, test, orchestrate authorized reviews and make authorized commits/actions | Findings against raw authority/evidence; cross-scope reconciliation; actual verification within access | Code/tests or docs, decisions attributed to owners, review disposition and baton. Parent confidence is not independent approval or permission to create provenance. |
+| Implementation child | Assigned candidate, authority and accessible evidence | Routine choices within the parent's authorized subset; no scope expansion | Implement only the delegated work and report changes/findings | Its focused checks; not independent approval of its own work | Candidate identity, verification, gaps and authority limits; delegation cannot create missing authority. |
 | Codex reviewer / subagent | Frozen candidate, governing authority, independently inspected evidence within assigned access | Findings and a scoped completed/incomplete verdict; cannot authorize changed product/security policy | Read and run authorized bounded probes; edits only if separately commissioned | Assigned obligations and collateral boundaries; cannot certify unaudited scope | Coverage, counterexample, candidate identity, limits and verdict. Counting votes or sharing sibling answers as ground truth masks omissions and correlated mistakes. |
+| Execution harness | Exposed tool capabilities, permission outcomes and available telemetry | Technical execution permissions, not substantive task authority | Run permitted tools and available isolation mechanisms | Actual execution and metadata it exposes; not an unobserved context reset | Requested versus observed configuration and permission limits; approval cannot substitute for human scope authority. |
 | Repository | Retained files/history, not outside reality | Carries established authority when approved and current; does not select new work | Supplies inspectable durable state to authorized actors | Enables byte/history/reference checks; existence alone authenticates no claim | Readable current disposition plus preserved history. Treating all historical prose as current creates false blockers or stale permission. |
 | Specification / plan / tasks | Recorded requirements, architecture and dependency graph | Carry approved product / architecture / bounded-work decisions respectively | Govern implementation after execution authorization | Define required witnesses; cannot prove they ran | Traceable scope, criteria, predecessors, hard stops and review disposition. Letting code rewrite approved requirements conceals scope drift. |
 | Tests | Fixture inputs and actual observed behavior under stated harness assumptions | No new product or trust authority; executable contract witnesses | Exercise code and permitted seams | Their assertions on the candidate/platform actually executed; mutation may test witness discrimination | Behavioral regressions, input assumptions and results. Fixture success is not real-target evidence, and skipped native tests are not platform success. |
@@ -383,12 +412,10 @@ human gates. Known contradictions remain terminal where contracts require it;
 stronger assurance remains separately visible. New security exceptions, scope,
 external access and publication still require their controlling authority.
 
-Within already-authorized work, route determined corrections internally:
-validated finding → bounded fix → freeze → fresh focused non-author review with
-collateral checks → parent reconciliation. Never use positive sibling reviews to
-overrule a validated finding. Use decomposition to make coverage inspectable,
-not to manufacture confidence from reviewer count. Required standards remain
-accessible to human or alternate reviewers; model price is not an acceptance gate.
+Within already-authorized work, use the
+[workflow's focused correction loop](SDD_WORKFLOW.md#freeze-independent-review-and-correction)
+and [review roles](#review-roles-and-isolation). Required standards remain accessible
+to human or alternate reviewers; model price is not an acceptance gate.
 
 ### Put durable knowledge in the right home
 

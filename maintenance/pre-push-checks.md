@@ -33,6 +33,11 @@ observed hosted GitLeaks **8.30.1**, rejects shallow history, uses the actual
 temporary SARIF report, and propagates scanner failure nonzero. It installs
 nothing and adds no suppression. Commit intended changes first: history detection
 does not scan uncommitted new content. A checkout scan may supplement it.
+Run the committed-history gate after the final authorized commit as well as any
+current-content check. Security exceptions need their own narrow human authority;
+a scanner finding or passing scan implies no broad suppression or history rewrite.
+Apply [sensitive-evidence exclusions](../AGENTS.md#sensitive-evidence), including
+keeping scanner-triggering payloads out of remediation prose.
 
 GitLeaks 8.30.1's default history source runs `git log -p -U0 --full-history --all
 --diff-filter=tuxdb`. Available refs affect scope; compare local and hosted refs
@@ -60,6 +65,22 @@ or a proposed exception, use an isolated temporary clone and synthetic content:
 Never push the control clone or add real credentials. These experiments do not
 approve repository policy changes. Run 006-0018 retained this experiment and its
 redacted reports outside Git; [results and proposed policy gate](operational-smoke-006-0018.md).
+
+## Remote scope and hosted follow-up
+
+Only when publication is explicitly authorized under the linked actor policy,
+verify the exact reviewed commit set, destination refs and fast-forward conditions.
+Read actual remote refs (for example, `git ls-remote REMOTE refs/heads/BRANCH`), not
+tracking refs alone. Verify each authorized remote separately after execution.
+If only some pushes succeed, report the exact partial state; do not force, rewrite
+or expand repair scope. Publication does not establish hosted CI success.
+
+Record the hosted candidate/revision when available and distinguish direct agent
+observation from human-supplied reports. Queued runners, infrastructure failure and
+executed product-test failure are different outcomes; preserve unknowns and skips.
+Pending required jobs leave operational closure pending, while unrelated authorized
+local work may continue under [the workflow's evidence rules](../SDD_WORKFLOW.md#operational-smoke-and-publication-evidence).
+No job IDs, platform counts or green result may be invented to fill a gap.
 
 Primary references: GitLeaks [history command implementation](https://github.com/gitleaks/gitleaks/blob/v8.30.1/sources/git.go),
 [detect compatibility command](https://github.com/gitleaks/gitleaks/blob/v8.30.1/cmd/detect.go)

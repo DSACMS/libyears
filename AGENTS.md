@@ -10,6 +10,16 @@ The tool measures dependency freshness using release dates:
 
 The project intentionally favors simplicity, transparency, reproducibility, and long-term maintainability over broad ecosystem support.
 
+## Instruction navigation
+
+This file owns universal scope and working-tree conduct. Use
+[SDD_WORKFLOW.md](SDD_WORKFLOW.md) for authority, lifecycle and recovery;
+[AGENT_ROUTING.md](AGENT_ROUTING.md) for delegation, actors and review isolation;
+[observations/README.md](observations/README.md) for provenance and local handoffs;
+and [the pre-push checklist](maintenance/pre-push-checks.md) for publication checks.
+Initiating prompts supply task-specific grants and evidence, not replacements for
+these standing rules. Approved ecosystem contracts remain in their existing homes.
+
 ## Runtime
 
 - Python 3.11+
@@ -138,6 +148,18 @@ When approved feature `spec.md`, `plan.md`, and `tasks.md` exist:
 If implementation reveals a genuine product requirement that the approved specification does not address, return to the specification phase rather than deciding it in code.
 
 ## Git / Scope Discipline
+
+Inspect starting staged, unstaged and untracked state. Preserve pre-existing and
+unrelated changes, including staged work; do not revert, overwrite, delete or stash
+them, or include them in a task commit, merely to obtain a clean tree. If authorized
+and unrelated edits overlap, isolate authorized hunks; stop only when safe
+separation cannot be established. A preserved dirty baseline is a correct final
+state when the authorized work is complete.
+
+Stage explicit files or deliberately selected hunks. Do not use blanket
+`git add .`, `git add -A` or `git commit -a`. Inspect the staged diff and whitespace
+before committing, then verify final commit scope against the starting baseline.
+Commit only within granted authority and keep boundaries coherent and inspectable.
 
 For implementation tasks:
 
@@ -284,6 +306,15 @@ Treat the repository workspace as the default filesystem boundary.
   other sensitive locations.
 - Prefer the narrowest filesystem access sufficient to complete the task.
 
+## Sensitive evidence
+
+Keep credentials, certificate contents/identities, actual private trust paths,
+sensitive environment values and private-target details out of tracked artifacts,
+commit messages and ordinary diagnostics. Repository-associated local handoff
+storage is not permission to retain secrets. Do not reproduce scanner-triggering
+material in a fix rationale. Security exceptions remain narrowly scoped and
+separately authorized; follow [the security/publication gate](maintenance/pre-push-checks.md).
+
 ## Testing and Context Efficiency
 
 Optimize for correctness with low-context execution.
@@ -359,7 +390,8 @@ When explicitly instructed to execute an approved SDD phase autonomously:
 - Continue to the next dependency-ready task in the same phase.
 - Run the full deterministic suite at the phase boundary.
 - Run `git diff --check`.
-- Confirm the working tree is clean after the final authorized commit.
+- Confirm authorized work is committed and any unrelated starting changes are
+  preserved after the final authorized commit; report that final tree state.
 - Stop before beginning the next phase.
 - Do not push.
 

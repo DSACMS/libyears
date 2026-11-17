@@ -44,6 +44,8 @@ reading. Post-run `/status` is recommended, not mandatory; pre-run `/status`
 is not routinely required. When the running agent cannot reliably introspect
 model or effort, use directly observed harness evidence. Missing fields remain
 preferable to invented values.
+Do not infer model identity from an agent's self-description or a requested child
+configuration; record supplied or actually exposed telemetry and its provenance.
 
 When enriching a handoff, preserve its factual notes and confounding classifications;
 identify human-supplied additions without implying the running agent observed
@@ -61,6 +63,16 @@ counts as intervening work even without its own substantive ledger row. Boundary
 readings are account-level continuity observations, not exact per-run billing
 receipts. Do not derive or store a credit delta in the canonical ledger merely
 because both boundaries exist.
+
+A supplied no-intervening-Codex-work confirmation for a sequential run series
+remains applicable to its subsequent boundaries unless the human reports an
+exception or retained evidence establishes intervening work. Do not demand renewed
+confirmation each run. Still require a supported immediately preceding reading;
+do not skip an unobserved intervening boundary or invent missing readings. Preserve
+account resets, maintenance activity and changed readings as qualifications, not
+child-level cost allocations. Never silently enrich earlier rows with newly
+assumed metadata; only explicitly authorized, documented corrections may change
+prior bytes or recorded provenance.
 
 The canonical ledger stores observations, not derived analytics. Derive elapsed
 wall-clock duration, credit delta, cost per run, words per second, or findings per
@@ -220,6 +232,8 @@ Git metadata cleanup can remove its local state; copy unreconciled evidence befo
 intentionally removing that checkout. No `.gitignore` entry is needed. Running from
 a nested directory requires addressing the helper by its repository-relative or
 absolute script path; Git still identifies the same checkout.
+This local working storage is not canonical history, a backup or permission to
+retain secrets; apply [sensitive-evidence exclusions](../AGENTS.md#sensitive-evidence).
 Bare repositories refuse. A custom Git directory placed inside the working tree
 outside a reserved `.git` component also refuses: Git can expose that metadata as
 untracked content, so it cannot provide the required exclusion by construction.
@@ -238,6 +252,12 @@ bytes to a sibling temporary file, flushes/fsyncs/closes it, then atomically rep
 fsync the parent directory or promise power-loss recovery; concurrent writers are
 not coordinated. Keep one writer per run ID. These are local working files, not a
 database or global service. Retain them for the authorized next recorder.
+Use the existing `notes` field for the
+[workflow's recovery contents](../SDD_WORKFLOW.md#context-recovery-and-resource-boundaries)
+before a context/resource boundary; this adds no schema fields or numbered
+clerical-only runs. Allocate substantive run identities from the existing sequence,
+checking the ledger and actual local handoffs for occupied IDs rather than inventing
+a new naming scheme or claiming an unobserved run.
 
 For a specifically authorized existing baton migration only:
 
@@ -276,9 +296,10 @@ Use `experiment_id` and `comparison_group` only for deliberately comparative run
 
 ## Publication hygiene
 
-Do not record personal absolute paths, local checkout topology, organizational
-trust identifiers, sensitive environment-specific details, temporary remediation
-paths, credentials, or session secrets. A Codex `session_id` is observational
+Apply [universal sensitive-evidence exclusions](../AGENTS.md#sensitive-evidence).
+Additionally, do not record personal absolute paths, local checkout topology,
+organizational trust identifiers, sensitive environment-specific details or
+temporary remediation paths. A Codex `session_id` is observational
 provenance, not a credential; do not attach unrelated account/user identifiers.
 Keep environment and intervention notes concise and suitable for publication.
 

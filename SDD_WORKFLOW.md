@@ -9,7 +9,7 @@ not authorize a feature, stage, external action or exception by itself.
 | Source | Responsibility |
 |---|---|
 | [AGENTS.md](AGENTS.md) | Fundamental repository and product rules, engineering boundaries and Git discipline. |
-| [AGENT_ROUTING.md](AGENT_ROUTING.md) | Provisional task, model, effort and decomposition guidance. |
+| [AGENT_ROUTING.md](AGENT_ROUTING.md) | Delegation, actor responsibilities and review isolation; provisional routing guidance. |
 | This document | Lifecycle, review, authority and handoff mechanics. |
 | [observations/README.md](observations/README.md) | Observation schema, recording rules and provenance protocol. |
 | `specs/NNN-*/` | Feature-specific decisions, approved contracts, review history and verification evidence. |
@@ -77,6 +77,20 @@ external-target access or package-manager/target execution, push/release/publica
 or a gate explicitly designated HUMAN by durable authority. Required evidence
 and mandatory task predecessors still apply.
 
+Distinguish product decisions, external access/disclosure, local editing, local
+commits and publication grants. Terminal approval supplies technical permission,
+not missing substantive authority. Within an existing explicit grant, continue
+dependency-ready work through task-number changes, context compaction, session
+restart and determined technical corrections; none alone requires renewed human
+permission. Recover and check the grant and current evidence first. A narrow past
+exception does not broaden the present scope. Stop for contradictory authority,
+necessary access that is unavailable, consequential unresolved decisions or unsafe
+evidence gaps, rather than routine choices already covered by approved contracts.
+
+A bookkeeping gap is not automatically a product-work blocker. Preserve it as a
+gap and continue independently authorized work that does not depend on the missing
+evidence. Missing necessary authority or safety evidence still blocks dependent work.
+
 ## Publication actors and delegation
 
 By default, the agent prepares, verifies and commits locally; the human executes
@@ -107,16 +121,16 @@ authorized real validation target, as well as any explicit expert options used
 in validation. Classify surprises against the contract before changing behavior.
 Target access/execution and publication still require their own authority.
 
-Before an authorized push expected to satisfy hosted checks, run the locally
-reproducible relevant equivalents on the committed candidate. Use the
-[pre-push checklist](maintenance/pre-push-checks.md), including GitLeaks HISTORY
-scanning with the actual repository configuration. A clean current checkout is
-not a clean history. Keep local results distinct from actual hosted evidence.
-After authorized publication, observe required CI/security platforms and classify
-and correct discrepancies before claiming operational closure. Without publication
-or platform evidence, report that remaining gate; preserve the historical
-convergence result. This adds no release authority or mandatory optional smoke
-predecessor to an existing approved task graph.
+Use the [pre-push checklist](maintenance/pre-push-checks.md) for committed-candidate
+checks, actual remote-ref verification and hosted follow-up; it grants no release
+authority or mandatory optional-smoke predecessor to an existing task graph.
+
+Distinguish implemented, locally tested, simulated, independently reviewed,
+published and hosted-observed results. Report actual commands/results and meaningful
+skips, never unexecuted checks as passed. Contract convergence and usefulness of the
+ordinary user journey are separate questions; preserve both without promising
+measured yield. Pending required hosted evidence prevents operational closure of
+that claim, but does not automatically block unrelated authorized local work.
 
 Semantic/composition tests should state their assumed input availability and use
 existing injected reader/evidence seams when safe host primitives are not the
@@ -135,14 +149,9 @@ version with a commit or digest and preserve the reviewed bytes and baseline.
 Keep later approval dispositions in the review record so the candidate remains
 inspectable without an approval-only edit.
 
-Use fresh non-author reviewer contexts where available. Give reviewers the
-question, authority, frozen candidate, evidence locations and completion
-obligations. Include verbatim exceptional authority preconditions and STOP conditions
-when compliance with them is part of the review; an artifact summary can omit a
-controlling restriction (Feature 006, run 006-0014). They inspect authority and
-evidence directly rather than relying on an author's summary. Recover truncated reads before claiming coverage.
-Do not share current sibling conclusions before reviewers complete their work.
-Retained historical reviews remain available as historical evidence.
+Use [routing's review roles and isolation](AGENT_ROUTING.md#review-roles-and-isolation)
+to commission execution of the frozen review. Retained historical reviews remain
+available as historical evidence; an author's self-audit is not the independent gate.
 
 The parent validates material findings against the underlying evidence and
 reconciles coverage, omissions, overlaps and cross-boundary behavior after
@@ -190,6 +199,22 @@ substantive stage. Authorized orchestration can also collect review reports
 internally. Do not combine stages across an unresolved human decision merely
 to reduce coordination.
 
+## Context recovery and resource boundaries
+
+Recover authority, candidate identity and next work from canonical artifacts and
+actual staged/unstaged/untracked Git state, not chat recollection alone. Before an
+impending context/resource boundary, save completed work, unresolved findings,
+candidate commit/digests, current authority, next dependency-ready task and exact
+stopping reason through the durable observation handoff's existing `notes` field.
+Commit completed work only when authorized; preserve unrelated state under
+[AGENTS Git discipline](AGENTS.md#git--scope-discipline).
+
+Compaction is neither proof of lost authority nor a fresh independent review.
+Restart is not itself a new product gate. Do not invent numerical context thresholds
+or claim remaining-context telemetry that the harness does not expose. An explicit
+missing-evidence gap remains a gap; do not reconstruct original bytes or observations
+from a plausible summary.
+
 ## Observation baton
 
 Follow [observations/README.md](observations/README.md) for the schema and exact
@@ -198,26 +223,11 @@ The normal baton is:
 
 `substantive run -> write Git-directory local handoff before final report -> human /status -> next substantive run records prior handoff plus authorized status enrichment -> next work proceeds`
 
-Use `python tools/observation_handoff.py directory` from the checkout root to locate
-`<resolved-git-dir>/libyears-harness/observations/`; the helper handles `.git` files
-and linked worktrees. Use its atomic `write` command as documented in
-[the observation protocol](observations/README.md#local-handoff-and-authorized-append).
-This reboot-persistent local working state is noncanonical and untracked by
-construction; `/tmp` is for recreatable scratch, not the sole cross-session baton.
-The commissioning prompt determines recording authority. Verify keys and run
-identity before reporting. Before appending,
-check for an existing row; verify it rather than duplicating it. Preserve earlier
-bytes and all handoff fields except explicitly authorized enrichment, including
-runtime notes and confounding classifications. Canonical reconciliation still goes
-to `observations/agent-runs.csv`. Do not reconstruct missing observations from memory
-or rewrite historical temporary-path references.
-
-Children do not receive ledger rows; they are orchestration within the parent
-observation. Do not invent unavailable child model, effort or resource telemetry
-from requested settings or the parent's identity. Account-credit continuity is
-provenance, not exact per-run billing; do not derive or store a canonical credit
-delta. Runtime-confounded observations are not active-compute measurements.
-Clerical-only recorder runs are normally unnecessary when the next substantive
+The [observation protocol](observations/README.md#local-handoff-and-authorized-append)
+owns the supported helper commands, resolved-Git-directory location, noncanonical
+local storage, provenance, continuity, reconciliation and missing-baton rules.
+The commissioning prompt supplies recording authority and available telemetry;
+do not require a separate clerical-only run when the next authorized substantive
 run can safely record the prior baton.
 
 ## Commit boundaries and reporting
@@ -233,10 +243,12 @@ A normal final report briefly covers the following applicable categories:
 - Status/run and artifact or result.
 - Authority decisions and review findings or remaining limitations.
 - Verification actually performed.
-- Local commit and working-tree state.
+- Local commit and working-tree state, including any preserved dirty baseline.
 - Next gate and observation handoff.
 
-Add feature- or stage-specific facts naturally. Avoid giant repeated templates;
+Include disposition, changed scope, verification, durable handoff location,
+publication status and exact remaining gate; do not make the human relay sibling
+reports. Add feature- or stage-specific facts naturally. Avoid giant repeated templates;
 never imply a proposed witness ran or a gate was approved when it was not.
 
 ## Prompt design
@@ -255,6 +267,36 @@ observation procedure or standard final-report shape. Materialize any exact
 normative input that is otherwise unavailable; a summary cannot replace it.
 Brevity is not itself a goal. Complex new authority can require a longer prompt;
 human readability, inspectability and auditability govern the amount of detail.
+
+A prompt may grant bounded public-reference retrieval for an approved task family
+by naming that family, allowed public sources/domains, whether linked references
+are included, permitted read operations, disclosure limits and stopping boundaries.
+Follow references within that explicit grant without requesting approval per link.
+The mechanism is not standing network permission: linked pages do not authorize
+target access, private sources, credentials or other operations outside the grant.
+
+Keep ordinary invocations short by referencing these owners. Longer prompts need
+a concrete new authority/evidence reason, not an assumption that length creates
+rigor. Do not claim reduced prompt/attention cost or generality without evidence.
+Human-facing commands must match the actual supported interface.
+
+When requesting macOS terminal output, group the entire requested sequence before
+`tee /dev/tty | pbcopy`, combine dependent checks with `&&`, and enable pipeline
+failure propagation in the enclosing shell. For example (Bash or zsh):
+
+```sh
+(
+  set -o pipefail
+  (
+    git status --short &&
+    git diff --check
+  ) 2>&1 | tee /dev/tty | pbcopy
+)
+```
+
+Do not add a final successful `echo` that replaces a failed status, or let clipboard
+pipeline success conceal a failed check. This example grants no new command access;
+only request output permitted by the task's privacy and scope boundaries.
 
 ## Evidence basis and limits
 
