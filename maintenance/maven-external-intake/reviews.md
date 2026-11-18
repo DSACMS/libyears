@@ -74,3 +74,42 @@ fixture covers JSON/ordinary/verbose. Retained actual CLI replay on verified con
 snapshots gives 42→49 scope-ready and 40→41 measured occurrences; this is retained
 worker-result replay, not fresh network. Full preservation/yield audit follows T3.
 T2 complete; T3 dependency ready. Hosted matrix evidence remains unobserved.
+
+## T3 admission/security and usefulness convergence
+
+Fresh non-author final admission/security/convergence review at runtime commit
+`f25cb7e0500de7fe738a94b7f5d7d581b90bf2ce`: COMPLETE/APPROVE, no material finding.
+Actual strict acquisition/decoder, proof/applicability, per-occurrence policy,
+worker boundary and additive privacy semantics inspected. Independent 167 focused
+tests and seven isolation/role/order/policy probes pass. Two preliminary reviewer
+command mistakes were corrected; they are not product failures. No target/trust/
+network access or edits by reviewers.
+
+Final result freeze SHA256 `63ee8857ff27adc0d68a6691f04bbf8b9c6b4cd64143d1a8cccb19df6c65415d`
+binds final minimal envelope, captures, private procedures and validation.md.
+The prior freeze/procedure bytes are retained; the only procedure correction makes
+artifact paths relative to the procedure's own durable directory. Captures and
+results are unchanged. Final accepted envelope has four required exact-role
+parent/BOM documents and five byte-bound consumer grants for seven keys. Initial
+all-corpus preparation pilot is separately retained; final runs use the minimal
+envelope and do not accept unrelated documents or expand occurrence authority.
+
+Fresh non-author result-usefulness/convergence review: COMPLETE/APPROVE, no finding.
+Reviewer independently checks every freeze, reproduces original proof and final
+prepare/replay/result-verification entirely in memory with attempted writes checked
+against frozen bytes, reconciles 127 rows, 42→49 scopes, replay40→41/live40→47 ages,
+32 controls/39 versions/42 safe facts/40 previous ages, exact totals, integrity,
+formats, four-document roles, grant scope and documentation links. Parent validates.
+Seven attributable conditional measurements are useful, without promising complete
+population, upgrade safety or more recovery. No product correctness finding remains.
+
+Final JSON/ordinary/verbose candidate scans exit0, empty CLI stderr; recorded public
+target before/after revision/status/index/input/entry identities are equal. Exact
+approved private trust-copy safety/TLS load and unchanged read identity pass.
+No new management POM acquisition, target modification/execution or trust search.
+Full/missing-capability/real-worker checks remain as recorded at T2; no runtime
+changes after that boundary. Current-content configured GitLeaks8.30.1 passes with
+zero findings; committed runtime history gate passes on375 commits. Final committed
+history gate/count, exact final Git boundary, clean-tree state and durable helper
+handoff validation are recorded in local completion evidence after the T3 commit.
+Hosted matrix is not run or claimed. No push, tag or release.

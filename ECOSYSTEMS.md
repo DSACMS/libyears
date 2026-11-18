@@ -1007,8 +1007,16 @@ Supported local parents merge raw dependency fields, with child-written values
 winning and origins retained. Consumer-context literal properties and bounded
 builtins can establish requests. Supported management supplies absent fields;
 optional is never managed and scope defaults wait until absence is established.
-BOM contents are never fetched or read, even when local. Unknown imports may leave
-versions/scopes unavailable; independent explicit facts survive. Profiles are
+Ordinary scans do not fetch or read BOM contents. The explicit
+[`--maven-management FILE` intake](maintenance/maven-external-intake/README.md)
+accepts byte-bound external parent/BOM representations for listed consumer keys
+and can fill restricted missing scopes using pinned whole-entry dominance and
+ordered imports. It preserves local field-inheritance behavior, existing versions,
+unknown populations and independent comparator policy. Accepted applicability is
+a conditional static claim, with additive scope basis/limitations; it establishes
+neither a successful complete model/build nor historical or Observed selection.
+External-parent repository declarations conservatively withhold comparison.
+Unknown imports may leave versions/scopes unavailable; independent explicit facts survive. Profiles are
 considered as possible changes, with no host activation/evaluation.
 
 An exact bare request or supported hard singleton can provide a Declared version;

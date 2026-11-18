@@ -50,6 +50,12 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Accept explicitly supplied, byte-bound Maven parent/BOM documents through
+  `--maven-management FILE` to establish restricted missing Declared scope facts.
+  Disclose the conditional static basis and preserve existing versions, unknown
+  coverage, independent Observed and public-comparison policy. No automatic
+  model acquisition or build-tool execution is introduced.
+
 - Automatically report independent Maven Declared / Observed dependency-age views
   for bounded directory POMs. Measure supported static requests using explicitly
   conventional versioned-POM Last-Modified dates; keep Observed unavailable without

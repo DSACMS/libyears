@@ -485,17 +485,19 @@ and historical measurements/limitations remain unchanged. Correct refusal does n
 establish sufficient real-world coverage. This closes the scope-default diagnosis,
 not the usefulness question or a new capability gate.
 
-#### External-management evidence intake — unselected follow-up
+#### External-management evidence intake — restricted route selected
 
-**State: EXPLORE; pinned semantics investigated (007-0037), product intake
-unselected.** This extends opportunity 11. The [consumer audit](discovery/maven-consumer-context-audit.md)
-and [composition investigation](discovery/maven-composition-semantics.md), with
-[independent review](discovery/maven-composition-semantics-review.md), distinguish
-seven conditional static compile conclusions from 32 unresolved controls and zero
-unqualified historical/evaluated scope claims. All 39 exact versions and 42 safe
-facts are preserved. No extra POM is needed for this seven-key proof; no production
-admission, acquisition, specification, plan, tasks or implementation is selected.
-Feature 007 remains complete under its [current contract](specs/007-maven-dependency-age/spec.md).
+**State: IMPLEMENTED; restricted explicitly accepted static intake (007-0038).**
+The human selected the conditional field claim established by the reviewed
+[composition investigation](discovery/maven-composition-semantics.md). The bounded
+[contract](maintenance/maven-external-intake/spec.md),
+[usage](maintenance/maven-external-intake/README.md) and
+[yield witness](maintenance/maven-external-intake/validation.md) distinguish scope
+admission from age measurement. Seven conditional fields are supported; 32 controls,
+39 exact versions, 42 previous safe facts and unknown complete population survive.
+No automatic acquisition or broader evaluator was selected. The alternatives and
+research conditions below remain historical prospective context, not additional
+implementation or acquisition authority.
 
 **User outcome:** Recover attributable missing Declared management facts where
 supported. The 39 AB2D refusals motivate investigation, not a promise of 39 new
@@ -579,13 +581,11 @@ report actual additional supported facts and measured yield separately, and reta
 all refusals/unknowns. Test supplied-only operation first; validate public retrieval
 only if that route is later selected. No live run is authorized here.
 
-**Next consequential gate (007-0037):** Human selection of a restricted explicitly
-accepted static-model intake claim permitting key-dominance field proofs without
-complete Maven model validity, or deferral/another separately selected evidence
-basis. The investigation is sufficient to propose that bounded specification;
-it does not adopt the claim. Future work must explicitly preserve current local
-S3 authority and specify the external keyed-list collision boundary. No automatic
-further POM acquisition or generic resolver is justified by the seven-field result.
+**007-0038 disposition:** The restricted claim is selected and implemented through
+fresh internal specification, plan/task, implementation and convergence gates.
+Further scope beyond this finite intake, acquisition or Observed evidence needs
+separate authority. Current local S3 semantics and the external collision boundary
+remain explicit. No further POM acquisition or general resolver is authorized.
 
 **Stop condition:** Useful scope requires implicit model applicability, private or
 unknown-source retrieval, target/build/resolver execution, unsupported evaluation,

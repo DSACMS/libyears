@@ -94,7 +94,10 @@ its conventional POM modification-time basis. Declared covers supported static
 requests; Observed remains unavailable without an accepted retained-selection reader.
 Partial totals cover measured occurrences only. `--resolved` supplies Python only.
 See [Maven scope, evidence and limitations](ECOSYSTEMS.md#maven); this capability is
-unreleased.
+unreleased. Explicitly accepted, byte-bound external parent/BOM evidence can fill
+restricted missing Declared scopes using `--maven-management FILE`; see the
+[intake format and limits](maintenance/maven-external-intake/README.md). No models
+are acquired automatically, and scope evidence grants no public lookup permission.
 
 ## Common usage
 

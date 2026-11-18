@@ -12,7 +12,7 @@ implementation, validation and local commits; no push/tag/release.
   integration tests. Depends T1 approval. C4/C6; A3/A4. Verify ordinary no-option
   regressions, actual CLI route, existing policy refusal and unavailable Observed.
   Full deterministic/capability-disabled/real-worker checks at integration boundary.
-- [ ] T3: Retained AB2D executable baseline/candidate scope and age yield witness,
+- [x] T3: Retained AB2D executable baseline/candidate scope and age yield witness,
   independent admission/security/usefulness/convergence review, final documentation,
   changelog/checkpoint and durable handoff. Depends T2. A1/A2/A4–A6. Verify hashes
   before evidence use, capture target integrity around authorized reads, distinguish
