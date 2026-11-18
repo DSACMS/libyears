@@ -142,6 +142,17 @@ def maven_human_lines(report, *, verbose=False):
     return _maven_data_human_lines(maven_to_dict(report), verbose=verbose)
 
 
+def _table_identity_cells(key):
+    """Keep model-key distinctions and escape before calculating cell widths."""
+    dependency = key['group_id'] + ':' + key['artifact_id']
+    if key['type'] != 'jar':
+        dependency += f" type={key['type']}"
+    if key['classifier'] is not None:
+        dependency += f" classifier={key['classifier']}"
+    return [json.dumps(key['source_id'], ensure_ascii=True),
+            json.dumps(dependency, ensure_ascii=True)[1:-1]]
+
+
 def _declared_measurement_table(occurrences):
     """Pad already rendered cells; keep each measured consumer occurrence."""
     headers = ['MODULE', 'DEPENDENCY', 'DECLARED', 'LATEST', 'LIBYEARS']
@@ -150,16 +161,8 @@ def _declared_measurement_table(occurrences):
         fact = occurrence['declared']
         if fact is None or fact['age'] is None:
             continue
-        key = occurrence['key']
-        dependency = key['group_id'] + ':' + key['artifact_id']
-        if key['type'] != 'jar':
-            dependency += f" type={key['type']}"
-        if key['classifier'] is not None:
-            dependency += f" classifier={key['classifier']}"
-        # Module quoting matches the existing paired renderer. Escape every
-        # textual cell before measuring widths, including prospective model data.
-        cells = [json.dumps(key['source_id'], ensure_ascii=True)]
-        for value in (dependency, fact['version'], fact['age']['comparison_version']):
+        cells = _table_identity_cells(occurrence['key'])
+        for value in (fact['version'], fact['age']['comparison_version']):
             cells.append(json.dumps(value, ensure_ascii=True)[1:-1])
         rows.append([*cells, _number(fact['age']['libyears'])])
     if not rows:
@@ -174,6 +177,36 @@ def _declared_measurement_table(occurrences):
         padded.append(cells[-1].rjust(widths[-1]))
         lines.append('  '.join(padded))
     return ['', *lines]
+
+
+def _declared_unmeasurable_table(occurrences):
+    """Show each retained failure without asserting a complete population."""
+    headers = ['MODULE', 'DEPENDENCY', 'DECLARED', 'REASON']
+    rows = []
+    for occurrence in occurrences:
+        fact = occurrence['declared']
+        if fact is None or fact['age'] is not None:
+            continue
+        if fact['version'] is not None:
+            declared = 'version: ' + fact['version']
+        elif fact.get('request') is not None:
+            declared = 'request: ' + fact['request']
+        else:
+            declared = 'unavailable'
+        reason = _REASON_TEXT.get(fact['reason'], 'unavailable age')
+        cells = _table_identity_cells(occurrence['key'])
+        cells.extend(json.dumps(value, ensure_ascii=True)[1:-1] for value in (declared, reason))
+        rows.append(cells)
+    if not rows:
+        return []
+    widths = [len(header) for header in headers]
+    for cells in rows:
+        for index, cell in enumerate(cells):
+            widths[index] = max(widths[index], len(cell))
+    lines = []
+    for cells in [headers, *rows]:
+        lines.append('  '.join(cell.ljust(widths[index]) for index, cell in enumerate(cells)).rstrip())
+    return ['', 'Unmeasurable', *lines]
 
 
 def _maven_data_human_lines(data, *, verbose=False):
@@ -249,6 +282,8 @@ def _maven_data_human_lines(data, *, verbose=False):
         lines.append(identity + ' | Declared: ' + facts[0] + ' | Observed: ' + facts[1])
     if declared_table:
         lines.extend(_declared_measurement_table(data['occurrences']))
+    if not verbose:
+        lines.extend(_declared_unmeasurable_table(data['occurrences']))
     for (view, reason), count in sorted(refused.items(), key=lambda item: (item[0][0], item[0][1] or '')):
         lines.append(f"  {view.title()} unmeasurable: {count} — " + _REASON_TEXT.get(reason, 'unavailable age'))
     if not verbose:

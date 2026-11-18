@@ -138,7 +138,7 @@ class PresentationTests(unittest.TestCase):
         self.assertIn('Observed: unavailable', normal)
         self.assertIn('Declared unmeasurable: 1', normal)
         self.assertIn('g:a', normal)
-        self.assertNotIn('g:b', normal)
+        self.assertIn('g:b', normal)
         self.assertIn('g:b', verbose)
         self.assertIn('comparison_version_pom_last_modified', verbose)
         self.assertIsNone(report.summary.coverage)
@@ -271,7 +271,9 @@ class RetainedJavaJourneyTests(unittest.TestCase):
                 self.assertIn('Discovery incomplete', normal)
                 self.assertEqual(data['views']['declared']['summary']['dependencies_measured'], measured)
                 self.assertIsNone(data['views']['declared']['summary']['coverage'])
-                self.assertLess(len(normal), len(verbose) / 2)
+                self.assertEqual(sum(line.startswith('"') for line in normal.splitlines()),
+                                 len(data['occurrences']))
+                self.assertNotIn('version_basis:', normal)
                 self.assertIn('static local base-model requests', verbose)
                 self.assertEqual(json.dumps(data, sort_keys=True), original)
                 if measured:

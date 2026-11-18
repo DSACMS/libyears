@@ -6,6 +6,10 @@ Notable changes to Libyears are documented here.
 
 ### Fixed
 
+- Keep every retained unmeasurable Maven Declared occurrence individually visible
+  in ordinary output, with module-qualified identity, labeled version/request
+  evidence and its specific refusal reason; retain unknown population and coverage.
+
 - Align ordinary Maven Declared measurements in a module-qualified table with
   accepted latest versions and three-decimal ages, retaining repeated occurrences,
   nondefault artifact identities, paired Observed rendering and full verbose evidence.

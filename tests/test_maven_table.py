@@ -45,7 +45,7 @@ def table(lines):
     start = next(i for i, line in enumerate(lines) if line.startswith('MODULE  '))
     result = []
     for line in lines[start:]:
-        if line.startswith(('  Declared unmeasurable:', '  Observed unmeasurable:',
+        if not line or line == 'Unmeasurable' or line.startswith(('  Declared unmeasurable:', '  Observed unmeasurable:',
                             'Declared: static', 'Central correspondence')):
             break
         result.append(line)
@@ -117,7 +117,8 @@ class MavenOrdinaryTableTests(unittest.TestCase):
         self.assertIn('Declared: unavailable', '\n'.join(unavailable))
         failed = [occurrence('pom.xml', 'first'), occurrence('pom.xml', 'second')]
         all_failed = maven_human_lines(report_for(failed))
-        self.assertFalse(any(line.startswith('MODULE  ') for line in all_failed))
+        self.assertFalse(any(line.startswith('MODULE  ') and 'LIBYEARS' in line for line in all_failed))
+        self.assertIn('Unmeasurable', all_failed)
         self.assertIn('Declared unmeasurable: 2', '\n'.join(all_failed))
         self.assertIn('No declared ages measured;', '\n'.join(all_failed))
         partial = maven_human_lines(report_for([*failed, measured(value=0.0)], population_known=False, complete=False))
