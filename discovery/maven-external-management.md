@@ -208,3 +208,8 @@ specification, implementation, live validation and push.
 
 Independent review and actual checks are recorded in the
 [separate review](maven-external-management-review.md).
+
+Follow-up: [007-0035 bounded acquisition and offline feasibility](maven-external-management-feasibility.md)
+acquires 64 models but reaches incomplete closure; no new scope fact is established.
+Its [review](maven-external-management-feasibility-review.md) governs that experiment's
+disposition, without adopting production intake.
