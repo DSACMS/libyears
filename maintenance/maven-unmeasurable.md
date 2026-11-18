@@ -107,3 +107,31 @@ retained in local completion evidence; hosted results remain unobserved.
 
 Presentation has converged. The next-yield recommendation is a separate offline
 handoff below; it grants no new capability, acquisition or live authority.
+
+## Next-yield handoff and final disposition
+
+After presentation convergence, the append-only [current yield recommendation](maven-yield-audit.md)
+selects seven scope-ready spring-boot-starter-test occurrences as a first proposed
+version-intake witness, not recovered versions or ages. Its finite retained raw-site
+inventory uses existing consumer/root snapshots and accepted parent representations
+only; no acquisition or next capability is implemented. Human authorization of a
+bounded C4/version-evidence correction is the next gate, then specification/review
+before implementation. Any live age validation requires a separate explicit grant.
+
+Yield freeze SHA256
+`d05860012aef3a07a0fab48fd128b15178c8dc37daf677bf5c21f9118f3e7ea1`
+binds the appended recommendation, unchanged historical prefix, raw-site procedure
+and results. Exact yield-frozen-v1 bytes are retained. Fresh non-author review:
+**COMPLETE / APPROVE, no material findings**. Reviewer verifies all four bindings,
+original prefix and exact in-memory reproduction, independently inspects the seven
+ordinary declarations and literal management entry, and validates the ranking,
+current C4 refusal and explicit future authority boundary. No production admission,
+full-model validity, current-target or comparator/date result follows. Parent
+validates; no correction is required. Child configuration/resources unobserved.
+
+Presentation commit225c40d has a clean eight-file boundary and passes configured
+committed-history GitLeaks on378 commits. This subsequent documentation checkpoint
+adds only the next-yield handoff/review, with no runtime changes or extra full-suite
+rerun. Final current-content/history checks, exact two-commit boundary, clean tree
+and helper handoff verification are recorded in durable completion evidence. No
+push, tag, release, next capability or unsupported telemetry inference.

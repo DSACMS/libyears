@@ -188,3 +188,58 @@ Follow-up: [007-0031 scope-evidence diagnosis](maven-scope-evidence.md) traces a
 39 refusals to an unselected scope with a closed management-uncertainty default
 gate. No implementation defect or new measurable occurrence is established;
 original per-row context remains a bounded evidence-capture prerequisite.
+
+## Current next-yield handoff — 007-0040
+
+Presentation has converged at `225c40d`: [individual unmeasurable rows](maven-unmeasurable.md)
+now expose all80 retained failures beside47 measured records (28 zeros), without a
+complete denominator. The historical007-0030 assessment above is preserved, not a
+current40-measurement result. Latest primary input is the authenticated007-0038
+candidate report, also frozen by007-0039; raw total13.40209657895404, unknown
+population/coverage and unavailable Observed. No new measurement occurred.
+
+| Remaining stage | Retained evidence | Next-step implication |
+| --- | --- | --- |
+| 32 model-fact failures | Existing exact versions survive; the reviewed0036/0037 audit leaves these32 exact keys without a proven retained winning-management path | Do not default scope or repeat the completed seven-key proof. Their missing applicable-content/composition questions remain; no particular additional document or recoverable count is established |
+| 46 version failures | 25 already have scope (13 test,8 provided,3 runtime,1 compile);21 also lack scope.43 have no retained request;3 retain property expressions | Prefer a finite, scope-ready version witness over promising the entire bucket. A missing serialized request alone does not prove an absent declaration |
+| 2 catalogue failures | gov.cms.ab2d:ab2d-filters3.2.6 in coverage and e2e-test | Fixed failure does not retain transport/HTTP/content subcause; recoverability is unknown. A diagnostic-only correction or separately authorized exact live classification could inform it, but cannot promise age yield |
+| Unknown discovery/population | Retained127 rows are a safe partial slice | No coverage denominator or complete inventory follows from repairing row fields |
+| Observed unavailable | No accepted retained-selection reader | Separate evidence/reader product work; not a shortcut to Declared yield |
+
+**Recommend a bounded version-intake correction, first witnessed by seven existing
+org.springframework.boot:spring-boot-starter-test / jar / absent-classifier rows**:
+api, common, coverage, e2e-bfd-test, e2e-test, job and worker (`/pom.xml` in each).
+These are different occurrences from the seven scope recoveries in007-0038.
+
+A narrow raw-site inventory after presentation convergence verifies retained
+consumer/root bytes, literal parent associations through Boot starter parent4.1.1
+to Boot dependencies4.1.1, one ordinary declaration per consumer with absent
+version and scope=test, no nearer same-key management entry, and no same-key
+profile dependency/management record in that inspected chain. The already retained
+Boot dependencies document has one exact-key management entry with **literal
+version4.1.1**. Thus this witness needs neither new document acquisition nor scalar
+property evaluation, and it avoids adding a scope-default proof. This is a finite
+inventory motivating the proposal, not production admission, complete model
+validity, historical resolution, current-target correspondence or age evidence.
+
+[Current intake C4](maven-external-intake/spec.md#contract) intentionally accepts
+only missing scope on already exact-version, unsupported-model rows. The seven
+version-refused rows are ineligible today. Existing authority does **not** permit
+removing that guard or implementing this next capability. The smallest next human
+gate is authorization of a bounded C4/version-evidence correction: explicitly
+accepted, byte/context/key-bound management may supply an absent ordinary Declared
+version under the pinned static rules, using these seven as the first witness.
+Then specify/review the field eligibility, explicit-version precedence, ordinary
+collision limits, consumer bindings, provenance/limitations, refusal controls and
+integration with existing comparator/date policy before implementation. Keep all
+other row/population/Observed authority unchanged. Coverage and worker budgets must
+not be relaxed. Future live age validation needs its own explicit grant.
+
+The retained literal candidate and already-known scope make this a better-supported
+starting slice than an unranked32-key content closure or all46 version gaps. It does
+not rank every alternative, promise seven admitted versions/ages, or authorize
+anything beyond this recommendation. Production versions admitted/new ages in this
+run: **0/0**. `D/007-0040/next-yield-check.py` and `next-yield-evidence.json` retain
+exact raw sites/bindings and the finite inventory; the original artifact prefix,
+report, model bytes and existing intake are unchanged. No completed composition
+investigation is rerun and no broader evaluator is proposed.
