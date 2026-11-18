@@ -1079,8 +1079,12 @@ is separate freshness evidence, never a version date.
 
 For positively relevant Maven sources, normal output shows **Conventional Maven
 dependency age**, paired Declared / Observed summaries and **Time basis: Maven conventional (versioned public POM
-Last-Modified)**. Ordinary output lists measured rows and groups repeated per-view
-refusal reasons; verbose retains every attributable request/occurrence, including
+Last-Modified)**. When no Observed records are present, ordinary output aligns
+measured Declared occurrences in `MODULE`, `DEPENDENCY`, `DECLARED`, `LATEST`,
+`LIBYEARS` columns, retaining module repetitions and three-decimal ages. Nondefault
+types and present classifiers remain visible. Prospective Observed-only/paired
+records retain their independent paired rendering. Ordinary output groups repeated
+per-view refusal reasons; verbose retains every attributable request/occurrence, including
 unsupported ones. Relevant partial/unavailable states and unknown coverage remain
 explicit. Verbose adds exact date/freshness/basis/origin/limitation details
 without raw XML/headers/source URLs/credentials/absolute roots. Unsafe unsupported
