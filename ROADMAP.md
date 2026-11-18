@@ -487,15 +487,15 @@ not the usefulness question or a new capability gate.
 
 #### External-management evidence intake — unselected follow-up
 
-**State: EXPLORE; experimental feasibility completed (007-0035), product intake
-unselected.** This extends opportunity 11. The [discovery](discovery/maven-external-management.md)
-and [bounded acquisition/feasibility](discovery/maven-external-management-feasibility.md)
-with [independent review](discovery/maven-external-management-feasibility-review.md)
-retain incomplete closure after 64 documents: zero new scopes, 39 existing exact
-versions and all 42 scope-ready keys preserved. Needs further technical evidence
-before intake specification; no production acquisition/admission, plan, tasks or
-implementation selected. Existing Feature 007 remains complete under its current
-[contract](specs/007-maven-dependency-age/spec.md).
+**State: EXPLORE; offline relevance audit completed (007-0036), product intake
+unselected.** This extends opportunity 11. The [feasibility record](discovery/maven-external-management-feasibility.md)
+and [consumer-context audit](discovery/maven-consumer-context-audit.md), with its
+[independent review](discovery/maven-consumer-context-audit-review.md), retain zero
+established scopes, 39 exact versions and all 42 scope-ready facts. Five inherited
+and two imported matching candidates need composition evidence first; 32 lack
+matching retained candidates. No intake specification, production acquisition,
+admission change, plan, tasks or implementation is selected. Feature 007 remains
+complete under its current [contract](specs/007-maven-dependency-age/spec.md).
 
 **User outcome:** Recover attributable missing Declared management facts where
 supported. The 39 AB2D refusals motivate investigation, not a promise of 39 new
@@ -579,14 +579,12 @@ report actual additional supported facts and measured yield separately, and reta
 all refusals/unknowns. Test supplied-only operation first; validate public retrieval
 only if that route is later selected. No live run is authorized here.
 
-**Smallest next evidence gate (007-0035):** Consumer-context-first closure
-completion from the frozen corpus, the ten identified additional exact models
-and any newly supported recursive edges within separately bounded authority (or
-supplied bytes), plus narrow pinned composition-source evidence. Details and
-limitations are in the feasibility record; the list is not promised complete.
-No human policy waiver for incomplete closure is proposed. Intake specification
-still waits for useful supported fact recovery; production public acquisition
-would require its own consequential product/disclosure selection.
+**Smallest next evidence gate (007-0036):** Verify pinned import-key dominance and
+external parent/import interpolation sequence before further acquisition. The
+audit maps conditional evidence needs and narrows unrelated flags; the previous
+ten candidate documents are not an established minimal shopping list. More POMs
+alone cannot settle missing semantics. No closure waiver or new product decision
+is needed for technical evidence assessment; intake selection remains deferred.
 
 **Stop condition:** Useful scope requires implicit model applicability, private or
 unknown-source retrieval, target/build/resolver execution, unsupported evaluation,

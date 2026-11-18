@@ -244,3 +244,9 @@ separate product/disclosure choice. This run stops before either selection.
 
 The [independent review record](maven-external-management-feasibility-review.md)
 contains review disposition, observation reconciliation and final checks.
+
+Follow-up: [007-0036 consumer-context relevance audit](maven-consumer-context-audit.md)
+separates exact-key/profile relevance and unverified composition assumptions from
+missing content. It recommends verifying narrow pinned semantics before treating
+the ten candidate documents as an acquisition requirement; this historical
+feasibility result and its frozen evidence remain unchanged.
