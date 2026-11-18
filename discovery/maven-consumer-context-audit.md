@@ -235,3 +235,9 @@ limitations. They discriminate plausible wrong interpretations; they do not prov
 Maven semantics or actual unread contents. Baseline reproduction and all probes
 pass. [Independent review](maven-consumer-context-audit-review.md) records final
 accuracy, preservation, sensitivity and check disposition.
+
+Follow-up: [007-0037 pinned composition semantics](maven-composition-semantics.md)
+establishes seven conditional static compile conclusions from dominance and
+normalization, while preserving 32 unresolved controls and current product behavior.
+Its [review](maven-composition-semantics-review.md) governs that stronger investigation;
+this earlier audit and its frozen evidence remain historical.

@@ -487,15 +487,15 @@ not the usefulness question or a new capability gate.
 
 #### External-management evidence intake — unselected follow-up
 
-**State: EXPLORE; offline relevance audit completed (007-0036), product intake
-unselected.** This extends opportunity 11. The [feasibility record](discovery/maven-external-management-feasibility.md)
-and [consumer-context audit](discovery/maven-consumer-context-audit.md), with its
-[independent review](discovery/maven-consumer-context-audit-review.md), retain zero
-established scopes, 39 exact versions and all 42 scope-ready facts. Five inherited
-and two imported matching candidates need composition evidence first; 32 lack
-matching retained candidates. No intake specification, production acquisition,
-admission change, plan, tasks or implementation is selected. Feature 007 remains
-complete under its current [contract](specs/007-maven-dependency-age/spec.md).
+**State: EXPLORE; pinned semantics investigated (007-0037), product intake
+unselected.** This extends opportunity 11. The [consumer audit](discovery/maven-consumer-context-audit.md)
+and [composition investigation](discovery/maven-composition-semantics.md), with
+[independent review](discovery/maven-composition-semantics-review.md), distinguish
+seven conditional static compile conclusions from 32 unresolved controls and zero
+unqualified historical/evaluated scope claims. All 39 exact versions and 42 safe
+facts are preserved. No extra POM is needed for this seven-key proof; no production
+admission, acquisition, specification, plan, tasks or implementation is selected.
+Feature 007 remains complete under its [current contract](specs/007-maven-dependency-age/spec.md).
 
 **User outcome:** Recover attributable missing Declared management facts where
 supported. The 39 AB2D refusals motivate investigation, not a promise of 39 new
@@ -579,12 +579,13 @@ report actual additional supported facts and measured yield separately, and reta
 all refusals/unknowns. Test supplied-only operation first; validate public retrieval
 only if that route is later selected. No live run is authorized here.
 
-**Smallest next evidence gate (007-0036):** Verify pinned import-key dominance and
-external parent/import interpolation sequence before further acquisition. The
-audit maps conditional evidence needs and narrows unrelated flags; the previous
-ten candidate documents are not an established minimal shopping list. More POMs
-alone cannot settle missing semantics. No closure waiver or new product decision
-is needed for technical evidence assessment; intake selection remains deferred.
+**Next consequential gate (007-0037):** Human selection of a restricted explicitly
+accepted static-model intake claim permitting key-dominance field proofs without
+complete Maven model validity, or deferral/another separately selected evidence
+basis. The investigation is sufficient to propose that bounded specification;
+it does not adopt the claim. Future work must explicitly preserve current local
+S3 authority and specify the external keyed-list collision boundary. No automatic
+further POM acquisition or generic resolver is justified by the seven-field result.
 
 **Stop condition:** Useful scope requires implicit model applicability, private or
 unknown-source retrieval, target/build/resolver execution, unsupported evaluation,
