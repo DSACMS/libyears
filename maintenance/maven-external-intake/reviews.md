@@ -56,3 +56,21 @@ eight independent eligibility probes plus safe sibling success pass. Parent
 focused integration-adjacent set: 110 tests pass; retained seven field proofs pass.
 Input/local semantics unchanged except explicit safe selected-envelope route.
 T1 complete; T2 is dependency ready. No CLI/HTTP claim yet.
+
+## T2 integration checkpoint
+
+Freeze manifest SHA256 `a2fbbda4edf4a9b65c027b7c7fd90c87919dc2eba3d693ffaef5f83e07d94300`
+binds nine implementation/test/usage files in private run evidence. Fresh non-author
+integration/admission/security review COMPLETE/APPROVE; no material finding.
+Reviewer ran 114 focused tests and independent differing-binding same-GA, safe
+sibling, external parent-profile policy, imported-BOM policy, no-option scanner,
+pre-scan rejection, provenance/privacy and Observed probes. Parent validates.
+
+Parent verification: 78 focused CLI/scan/output/intake tests pass; full deterministic
+suite 1134 passes (1 skip). Capability-disabled discovery (`os.supports_dir_fd=set()`
+before discovery) 1134 passes (104 skips), not Windows execution. Dedicated native
+Maven + NuGet worker lifecycle set: 5 pass. Whitespace passes. CLI actual real-reader
+fixture covers JSON/ordinary/verbose. Retained actual CLI replay on verified consumer
+snapshots gives 42→49 scope-ready and 40→41 measured occurrences; this is retained
+worker-result replay, not fresh network. Full preservation/yield audit follows T3.
+T2 complete; T3 dependency ready. Hosted matrix evidence remains unobserved.

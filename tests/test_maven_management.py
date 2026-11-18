@@ -240,3 +240,102 @@ class ManagementEnvelopeTests(unittest.TestCase):
         with patch('libyears.maven_input.filesystem_available', return_value=False):
             with self.assertRaises(MavenManagementRequestError):
                 load_management('accepted.json')
+
+
+class ManagementIntegrationTests(unittest.TestCase):
+    def scan(self, local, ext, *, supplied=None, controls=None):
+        from libyears.maven import scan_maven
+        from test_maven_scan import Reader, Metadata
+        metadata = Metadata()
+        accepted = decode_management(json.dumps(supplied or envelope(local, ext)).encode())
+        report = scan_maven('fixture', management=accepted,
+                            reader_factory=lambda root: Reader(local, controls=controls),
+                            supervisor_factory=metadata)
+        return report, metadata
+
+    def test_scope_admission_measures_only_after_existing_policy(self):
+        from test_maven_policy import repositories, repo
+        from libyears.maven_model import MavenReason
+        local, ext = fixture(parent_body=management(dependency('a', group='g')))
+        report, metadata = self.scan(local, ext)
+        row = report.sources[0].declared.rows[0]
+        self.assertEqual((row.scope, row.management_status, row.declared.age.libyears), ('compile', 'accepted', 1.0))
+        self.assertIsNone(row.observed)
+        self.assertIsNone(report.sources[0].declared.population_count)
+        local, ext = fixture(repositories(repo('central', extra='<releases><enabled>false</enabled></releases>')),
+                             management(dependency('a', group='g')))
+        report, metadata = self.scan(local, ext)
+        row = report.sources[0].declared.rows[0]
+        self.assertEqual(row.scope, 'compile')
+        self.assertEqual(row.declared.reason, MavenReason.COMPARATOR_REFUSED)
+        self.assertEqual(metadata.calls, [])
+
+    def test_external_parent_policy_veto_mints_zero_http_capabilities(self):
+        from libyears.maven_model import MavenReason
+        local, ext = fixture(parent_body='<repositories/>' + management(dependency('a', group='g')))
+        report, metadata = self.scan(local, ext)
+        row = report.sources[0].declared.rows[0]
+        self.assertEqual((row.scope, row.management_status, row.declared.reason),
+                         ('compile', 'accepted', MavenReason.POLICY_UNKNOWN))
+        self.assertEqual(metadata.calls, [])
+
+    def test_refused_scope_keeps_safe_sibling_and_no_same_ga_cache_authority(self):
+        from libyears.maven_model import MavenReason
+        ordinary = dependency('a', '<version>1</version>', group='g') + dependency('safe', '<version>1</version><scope>test</scope>', group='g')
+        local, ext = fixture(management(imported('missing')), ordinary=ordinary)
+        report, metadata = self.scan(local, ext)
+        rows = {r.key.model_key.artifact_id: r for r in report.sources[0].declared.rows}
+        self.assertEqual(rows['a'].management_status, 'refused')
+        self.assertEqual(rows['a'].declared.reason, MavenReason.UNSUPPORTED_MODEL)
+        self.assertIsNotNone(rows['safe'].declared.age)
+        self.assertFalse(any(call[2] == 'a' for call in metadata.calls))
+
+    def test_invalid_envelope_fails_before_scan_and_sanitizes_cli_arguments(self):
+        import contextlib
+        import io
+        from libyears.cli import main
+        from unittest.mock import Mock
+        scan = Mock()
+        for args in (['--maven-management', '/unavailable/private-input.json'],
+                     ['--maven-management', 'one', '--maven-management', 'two'],
+                     ['--maven-manage=/unavailable/private-input.json'],
+                     ['--MAVEN-MANAGEMENT=/unavailable/private-input.json']):
+            output, error = io.StringIO(), io.StringIO()
+            with contextlib.redirect_stdout(output), contextlib.redirect_stderr(error):
+                self.assertEqual(main(args, scan=scan), 1)
+            self.assertNotIn('private-input', error.getvalue())
+            self.assertEqual(output.getvalue(), '')
+        scan.assert_not_called()
+
+    @unittest.skipUnless(filesystem_available(), 'safe filesystem primitives unavailable')
+    def test_actual_cli_route_json_human_verbose_and_no_option_compatibility(self):
+        import contextlib
+        import io
+        from libyears.cli import main
+        from test_maven_scan import Metadata
+        local, ext = fixture(parent_body=management(dependency('a', group='g')))
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            (root / 'pom.xml').write_bytes(local['pom.xml'])
+            accepted = root / 'evidence.json'; accepted.write_text(json.dumps(envelope(local, ext)))
+            def invoke(options):
+                output, error = io.StringIO(), io.StringIO()
+                with patch('libyears.maven_supervisor.MavenSupervisor', Metadata()), contextlib.redirect_stdout(output), contextlib.redirect_stderr(error):
+                    self.assertEqual(main([str(root), *options]), 0)
+                self.assertEqual(error.getvalue(), '')
+                return output.getvalue()
+            old = json.loads(invoke(['--json']))['maven']['occurrences'][0]
+            self.assertNotIn('scope_basis', old)
+            self.assertIsNone(old['scope'])
+            data = json.loads(invoke(['--maven-management', str(accepted), '--json']))
+            row = data['maven']['occurrences'][0]
+            self.assertEqual(row['scope_basis'], 'accepted_external_management_static_v1')
+            self.assertIn('static_model_incomplete', row['scope_limitations'])
+            self.assertEqual(row['declared']['version'], old['declared']['version'])
+            self.assertIsNone(row['observed'])
+            self.assertIsNone(data['summary']['coverage'])
+            for options in ([], ['--verbose']):
+                text = invoke(['--maven-management', str(accepted), *options])
+                self.assertIn('External management: explicitly accepted static scope evidence', text)
+                self.assertNotIn(str(accepted), text)
+                self.assertNotIn('_external/', text)

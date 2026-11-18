@@ -8,7 +8,7 @@ implementation, validation and local commits; no push/tag/release.
   engine with focused tests. Depends on fresh approved spec + plan/task review.
   C1–C5; A1/A3. Freeze/review before integrating. Verify envelope/filesystem,
   composition, profile/identity/binding and limit refusal, safe sibling proofs.
-- [ ] T2: CLI and scan integration, additive provenance, user documentation and
+- [x] T2: CLI and scan integration, additive provenance, user documentation and
   integration tests. Depends T1 approval. C4/C6; A3/A4. Verify ordinary no-option
   regressions, actual CLI route, existing policy refusal and unavailable Observed.
   Full deterministic/capability-disabled/real-worker checks at integration boundary.

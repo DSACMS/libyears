@@ -108,11 +108,17 @@ def maven_to_dict(report):
             declared = declared_rows[key].declared if key in declared_rows else None
             observed = observed_rows[key].observed if key in observed_rows else None
             row = rows[key]
+            evidence = {}
+            if row.management_status is not None:
+                from .maven_management import LIMITATIONS as management_limits, SCOPE_BASIS
+                evidence = {'management_status': row.management_status,
+                            'scope_basis': SCOPE_BASIS if row.management_status == 'accepted' else None,
+                            'scope_limitations': list(management_limits) if row.management_status == 'accepted' else []}
             occurrences.append({
                 'key': {'source_id': key.source_id, 'context_id': key.context_id, **asdict(key.model_key)},
                 'artifact_key': asdict(row.artifact_key) if row.artifact_key is not None else None,
                 'scope': row.scope, 'optional': row.optional,
-                'declared': _fact(declared), 'observed': _fact(observed),
+                'declared': _fact(declared), 'observed': _fact(observed), **evidence,
             })
     return {
         'discovery': {'state': 'complete' if report.discovery.complete else 'unavailable',
@@ -142,6 +148,8 @@ def _maven_data_human_lines(data, *, verbose=False):
     lines = ['Conventional Maven dependency age',
              'Time basis: Maven conventional (versioned public POM Last-Modified)',
              '', f"{'Measure':28} {'Declared':>18} {'Observed':>18}"]
+    if any(row.get('management_status') is not None for row in data['occurrences']):
+        lines.insert(2, 'External management: explicitly accepted static scope evidence; complete model/build/history and Observed selection are not established.')
     for name, label in (('dependencies_discovered', 'Dependencies discovered'),
                         ('dependencies_measured', 'Dependencies measured'),
                         ('coverage', 'Coverage'), ('total_libyears', 'Total libyears'),

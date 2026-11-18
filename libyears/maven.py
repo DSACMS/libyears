@@ -29,11 +29,15 @@ class MavenAdmission:
         return tuple(capability for key, capability in self.work)
 
 
-def admit_sources(graph, reader):
+def admit_sources(graph, reader, *, management=None):
     """Retain population and facts; mint lookup work only after local policy."""
+    declared = declared_sources(graph)
+    if management is not None:
+        from .maven_management import apply_management
+        declared = apply_management(graph, declared, management)
     sources = []
     capabilities = []
-    for source in declared_sources(graph):
+    for source in declared:
         decision = source_policy(graph, source.context.source_id, reader)
         rows = []
         for row in source.declared.rows:
@@ -125,12 +129,16 @@ def measure_admission(admission, *, ca_bundle=None, supervisor_factory=None):
     return tuple(sources)
 
 
-def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=None):
+def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=None, management=None):
     """Scan a directory without executing or resolving its dependency system."""
     from .maven_input import MavenInputFailure, MavenInputIssue, MavenInputReader
     from .maven_project import build_project_graph
     from .maven_results import summarize_sources
 
+    if management is not None:
+        from .maven_management import AcceptedManagement, load_management
+        if not isinstance(management, AcceptedManagement):
+            management = load_management(management)
     if reader_factory is None:
         reader_factory = MavenInputReader
     positive_local_evidence = False
@@ -142,7 +150,7 @@ def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=
             if discovery.complete and not discovery.source_ids:
                 return None
             graph = build_project_graph(discovery, reader.snapshot_pom)
-            admission = admit_sources(graph, reader)
+            admission = admit_sources(graph, reader, management=management)
     except MavenInputFailure as failure:
         if failure.issue == MavenInputIssue.NOT_DIRECTORY:
             return None

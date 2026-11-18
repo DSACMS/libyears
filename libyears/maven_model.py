@@ -249,8 +249,11 @@ class MavenOccurrence:
     optional: bool | None = None
     declared: MavenVersionFact | None = None
     observed: MavenVersionFact | None = None
+    management_status: str | None = None
 
     def __post_init__(self):
+        if self.management_status not in (None, 'accepted', 'refused'):
+            raise ValueError('invalid Maven management status')
         if not isinstance(self.key, MavenOccurrenceKey):
             raise ValueError('invalid Maven occurrence key')
         if self.optional is not None and type(self.optional) is not bool:

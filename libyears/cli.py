@@ -12,19 +12,21 @@ from .output import format_human, format_json
 from .scan import NuGetRequest, RubyGroupRequestError, scan_mixed_repository, validate_ruby_groups
 from .nuget_sources import NuGetRepositoryRequestError, validate_witnesses
 from .snapshot import parse_snapshot
+from .maven_management import MavenManagementRequestError, load_management
 
 
 class _ArgumentParser(argparse.ArgumentParser):
     def parse_args(self, args=None, namespace=None):
         arguments = list(sys.argv[1:] if args is None else args)
         self.safe_nuget_errors = _nuget_arguments_present(arguments)
+        self.safe_maven_errors = _maven_arguments_present(arguments)
         return super().parse_args(arguments, namespace)
 
     def _get_option_tuples(self, option_string):
         # Exact options bypass this abbreviation hook. Keep ordinary option
         # abbreviations compatible while requiring exact scoped spellings.
         matches = super()._get_option_tuples(option_string)
-        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance", "--nuget-witness")
+        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance", "--nuget-witness", "--maven-management")
                for match in matches):
             return []
         return matches
@@ -32,6 +34,8 @@ class _ArgumentParser(argparse.ArgumentParser):
     def error(self, message: str) -> None:
         if getattr(self, 'safe_nuget_errors', False):
             message = 'invalid NuGet command line arguments'
+        if getattr(self, 'safe_maven_errors', False):
+            message = 'invalid Maven command line arguments'
         self.print_usage(sys.stderr)
         self.exit(1, f"{self.prog}: error: {message}\n")
 
@@ -50,10 +54,21 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--nuget-witness", metavar="PROJECT=NAME.json", action="append",
                         help="accept one explicit supplier witness per root-relative project in ordinary "
                              "repository mode (repeatable; exactly one =; v1 event, v2 namespace or v3 fallback population assertions)")
+    parser.add_argument("--maven-management", metavar="FILE", action="append",
+                        help="explicitly accept byte-bound external parent/BOM static scope evidence")
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
     parser.add_argument("--ca-bundle", metavar="FILE", help="explicit verified HTTPS CA bundle; see ecosystem trust rules")
     parser.add_argument("--verbose", action="store_true", help="show discovery, evidence, limitations and diagnostics")
     return parser
+
+
+def _maven_arguments_present(arguments) -> bool:
+    for argument in arguments:
+        option = argument.split('=', 1)[0].lstrip('-').lower()
+        if argument.startswith('-') and option and (
+                option.startswith('maven') or 'maven-management'.startswith(option)):
+            return True
+    return False
 
 
 def _nuget_arguments_present(arguments) -> bool:
@@ -118,6 +133,10 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
     scan_function = scan or scan_mixed_repository
     try:
         kwargs = {}
+        if args.maven_management is not None:
+            if len(args.maven_management) != 1 or not Path(args.path).is_dir():
+                raise MavenManagementRequestError()
+            kwargs['maven_management'] = load_management(args.maven_management[0])
         if nuget_request is not None:
             kwargs['nuget_request'] = nuget_request
         elif Path(args.path).is_dir():
@@ -133,6 +152,9 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         if args.resolved is not None:
             kwargs["snapshot"] = parse_snapshot(args.resolved)
         report = scan_function(args.path, **kwargs)
+    except MavenManagementRequestError:
+        print('libyears: invalid Maven management evidence', file=sys.stderr)
+        return 1
     except (RubyGroupRequestError, NuGetRepositoryRequestError) as error:
         message = 'invalid scoped request' if nuget_request is not None or kwargs.get('nuget_repository') else str(error)
         print(f"libyears: {message}", file=sys.stderr)

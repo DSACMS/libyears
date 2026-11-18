@@ -474,8 +474,15 @@ def scan_mixed_repository(
     nuget_lookup: Callable[[tuple[LocalAuthority, ...]],
                            tuple[tuple[LocalAuthority, PackageResult], ...]] | None = None,
     maven_scan=None,
+    maven_management=None,
 ) -> MixedScanReport:
     """Discover supported sources, with explicit internal NuGet mode requests."""
+    if maven_management is not None:
+        from .maven_management import AcceptedManagement, MavenManagementRequestError, load_management
+        if not Path(path).is_dir():
+            raise MavenManagementRequestError()
+        if not isinstance(maven_management, AcceptedManagement):
+            maven_management = load_management(maven_management)
     validate_witnesses(nuget_witnesses)
     if ((nuget_repository and (nuget_request is not None or not Path(path).is_dir()))
             or (nuget_witnesses and not nuget_repository)):
@@ -651,7 +658,8 @@ def scan_mixed_repository(
     maven = None
     if root.is_dir():
         maven_scanner = maven_scan or scan_maven
-        maven = maven_scanner(root, ca_bundle=ca_bundle)
+        maven_options = {} if maven_management is None else {"management": maven_management}
+        maven = maven_scanner(root, ca_bundle=ca_bundle, **maven_options)
     if maven is not None:
         null_summary = MetricSummary(None, None, None, None, None, None, None)
         by_ecosystem['maven'] = null_summary

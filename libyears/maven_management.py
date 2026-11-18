@@ -7,7 +7,7 @@ External models never enter the repository discovery/population/policy graph.
 
 import base64
 import binascii
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 import hashlib
 import json
 from pathlib import Path
@@ -398,3 +398,24 @@ class ManagementProofs:
             return ScopeProof(scope, allowed)
         except (ValueError, MavenInputFailure, KeyError, PropertyFailure):
             return None
+
+
+def apply_management(graph, sources, accepted):
+    """Fill only eligible listed scopes; retain all other facts and populations."""
+    proofs = ManagementProofs(graph, accepted)
+    results = []
+    for source in sources:
+        rows = []
+        for row in source.declared.rows:
+            if proofs.requested(row):
+                proof = proofs.scope(row)
+                if proof is None:
+                    row = replace(row, management_status='refused')
+                else:
+                    reason = (MavenReason.TIME_BASIS_UNAVAILABLE if proof.comparison_allowed
+                              else MavenReason.POLICY_UNKNOWN)
+                    row = replace(row, scope=proof.scope, management_status='accepted',
+                                  declared=replace(row.declared, reason=reason))
+            rows.append(row)
+        results.append(replace(source, declared=replace(source.declared, rows=tuple(rows))))
+    return tuple(results)
