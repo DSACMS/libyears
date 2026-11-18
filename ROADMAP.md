@@ -487,9 +487,13 @@ not the usefulness question or a new capability gate.
 
 #### External-management evidence intake — unselected follow-up
 
-**State: EXPLORE, proposal only (007-0033).** This extends opportunity 11; no
-external-management scope, discovery execution, specification, plan, task graph
-or implementation is selected or authorized. Existing Feature 007 remains complete
+**State: EXPLORE; bounded discovery completed (007-0034).** This extends opportunity
+11. [Supplied-evidence discovery](discovery/maven-external-management.md) and its
+[independent review](discovery/maven-external-management-review.md) recommend a
+restricted offline manifest first. The retained eight-POM corpus establishes the
+gap, but contains no external model documents; real composition/recovery remains
+untested. Discovery was selected, not a product contract, acquisition feature,
+specification, plan, task graph or implementation. Existing Feature 007 remains complete
 under its current [contract](specs/007-maven-dependency-age/spec.md).
 
 **User outcome:** Recover attributable missing Declared management facts where
@@ -574,9 +578,11 @@ report actual additional supported facts and measured yield separately, and reta
 all refusals/unknowns. Test supplied-only operation first; validate public retrieval
 only if that route is later selected. No live run is authorized here.
 
-**Smallest next gate:** Human selection of one bounded **offline, supplied-evidence-
-first discovery**, or defer. Use a human-identified retained/sample corpus; a missing
-corpus is an input gap, not acquisition permission. Produce an identity/precedence/
+**Smallest next gate (after 007-0034):** Supply the four identified first-hop POMs
+and their supported recursive closure with explicit applicability acceptance for a
+bounded feasibility study, or defer. The original supplied-evidence-first discovery
+is complete; missing external documents are an evidence gap, not acquisition
+permission. Produce an identity/precedence/
 refusal and recoverability matrix, then stop before specification. Only if that
 evidence supports a useful bounded capability should a prospective specification
 be commissioned. Optional public acquisition/applicability and its disclosure-risk
