@@ -388,6 +388,13 @@ class MavenInputReader:
             raise MavenInputFailure(MavenInputIssue.UNSELECTED)
         return self._snapshot(source_id, parts, xml=True, pom=True)
 
+    def snapshot_evidence(self, name: str) -> MavenInputSnapshot:
+        """One explicitly selected envelope; never discovered or followed."""
+        parts = relative_parts(name)
+        if len(parts) != 1:
+            raise MavenInputFailure(MavenInputIssue.UNSELECTED)
+        return self._snapshot(name, parts, xml=False, pom=False, max_bytes=4 * 1024 * 1024)
+
     def _inspect(self, parts):
         """Return regular-file metadata after checking every directory binding."""
         descriptors = []
@@ -424,7 +431,7 @@ class MavenInputReader:
                     or directory_identity(os.fstat(descriptor)) != identity):
                 raise MavenInputFailure(MavenInputIssue.CHANGED)
 
-    def _snapshot(self, source_id, parts, *, xml, pom):
+    def _snapshot(self, source_id, parts, *, xml, pom, max_bytes=None):
         if source_id in self._failed:
             raise MavenInputFailure(self._failed[source_id])
         descriptors = []
@@ -451,7 +458,7 @@ class MavenInputReader:
                 if cached.identity != identity:
                     raise MavenInputFailure(MavenInputIssue.CHANGED)
                 return cached
-            limit = MAX_XML_BYTES if xml else MAX_CONFIG_BYTES
+            limit = max_bytes if max_bytes is not None else MAX_XML_BYTES if xml else MAX_CONFIG_BYTES
             if info.st_size > limit or (xml and self._xml_bytes + info.st_size > MAX_TOTAL_XML_BYTES):
                 raise MavenInputFailure(MavenInputIssue.LIMIT)
             flags = os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK
