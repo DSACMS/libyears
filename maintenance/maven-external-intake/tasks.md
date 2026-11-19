@@ -26,7 +26,7 @@ Human authority explicitly permits the C7–C10 correction and sequential execut
 through reviewed dependent stages; no publication. T1–T3 and scope-only approvals
 above remain historical. Approved contract precedes independent P6–P10/task review.
 
-- [ ] T4: Implement bound absent-version proof, immutable evidence and independent
+- [x] T4: Implement bound absent-version proof, immutable evidence and independent
   version/scope application with adversarial composition/model tests. C7–C9/P6–P8;
   A7. Depends contract and plan/task approval. Verify absence versus every present
   refusal, precedence/key/context/bytes/roles/properties/blocked-key/budget failures,

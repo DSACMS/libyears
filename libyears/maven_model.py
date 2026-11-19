@@ -201,6 +201,37 @@ class MavenAge:
 
 
 @dataclass(frozen=True, slots=True)
+class MavenManagedVersion:
+    """Accepted static applicability evidence, separate from selection or age."""
+
+    request: str
+    source_id: str | None
+    document_gav: tuple[str, str, str] | None
+    local_sources: tuple[str, ...]
+    external_gavs: tuple[tuple[str, str, str], ...]
+
+    def __post_init__(self):
+        _nonempty(self.request)
+        if (self.source_id is None) == (self.document_gav is None):
+            raise ValueError('managed version needs one winning origin')
+        if type(self.local_sources) is not tuple or not self.local_sources:
+            raise ValueError('managed version needs bound local sources')
+        for source in self.local_sources:
+            _source_id(source)
+        if type(self.external_gavs) is not tuple:
+            raise ValueError('managed version models must be immutable')
+        for gav in self.external_gavs:
+            if type(gav) is not tuple or len(gav) != 3:
+                raise ValueError('invalid managed version model identity')
+            for value in gav:
+                _nonempty(value)
+        if self.source_id is not None and self.source_id not in self.local_sources:
+            raise ValueError('managed version source was not bound')
+        if self.document_gav is not None and self.document_gav not in self.external_gavs:
+            raise ValueError('managed version model was not visited')
+
+
+@dataclass(frozen=True, slots=True)
 class MavenVersionFact:
     version_basis: MavenVersionBasis
     request: str | None = None
@@ -208,6 +239,7 @@ class MavenVersionFact:
     origins: tuple[MavenFieldOrigin, ...] = ()
     age: MavenAge | None = None
     reason: MavenReason | None = None
+    managed_version: MavenManagedVersion | None = None
 
     def __post_init__(self):
         if not isinstance(self.version_basis, MavenVersionBasis):
@@ -222,6 +254,10 @@ class MavenVersionFact:
         if self.age is not None and not isinstance(self.age, MavenAge):
             raise ValueError('invalid established Maven age record')
         _reason(self.reason)
+        if self.managed_version is not None and (
+                not isinstance(self.managed_version, MavenManagedVersion)
+                or self.version_basis != MavenVersionBasis.DECLARED or self.version is None):
+            raise ValueError('managed evidence needs an established Declared version')
         if self.age is None:
             if self.reason is None:
                 raise ValueError('unmeasured Maven fact needs a reason')
@@ -250,10 +286,13 @@ class MavenOccurrence:
     declared: MavenVersionFact | None = None
     observed: MavenVersionFact | None = None
     management_status: str | None = None
+    version_management_status: str | None = None
 
     def __post_init__(self):
         if self.management_status not in (None, 'accepted', 'refused'):
             raise ValueError('invalid Maven management status')
+        if self.version_management_status not in (None, 'accepted', 'refused'):
+            raise ValueError('invalid Maven version management status')
         if not isinstance(self.key, MavenOccurrenceKey):
             raise ValueError('invalid Maven occurrence key')
         if self.optional is not None and type(self.optional) is not bool:

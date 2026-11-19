@@ -14,12 +14,13 @@ from pathlib import Path
 import re
 
 from .maven_input import MavenInputFailure, MavenInputReader, MavenInputSnapshot, parse_pom, relative_parts
-from .maven_model import MavenFieldBasis, MavenFieldOrigin, MavenModelKey, MavenReason
+from .maven_model import MavenFieldBasis, MavenFieldOrigin, MavenManagedVersion, MavenModelKey, MavenReason
 from .maven_project import (
     ModelIssue, _PROJECT_ELEMENTS, _container, _edge_target, _literal,
     _parse_project, _records,
 )
 from .maven_properties import PropertyFailure, ScalarProperty, expand_scalar, read_properties
+from .maven_version import is_snapshot, parse_version
 
 BASIS = 'restricted_static_maven_3_9_11_v1'
 SCOPE_BASIS = 'accepted_external_management_static_v1'
@@ -231,6 +232,20 @@ class ScopeProof:
     comparison_allowed: bool
 
 
+@dataclass(frozen=True)
+class ManagedField:
+    value: str | None
+    request: str | None
+    source_id: str
+
+
+@dataclass(frozen=True)
+class VersionProof:
+    version: str
+    evidence: MavenManagedVersion
+    comparison_allowed: bool
+
+
 class ManagementProofs:
     """Bounded, per-occurrence dominance proofs. No positive-result cache."""
 
@@ -240,6 +255,7 @@ class ManagementProofs:
         self.grants = {g.source_id: g for g in accepted.consumers}
         self.total_builds = 0
         self.builds = 0
+        self.visited = {}
 
     def requested(self, row):
         grant = self.grants.get(row.key.source_id)
@@ -258,6 +274,7 @@ class ManagementProofs:
         external = project.source_id.startswith('_external/') and project not in self.projects.values()
         if not external and bindings.get(project.source_id) != hashlib.sha256(project.snapshot.data).hexdigest():
             raise ProofFailure()
+        self.visited[project.source_id] = project
         if not project.parent_supported:
             raise ProofFailure()
         if project.parent is None:
@@ -328,7 +345,7 @@ class ManagementProofs:
                 records.setdefault(record.key, record)
         return tuple(records.values())
 
-    def _winner(self, project, key, bindings, trail=()):
+    def _winner_field(self, project, key, bindings, name, trail=()):
         if project.source_id in trail or len(trail) >= 16:
             raise ProofFailure()
         chain = self._lineage(project, bindings)
@@ -337,10 +354,12 @@ class ManagementProofs:
         # A whole winning key shields even uninterpretable losing imports.
         for record in records:
             if record.key == key:
-                field = record.field('scope')
-                scope = expand(field.value) if field else None
+                scope_field = record.field('scope')
+                scope = expand(scope_field.value) if scope_field and key.type == 'pom' else None
                 if not (record.key.type == 'pom' and scope == 'import'):
-                    return True, scope
+                    field = record.field(name)
+                    return ManagedField(expand(field.value) if field else None,
+                                        field.value if field else None, record.declaration_source)
         imports = []
         for record in records:
             if record.key.type == 'pom':
@@ -356,13 +375,78 @@ class ManagementProofs:
             document = self.documents.get(gav)
             if document is None or 'bom' not in document.roles:
                 raise ProofFailure()
-            found, scope = self._winner(document.project, key, bindings, (*trail, project.source_id))
-            if found:
-                return found, scope
-        return False, None
+            winner = self._winner_field(document.project, key, bindings, name, (*trail, project.source_id))
+            if winner is not None:
+                return winner
+        return None
 
-    def scope(self, row):
-        self.builds = 0
+    def _winner(self, project, key, bindings):
+        winner = self._winner_field(project, key, bindings, 'scope')
+        return winner is not None, winner.value if winner is not None else None
+
+    def _comparison_allowed(self, chain):
+        for project in chain:
+            if project in self.projects.values():
+                continue
+            root = project.snapshot.xml
+            if root.elements('repositories'):
+                return False
+            profiles = _container(root, 'profiles')
+            if profiles and any(p.elements('repositories') for p in profiles.children):
+                return False
+        return True
+
+    def version(self, row, *, reset_budget=True):
+        """Prove absence from raw bytes, never from a suppressed request string."""
+        if reset_budget:
+            self.builds = 0
+        self.visited = {}
+        if (not self.requested(row) or row.key.context_id != 'base_model'
+                or row.artifact_key is None or row.optional is None
+                or row.declared is None or row.declared.version is not None
+                or row.declared.reason != MavenReason.UNSUPPORTED_VERSION):
+            return None
+        try:
+            bindings = dict(self.grants[row.key.source_id].bindings)
+            chain = self._lineage(self.projects[row.key.source_id], bindings)
+            expand = self._context(chain, row.key.model_key)
+            ordinary = [r for p in chain for r in p.dependencies if r.key == row.key.model_key]
+            if len(ordinary) != 1 or ordinary[0].field('version') is not None:
+                raise ProofFailure()
+            winner = self._winner_field(chain[0], row.key.model_key, bindings, 'version')
+            if winner is None or winner.value is None or winner.request is None:
+                raise ProofFailure()
+            version = winner.value
+            if version.startswith('[') and version.endswith(']'):
+                version = version[1:-1]
+            if is_snapshot(parse_version(version)):
+                raise ProofFailure()
+            # Do not combine a new version with a contradictory established scope.
+            if row.scope is not None:
+                field = ordinary[0].field('scope')
+                if field is not None:
+                    scope = expand(field.value)
+                else:
+                    _, scope = self._winner(chain[0], row.key.model_key, bindings)
+                    scope = scope or 'compile'
+                if scope != row.scope:
+                    raise ProofFailure()
+            local_sources = tuple(p.source_id for p in self.visited.values()
+                                  if p in self.projects.values())
+            external_gavs = tuple(d.gav for d in self.documents.values()
+                                  if d.project in self.visited.values())
+            document = next((d for d in self.documents.values()
+                             if d.project.source_id == winner.source_id), None)
+            evidence = MavenManagedVersion(
+                winner.request, winner.source_id if document is None else None,
+                document.gav if document is not None else None, local_sources, external_gavs)
+            return VersionProof(version, evidence, self._comparison_allowed(chain))
+        except (ValueError, MavenInputFailure, KeyError, PropertyFailure):
+            return None
+
+    def scope(self, row, *, reset_budget=True):
+        if reset_budget:
+            self.builds = 0
         if (not self.requested(row) or row.key.context_id != 'base_model'
                 or row.scope is not None or row.artifact_key is None or row.optional is None
                 or row.declared is None or row.declared.version is None
@@ -377,7 +461,16 @@ class ManagementProofs:
             if len(ordinary) != 1 or ordinary[0].field('scope') is not None:
                 raise ProofFailure()
             version = ordinary[0].field('version')
-            if version is None or expand(version.value) != row.declared.version:
+            if version is None:
+                # A newly supplied version has no ordinary field to expand.
+                # Reprove it instead of trusting attached provenance as authority.
+                candidate = replace(row, declared=replace(row.declared, version=None,
+                                    managed_version=None, reason=MavenReason.UNSUPPORTED_VERSION))
+                proof = self.version(candidate, reset_budget=False)
+                if (proof is None or proof.version != row.declared.version
+                        or proof.evidence != row.declared.managed_version):
+                    raise ProofFailure()
+            elif expand(version.value) != row.declared.version:
                 raise ProofFailure()
             _, scope = self._winner(chain[0], row.key.model_key, bindings)
             # A successful traversal with no key proves absence only because every
@@ -385,30 +478,35 @@ class ManagementProofs:
             scope = scope or 'compile'
             if scope not in ('compile', 'runtime', 'test', 'provided', 'system'):
                 raise ProofFailure()
-            allowed = True
-            for project in chain:
-                if project in self.projects.values():
-                    continue
-                root = project.snapshot.xml
-                if root.elements('repositories'):
-                    allowed = False
-                profiles = _container(root, 'profiles')
-                if profiles and any(p.elements('repositories') for p in profiles.children):
-                    allowed = False
-            return ScopeProof(scope, allowed)
+            return ScopeProof(scope, self._comparison_allowed(chain))
         except (ValueError, MavenInputFailure, KeyError, PropertyFailure):
             return None
 
 
 def apply_management(graph, sources, accepted):
-    """Fill only eligible listed scopes; retain all other facts and populations."""
+    """Prove requested fields independently, retaining every existing occurrence."""
     proofs = ManagementProofs(graph, accepted)
     results = []
     for source in sources:
         rows = []
         for row in source.declared.rows:
             if proofs.requested(row):
-                proof = proofs.scope(row)
+                version_attempt = row.declared is not None and row.declared.version is None
+                version = None
+                if version_attempt:
+                    version = proofs.version(row)
+                    row = replace(row, version_management_status='accepted' if version else 'refused')
+                    if version is not None:
+                        reason = (MavenReason.UNSUPPORTED_MODEL if row.scope is None
+                                  else MavenReason.TIME_BASIS_UNAVAILABLE)
+                        if not version.comparison_allowed:
+                            reason = MavenReason.POLICY_UNKNOWN
+                        row = replace(row, declared=replace(row.declared, version=version.version,
+                                      managed_version=version.evidence, reason=reason))
+                scope_row = row
+                if version is not None and row.scope is None:
+                    scope_row = replace(row, declared=replace(row.declared, reason=MavenReason.UNSUPPORTED_MODEL))
+                proof = proofs.scope(scope_row, reset_budget=not version_attempt)
                 if proof is None:
                     row = replace(row, management_status='refused')
                 else:

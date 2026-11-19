@@ -142,3 +142,18 @@ and `fe718c609142ff04842600ce1948eb2ce6ff7f847fcfaccfd3e0126dd8abcc76`:
 fresh focused non-author verification COMPLETE/APPROVE; ordering, input hashes,
 traceability and collateral admission/security gates verified. Parent accepts;
 T4 is dependency-ready. No runtime edits preceded approval.
+
+## 007-0043 T4 proof implementation
+
+Freeze t4-v1 manifests the exact model/proof/test bytes; engine SHA256
+`9e3da087206ee63d5aa15ecd02e03a32daa231cc526faf6bba554c9156d912f3`.
+Fresh non-author semantic review COMPLETE/APPROVE:87 focused tests and8 additional
+semantic probes pass. Independent admission/security review COMPLETE/APPROVE:
+109 focused tests and8 additional adversarial probes pass. No material findings.
+Parent reconciles guards, precedence, field independence, policy and shared budget
+coverage against primary source; no correction needed. Parent87 focused plus41
+policy/scan and34 local-fact regressions pass. One initially named nonexistent
+property-test module was corrected to the actual test_maven_facts module; not a
+product failure. Actual retained-snapshot admission verifies127 rows, seven new
+4.1.1 version facts, seven newly admitted capabilities and56 total candidates,
+without metadata requests. T5 serialization remains outside T4 approval.
