@@ -204,3 +204,43 @@ supplemental whole-checkout finding is unchanged and was not reclassified or fix
 Final committed-history result, exact final Git scope and helper-written44key baton
 are recorded in durable completion after the documentation commit. Hosted checks
 remain unobserved. Push performed: NO.
+
+## 007-0044 coherent configured validation — incomplete
+
+Clean starting boundary `d48170b6213b1f7dbcd73b3619b56b06b23451e3` verified.
+The [configured checkpoint](configured-validation.md) records one failed capture
+preparation, not a coherent fresh measurement. The private recorder used vars on
+a slotted capability and failed before base supervisor/worker/HTTP initialization.
+Original stdout/stderr, exact private invocation, verified input bindings and equal
+before/after target integrity are retained. Trust safety/TLS loading passed; no
+worker trust staging or metadata acquisition followed. No second live attempt.
+The operator error is not a demonstrated product defect or a new trust decision.
+
+Freeze-v1 binds18 primary artifacts and5 public files. Two fresh independent
+non-author scopes: provenance/arithmetic/context-separation and admission/privacy/
+integrity/usefulness each COMPLETE/APPROVE for the honest blocked checkpoint,
+no material finding. Coherent validation remains INCOMPLETE, not PASS. Reviewers
+inspect original procedures/bytes, reproduce the pre-worker TypeError offline,
+confirm56 capability serialization with asdict only under mocks, and verify
+127 local rows/88 versions/74 scopes/56 candidates. They independently reconcile
+historical47/replay41/subset7 arithmetic and provenance without constructing a
+current aggregate. Missing current report/verbose/worker captures, empty ordinary
+stdout and unretained original CLI exit are explicit qualifications. No fresh
+ordinary usefulness conclusion follows. Parent validates both scopes against the
+same primary evidence. Fresh child contexts/no overrides requested; actual child
+configuration/resource telemetry unobserved. No reviewer external target/trust/
+network access, edits or live rerun.
+
+Original007-0043 observation reconciled once with supplied2262-second elapsed
+telemetry and179/182 raw account boundaries; original44-key baton/artifact/runtime
+qualifications/notes and prior ledger bytes retained.93 unique44-field records,
+current0044 absent. No product suite rerun for documentation-only work; bounded
+offline reproduction/admission, links/anchors, sensitivity, ledger/prefix and
+working/staged/range whitespace checks pass. Configured GitLeaks8.30.1 current
+candidate content and pre-final388-commit history pass with zero findings; final
+committed-history result and exact Git/tree state live in durable completion.
+No suppression, runtime/test/contract change, push/tag/release or remote refresh.
+Hosted CI unobserved. The last verified publication boundary from original0027 is
+historical; the retained local range list does not establish today's remote state.
+Next action requires a newly authorized configured validation with the concrete
+recording-only fix; no product-policy or trust expansion is recommended.
