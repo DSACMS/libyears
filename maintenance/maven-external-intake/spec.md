@@ -112,3 +112,79 @@ before/after integrity for authorized target reads. Live uses only the exact rec
 approved private trust input and fixed public existing transport. Otherwise report
 live blocked. No new POM acquisition. Publish an exact usable invocation, keeping
 sensitive local values private. Report remaining blockers by stage and no complete N.
+
+## Managed Declared-version extension — 007-0043
+
+Human authority in run007-0043 prospectively supersedes C4's scope-only/version-
+preservation restriction only for the absent-version case below. C1–C3/C5 and
+all resource, safety, population, policy and view boundaries remain binding.
+The preceding acceptance results and scope-only approvals remain historical.
+
+C7. A listed existing base_model Declared occurrence with supported artifact and
+optional facts, no established exact version and unsupported-version refusal may
+receive a version only if its ordinary declaration has a genuinely absent version
+field. Prove exactly one ordinary site across the bound raw lineage. A present
+empty/whitespace, malformed, unsupported, unresolved, range or snapshot ordinary
+version is not absent and cannot be repaired. Never overwrite an established
+version or use a management-only entry to create an occurrence. Preserve ordinary
+request text and all existing field origins; a supplied managed request is
+separately identified. Ordinary same-key inheritance collisions remain outside
+this intake, even if the local field-level merger retained a safe row.
+
+C8. Independently prove version applicability using C3/C5's consumer/context/key,
+local bytes, literal parent GAVs and accepted document roles. Whole-entry child-first
+management dominance and ordered independent imports apply exactly as in C4.
+Select the requested field only from the first proven winning exact key. Missing,
+invalid or unsupported version in a winning key cannot fall back to an ancestor,
+later import or cached same-coordinate fact. Unknown earlier imports and relevant
+unsupported syntax/profile writes/blocked keys refuse. Parent scalar expressions
+use the consumer environment; imported BOM values use their own environment.
+A managed request must pass the existing Declared exact-version rules (including
+existing singleton-bracket normalization and snapshot refusal); no broader grammar,
+resolver or alternative-version search. Complete negative traversal cannot invent
+a version. Management injection remains non-dominant: known ordinary values must agree with
+established local facts and are never replaced, including an established scope.
+
+C9. Version and scope proof results are independent. A valid version survives a
+remaining model/scope or comparator/date failure. If scope is absent/unavailable,
+existing scope proof may apply after the new version fact is established, only
+when the ordinary scope field is genuinely absent and all prior rules pass.
+An explicit unsupported scope is never defaulted by this route. A version without
+supported scope retains unsupported-model age refusal. External consumer-parent
+repository policy can veto comparison while preserving proven version/scope.
+No metadata is requested before existing per-source/per-occurrence admission.
+Declared and Observed remain independent, and no population completeness follows.
+
+C10. Preserve schema-v3 fields and their existing meanings. Existing
+management_status/scope_basis continue to report scope intake only. Add
+version_management_status for requested version attempts, and an optional
+managed_version object on the Declared fact after success. It identifies the
+accepted-static basis, original managed request, winning local source or external
+document GAV, verified local lineage sources and visited accepted external GAVs.
+The enclosing occurrence supplies exact consumer/context/model-key identity.
+Fixed applicability/limitations disclose explicit acceptance and verified bindings,
+static incomplete model, no build/history/acquisition/content/Observed claim.
+Never emit envelope paths, hashes, XML or diagnostics. Keep the existing Declared
+version_basis label for compatibility; managed_version explicitly distinguishes
+the new origin. Preserve this evidence through later policy, worker, catalogue or
+date failure. Verbose displays it; ordinary output adds only a concise shared
+static-field disclosure and retains measured/unmeasurable tables and reasons.
+
+A7. Deterministic positive/negative tests cover C7–C10, binding/context/role/GAV,
+exact type/classifier, absent versus every present refusal state, whole-entry and
+first-import precedence, blocked keys/unknown imports, property environments,
+no fallback/cache bypass, safe siblings, existing scope proof and separate Observed.
+A8. Freeze before/after CLI inputs and retained response metadata before changing
+behavior. Reconfirm the seven starter-test raw sites and bindings. Compare exact
+occurrence keys, established versions/scopes, admissions, measured ages and raw
+summaries using that same set. A new version fact need not produce an age.
+The 41-age replay and 47-age historical report remain different evidence sets.
+A9. Fresh non-author contract approval precedes plan/task approval and execution;
+implementation semantic/admission/security reviews and convergence inspect frozen
+code/results, with fresh focused correction verification when material. Full,
+capability-disabled, native worker, absent-platform-capability, configured candidate-
+content/history security and whitespace gates apply; local simulation is not
+hosted Windows evidence. One optional live batch is authorized only for newly
+eligible candidate capabilities lacking retained metadata, on verified target/input
+correspondence and the exact previously approved trust copy, with unchanged fixed-
+public transport and ceilings. No new POM acquisition or broader coordinate work.

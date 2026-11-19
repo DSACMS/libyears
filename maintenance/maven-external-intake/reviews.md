@@ -113,3 +113,32 @@ zero findings; committed runtime history gate passes on375 commits. Final commit
 history gate/count, exact final Git boundary, clean-tree state and durable helper
 handoff validation are recorded in local completion evidence after the T3 commit.
 Hosted matrix is not run or claimed. No push, tag or release.
+
+## 007-0043 prospective managed-version contract
+
+Human explicitly authorizes replacing the scope-only restriction with bound evidence
+for genuinely absent ordinary Declared versions, retaining all other boundaries.
+Frozen spec-v1 SHA256 `fd5e6de3abfa9d41fe243b8edad972fa2b452abc82427c97434753c5060ea048`:
+fresh non-author semantic/admission review COMPLETE/REVISE, one wording inversion
+of management/ordinary dominance. Parent validated against retained pinned Injector
+and ModelMerger, corrected only that wording; original bytes retained privately.
+Frozen spec-v2 SHA256 `c4911beee312c4abb6d4631f302d1ef5ab205fb078de9d3f19a52f11935c4022`:
+fresh focused non-author verification COMPLETE/APPROVE, closes finding and collateral
+absence-only, explicit version/scope, exact-key uncertainty and additive evidence
+boundaries. Parent accepts gate. This is not implementation approval.
+
+Plan P6–P10 and tasks T4–T6 follow that approved extension; independent review pending.
+Actual child configuration/resource telemetry is unavailable; fresh contexts with
+no model/effort override were requested. No target/trust/network reads by reviewers.
+
+Plan-v1 frozen hashes `0798f3ce…` / `9af8be31…`: fresh non-author review
+COMPLETE/REVISE, one task-order contradiction allowing a joint first review despite
+T5's T4-approval predecessor. Parent removed that exception and established strict
+T4 review/commit → T5 review/commit. Reviewer also required the actual full current
+input/response freeze before runtime edits; all19 hashes and prior0042 response
+digest correspondence now retained in input-freeze.json.
+Plan-v2 hashes `632cc3e034aacbca7b26a0c2743cb781361e6e64c75e0540776f1d381afe3c05`
+and `fe718c609142ff04842600ce1948eb2ce6ff7f847fcfaccfd3e0126dd8abcc76`:
+fresh focused non-author verification COMPLETE/APPROVE; ordering, input hashes,
+traceability and collateral admission/security gates verified. Parent accepts;
+T4 is dependency-ready. No runtime edits preceded approval.
