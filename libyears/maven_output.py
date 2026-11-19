@@ -77,7 +77,7 @@ def _fact(fact):
         for name in ('measured_version_pom_last_modified', 'comparison_version_pom_last_modified',
                      'catalogue_retrieved_at'):
             age[name] = _timestamp(age[name])
-    return {
+    result = {
         'request': _request(fact.request), 'version': fact.version,
         'version_basis': fact.version_basis.value,
         'evidence_origins': [asdict(origin) for origin in fact.origins],
@@ -86,6 +86,22 @@ def _fact(fact):
         'reason': fact.reason.value if fact.reason is not None else None,
         'limitations': list(LIMITATIONS), 'age': age,
     }
+    if fact.managed_version is not None:
+        evidence = fact.managed_version
+        result['managed_version'] = {
+            'basis': 'accepted_external_management_static_v1',
+            'applicability': 'explicit_consumer_key_and_lineage_byte_bindings_verified',
+            'request': _request(evidence.request),
+            'source_id': evidence.source_id,
+            'document_gav': list(evidence.document_gav) if evidence.document_gav is not None else None,
+            'local_sources': list(evidence.local_sources),
+            'external_gavs': [list(gav) for gav in evidence.external_gavs],
+            'limitations': ['external_applicability_explicitly_accepted', 'static_model_incomplete',
+                            'successful_build_not_established', 'historical_resolution_not_established',
+                            'acquisition_not_established', 'content_correspondence_not_established',
+                            'observed_selection_not_established'],
+        }
+    return result
 
 
 def maven_to_dict(report):
@@ -108,12 +124,15 @@ def maven_to_dict(report):
             declared = declared_rows[key].declared if key in declared_rows else None
             observed = observed_rows[key].observed if key in observed_rows else None
             row = rows[key]
+            intake_row = declared_rows.get(key, row)
             evidence = {}
-            if row.management_status is not None:
+            if intake_row.management_status is not None:
                 from .maven_management import LIMITATIONS as management_limits, SCOPE_BASIS
-                evidence = {'management_status': row.management_status,
-                            'scope_basis': SCOPE_BASIS if row.management_status == 'accepted' else None,
-                            'scope_limitations': list(management_limits) if row.management_status == 'accepted' else []}
+                evidence = {'management_status': intake_row.management_status,
+                            'scope_basis': SCOPE_BASIS if intake_row.management_status == 'accepted' else None,
+                            'scope_limitations': list(management_limits) if intake_row.management_status == 'accepted' else []}
+            if intake_row.version_management_status is not None:
+                evidence['version_management_status'] = intake_row.version_management_status
             occurrences.append({
                 'key': {'source_id': key.source_id, 'context_id': key.context_id, **asdict(key.model_key)},
                 'artifact_key': asdict(row.artifact_key) if row.artifact_key is not None else None,
@@ -216,7 +235,7 @@ def _maven_data_human_lines(data, *, verbose=False):
              'Time basis: Maven conventional (versioned public POM Last-Modified)',
              '', f"{'Measure':28} {'Declared':>18} {'Observed':>18}"]
     if any(row.get('management_status') is not None for row in data['occurrences']):
-        lines.insert(2, 'External management: explicitly accepted static scope evidence; complete model/build/history and Observed selection are not established.')
+        lines.insert(2, 'External management: explicitly accepted static field evidence; complete model/build/history and Observed selection are not established.')
     for name, label in (('dependencies_discovered', 'Dependencies discovered'),
                         ('dependencies_measured', 'Dependencies measured'),
                         ('coverage', 'Coverage'), ('total_libyears', 'Total libyears'),
@@ -305,6 +324,8 @@ def _maven_data_human_lines(data, *, verbose=False):
                 lines.append(f"  {name} version_basis: {fact['version_basis']}")
                 for origin in fact['evidence_origins']:
                     lines.append('    origin: ' + json.dumps(origin, ensure_ascii=True, sort_keys=True))
+                if 'managed_version' in fact:
+                    lines.append('    managed_version: ' + json.dumps(fact['managed_version'], ensure_ascii=True, sort_keys=True))
                 if fact['age'] is not None:
                     age = fact['age']
                     for field in ('comparison_version', 'measured_version_pom_last_modified',

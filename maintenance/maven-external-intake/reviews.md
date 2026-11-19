@@ -157,3 +157,20 @@ property-test module was corrected to the actual test_maven_facts module; not a
 product failure. Actual retained-snapshot admission verifies127 rows, seven new
 4.1.1 version facts, seven newly admitted capabilities and56 total candidates,
 without metadata requests. T5 serialization remains outside T4 approval.
+
+## 007-0043 T5 evidence and presentation
+
+Frozen t5-v1 engine-independent output/tests reviewed COMPLETE/REVISE: one paired-
+view projection finding. An Observed-preferred row could hide Declared intake
+statuses/disclosure. Parent added regression and reproduced missing version status,
+then sourced intake statuses from the Declared occurrence when present. Both view
+versions stay independent; no reader or population behavior is added.
+Frozen t5-v2 output SHA256
+`640e398e93e96f308544bfacac77f178436bd2dc8d840154fc913bbf1ad991de`:
+fresh focused non-author verification COMPLETE/APPROVE,68 focused tests and an
+independent accepted-scope paired probe pass. Parent66 focused/full1166(1skip)/
+capability-disabled1166(105skips) pass; native worker5 and three actual attribute-
+absence refusal probes pass. Local simulation is not hosted Windows evidence.
+An initial old disclosure-text assertion was updated from scope to field evidence;
+no safety assertion removed. Parent reconciles finding closure and collateral
+no-option, privacy, failure retention and view separation. T5 complete; T6 ready.

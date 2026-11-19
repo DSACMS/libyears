@@ -253,3 +253,135 @@ class ManagedVersionProofTests(unittest.TestCase):
             replace(evidence, local_sources=[])
         with self.assertRaises(ValueError):
             replace(evidence, document_gav=None)
+
+
+class ManagedVersionIntegrationTests(unittest.TestCase):
+    def scan(self, local, external, *, metadata=None, accepted=True):
+        from libyears.maven import scan_maven
+        from test_maven_scan import Reader, Metadata
+        kwargs = {}
+        if accepted:
+            kwargs['management'] = decode_management(json.dumps(envelope(local, external)).encode())
+        metadata = metadata or Metadata()
+        report = scan_maven('fixture', reader_factory=lambda root: Reader(local),
+                            supervisor_factory=metadata, **kwargs)
+        return report, metadata
+
+    def test_json_and_verbose_identify_origin_after_each_metadata_failure(self):
+        from libyears.maven_output import maven_human_lines, maven_to_dict
+        from test_maven_scan import Metadata
+        for metadata, reason in (
+                (Metadata(targets={'a': MavenReason.CATALOGUE_UNAVAILABLE}), MavenReason.CATALOGUE_UNAVAILABLE),
+                (Metadata(targets={'a': MavenReason.METADATA_WORKER_UNAVAILABLE}), MavenReason.METADATA_WORKER_UNAVAILABLE),
+                (Metadata(dates={('a', '2'): MavenReason.TIME_BASIS_UNAVAILABLE}), MavenReason.TIME_BASIS_UNAVAILABLE)):
+            with self.subTest(reason=reason):
+                local, external = version_fixture()
+                report, unused = self.scan(local, external, metadata=metadata)
+                row = maven_to_dict(report)['occurrences'][0]
+                self.assertEqual((row['declared']['version'], row['declared']['reason']), ('2', reason.value))
+                self.assertIsNone(row['declared']['request'])
+                self.assertEqual(row['declared']['version_basis'], MavenVersionBasis.DECLARED.value)
+                self.assertEqual(row['version_management_status'], 'accepted')
+                self.assertEqual(row['management_status'], 'refused')  # Scope was already known.
+                self.assertIsNone(row['scope_basis'])
+                evidence = row['declared']['managed_version']
+                self.assertEqual(evidence['document_gav'], ['p', 'parent', '1'])
+                self.assertEqual(evidence['local_sources'], ['pom.xml'])
+                self.assertEqual(evidence['request'], '2')
+                self.assertIn('byte_bindings_verified', evidence['applicability'])
+                verbose = '\n'.join(maven_human_lines(report, verbose=True))
+                self.assertIn('managed_version:', verbose)
+                self.assertIn('"document_gav": ["p", "parent", "1"]', verbose)
+                ordinary = '\n'.join(maven_human_lines(report))
+                self.assertIn('Unmeasurable', ordinary)
+                self.assertIn('version: 2', ordinary)
+                self.assertIn('static field evidence', ordinary)
+                for forbidden in ('content_base64', 'sha256', '_external/', 'evidence.json'):
+                    self.assertNotIn(forbidden, verbose)
+                    self.assertNotIn(forbidden, json.dumps(row))
+
+    def test_parent_policy_refusal_preserves_version_evidence_without_http(self):
+        from libyears.maven_output import maven_to_dict
+        local, external = version_fixture(parent_body='<repositories/>')
+        report, metadata = self.scan(local, external)
+        row = maven_to_dict(report)['occurrences'][0]
+        self.assertEqual(row['declared']['reason'], MavenReason.POLICY_UNKNOWN.value)
+        self.assertEqual(row['declared']['managed_version']['document_gav'], ['p', 'parent', '1'])
+        self.assertEqual(metadata.calls, [])
+
+    def test_paired_observed_occurrence_cannot_hide_declared_managed_status(self):
+        from libyears.maven_output import maven_to_dict, maven_human_lines
+        from libyears.maven_results import summarize_sources
+        local, external = version_fixture()
+        report, unused = self.scan(local, external)
+        source = report.sources[0]
+        declared = source.declared.rows[0]
+        observed = replace(declared, declared=None,
+                           observed=MavenVersionFact(MavenVersionBasis.OBSERVED, version='9',
+                                                     reason=MavenReason.CATALOGUE_UNAVAILABLE),
+                           management_status=None, version_management_status=None)
+        source = replace(source, observed=replace(source.observed, rows=(observed,), accepted=True, reason=None))
+        report = replace(report, sources=(source,), summaries=summarize_sources((source,)))
+        row = maven_to_dict(report)['occurrences'][0]
+        self.assertEqual((row['declared']['version'], row['observed']['version']), ('2', '9'))
+        self.assertEqual(row['version_management_status'], 'accepted')
+        self.assertEqual(row['management_status'], 'refused')
+        text = '\n'.join(maven_human_lines(report))
+        self.assertIn('static field evidence', text)
+        self.assertIn('Observed: 9 /', text)
+
+    def test_existing_versions_scopes_safe_measurements_and_view_statistics_survive(self):
+        from libyears.maven_output import maven_human_lines, maven_to_dict
+        local, external = version_fixture()
+        safe = dependency('safe', '<version>1</version><scope>test</scope>', group='g').encode()
+        local['pom.xml'] = local['pom.xml'].replace(b'</dependencies>', safe + b'</dependencies>')
+        before, unused = self.scan(local, external, accepted=False)
+        after, unused = self.scan(local, external)
+        old = {r['key']['artifact_id']: r for r in maven_to_dict(before)['occurrences']}
+        data = maven_to_dict(after)
+        new = {r['key']['artifact_id']: r for r in data['occurrences']}
+        self.assertEqual(old.keys(), new.keys())
+        self.assertEqual(old['safe'], new['safe'])
+        self.assertEqual(new['a']['scope'], old['a']['scope'])
+        self.assertEqual(new['a']['declared']['age']['libyears'], 0.0)
+        self.assertEqual(data['views']['declared']['summary']['dependencies_measured'], 2)
+        self.assertIsNone(data['views']['declared']['summary']['dependencies_discovered'])
+        self.assertIsNone(data['views']['declared']['summary']['coverage'])
+        self.assertEqual(data['views']['observed'], maven_to_dict(before)['views']['observed'])
+        self.assertTrue(all(r['observed'] is None for r in data['occurrences']))
+        self.assertIn('MODULE', '\n'.join(maven_human_lines(after)))
+        self.assertNotIn('managed_version', old['safe']['declared'])
+        self.assertNotIn('version_management_status', old['safe'])
+
+    def test_real_cli_displays_managed_origin_and_keeps_found_failures(self):
+        import contextlib
+        import io
+        from pathlib import Path
+        import tempfile
+        from libyears.cli import main
+        from libyears.maven_input import filesystem_available
+        from test_maven_scan import Metadata
+        if not filesystem_available():
+            self.skipTest('safe filesystem primitives unavailable')
+        local, external = version_fixture()
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            (root / 'pom.xml').write_bytes(local['pom.xml'])
+            evidence = root / 'accepted.json'
+            evidence.write_text(json.dumps(envelope(local, external)))
+            for option in ('--json', '--verbose', ''):
+                output, error = io.StringIO(), io.StringIO()
+                args = [str(root), '--maven-management', str(evidence)] + ([option] if option else [])
+                with patch('libyears.maven_supervisor.MavenSupervisor', Metadata(targets={'a': MavenReason.CATALOGUE_UNAVAILABLE})), \
+                        contextlib.redirect_stdout(output), contextlib.redirect_stderr(error):
+                    self.assertEqual(main(args), 0)
+                self.assertEqual(error.getvalue(), '')
+                if option == '--json':
+                    row = json.loads(output.getvalue())['maven']['occurrences'][0]
+                    self.assertEqual(row['declared']['managed_version']['request'], '2')
+                    self.assertEqual(row['declared']['version'], '2')
+                elif option == '--verbose':
+                    self.assertIn('managed_version:', output.getvalue())
+                else:
+                    self.assertIn('Unmeasurable', output.getvalue())
+                    self.assertIn('version: 2', output.getvalue())

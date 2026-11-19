@@ -336,6 +336,6 @@ class ManagementIntegrationTests(unittest.TestCase):
             self.assertIsNone(data['summary']['coverage'])
             for options in ([], ['--verbose']):
                 text = invoke(['--maven-management', str(accepted), *options])
-                self.assertIn('External management: explicitly accepted static scope evidence', text)
+                self.assertIn('External management: explicitly accepted static field evidence', text)
                 self.assertNotIn(str(accepted), text)
                 self.assertNotIn('_external/', text)

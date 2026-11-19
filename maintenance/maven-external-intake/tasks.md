@@ -33,7 +33,7 @@ above remain historical. Approved contract precedes independent P6–P10/task re
   no fallback/cache bypass, conflict detection and safe existing scope/sibling facts.
   Freeze and obtain independent semantic/admission/security implementation review;
   correct/reverify material findings before local task commit.
-- [ ] T5: Add compatible managed evidence/status JSON and verbose presentation,
+- [x] T5: Add compatible managed evidence/status JSON and verbose presentation,
   concise ordinary disclosure and CLI/integration/refusal-accounting tests. C10/P7/P9;
   A7. Depends T4 approval. Verify origin survives metadata/policy failures, explicit
   versions/scopes unchanged, no Observed substitution, real CLI and no-option/schema/
