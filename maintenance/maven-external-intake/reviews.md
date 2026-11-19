@@ -174,3 +174,33 @@ absence refusal probes pass. Local simulation is not hosted Windows evidence.
 An initial old disclosure-text assertion was updated from scope to field evidence;
 no safety assertion removed. Parent reconciles finding closure and collateral
 no-option, privacy, failure retention and view separation. T5 complete; T6 ready.
+
+## 007-0043 T6 integrated usefulness convergence
+
+At runtime commit `f4ecb2e`, result-freeze.json binds21 raw evidence/procedure and13
+public/runtime files. Fresh non-author convergence COMPLETE/APPROVE; no material
+finding. Reviewer independently verified all34 result hashes and19 input hashes,
+actual127-row/56-capability admission, seven raw absent-version sites, exact current
+CLI replay JSON, baseline/current human rendering and baseline runtime reproduction.
+42 focused tests pass. Parent validates every result against raw inputs/reports.
+All81 prior versions,74 scopes,120 noncandidate rows and41 old measured rows survive;
+81→88 version facts/49→56 candidates, replay41→41 ages, expected refusal transitions.
+Worker source's additional catalogue reason is retained, not suppressed.
+
+Separate live candidate-only batch: seven new ages, one GA, three closed requests,
+20435 body bytes, verified target correspondence/before-after integrity and worker
+cleanup. Reviewer inspects procedure/messages/integrity and independently recomputes
+all seven ages. Neither review nor parent claims a fresh full-repository total,
+Observed evidence, evaluated model or hosted execution. Historical47-age result
+remains distinct. No review accessed target/trust/network. Baseline verifier stages
+only this repository's exact starting runtime and reproduces four captures byte-for-
+byte; original captures remain unchanged. A first comparison assertion incorrectly
+required unchanged source reason lists; it was corrected to verify the expected
+worker-source catalogue reason addition, with original procedure retained.
+
+Current candidate-content GitLeaks8.30.1 zero findings; pre-final committed history
+386 commits zero. No suppression/security exception. The unrelated prior007-0042
+supplemental whole-checkout finding is unchanged and was not reclassified or fixed.
+Final committed-history result, exact final Git scope and helper-written44key baton
+are recorded in durable completion after the documentation commit. Hosted checks
+remain unobserved. Push performed: NO.

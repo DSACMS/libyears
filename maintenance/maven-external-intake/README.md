@@ -3,7 +3,7 @@
 Use `python3 -m libyears ROOT --maven-management accepted-management.json --json`.
 The option explicitly accepts the embedded parent/BOM representations for the
 listed byte-bound consumer contexts and exact field keys. It can supply missing
-Declared scope facts; it does not establish an effective POM, successful build,
+Declared scope facts and genuinely absent ordinary Declared versions; it does not establish an effective POM, successful build,
 historical resolution, runtime selection, complete population or acquisition.
 No evidence is discovered or downloaded automatically.
 
@@ -56,3 +56,20 @@ fixed limitations. Scope admission and public age comparison are separate: exist
 repository policy still applies; external-parent repository policy conservatively
 withholds comparison. Imported BOM repositories never grant consumer authority.
 Observed remains unavailable and coverage can remain unknown.
+
+Managed versions require a single ordinary declaration with no version field.
+Explicit versions remain unchanged; empty, malformed, unresolved or unsupported
+ordinary versions cannot be repaired. A whole winning exact management key must
+supply a supported exact version; missing/invalid winning fields never fall back.
+The supplied version is a static Declared request fact, not a resolved/installed
+or Observed selection. Management-only entries create no dependencies.
+
+JSON adds `version_management_status` separately from the existing scope-only
+`management_status`. A successful Declared fact has `managed_version`: the original
+managed request, winning local source or external document GAV, verified local
+lineage sources, visited accepted GAVs, applicability basis and fixed limitations.
+Existing ordinary request/origins/version_basis retain their meanings. Verbose
+shows the managed origin even if later metadata or policy refuses an age. Scope,
+version and age availability remain separate. The concise ordinary tables still
+show every retained unmeasurable occurrence and its reason. See the
+[007-0043 validation](validation.md#managed-declared-version-yield--007-0043).

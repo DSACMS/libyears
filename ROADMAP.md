@@ -487,7 +487,8 @@ not the usefulness question or a new capability gate.
 
 #### External-management evidence intake — restricted route selected
 
-**State: IMPLEMENTED; restricted explicitly accepted static intake (007-0038).**
+**State: IMPLEMENTED; restricted explicitly accepted static intake (007-0038,
+extended by007-0043).**
 The human selected the conditional field claim established by the reviewed
 [composition investigation](discovery/maven-composition-semantics.md). The bounded
 [contract](maintenance/maven-external-intake/spec.md),
@@ -498,6 +499,17 @@ admission from age measurement. Seven conditional fields are supported; 32 contr
 No automatic acquisition or broader evaluator was selected. The alternatives and
 research conditions below remain historical prospective context, not additional
 implementation or acquisition authority.
+
+**007-0043 managed-version result:** Explicitly accepted byte/context/key-bound
+management now supplies genuinely absent ordinary Declared versions, preserving
+explicit/present unusable values and independent scope/comparator facts. The
+[same-input witness](maintenance/maven-external-intake/validation.md#managed-declared-version-yield--007-0043)
+adds seven version facts and seven candidates (81→88 versions,49→56 candidates);
+older-response replay stays41 measured. One candidate-only live batch establishes
+seven separate ages; historical47-age evidence stays separate. Unknown population/
+coverage and unavailable Observed persist. Remaining39 version and32 model refusals
+are further evidence gaps, not promised recovery. Next usefulness work should start
+from a finite retained witness or separately selected scope, not automatic acquisition.
 
 **User outcome:** Recover attributable missing Declared management facts where
 supported. The 39 AB2D refusals motivate investigation, not a promise of 39 new

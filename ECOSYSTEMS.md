@@ -1010,10 +1010,13 @@ optional is never managed and scope defaults wait until absence is established.
 Ordinary scans do not fetch or read BOM contents. The explicit
 [`--maven-management FILE` intake](maintenance/maven-external-intake/README.md)
 accepts byte-bound external parent/BOM representations for listed consumer keys
-and can fill restricted missing scopes using pinned whole-entry dominance and
-ordered imports. It preserves local field-inheritance behavior, existing versions,
+and can fill restricted missing scopes and genuinely absent ordinary Declared
+versions using pinned whole-entry dominance and ordered imports. Present empty,
+unsupported or unresolved ordinary versions cannot be repaired. It preserves local
+field-inheritance behavior, established versions,
 unknown populations and independent comparator policy. Accepted applicability is
-a conditional static claim, with additive scope basis/limitations; it establishes
+a conditional static claim, with additive scope basis/limitations and inspectable
+managed-version origin in JSON/verbose, including after metadata failure; it establishes
 neither a successful complete model/build nor historical or Observed selection.
 External-parent repository declarations conservatively withhold comparison.
 Unknown imports may leave versions/scopes unavailable; independent explicit facts survive. Profiles are

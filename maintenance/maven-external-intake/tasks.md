@@ -40,7 +40,7 @@ above remain historical. Approved contract precedes independent P6–P10/task re
   sibling regressions. Run integration focused/full/disabled/native-worker gates;
   freeze and obtain fresh independent integration/admission/security review before
   the T5 commit. T4 must be reviewed and committed before starting T5.
-- [ ] T6: Same-input offline yield witness; optional candidate-only live validation
+- [x] T6: Same-input offline yield witness; optional candidate-only live validation
   only if metadata missing, with retained target/trust/integrity procedure and existing
   limits. C7–C10/P10; A8/A9. Depends T4/T5 approval. Fresh independent result/usefulness
   convergence against frozen code/results, final documentation/changelog/roadmap,
