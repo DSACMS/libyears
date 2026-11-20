@@ -492,6 +492,18 @@ already-existing export and context before offline qualification; reader/specifi
 work remains unselected. [Discovery review](discovery/maven-observed-artifacts-review.md)
 does not reopen the completed configured Declared validation.
 
+**007-0047 wider SBOM corpus:** [Feasibility and next specification handoff](discovery/sbom-corpus-feasibility.md)
+find real public release evidence elsewhere: Dependency-Track CycloneDX has200
+external exact Maven components and43 represented root edges matching release POM
+declarations; CPython release SPDX has20 exact PyPI identities. GitHub exports
+also contain missing versions/ranges and lack module association. None is an
+accepted current-checkout Observed join or a new measured age. Recommend bounded
+local CycloneDX inventory discovery by default, explicit file selection/disable,
+and hosted acquisition off by default; paired Observed facts need separate
+producer/context qualification. Human selection/specification remains pending;
+the prior target absences and metric/date policies stand.
+[Independent discovery review](discovery/sbom-corpus-feasibility-review.md).
+
 #### External-management evidence intake — restricted route selected
 
 **State: IMPLEMENTED; restricted explicitly accepted static intake (007-0038,
