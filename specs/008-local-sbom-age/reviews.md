@@ -83,3 +83,44 @@ no package-manager-based hygiene invocation or hosted CI claim. The only new
 network activity retrieved bounded exact public format documentation, not SBOMs
 or target-derived coordinates. No private target/config/trust inspection, target
 execution, implementation, push, tag, release or publication.
+
+## Run007-0049 — Technical planning authority and review
+
+The human authorizes technical planning, independent plan review/correction, then
+task decomposition from the approved plan and independent task-graph review.
+Implementation remains unauthorized. Actual starting HEAD
+`ff9cc154a894f3f5de11f0c1ec984e0a27bcda8b` and clean tree were verified; original
+0048 handoff/artifact/final freeze validated before once-only qualified telemetry
+enrichment. The approved specification/output contract/examples remain unchanged.
+
+[plan.md](plan.md) is frozen before fresh non-author review of architecture,
+population/graph/permission/time reuse; and filesystem/parser/privacy/worker safety,
+output integration, sibling preservation and earliest useful offline slice.
+Reviewers inspect actual authority/code/retained evidence read-only and offline;
+no target checkout, new acquisition, registry/GitHub request, build/package manager,
+config/trust inspection, runtime/prototype/product-test edits. Requested fresh
+contexts use fork_turns=none with no overrides; actual child settings/resources are
+unavailable. No sibling conclusions are supplied before original reviews finish.
+Plan disposition pending. No task graph is drafted before plan approval.
+
+### Plan approval
+
+Plan-v1 manifest SHA256
+`fa9fdcc126284817bcccff68f5f405538fbff06e7542828440aef0960a95712b`:
+both fresh non-author scopes **COMPLETE / APPROVE**, no material findings or
+corrections. Exact snapshots, original prior handoff, retained corpus/code bindings
+and review reports are durable in `D/007-0049/`.
+
+| Scope | Independent inspected obligations |
+| --- | --- |
+| Architecture/semantics | Entire plan/spec/output/examples and actual admission/measurement/output code; literal variant/member and ref-first graph identity; missing-version policy-veto propagation; supervisor exact capability type and guarded lifecycle; independent summary/projection; useful injected slice before transport wiring |
+| Safety/integration | Descriptor-bound discovery/platform refusal; whole framing before disclosure; global/alias/known-veto reduction; separate budgets and process-wide deferred cleanup; safe JSON/human integration and unchanged sibling values; offline corpus checkpoint versus separately authorized live validation |
+
+Both verify candidate/authority/code and all seven corpus bindings; corpus counts
+remain201 records/root alias1/200 external/21 services/43 root edges/424 total
+edges, without a yield claim. Parent reconciles the two slices against actual
+Maven policy/admission and output boundaries; no hidden declaration join,
+same-version zero shortcut, alternate-source veto expansion or generalized framework
+is required. Plan approval is architecture approval, not implementation, platform
+or operational evidence. The run's existing authority now permits task decomposition
+and its independent review without another human continuation gate.

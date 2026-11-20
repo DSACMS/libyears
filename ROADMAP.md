@@ -517,6 +517,13 @@ Specification converged after one public JSON-contract finding was corrected and
 freshly verified across all three review scopes. No implementation is authorized;
 technical planning requires separate authority.
 
+**007-0049 technical planning:** [Feature008 plan](specs/008-local-sbom-age/plan.md)
+is independently approved: safe local intake, reference-first document population,
+private already-known comparator vetoes, existing supervised Maven metadata and
+independent report/output. The earliest useful slice uses injected offline metadata
+before production transport wiring. Task decomposition/review follows within this
+run's authority; implementation and real live validation remain separately gated.
+
 #### External-management evidence intake — restricted route selected
 
 **State: IMPLEMENTED; restricted explicitly accepted static intake (007-0038,
