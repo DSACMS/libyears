@@ -1,8 +1,9 @@
-# Configured Maven validation checkpoint — 007-0044
+# Configured Maven validation — 007-0044 / 007-0045
 
-**Current validation incomplete: the private recording wrapper failed before
+**Historical 007-0044 validation incomplete: the private recording wrapper failed before
 worker initialization. No coherent fresh measurement report was produced.**
-This is a capture-procedure error, not evidence of a product/runtime measurement
+The completed 007-0045 disposition is appended below.
+This was a capture-procedure error, not evidence of a product/runtime measurement
 defect or registry failure. No runtime changes or second live attempt were made.
 
 Starting boundary was clean `d48170b6213b1f7dbcd73b3619b56b06b23451e3`.
@@ -105,3 +106,121 @@ list relative to that historical boundary is retained in the restart evidence.
 Smallest next action: use the verified recording fix in a newly authorized configured
 validation. No new product or trust decision is identified. A new live invocation
 requires authority after this end-of-day stop; publication remains separate.
+
+## 007-0045 resumed configured validation — completed
+
+The preceding 007-0044 failure remains historical. On 2026-11-20, a new,
+explicitly authorized capture completed the configured validation from clean
+`ffe429dc522ff5a416eec736c5696046a5001978`. The human reports publication of that
+candidate to both github/main and cms/main and all hosted CI green. This is
+human-observed hosted evidence; the agent did not inspect logs or remote refs.
+
+Only the private recorder changed: `dataclasses.asdict()` replaces `vars()` on
+slotted capabilities, and the original CLI exit is now retained. No runtime,
+test, contract, trust or evidence-acceptance change was needed. The original
+failed attempt and all its bytes remain intact. Run 007-0045 was unused in both
+the ledger and local handoffs before allocation.
+
+### Procedure and integrity
+
+All 007-0044 final-freeze bindings, its original handoff/artifact/completion and
+the relevant 007-0038/0043 retained result/input manifests verify. Before scanning,
+the production evidence reader safely snapshots the accepted envelope; its digest
+matches the managed-version checkpoint. All eight current POM hashes, target
+revision `9c785d41da3f7dd72f5be62cfc42ee7b1bf74459`, clean target status and local
+consumer bindings match retained evidence. The bounded Git/index/input/entry
+integrity record is identical before and after this run and to 007-0044.
+
+One actual CLI call wraps production mixed/Maven scanning and the existing isolated
+supervisor. It uses the exact approved private CA copy with certificate and hostname
+verification, unchanged identity/safety checks and fixed public metadata transport.
+There is no target execution/modification, new POM acquisition, alternate/private
+endpoint or sibling registry lookup. Existing ceilings remain 300 seconds/scan,
+60 seconds/GA, 10 seconds/command, 300 attempts and 64 MiB. The completed batch
+records 42 attempts, 178869 body bytes, no cancellation and complete worker cleanup.
+CLI exit is directly captured as zero with empty stderr. Ordinary stdout is the
+CLI result; JSON and verbose are projections of that same returned report, with
+no additional live requests. No retry was necessary.
+
+### Current Declared result
+
+| Raw statistic | Value |
+| --- | ---: |
+| Retained occurrences (not a complete population) | 127 |
+| Measured occurrences | 54 |
+| Exactly zero ages | 27 |
+| Total conventional Maven libyears | 15.479713793190864 |
+| Mean | 0.28666136654057156 |
+| Median | 0.07670882766750323 |
+| Maximum | 3.507888971277917 |
+
+The other 73 retained occurrences remain individually visible: 39 unsupported
+versions, 32 unsupported model facts and two catalogue-unavailable rows. The last
+two are `gov.cms.ab2d:ab2d-filters` in `coverage/pom.xml` and `e2e-test/pom.xml`.
+Their shared select-target result is `maven_catalogue_unavailable`; retained worker
+messages do not establish an HTTP status or distinguish endpoint/transport/parsing
+causes. Do not relabel this as an admission refusal or proven missing package.
+The 39/32 local refusals precede metadata admission; they are not failed HTTP calls.
+No budget exhaustion or local model regression is established.
+
+Seven absent-version `org.springframework.boot:spring-boot-starter-test` occurrences
+now have accepted-static managed version 4.1.1, independently supported scope and
+measurable age against 4.2.0. Their modules are api, common, coverage, e2e-bfd-test,
+e2e-test, job and worker (each module's `pom.xml`, base_model, jar, no classifier).
+Each contributes 0.24972276091971507; their raw subtotal is 1.7480593264380053.
+All seven retain managed-version winning source, bound lineage and limitations in
+JSON/verbose. No other absent-version occurrence was repaired. Repeated module
+occurrences and zero ages remain weighted individually.
+
+### Reconciliation and usefulness
+
+The historical 47-measured report/raw 13.40209657895404 is digest-verified with its
+retained provenance. Every one of its 47 measured identities remains measured;
+seven additional identities are exactly the managed-version group above. Four
+common ages also change with fresh comparator observations: dd-java-agent in api
+and worker moves from 1.69.0 to 1.69.1; httpcore5 in api and common moves from 5.4.4
+to 5.5. These explain the remaining numerical difference. Other common ages are
+unchanged apart from catalogue retrieval timestamps. These are distinct catalogue
+observations, not proof of a date-policy or implementation change.
+
+Against the newer fixed-input 007-0043 replay (41/raw 9.29860822749512), all 127
+identities, established versions/scopes and managed provenance match. Thirteen
+more rows measure in this fresh report: the seven managed rows plus six formerly
+catalogue-unavailable rows. The separate seven-row 007-0043 live subset remains a
+historical observation, not an ingredient added to this total. Its older starter
+comparator was 4.1.2; current 4.2.0 is fresh metadata. The prior offline replay
+remains the controlled evidence that attributes admission changes to implementation;
+this fresh batch cannot isolate implementation effects by headline subtraction.
+
+The configured ordinary journey is useful: aligned module/dependency/version/latest/
+age columns expose all 54 measurements, and a separate reason-bearing table exposes
+all 73 found but unmeasurable occurrences. Totals display as 15.480/0.287/0.077/3.508;
+raw values remain in JSON. Every age and summary was independently recomputed by
+the parent; ordinary and verbose projections match the same JSON data, including
+unknown population and unavailable Observed. Static-field and POM Last-Modified
+disclosures remain visible. This conclusion concerns the configured invocation,
+not a claim that a no-option scan acquires external evidence automatically.
+
+Complete population and coverage remain unknown. The 127 retained rows supply no
+certified denominator; 15.479713793190864 is only the measured partial Declared total,
+not complete repository technical debt. Observed remains unavailable with null
+summary values and no fabricated per-row failure. Static model restrictions,
+explicit evidence acceptance, conventional public correspondence and timestamp
+limitations remain supported product boundaries, not blockers to closing this
+bounded configured-validation loop. An Observed reader and broader Maven model
+support are outside it.
+
+### Durable evidence and closure gate
+
+Using D from the helper above, `D/007-0045/` retains original prior baton/ledger
+prefix, setup/capture/analyze procedures, immutable management snapshot, private
+invocation, before/after integrity, capabilities, closed worker messages, CLI exit/
+stderr, ordinary/JSON/verbose captures and occurrence-level `analysis.json`.
+Private references and raw engineering captures stay outside tracked artifacts.
+007-0044 is reconciled once without new status telemetry; its original bytes,
+qualifications and earlier ledger bytes are preserved. Current run is not appended.
+
+The fresh independent review dispositions and final proportionate checks are
+recorded in [reviews.md](reviews.md#007-0045-configured-validation-closure).
+No runtime suite is repeated for documentation-only work. Publication is a separate
+human gate; no push, tag, release or private-target validation is authorized here.

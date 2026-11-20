@@ -244,3 +244,63 @@ Hosted CI unobserved. The last verified publication boundary from original0027 i
 historical; the retained local range list does not establish today's remote state.
 Next action requires a newly authorized configured validation with the concrete
 recording-only fix; no product-policy or trust expansion is recommended.
+
+## 007-0045 configured validation closure
+
+New configured capture from clean published boundary
+`ffe429dc522ff5a416eec736c5696046a5001978`; original 0044 failed attempt remains
+preserved. Human reports both main publications and hosted green for that boundary;
+logs were not independently inspected. The current configured result and its
+historical/replay reconciliation are appended to
+[configured-validation.md](configured-validation.md#007-0045-resumed-configured-validation--completed).
+
+Fresh review candidate: `D/007-0045/review-freeze.json` (D resolved through the
+handoff helper), binding primary captures, procedure, analysis and relevant public
+files. Two fresh non-author scopes are commissioned separately: provenance/integrity/
+admission/privacy, and result arithmetic/reconciliation/ordinary usefulness.
+Reviews use retained evidence only, with no target/trust/network access or edits.
+Requested fresh contexts and no model overrides are orchestration facts; actual
+child model/effort/resource telemetry is unavailable. Parent synthesis and final
+checks follow below after review; this paragraph alone records no approval.
+
+Revised freeze SHA256
+`900d80c9bfcd8d218c1d169bd6bb5303525fa97bce7f6c8f899a3f7fa4107e8e`:
+both fresh independent non-author scopes COMPLETE/APPROVE, no unresolved material
+finding. Provenance reviewer independently reconstructs all 127 rows/56 occurrence
+capabilities from bound snapshots, matches captured admission and all 42 worker
+commands, verifies original failure versus recording fix, before/after integrity,
+fixed-public TLS/privacy boundaries and exact prior ledger reconciliation. Result
+reviewer independently matches all 54 ages to worker timestamps/comparators,
+recomputes every raw statistic and verifies all 127 historical/replay/current
+identities, seven raw absent-version sites/winning BOM version, module weighting,
+27 zero ages and all 54 measured/73 unmeasurable ordinary rows. Both scopes preserve
+unknown population/coverage, separate Observed and qualified hosted evidence.
+No reviewer target/trust/network access, live rerun or edits occurred.
+
+Parent validates the conclusions against primary captures and the executable
+reconciliation: all historical 47 measurements survive; seven new managed rows
+contribute 1.7480593264380053 and four fresh comparator changes contribute
+0.3295578877988186. The newer 41-age replay is separately accounted for, never
+combined with live subsets. During primary-evidence checking the parent corrected
+one draft historical comparator value, 4.1.4 to the actual 4.1.2. Original draft
+and freeze are retained; both fresh reviewers verify the revised value before
+approval. No implementation defect or new policy decision was identified.
+
+Current-content GitLeaks 8.30.1 with the actual configuration passes for the three
+candidate files; pre-final full history passes across 389 commits, zero findings.
+Relevant links/anchors, sensitivity inspection, ledger shape/unique IDs/preserved
+prefix/original bytes, and working/staged whitespace checks pass. An initial broad
+sensitivity assertion also matched pre-existing ledger text; it was narrowed to
+new additions after confirming that text was unchanged, without changing historical
+evidence. No suppression or security exception was introduced. Full product and
+platform/security regression suites are not rerun for documentation-only changes;
+runtime/tests/tools/contracts are unchanged. Final committed-history and exact
+Git scope/tree results are retained in `D/007-0045/completion.json`.
+
+**Disposition: bounded configured-validation loop COMPLETE and useful.**
+The 73 retained individual refusals, unknown complete denominator, conventional
+public POM timestamp/correspondence basis and absent Observed reader remain explicit
+supported limitations. They do not require a retry or broader implementation to
+close this loop. This does not close the entire Maven chapter. Next consequential
+gate is human publication of the reviewed local documentation/observation commits,
+then hosted follow-up for that exact candidate; no publication was performed here.
