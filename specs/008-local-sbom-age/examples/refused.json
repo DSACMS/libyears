@@ -1,0 +1,61 @@
+{
+  "format_version": 1,
+  "scope": "sbom_asserted_unique_component_versions",
+  "legacy_fields_exclude_sbom": true,
+  "state": "unavailable",
+  "reason": "sbom_invalid_json",
+  "discovery": {
+    "mode": "explicit",
+    "state": "bypassed",
+    "candidate_count": null,
+    "search_complete": null,
+    "reason": null
+  },
+  "selection": {
+    "mode": "explicit",
+    "state": "selected",
+    "source_id": "bom.json"
+  },
+  "document": null,
+  "population": null,
+  "summary": {
+    "dependencies_discovered": null,
+    "dependencies_measured": null,
+    "coverage": null,
+    "total_libyears": null,
+    "mean_libyears": null,
+    "median_libyears": null,
+    "max_libyears": null
+  },
+  "components": [],
+  "graph": {
+    "state": "unknown",
+    "reason": null,
+    "subject_id": null,
+    "vertices": [],
+    "edges": [],
+    "cycles_present": null
+  },
+  "reason_counts": {
+    "source": [
+      {
+        "reason": "sbom_invalid_json",
+        "count": 1
+      }
+    ],
+    "components": [],
+    "graph": []
+  },
+  "limitations": [
+    "acquisition_content_not_established",
+    "central_correspondence_assumed",
+    "coordinate_disclosure_for_admitted_lookups",
+    "current_checkout_association_not_established",
+    "publication_history_not_established",
+    "resolved_direct_population_not_established",
+    "runtime_deployment_not_established",
+    "sbom_completeness_unknown",
+    "sbom_supplier_assertions",
+    "variant_availability_not_established"
+  ]
+}

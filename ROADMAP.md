@@ -504,6 +504,19 @@ producer/context qualification. Human selection/specification remains pending;
 the prior target absences and metric/date policies stand.
 [Independent discovery review](discovery/sbom-corpus-feasibility-review.md).
 
+**007-0048 selected local SBOM ages:** The human selects useful conventional Maven
+ages for a separately labeled SBOM component-version population, independent of
+current-checkout Observed joins, superseding inventory-only shipping advice.
+[Feature008 specification](specs/008-local-sbom-age/spec.md) bounds local CycloneDX
+JSON1.5 discovery/explicit selection/disable, population/graph identity, comparator
+admission and independent output/coverage. Hosted intake remains out of scope;
+Declared/Observed and existing date policy remain unchanged.
+[Verification evidence](specs/008-local-sbom-age/evidence.md) and
+[specification reviews](specs/008-local-sbom-age/reviews.md) govern convergence.
+Specification converged after one public JSON-contract finding was corrected and
+freshly verified across all three review scopes. No implementation is authorized;
+technical planning requires separate authority.
+
 #### External-management evidence intake — restricted route selected
 
 **State: IMPLEMENTED; restricted explicitly accepted static intake (007-0038,

@@ -1,0 +1,133 @@
+{
+  "format_version": 1,
+  "scope": "sbom_asserted_unique_component_versions",
+  "legacy_fields_exclude_sbom": true,
+  "state": "partial",
+  "reason": null,
+  "discovery": {
+    "mode": "explicit",
+    "state": "bypassed",
+    "candidate_count": null,
+    "search_complete": null,
+    "reason": null
+  },
+  "selection": {
+    "mode": "explicit",
+    "state": "selected",
+    "source_id": "bom.json"
+  },
+  "document": {
+    "source_id": "bom.json",
+    "sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "format": "CycloneDX",
+    "spec_version": "1.5",
+    "document_version": 1,
+    "serial_number": {
+      "value": null,
+      "status": "absent"
+    },
+    "created": {
+      "value": null,
+      "status": "absent"
+    },
+    "producer": {
+      "state": "absent",
+      "tools": [],
+      "tools_omitted": 0
+    },
+    "subject": {
+      "id": "subject",
+      "name": "Synthetic fixture",
+      "name_status": "available",
+      "identity": null
+    },
+    "compositions": {
+      "state": "absent",
+      "aggregates": []
+    }
+  },
+  "population": {
+    "basis": "sbom_asserted_unique_component_versions",
+    "inventory_records": 1,
+    "subject_aliases_excluded": 0,
+    "services_excluded": 0,
+    "members": 1,
+    "supported_exact": 1,
+    "completeness": "unknown",
+    "relationships": {
+      "direct": 0,
+      "transitive": 0,
+      "unknown": 1
+    }
+  },
+  "summary": {
+    "dependencies_discovered": 1,
+    "dependencies_measured": 0,
+    "coverage": 0.0,
+    "total_libyears": 0.0,
+    "mean_libyears": null,
+    "median_libyears": null,
+    "max_libyears": null
+  },
+  "components": [
+    {
+      "id": "component-0",
+      "identity": {
+        "group_id": "example",
+        "artifact_id": "component",
+        "version": "1.0",
+        "type": "jar",
+        "classifier": null
+      },
+      "label": "example:component",
+      "label_status": "available",
+      "version": "1.0",
+      "version_basis": "sbom_asserted_component_version",
+      "record_count": 1,
+      "reference_ids": [
+        "component-ref-0"
+      ],
+      "relationship": "unknown",
+      "direct_path": null,
+      "transitive_path": null,
+      "age": null,
+      "reason": "maven_catalogue_unavailable"
+    }
+  ],
+  "graph": {
+    "state": "unknown",
+    "reason": "sbom_graph_unknown",
+    "subject_id": "subject",
+    "vertices": [],
+    "edges": [],
+    "cycles_present": null
+  },
+  "reason_counts": {
+    "source": [],
+    "components": [
+      {
+        "reason": "maven_catalogue_unavailable",
+        "count": 1
+      }
+    ],
+    "graph": [
+      {
+        "reason": "sbom_graph_unknown",
+        "count": 1
+      }
+    ]
+  },
+  "limitations": [
+    "acquisition_content_not_established",
+    "central_correspondence_assumed",
+    "coordinate_disclosure_for_admitted_lookups",
+    "current_checkout_association_not_established",
+    "publication_history_not_established",
+    "resolved_direct_population_not_established",
+    "runtime_deployment_not_established",
+    "sbom_completeness_unknown",
+    "sbom_graph_unknown",
+    "sbom_supplier_assertions",
+    "variant_availability_not_established"
+  ]
+}
