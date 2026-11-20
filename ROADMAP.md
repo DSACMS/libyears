@@ -485,6 +485,13 @@ and historical measurements/limitations remain unchanged. Correct refusal does n
 establish sufficient real-world coverage. This closes the scope-default diagnosis,
 not the usefulness question or a new capability gate.
 
+**007-0046 Observed discovery:** [Retained-artifact comparison](discovery/maven-observed-artifacts.md)
+recommends qualifying one explicitly bound dependency-plugin JSON tree format;
+no real export was found within the bounded public-candidate search. Supply an
+already-existing export and context before offline qualification; reader/specification
+work remains unselected. [Discovery review](discovery/maven-observed-artifacts-review.md)
+does not reopen the completed configured Declared validation.
+
 #### External-management evidence intake — restricted route selected
 
 **State: IMPLEMENTED; restricted explicitly accepted static intake (007-0038,
