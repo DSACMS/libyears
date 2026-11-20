@@ -521,8 +521,12 @@ technical planning requires separate authority.
 is independently approved: safe local intake, reference-first document population,
 private already-known comparator vetoes, existing supervised Maven metadata and
 independent report/output. The earliest useful slice uses injected offline metadata
-before production transport wiring. Task decomposition/review follows within this
-run's authority; implementation and real live validation remain separately gated.
+before production transport wiring. The independently approved
+[task graph](specs/008-local-sbom-age/tasks.md) maps T001–T007 to that slice, then
+ordinary integration and offline corpus/sibling/platform verification, followed
+by final conformance. No unresolved product decisions or review findings remain.
+Implementation and real live validation remain separately gated; stop at
+implementation authorization.
 
 #### External-management evidence intake — restricted route selected
 

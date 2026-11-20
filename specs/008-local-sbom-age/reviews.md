@@ -124,3 +124,63 @@ same-version zero shortcut, alternate-source veto expansion or generalized frame
 is required. Plan approval is architecture approval, not implementation, platform
 or operational evidence. The run's existing authority now permits task decomposition
 and its independent review without another human continuation gate.
+
+### Task-graph review commission
+
+After plan approval/local commit, [tasks.md](tasks.md) is derived from the approved
+plan and frozen for fresh non-author review. Assigned obligations: full requirement/
+AC traceability, prerequisites/coherent deliverables/verification/completion and
+safe independently reviewable task boundaries; and useful offline-slice sequencing,
+security/integration/checkpoint coverage, platform/sibling preservation and live/
+publication authority separation. No current sibling review conclusions are shared.
+The same read-only/offline/no-implementation access boundaries apply. Task-graph
+approval is pending; no checkbox represents completed implementation.
+
+### Task-graph approval and final reconciliation
+
+Tasks-v1 manifest SHA256
+`c4c0a7af800d833e6cedbe74ee51d59ac5664ec43e016ea290a8555ae8a0f2e2`,
+task artifact SHA256
+`f8766bfea728df9d9243530591937b90755029423a4b897b5b20b2df5a122533`:
+both new fresh non-author contexts return **COMPLETE / APPROVE**, no material
+findings/corrections. They are distinct from the two plan-review contexts. No
+reviewer authors the candidate or receives current sibling conclusions as evidence.
+
+| Scope | Independent verified obligations |
+| --- | --- |
+| Dependency/traceability/completion | Approved committed plan and all candidate/authority/code/snapshot bindings; every task's deliverable, prerequisites, verification/completion; all14 ACs substantively covered; real temporary-file/injected-date→summary/table/JSON thin slice; C1/C2/C3 and separate human gates |
+| Safety/integration/usefulness | File/framing/population/graph/admission precede injected slice; missing-version veto channel and exact supervisor capability/cleanup constraints match actual code; retained-corpus versus portable fixtures, sibling projection/budgets, platform/refusal/lifecycle obligations and separately authorized live V001 |
+
+Parent validates the full coverage rather than treating approvals as votes:
+T001–T007 plus C1 is the first useful offline internal answer; T008 does not start
+before that checkpoint and phase authority. T009/C2 requires the original retained
+corpus and safety evidence, separately recording hosted gaps. T010/C3 closes
+deterministic implementation conformance without inferring live yield or platform
+success. V001's later human grant covers precise disclosure/transport scope; a
+qualified unavailable validation record is never a positive age-yield claim.
+No actual witness has executed merely because its task is well-defined.
+
+**Final disposition: technical plan APPROVED; implementation task graph APPROVED.
+Stop at IMPLEMENTATION AUTHORIZATION.** No unresolved product decision or material
+review finding remains. All T001–T010/V001 checkboxes are open. This run has created
+documentation/bookkeeping only, not runtime code, executable prototypes or new
+product tests. No target access, network, registry/GitHub request, build/package
+manager, configuration/trust read, push, tag, release or publication occurred.
+
+### Run007-0049 checks and durable closure
+
+Documentation links/anchors, dependency order/cycle check, every AC mapped to
+concrete witnesses, task checkboxes/completion/checkpoint structure, approved
+specification/examples/runtime byte integrity,98 unique44-field ledger rows,
+original0048 handoff/prefix/qualified telemetry/once-only append/current0049 absence,
+sensitivity and whitespace pass. Reported1069seconds and account192 are attributed
+human observations; original confounding/runtime notes and before191 remain. No
+active-runtime reconstruction or stored credit delta. Current before192 uses the
+immediately preceding observed boundary under the standing continuity rule.
+
+Configured GitLeaks8.30.1 current content passes with zero findings (four files at
+plan closure, five across final run scope); plan-commit canonical history396 commits
+passes, zero findings. Final committed-history scan, exact commits/tree and durable
+44-key handoff are retained in `D/007-0049/completion.json`. Frozen review bytes and
+bookkeeping procedures remain immutable. No full product suite ran solely for
+documentation; no runtime/platform/live success or hosted CI is claimed.
