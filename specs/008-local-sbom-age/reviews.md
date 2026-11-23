@@ -358,3 +358,75 @@ argument privacy, sibling projection, plural Maven, missing-version veto transfe
 worker ordering, exact production capability type, failed startup/no fallback,
 deferred guard and zero construction for no admissions. C2 integration review and
 full corpus/regression checkpoint remain pending under the same phase authority.
+
+### T009/C2 — Offline integration review commission
+
+The retained originals are available at the previously authorized007-0047 durable
+location. Six exact bindings verify. The narrow explicitly invoked corpus verifier
+uses safe reads, test-owned exact-byte copies, the actual CLI/mixed orchestrator
+and controlled metadata parsed by existing Maven adapters; socket/process spies
+forbid live work. Full CPython release and its valid JSON SPDX-shaped fragment
+are distinct from retained descriptive documentation, which is not an SBOM input.
+
+Local evidence is in [validation.md](validation.md) and `D/007-0051/corpus/`:
+201 input records, one root alias,200 exact members,21 services,43 direct/157
+transitive,424 edges; all57 historical POM declarations compared separately with14
+omitted tests. Synthetic metadata retains197 measured/3 refused rows; simulated
+unavailability retains all200 refused rows. No live age yield, checkout association,
+resolved/direct population or production transport success follows.
+
+The broader regression run exposed a CLI compatibility defect: new no-sbom privacy
+matching overrode the existing sanitized NuGet classification of ambiguous --n/
+case variants. Bounded correction preserves existing scoped classification and
+adds a regression. Other initial failures were older sibling fixtures' implicit
+SBOM-absence assumption, now explicitly supplied through the independent absence
+seam. No native SBOM/refusal witness is weakened. Incorrect initial synthetic npm/
+Ruby fixture framing was corrected before the projection matrix passed.
+
+Final pre-review suite:1250 PASS,1 skip; capability-disabled-before-discovery1250
+PASS,123 skips; real worker/protocol/lifecycle17 PASS. A42-case sibling projection
+matrix, exact native ceilings, current admission/worker/output and retained-corpus
+results are frozen for fresh independent C2 review of semantics/corpus/usefulness
+and safety/isolation/privacy/compatibility. No current sibling review conclusions
+will be supplied. Requested fork_turns=none/no overrides; actual child configuration
+and resource telemetry are unavailable. C2 disposition remains pending; T010 is
+outside this authority. Actual hosted9-job OS/Python execution remains pending
+under its own authority; no remotes/hosted state are contacted to infer it.
+
+### C2 approval and parent reconciliation
+
+Frozen c2-v1 contains36 candidate/evidence bindings and36 snapshots at T008 commit
+`6e9cadc78df15e858833de3d05897a6a72d7470b`. Both fresh non-author scopes complete
+**APPROVE**, no material findings or unresolved contract ambiguity. Each verifies
+all bindings before/after and independently reruns the original retained-corpus
+verifier and full1250-test suite (1 skip). The independently generated verification
+record equals the frozen record exactly.
+
+| Review scope | Independently verified evidence |
+| --- | --- |
+| Semantics, corpus, usefulness and traceability |45 focused tests; entire pipeline and42-case sibling matrix; original six hashes/counts/POM comparison; exact independent JSON/tables, CLI/absence/selection/partial/empty behavior and namespace vetoes; module entry-point help |
+| Safety, isolation, privacy and compatibility |61 focused tests; capability-disabled SBOM discovery84 tests/18 native skips; source safety/framing before admission, exact capability and supervisor ordering/budgets/deferred guard, legacy absence seams, safe captures and sibling boundaries |
+
+Parent reconciles both complete scopes against actual code, tests and retained
+bytes. The pre-review CLI classification correction and fixture premises were
+included in these fresh full audits. No new correction cycle or product decision
+is required. Original C1 findings/closures remain unchanged; both original C2
+reports, exact freeze and supporting evidence are retained at `D/007-0051/`.
+
+**Disposition: T008, T009 and local C2 CONVERGED.** Deterministic1250 PASS/1 skip;
+capability-disabled-before-full-discovery1250 PASS/123 skips; actual offline worker
+checks17 PASS; configured GitLeaks8.30.1 current content22 files/zero findings;
+whitespace and local new/current documentation links PASS. Final committed-history
+security result, exact HEAD/scope/tree, original handoff/ledger integrity and the
+current ordered44-key handoff are retained at durable closure. No suppression or
+security exception is introduced.
+
+The supported ordinary CLI path exists; retained document acceptance/counts and
+controlled metadata rendering are independently established. The197 synthetic
+ages are not real package ages or production transport validation;200 unavailable
+metadata rows remain visible in the separate unavailable witness. Actual hosted
+Ubuntu/macOS/Windows x Python3.11/3.12/3.13 execution and live age V001 remain
+unverified. No network/registry/new SBOM/target checkout/build/package-manager/
+config/trust investigation, remote/hosted query, push, tag, release or publication
+occurred. Stop before T010/phase C, which requires its own authority; live and
+publication grants remain separate. Current007-0051 is not appended to the ledger.

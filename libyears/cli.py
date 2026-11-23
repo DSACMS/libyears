@@ -38,7 +38,9 @@ class _ArgumentParser(argparse.ArgumentParser):
             message = 'invalid NuGet command line arguments'
         if getattr(self, 'safe_maven_errors', False):
             message = 'invalid Maven command line arguments'
-        if getattr(self, 'safe_sbom_errors', False):
+        if (getattr(self, 'safe_sbom_errors', False)
+                and not getattr(self, 'safe_nuget_errors', False)
+                and not getattr(self, 'safe_maven_errors', False)):
             message = 'invalid SBOM command line arguments'
         self.print_usage(sys.stderr)
         self.exit(1, f"{self.prog}: error: {message}\n")

@@ -255,6 +255,8 @@ class RubyGroupAcceptanceTests(unittest.TestCase):
 
 
 def setUpModule():
+    from tests.sbom_fixtures import declare_sbom_absent
+    declare_sbom_absent()
     # Independent sibling semantics certify absence; Maven safety is separate.
     from tests.maven_fixtures import declare_maven_absent
     declare_maven_absent()

@@ -344,3 +344,8 @@ class MavenViewPresentationTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def setUpModule():
+    from tests.sbom_fixtures import declare_sbom_absent
+    declare_sbom_absent()

@@ -108,6 +108,15 @@ class SbomCLITests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertIn('sbom', json.loads(text))
 
+    def test_existing_ambiguous_nuget_prefix_retains_its_error_classification(self):
+        for option in ('--n', '--N', '---N'):
+            forbidden = Mock(side_effect=AssertionError('scan'))
+            code, text, errors = self.invoke(option, 'private-value', scan=forbidden)
+            self.assertEqual(code, 1)
+            self.assertIn('invalid NuGet command line arguments', errors)
+            self.assertNotIn('private-value', errors)
+            forbidden.assert_not_called()
+
     def test_explicit_nondirectory_and_direct_file_disable(self):
         target = self.root / 'requirements.txt';target.write_text('')
         forbidden = Mock(side_effect=AssertionError('scan'))

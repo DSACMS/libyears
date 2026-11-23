@@ -257,7 +257,7 @@ target-derived registry request is required or authorized by this task's tests.
 
 ### T009 — Offline corpus, failure matrix and platform integration checkpoint
 
-- [ ] **T009** — requirements S1–S8; AC01–AC14; plan P7/P8.
+- [x] **T009** — requirements S1–S8; AC01–AC14; plan P7/P8.
 
 Complete behavioral/regression gaps and a separate local retained-corpus acceptance
 record. Do not make the deterministic unit suite depend on private Git-directory
