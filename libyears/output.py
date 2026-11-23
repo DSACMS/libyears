@@ -253,6 +253,9 @@ def report_to_dict(report: ScanReport | MixedScanReport, path: str) -> dict[str,
              "summary": _summary_dict(report.by_nuget_source[source.source_id]),
              "measurement_available": source.measurement_available}
             for source in report.source_results if source.ecosystem == "nuget"]
+    if isinstance(report, MixedScanReport) and report.sbom is not None:
+        from .sbom_output import sbom_to_dict
+        result['sbom'] = sbom_to_dict(report.sbom)
     return result
 
 
@@ -326,6 +329,20 @@ def _nuget_recognition_lines(recognition: NuGetRecognition | None) -> list[str]:
 def format_human(report: ScanReport | MixedScanReport, path: str, *, verbose: bool = False,
                  nuget_recognition: NuGetRecognition | None = None) -> str:
     """Format a scan report for terminal readers."""
+    if isinstance(report, MixedScanReport) and report.sbom is not None:
+        from .sbom_output import format_sbom
+        section = format_sbom(report.sbom, verbose=verbose) + '\n'
+        # Keep legacy facts and dispatch intact while protecting invocation paths.
+        ordinary = replace(report, sbom=None, diagnostics=(), tls_trust=None)
+        relevant = bool(_ordinary_ecosystems(ordinary) or report.source_errors
+                        or report.measurements or report.unmeasurable)
+        if nuget_recognition is not None:
+            relevant |= bool(nuget_recognition.candidates or nuget_recognition.status != 'complete')
+        if not relevant:
+            return section
+        existing = format_human(ordinary, 'selected repository', verbose=verbose,
+                                nuget_recognition=nuget_recognition)
+        return 'Existing source populations (SBOM excluded):\n' + existing + '\n' + section
     if isinstance(report, MixedScanReport):
         rendered = _format_mixed_human(report, path, verbose=verbose, nuget_recognition=nuget_recognition)
         if verbose:

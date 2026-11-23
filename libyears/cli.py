@@ -13,6 +13,7 @@ from .scan import NuGetRequest, RubyGroupRequestError, scan_mixed_repository, va
 from .nuget_sources import NuGetRepositoryRequestError, validate_witnesses
 from .snapshot import parse_snapshot
 from .maven_management import MavenManagementRequestError, load_management
+from .sbom_model import SbomRequest, SbomRequestError
 
 
 class _ArgumentParser(argparse.ArgumentParser):
@@ -20,13 +21,14 @@ class _ArgumentParser(argparse.ArgumentParser):
         arguments = list(sys.argv[1:] if args is None else args)
         self.safe_nuget_errors = _nuget_arguments_present(arguments)
         self.safe_maven_errors = _maven_arguments_present(arguments)
+        self.safe_sbom_errors = _sbom_arguments_present(arguments)
         return super().parse_args(arguments, namespace)
 
     def _get_option_tuples(self, option_string):
         # Exact options bypass this abbreviation hook. Keep ordinary option
         # abbreviations compatible while requiring exact scoped spellings.
         matches = super()._get_option_tuples(option_string)
-        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance", "--nuget-witness", "--maven-management")
+        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance", "--nuget-witness", "--maven-management", "--sbom", "--no-sbom")
                for match in matches):
             return []
         return matches
@@ -36,6 +38,8 @@ class _ArgumentParser(argparse.ArgumentParser):
             message = 'invalid NuGet command line arguments'
         if getattr(self, 'safe_maven_errors', False):
             message = 'invalid Maven command line arguments'
+        if getattr(self, 'safe_sbom_errors', False):
+            message = 'invalid SBOM command line arguments'
         self.print_usage(sys.stderr)
         self.exit(1, f"{self.prog}: error: {message}\n")
 
@@ -56,10 +60,37 @@ def build_parser() -> argparse.ArgumentParser:
                              "repository mode (repeatable; exactly one =; v1 event, v2 namespace or v3 fallback population assertions)")
     parser.add_argument("--maven-management", metavar="FILE", action="append",
                         help="explicitly accept byte-bound external parent/BOM static scope evidence")
+    parser.add_argument('--sbom', metavar='RELATIVE_FILE', action='append',
+                        help='select one safe root-relative CycloneDX JSON 1.5 file (directory scans only)')
+    parser.add_argument('--no-sbom', action='store_true',
+                        help='disable SBOM discovery, input and metadata work')
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
     parser.add_argument("--ca-bundle", metavar="FILE", help="explicit verified HTTPS CA bundle; see ecosystem trust rules")
     parser.add_argument("--verbose", action="store_true", help="show discovery, evidence, limitations and diagnostics")
     return parser
+
+
+def _sbom_arguments_present(arguments) -> bool:
+    options = ('sbom', 'no-sbom')
+    for argument in arguments:
+        option = argument.split('=', 1)[0].lstrip('-').lower()
+        if argument.startswith('-') and option and (
+                option.startswith(options) or any(name.startswith(option) for name in options)):
+            return True
+    return False
+
+
+def _sbom_request(args, parser):
+    if args.sbom is None and not args.no_sbom:
+        return None
+    try:
+        if args.sbom is not None:
+            if len(args.sbom) != 1 or args.no_sbom or not Path(args.path).is_dir():
+                raise SbomRequestError()
+            return SbomRequest(args.sbom[0])
+        return SbomRequest(disabled=True)
+    except (OSError, ValueError):
+        parser.error('invalid SBOM selection')
 
 
 def _maven_arguments_present(arguments) -> bool:
@@ -113,6 +144,7 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
     parser = build_parser()
     try:
         args = parser.parse_args(argv)
+        sbom_request = _sbom_request(args, parser)
         nuget_request = _nuget_request(args, parser)
         witnesses = ()
         if args.nuget_witness is not None:
@@ -133,6 +165,8 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
     scan_function = scan or scan_mixed_repository
     try:
         kwargs = {}
+        if sbom_request is not None:
+            kwargs['sbom_request'] = sbom_request
         if args.maven_management is not None:
             if len(args.maven_management) != 1 or not Path(args.path).is_dir():
                 raise MavenManagementRequestError()
@@ -152,6 +186,9 @@ def main(argv: Sequence[str] | None = None, *, scan=None) -> int:
         if args.resolved is not None:
             kwargs["snapshot"] = parse_snapshot(args.resolved)
         report = scan_function(args.path, **kwargs)
+    except SbomRequestError:
+        print('libyears: invalid SBOM selection', file=sys.stderr)
+        return 1
     except MavenManagementRequestError:
         print('libyears: invalid Maven management evidence', file=sys.stderr)
         return 1

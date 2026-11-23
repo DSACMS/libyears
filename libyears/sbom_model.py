@@ -5,6 +5,11 @@ from dataclasses import dataclass
 from .maven_input import MavenInputFailure, relative_parts
 
 
+class SbomRequestError(ValueError):
+    def __init__(self):
+        super().__init__('invalid SBOM selection')
+
+
 class SbomFailure(ValueError):
     def __init__(self, reason: str):
         self.reason = reason
@@ -18,12 +23,12 @@ class SbomRequest:
 
     def __post_init__(self):
         if type(self.disabled) is not bool or (self.disabled and self.source_id is not None):
-            raise ValueError('invalid SBOM request')
+            raise SbomRequestError()
         if self.source_id is not None:
             try:
                 relative_parts(self.source_id)
             except MavenInputFailure:
-                raise ValueError('unsafe SBOM selection') from None
+                raise SbomRequestError() from None
 
 
 @dataclass(frozen=True)

@@ -46,6 +46,8 @@ from .requirements import (
 from .rubygems import ruby_source_result, schedule_ruby_candidates, scoped_ruby_source_result
 from .rubygems_registry import RubyGemsAdapter
 from .snapshot import SNAPSHOT_VERSION_CONFLICT, Snapshot
+from .sbom import scan_sbom
+from .sbom_model import SbomReport, SbomRequest, SbomRequestError
 
 
 @dataclass(frozen=True, slots=True)
@@ -263,6 +265,7 @@ class MixedScanReport:
     nuget_repository: bool = False
     by_nuget_source: dict[str | None, MetricSummary] = field(default_factory=dict)
     maven: MavenScanReport | None = None
+    sbom: SbomReport | None = None
 
     @property
     def dependencies(self) -> tuple[DependencyMeasurement, ...]:
@@ -475,8 +478,16 @@ def scan_mixed_repository(
                            tuple[tuple[LocalAuthority, PackageResult], ...]] | None = None,
     maven_scan=None,
     maven_management=None,
+    sbom_request: SbomRequest | None = None,
+    sbom_reader_factory=None,
+    sbom_supervisor_factory=None,
 ) -> MixedScanReport:
-    """Discover supported sources, with explicit internal NuGet mode requests."""
+    """Discover independent local populations; metadata allowances never transfer."""
+    request = SbomRequest() if sbom_request is None else sbom_request
+    if not isinstance(request, SbomRequest):
+        raise SbomRequestError()
+    if request.source_id is not None and not Path(path).is_dir():
+        raise SbomRequestError()
     if maven_management is not None:
         from .maven_management import AcceptedManagement, MavenManagementRequestError, load_management
         if not Path(path).is_dir():
@@ -681,6 +692,20 @@ def scan_mixed_repository(
             tls_trust = getattr(active_adapter, "tls_trust", None)
             break
 
+    sbom = None
+    if root.is_dir() and not request.disabled:
+        from .maven_supervisor import MavenSupervisor
+        from .sbom_input import SbomInputReader
+        metadata_factory = sbom_supervisor_factory or MavenSupervisor
+
+        def sbom_metadata(capabilities):
+            # Construct a fresh allowance only after all ordinary workers close.
+            return metadata_factory(capabilities, ca_bundle=ca_bundle)
+
+        sbom = scan_sbom(root, request, supervisor_factory=sbom_metadata,
+                         reader_factory=sbom_reader_factory or SbomInputReader,
+                         known_vetoes=() if maven is None else maven._comparator_restrictions)
+
     return MixedScanReport(
         tuple(measurements),
         tuple(unmeasurable),
@@ -693,6 +718,7 @@ def scan_mixed_repository(
         nuget_repository,
         by_nuget_source,
         maven,
+        sbom,
     )
 
 __all__ = [

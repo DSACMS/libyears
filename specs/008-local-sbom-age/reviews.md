@@ -319,3 +319,42 @@ remote SBOM retrieval, registry request, push, tag, release or publication occur
 Next approved task boundary is T008, requiring phase B authority. Ordinary CLI,
 production transport, T009 corpus/platform integration and later live V001 remain
 outside this completed run. No changelog/release checkpoint was taken early.
+
+## Run007-0051 — Phase B authority and starting recovery
+
+The human authorizes the next integration/corpus checkpoint beginning at T008.
+Dependency-ready scope is T008 then T009/C2; stop before T010/phase C. Actual clean
+starting HEAD is `c3e541412aca970c81857ce98d34c1e4c1cb0e56`, with T001–T007/C1
+converged and T008 open. Original0050 ordered44-key handoff, completion, every
+final-freeze binding and artifact bytes at its historical commit validate. Once-
+only ledger enrichment attributes supplied2329seconds/session/model/provider/effort/
+agent/account197/context64%left179K/475K to the human, preserving original runtime
+qualifications, before194, notes and original bytes. Current before197 uses the
+standing sequential credit-continuity rule; no derived delta. Durable working
+state is helper-resolved `D/007-0051/`; no current run is appended.
+
+### T008 — CLI and ordinary integration
+
+Exact --sbom/--no-sbom parsing and sanitized scoped errors precede scanning. The real
+mixed orchestrator appends independently admitted SBOM work after ordinary workers
+close, passing only completed private GA vetoes and explicit existing CA selection.
+A new existing MavenSupervisor receives its own unchanged bounded allowance; its
+process-wide deferred-cleanup guard remains intact. No default is added to the
+injected internal slice. Direct-file scans stay inactive, including --no-sbom.
+
+JSON adds only optional sbom. Human composition reuses the old formatter with
+sbom=None, protects the selected root/raw diagnostics, retains relevant independent
+source populations and leads with SBOM when no ordinary source/failure is relevant.
+Legacy CLI/output semantics fixtures now explicitly supply SBOM absence; they do
+not weaken native/refusal witnesses. Initial focused failures exposed that fixture
+assumption when an ancestor-linked temporary path properly refused new intake.
+
+Focused CLI/policy/Maven scan/output/worker/legacy output/CLI suite:117 PASS. SBOM
+suite with filesystem capabilities disabled before discovery:73 PASS,14 native
+skips; local simulation only. New tests use the real mixed orchestrator through
+CLI's scan seam, with portable supplied reader and controlled metadata, plus a
+native file/NuGet precision witness. They cover absent/disabled/positive/refused,
+argument privacy, sibling projection, plural Maven, missing-version veto transfer,
+worker ordering, exact production capability type, failed startup/no fallback,
+deferred guard and zero construction for no admissions. C2 integration review and
+full corpus/regression checkpoint remain pending under the same phase authority.

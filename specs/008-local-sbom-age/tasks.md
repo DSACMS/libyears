@@ -228,7 +228,7 @@ implemented ordinary CLI flow. Stop before T008 unless phase B is authorized.
 
 ### T008 — CLI, isolated production adapter and existing output composition
 
-- [ ] **T008** — dependencies T007/C1 and phase B authority; requirements S1/S5/S7/S8;
+- [x] **T008** — dependencies T007/C1 and phase B authority; requirements S1/S5/S7/S8;
   AC01/09/10/11/12; plan P2/P5/P6.
 
 Wire exact CLI options, sanitized misuse/abbreviation handling, optional independent
