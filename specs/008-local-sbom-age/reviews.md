@@ -265,3 +265,57 @@ record/date/arithmetic probes. All eleven age fields initialize, fixed SBOM basi
 remains separate, and UTC/finite/time validation is reused. No unresolved finding.
 The seam requires an explicit injected factory and creates only exact existing
 MavenCapability objects after independent admission; no production default exists.
+
+### T007/C1 — Useful offline slice and independent checkpoint
+
+The full20-file c1-v1 freeze received two fresh non-author reviews, with no current
+sibling conclusions supplied: semantics/output and admission/filesystem/framing/
+privacy isolation. Both completed REVISE. Two unique material policy findings:
+subject repository_url restrictions were not global, and document repository
+assignment stopped at exact-member aliases rather than vetoing the same safe GA
+across versions/variants, including records with unavailable versions. Parent
+validated both against S5. Population/graph/output/arithmetic audits otherwise
+completed; original findings/dispositions and frozen bytes remain durable.
+
+Bounded correction changes only pure policy and two regression-test files. Reduce
+subject restrictions globally and safe coherent document GA namespace restrictions
+before individual version/member admission. Preserve identity/version refusal
+precedence and independent GA ages; add zero-factory/capability witnesses. No new
+POM/config reads, source trust, transport, identity repair or population filtering.
+
+Fresh focused verification against c1-v2 returns COMPLETE/APPROVE from both scopes:
+semantics ran61 focused tests plus18 independent correction/collateral probes;
+safety ran149 focused/affected tests plus13 independent matrix cases. Both verify
+all20 candidate bindings, original finding closure, scopes and collateral output/
+privacy/admission/population behavior. No unresolved material finding remains.
+Parent reconciles overlapping coverage rather than counting approvals as votes.
+Requested fresh review contexts use fork_turns=none/no overrides; actual child
+configuration/resource telemetry remains unavailable.
+
+**Disposition: T001–T007 and C1 CONVERGED for the internal offline slice.**
+Safe real temporary-file synthetic input passes whole framing, member/graph and
+permission stages, controlled metadata and arithmetic, summary, measured and
+unmeasurable tables and exact JSON. N=2/M=1/coverage0.5/total1.0 is synthetic age
+evidence. Committed accepted/partial/refused section examples match corresponding
+synthetic inputs/metadata, replacing only placeholder digests for comparison.
+A separate controlled-date witness uses retained corpus identity us.springett /
+alpine-common /3.2.0 after verifying the original corpus hash; this is not real age
+yield or full retained-corpus acceptance.
+
+Final deterministic suite:1227 tests, PASS,1 skip. With os.supports_dir_fd empty
+BEFORE discovery:1227 tests, PASS,118 native skips; active refusal/portable witnesses
+remain tested. Local simulation is not Windows/hosted execution. Applicable actual
+Maven worker/protocol/supervisor and NuGet RealWorkerTests:17 tests, PASS. Configured
+GitLeaks8.30.1 current-content scan across23 authorized candidate files:zero findings.
+Final committed-history gate and exact commit/tree results are recorded durably
+at closure; no security suppression/exception or remote/publication check is used.
+
+Reproduction and evidence: helper-resolved `D/007-0050/`, including frozen candidates,
+original0049 handoff/reconciliation, review records, test/security logs, offline
+`reproduce.py`, synthetic result and completion bindings. The current run is not
+appended to the ledger before its completion telemetry is available. No live
+validation, target checkout/build/package manager/config/trust investigation,
+remote SBOM retrieval, registry request, push, tag, release or publication occurred.
+Next approved task boundary is T008, requiring phase B authority. Ordinary CLI,
+production transport, T009 corpus/platform integration and later live V001 remain
+outside this completed run. No changelog/release checkpoint was taken early.

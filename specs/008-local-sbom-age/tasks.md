@@ -195,7 +195,7 @@ source is never converted into a0/0 report. No new ordering/date policy code.
 
 ### T007 — Safe projection and useful offline local-file slice
 
-- [ ] **T007** — requirements S1–S8/output contract; AC01/04/05/10/11/12; plan P1/P6/P7.
+- [x] **T007** — requirements S1–S8/output contract; AC01/04/05/10/11/12; plan P1/P6/P7.
 
 Deliver `sbom_output.py` and `sbom.py`'s internal pipeline using the existing
 reader plus **required injected** metadata factory. Emit exact whitelist JSON and

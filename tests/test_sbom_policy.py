@@ -56,3 +56,22 @@ class PolicyTests(unittest.TestCase):
         body = dependencies(dependency('a', '<version>1</version>', group='g'))
         report = scan_maven('unused', reader_factory=lambda root: Reader({'pom.xml': pom(body)}), supervisor_factory=Metadata())
         self.assertEqual(report._comparator_restrictions, ())
+
+    def test_subject_repository_restriction_is_global(self):
+        subject = maven_component(suffix='?repository_url=https:%2F%2Fprivate.invalid%2Fmaven2', **{'bom-ref': 'root'})
+        rows = self.admit(metadata={'component': subject})
+        self.assertEqual(rows[0].reason, 'sbom_comparator_refused')
+        subject['purl'] = 'pkg:maven/org.example/a@1?repository_url=%zz'
+        self.assertEqual(self.admit(metadata={'component': subject})[0].reason, 'sbom_policy_unknown')
+
+    def test_namespace_assignment_vetoes_same_ga_across_versions_and_variants(self):
+        private = maven_component(suffix='?repository_url=https:%2F%2Fprivate.invalid%2Fmaven2')
+        for sibling in (maven_component(version='2'), maven_component(suffix='?classifier=sources')):
+            rows = self.admit([private, sibling])
+            self.assertEqual([row.reason for row in rows], ['sbom_comparator_refused'] * 2)
+        private['version'] = 'LATEST'
+        private['purl'] = private['purl'].replace('@1.0?', '@LATEST?')
+        rows = self.admit([private, maven_component(version='2'), maven_component('independent')])
+        self.assertEqual(rows[0].reason, 'sbom_version_unsupported')
+        self.assertEqual(rows[1].reason, 'sbom_comparator_refused')
+        self.assertIsNone(rows[2].reason)
