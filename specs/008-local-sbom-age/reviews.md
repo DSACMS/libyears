@@ -214,3 +214,20 @@ correction. Capability-disabled-before-discovery test run passed (11 native skip
 4 active portable/refusal tests before correction). Byte/entry/directory boundary
 witnesses use scaled limits; production constants and comparison logic were also
 inspected. No parser, metadata, CLI or transport authority is granted by intake.
+
+### T002 — Whole framing and flat document
+
+The t002-v1 candidate validates the full bounded UTF-8 JSON representation before
+flat1.5 population acceptance. Eleven focused tests pass, including full-size
+string/object/array/component/service/graph/byte ceilings, strict late framing and
+optional assertion degradation. Token accounting has both reduced and production-
+size witnesses. Fresh non-author review is commissioned against exact frozen bytes
+in `D/007-0050/t002-v1/`; disposition remains pending. No metadata factory is used.
+
+T002 review completed COMPLETE/REVISE with three material findings: unhashable
+composition aggregates, UTC normalization overflow and boolean/numeric alias
+equality. Bounded corrections preserve inventory on malformed optional assertions
+and require type-sensitive whole-object alias equality. Frozen t002-v2 received
+fresh focused COMPLETE/APPROVE:13 focused tests plus21 independent checks, including
+original reproducers, token boundaries and collateral assertion/alias behavior.
+No unresolved material findings in that scope; no later integration/live claim.

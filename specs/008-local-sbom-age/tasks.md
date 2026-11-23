@@ -78,7 +78,7 @@ only genuinely unavailable primitives, with refusal still verified.
 
 ### T002 — Whole framing and document subset
 
-- [ ] **T002** — requirements S2/S8; AC05/13/14; plan P3.
+- [x] **T002** — requirements S2/S8; AC05/13/14; plan P3.
 
 Deliver `sbom_json.py` and `sbom_document.py`, extending local record types only
 as necessary. Validate the entire snapshot with bounded preflight/strict decode,
