@@ -54,7 +54,7 @@ yield, actual Windows/hosted success or publication from a local simulation.
 
 ### T001 — Safe source selection and snapshots
 
-- [ ] **T001** — requirements S1/S2; AC01/05/14; plan P1/P2.
+- [x] **T001** — requirements S1/S2; AC01/05/14; plan P1/P2.
 
 Deliver `sbom_model.py`'s narrow request/discovery/selection/snapshot/failure records
 and `sbom_input.py`. Implement automatic bounded filename discovery, explicit

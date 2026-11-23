@@ -184,3 +184,33 @@ passes, zero findings. Final committed-history scan, exact commits/tree and dura
 44-key handoff are retained in `D/007-0049/completion.json`. Frozen review bytes and
 bookkeeping procedures remain immutable. No full product suite ran solely for
 documentation; no runtime/platform/live success or hosted CI is claimed.
+
+## Run007-0050 — Authorized offline phase A
+
+Human authority covers T001–T007 and C1, dependency order, independent reviews,
+bounded corrections, tests and local commits; stop before T008. Actual clean HEAD
+matches `a98e77a4aca0741b20ad411bd08672cf7faab070`; approved plan commit verified.
+Original0049 ordered handoff, artifact and every final-freeze binding validated;
+once-only ledger append adds attributed supplied telemetry, preserving original
+runtime qualifications and before192. Current before194 follows the documented
+standing continuity rule; no credit delta. Original bytes and reproduction evidence
+are retained in helper-resolved `D/007-0050/`. Pinned format-reference bytes match
+retained hashes; no retrieval is needed or authorized.
+
+### T001 — Safe local intake
+
+Fresh non-author review (`fork_turns=none`, no overrides requested; actual child
+configuration/resources unavailable) audited frozen t001-v1 source/model/tests.
+COMPLETE/REVISE: one material finding, observed candidate count lost when directory
+entry cap interrupted buffered enumeration. Selection still safely refused. The
+bounded correction counts matching names during enumeration and adds a regression.
+Fresh focused review of t001-v2 verifies exact bindings, finding closure, candidate
+cap/hidden-name/no-content collateral behavior: COMPLETE/APPROVE, no new findings.
+Original review included 86 injected stat/fstat/read failure positions with no
+leaked descriptors. This is local macOS evidence, not Windows/hosted execution.
+
+Focused16 tests pass; sibling input/discovery integration55 tests passed before
+correction. Capability-disabled-before-discovery test run passed (11 native skips,
+4 active portable/refusal tests before correction). Byte/entry/directory boundary
+witnesses use scaled limits; production constants and comparison logic were also
+inspected. No parser, metadata, CLI or transport authority is granted by intake.
