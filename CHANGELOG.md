@@ -58,6 +58,13 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Measure a separate local CycloneDX JSON 1.5 SBOM inventory using supported exact
+  Maven versions and conventional Central POM modification dates. Directory scans
+  discover one document; `--sbom` selects one and `--no-sbom` disables the source.
+  Keep direct/transitive labels, visible unmeasurable members and independent age
+  coverage/totals without implying current-checkout or complete repository scope.
+
+
 - Accept explicitly supplied, byte-bound Maven parent/BOM documents through
   `--maven-management FILE` to establish restricted missing Declared scope facts
   and genuinely absent ordinary Declared versions, with inspectable managed origin

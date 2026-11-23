@@ -13,6 +13,7 @@ remain in their [retrospectives](#history-and-further-reading).
 - [RubyGems](#rubygems)
 - [NuGet](#nuget)
 - [Maven](#maven)
+- [Local SBOM age](#local-sbom-age)
 - [Cross-ecosystem lessons](#cross-ecosystem-lessons)
 
 ## Common measurement model
@@ -1177,3 +1178,111 @@ its [handoff](specs/006-nuget-selected-evidence/methodology-handoff.md), and the
 [earlier NuGet retrospective](specs/006-nuget-selected-evidence/retrospective.md).
 The [Python/npm namespace opportunity](ROADMAP.md#15-pythonnpm-positive-public-namespace-authority)
 and other radar entries are future investigations, not current support.
+
+## Local SBOM age
+
+Directory scans independently attempt one existing local CycloneDX JSON **1.5**
+document with a flat top-level component inventory and one metadata subject.
+No GitHub/hosted download or generation occurs. Supply previously obtained local
+bytes; libyears does not execute Maven, a build, an exporter or a package manager.
+SPDX, XML, other CycloneDX versions, nested populations and non-Maven measurement
+are unsupported. Unsupported safely framed components remain inventory members.
+The approved [specification](specs/008-local-sbom-age/spec.md) and
+[output contract](specs/008-local-sbom-age/output-contract.md) govern exact behavior.
+
+### Selection and limits
+
+`python3 -m libyears DIRECTORY` discovers basenames `bom.json`, `sbom.json`, or
+suffixes `.cdx.json` and `.cyclonedx.json`, case sensitively. It scans depths 0–3,
+at most 128 directories including root, 10,000 entries and 16 candidate entries.
+Dot-prefixed entries and directories named node_modules, vendor, packages, venv,
+__pycache__, bin and obj are excluded; target and build remain eligible.
+Exactly one safe candidate after complete discovery is selected. Multiple candidates
+require explicit selection even when their bytes agree. Incomplete/unsafe discovery
+never chooses a convenient prefix or a fallback file after refusal.
+
+`--sbom RELATIVE_FILE` selects exactly one contained existing file, bypassing name,
+depth and candidate discovery limits. `--no-sbom` disables all SBOM work. The options
+are exact and cannot be combined; `--sbom` cannot be repeated and selection requires
+a directory input. Repeated `--no-sbom` is harmless.
+Existing direct-file scans do not activate this source. Absolute/escaping/URI paths
+are argument errors before scanning. Selected-file failures preserve safe relative
+source attribution; they do not erase independent results.
+
+All intake requires race-resistant no-follow regular-file/directory binding; links,
+reparse points, special files, mutation and missing required primitives fail closed.
+Snapshots are limited to 8 MiB, UTF-8 without BOM, a single strict JSON object.
+Whole framing rejects duplicate keys, malformed/late data and nonfinite values.
+Bounds include 32-container nesting, 250,000 tokens, 16 KiB strings/keys,
+128-character numbers, 256 object members, 20,000 array items, 10,000 component
+entries, 1,000 services, 11,001 graph nodes and 50,000 edges. See specification S2
+for all identity/path limits. Embedded URLs, schemas and external refs are inert.
+
+### Inventory, versions and comparison
+
+The population is `sbom_asserted_unique_component_versions`, not local project
+occurrences. Exclude the subject and its one permitted exact alias, plus services.
+Identical supported (group, artifact, version, type, classifier) tuples collapse
+with record/reference multiplicity retained; distinct versions/types/classifiers
+remain separate. Unidentifiable records stay separate by source index. No filtering
+by reachability, directness, scope or metadata success changes the denominator.
+
+Graph direct/transitive/unknown labels describe represented subject paths, never
+current local directness. Direct takes presentation precedence when both path
+flags exist. Invalid graph evidence leaves inventory/ages intact with unknown
+relationships. Missing edges or producer completeness assertions prove no inventory
+completeness beyond the accepted document projection.
+
+Measurement requires literal `pkg:maven/GROUP/ARTIFACT@VERSION` and agreeing literal
+component fields; no missing-version repair, range/property resolution or snapshot
+measurement. Types are jar (default), pom and war, with an optional safe classifier.
+Unsupported identities/variants and restrictions retain rows with fixed reasons.
+A `repository_url` qualifier restricts permission; it never supplies an endpoint.
+
+After independent admission, the existing isolated verified-TLS worker uses fixed
+Central metadata endpoints, Maven ComparableVersion 3.9.11 and the conservative
+latest-stable policy. No compatibility filtering or publication-date fallback is
+added. The comparator basis is `sbom_maven_central_convention`; public correspondence
+is assumed, not acquisition/content proof. Undisclosed private same-ID/version
+forks can receive an incorrect public comparison. Coordinates leave the process
+only after applicable restrictions are checked; known invocation private/conflicting/
+unknown assignments or Central exclusions veto the affected identity. No extra
+POM, machine configuration, credentials or trust-store search establishes a join.
+
+Time basis is **maven_conventional_pom_last_modified**: identity-checked versioned
+POM representation modification dates, not first publication or classifier-specific
+availability. SBOM creation time, hashes, VCS dates and local mtime are never package
+dates. Metadata changes can change later results. Equal-version zero still requires
+accepted catalogue and date evidence; timestamp inversions are flagged/clamped.
+
+### Reading results and offline failures
+
+Ordinary output labels source, subject, inventory and time basis, then shows aligned
+measured and unmeasurable tables and measured-subset statistics. Coverage is measured
+members / accepted inventory members, **not repository/build completeness**. Empty
+accepted inventory has null coverage/mean/median/max and total 0; a nonempty inventory
+with no ages has 0% coverage and total 0 for an empty measured subset. Source refusal
+has unknown counts and all-null statistics. Zero is never a substitute for missing
+dates. Every supported or unsupported unmeasurable member remains inspectable.
+
+SBOM work follows ordinary sources with its own allowance: at most 300 metadata
+attempts, 64 MiB, 300 seconds per batch, 60 seconds per G/A and 10 seconds per
+command including reserved cleanup. Within-batch cached metadata is reused only
+after independent admission. Budget exhaustion, offline/provider failure and missing
+time evidence retain completed ages and remaining rows with reasons. No new offline
+switch exists; `--no-sbom` disables this source. Explicit `--ca-bundle` uses the
+[existing verified TLS rules](#tls-and-enterprise-environments); no trust discovery.
+
+`--verbose` and `--json` retain exact document digest, safe subject/producer assertion
+statuses, multiplicities, opaque graph/reference IDs, exact compared versions,
+retrieval/POM timestamps, reasons and limitations. Schema 3 gains only an optional
+`sbom` section (`format_version:1`), with its own scope and
+`legacy_fields_exclude_sbom:true`. Legacy direct fields and Maven Declared/Observed
+values retain their meanings. Strict closed-world consumers may need to allow the
+new key. No totals across these independent populations are combined.
+
+Current-checkout association, resolved direct scope, installed/runtime/deployment
+state, acquisition/content and first-publication history remain unestablished.
+The [validation record](specs/008-local-sbom-age/validation.md) distinguishes retained
+real inventory acceptance, controlled synthetic dates, live evidence and pending
+hosted-platform checks. Committed contract examples remain explicitly synthetic.

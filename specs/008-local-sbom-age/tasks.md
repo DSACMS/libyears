@@ -297,7 +297,7 @@ publication/hosted availability does not license a new access attempt by implica
 
 ### T010 — User guidance and final read-only convergence
 
-- [ ] **T010** — dependencies T009/C2 and phase C authority; S1–S8/output contract;
+- [x] **T010** — dependencies T009/C2 and phase C authority; S1–S8/output contract;
   AC01–AC14 traceability; plan P6–P8.
 
 Document the actual ordinary invocation and explicit/disable behavior, bounds,

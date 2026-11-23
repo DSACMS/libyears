@@ -430,3 +430,64 @@ unverified. No network/registry/new SBOM/target checkout/build/package-manager/
 config/trust investigation, remote/hosted query, push, tag, release or publication
 occurred. Stop before T010/phase C, which requires its own authority; live and
 publication grants remain separate. Current007-0051 is not appended to the ledger.
+
+## Run007-0052 — Phase C and live validation authority
+
+Expected and actual starting HEAD `bbf4ee10c923a951893de44433e43c61b006ed16`
+match; staged/unstaged/untracked state is clean. Original durable0051 and every
+final-freeze binding plus historical artifact digest/word count validate. Exactly
+one ledger append enriches the original with human2357seconds, GPT-6.1-Sol/openai/
+medium, Codex0.160.0, session, account199 and context32%left327K/475K; original
+runtime qualifications, unknown confounding, before197 and notes remain intact.
+Current before199 follows supported standing continuity, with no derived delta.
+
+The human authorizes T010/phase C/C3 and, after its predecessor, V001 in this same
+run: the exact retained public Dependency-Track digest recorded in validation.md,
+200 admitted members, public coordinates disclosed only to existing fixed metadata
+endpoints, one batch within unchanged budgets, production CLI/orchestration/transport,
+no provider/date fallback or target execution. Existing privately prepared trust
+copy may be recovered only through its durable preparation reference and privately
+staged with verified TLS retained. No new acquisition/private target/config/credential/
+trust discovery or publication is authorized. This supersedes prior pending-grant
+statements for this run without changing their historical truth.
+
+T010 candidate updates README, ECOSYSTEMS and the Unreleased changelog at the
+approved documentation checkpoint. Existing C2 runtime and deterministic evidence
+remain applicable because no implementation behavior changes. C3 fresh non-author
+read-only convergence must approve before V001; the live result then receives its
+own independent evidence/privacy/usefulness review. Durable run evidence is in
+helper-resolved `D/007-0052/`; current run is not appended to the ledger.
+
+### C3 first review and bounded correction
+
+Fresh non-author C3 completes read-only convergence over all AC01–AC14 with one
+material documentation finding: ECOSYSTEMS incorrectly prohibited repeated
+`--no-sbom`, which is idempotent; the specification prohibits repeated selection.
+Corrected only that sentence to describe actual behavior. No runtime/contract change.
+The reviewer verified all58 frozen candidate bindings before/after, validated C2
+and ran84 focused tests, all PASS with no skips. Original COMPLETE/REVISE report
+is retained at `D/007-0052/c3-review-v1.json`. Fresh focused verification of the
+corrected freeze must close this finding and collateral documentation obligations.
+
+### C3 approval and phase C closure
+
+Fresh non-author focused verification COMPLETE/APPROVE closes C3-DOC-01 against
+c3-v2: all58 current/snapshot bindings and both evidence bindings verify,13 CLI
+tests and a repeated-disable real-orchestration probe PASS. Only the determined
+prose correction and review history changed from c3-v1. Parent reconciles original
+complete AC01–AC14 review with fresh closure; no runtime correction was required.
+**T010/phase C and C3 CONVERGED.** README/ECOSYSTEMS/changelog describe the implemented
+ordinary interface, inventory/coverage, disclosure/time basis and limits.
+
+Evidence qualification: rerunning the current-content scan overwrote v1's shared
+raw log after its original reviewer verified it; those original raw scan bytes are
+not reconstructed. V2's exact passing log and documentation checks are separately
+preserved with verified bindings. The original review and both freezes remain;
+this retention gap does not invalidate current verified security evidence.
+
+Run0052 full deterministic suite1250 PASS/1 skip; actual offline worker/protocol/
+lifecycle17 PASS. No filesystem/runtime change warrants repeating capability
+simulation; prior1250 PASS/123 skips remains local simulation only. Actual hosted
+nine-job OS/Python execution remains pending. Documentation links/anchors,
+whitespace and configured current-content security PASS. The separately granted
+V001 is now dependency-ready in this same run, with no live yield claimed yet.

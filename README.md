@@ -1,7 +1,7 @@
 # Libyears
 
-Libyears measures how far direct dependency versions lag behind the latest stable
-releases, using each ecosystem's disclosed time basis. Use it to understand dependency
+Libyears measures how far dependency versions lag behind the latest stable
+releases in supported direct-source and separate local SBOM populations, using each ecosystem's disclosed time basis. Use it to understand dependency
 freshness alongside measurement coverage; age alone does not indicate security risk.
 
 ## Quick start
@@ -99,6 +99,33 @@ restricted missing Declared scopes using `--maven-management FILE`; see the
 [intake format and limits](maintenance/maven-external-intake/README.md). No models
 are acquired automatically, and scope evidence grants no public lookup permission.
 
+## Local SBOM age
+
+An ordinary directory scan also discovers one existing local CycloneDX JSON 1.5
+SBOM. Select a file explicitly when discovery finds multiple candidates, or disable
+this source:
+
+```bash
+python3 -m libyears PATH
+python3 -m libyears PATH --sbom release/bom.json
+python3 -m libyears PATH --no-sbom
+```
+
+The **SBOM age** section describes that document's unique component-version
+inventory, including direct, transitive and unknown relationships. It has its own
+measured/unmeasurable tables, total, mean, median, maximum and population age
+coverage. Supported exact Maven identities use conventional Central POM
+Last-Modified dates. Admitted lookups disclose public package coordinates; public
+correspondence is assumed, and relevant private/conflicting/unknown policy refuses
+lookup. Missing metadata leaves visible unmeasurable rows and preserves successful
+rows and independent source results.
+
+An SBOM is a supplier assertion: it does not establish a current-checkout inventory,
+installed/runtime state or complete repository technical debt. Its totals remain
+separate from Maven Declared/Observed and legacy direct-source totals. See the
+[SBOM guide](ECOSYSTEMS.md#local-sbom-age) for discovery limits, supported identities,
+JSON, offline behavior and date limitations. This capability is unreleased.
+
 ## Common usage
 
 Run these from the libyears source root; `PATH` is the target repository directory
@@ -127,7 +154,8 @@ python3 -m libyears --help
 
 ## Important limitations
 
-- Direct dependencies only; no transitive measurement, installation or resolution.
+- Repository-source populations cover direct dependencies; the separate SBOM
+  inventory can include transitive members. No installation or resolution occurs.
   A declaration or range may not establish an exact version. Missing versions or
   dates remain unmeasurable; libyears does not guess them.
 - Supported files and syntax are deliberately bounded. Unsupported source evidence
@@ -166,7 +194,8 @@ python3 -m libyears --help
 ## About the Project
 
 Libyears is a small local CLI implemented with the Python standard library. It
-measures direct Python, npm, RubyGems, bounded NuGet and Maven evidence without
+measures direct Python, npm, RubyGems, bounded NuGet and Maven evidence, plus a
+separate local SBOM inventory, without
 requiring a repository host, database or server.
 
 Project website: https://dsacms.github.io/libyears
