@@ -147,7 +147,7 @@ no enumeration of all possible paths or recursion-dependent cycle behavior remai
 
 ### T005 — Comparator permission and existing invocation vetoes
 
-- [ ] **T005** — requirements S5/S8; AC06/08/09/10/12/14; plan P5.
+- [x] **T005** — requirements S5/S8; AC06/08/09/10/12/14; plan P5.
 
 Deliver pure `sbom_policy.py` plus the defaulted private Maven admission/report
 veto tuple described by P5. Collect safe same-G/A existing policy decisions before

@@ -23,6 +23,7 @@ class MavenCapability:
 class MavenAdmission:
     sources: tuple[MavenSource, ...]
     work: tuple[tuple[MavenOccurrenceKey, MavenCapability], ...]
+    _comparator_restrictions: tuple[tuple[str, str, MavenReason], ...] = ()
 
     @property
     def capabilities(self):
@@ -37,6 +38,7 @@ def admit_sources(graph, reader, *, management=None):
         declared = apply_management(graph, declared, management)
     sources = []
     capabilities = []
+    restrictions = []
     for source in declared:
         decision = source_policy(graph, source.context.source_id, reader)
         rows = []
@@ -45,6 +47,16 @@ def admit_sources(graph, reader, *, management=None):
             reason = decision.reason
             if row.scope == 'system':
                 reason = MavenReason.COMPARATOR_REFUSED
+            if reason is not None:
+                # Capture applicable policy before a missing version loses the row.
+                from .maven_registry import RegistryFailure, catalogue_path
+                key = row.key.model_key
+                try:
+                    catalogue_path(key.group_id, key.artifact_id)
+                except RegistryFailure:
+                    pass
+                else:
+                    restrictions.append((key.group_id, key.artifact_id, reason))
             if (fact.version is not None and reason is None and row.artifact_key is not None
                     and fact.reason == MavenReason.TIME_BASIS_UNAVAILABLE):
                 try:
@@ -61,7 +73,7 @@ def admit_sources(graph, reader, *, management=None):
                 row = replace(row, declared=replace(fact, age=None, reason=reason))
             rows.append(row)
         sources.append(replace(source, declared=replace(source.declared, rows=tuple(rows))))
-    return MavenAdmission(tuple(sources), tuple(capabilities))
+    return MavenAdmission(tuple(sources), tuple(capabilities), tuple(restrictions))
 
 
 def admitted_lookups(admission, lookup):
@@ -76,6 +88,7 @@ class MavenScanReport:
     summaries: MavenSummaries
     # Display relevance only; never population or admission evidence.
     positive_local_evidence: bool = False
+    _comparator_restrictions: tuple[tuple[str, str, MavenReason], ...] = ()
 
 
 def measure_admission(admission, *, ca_bundle=None, supervisor_factory=None):
@@ -142,6 +155,7 @@ def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=
     if reader_factory is None:
         reader_factory = MavenInputReader
     positive_local_evidence = False
+    restrictions = ()
     try:
         with reader_factory(root) as reader:
             inventory = reader.inventory()
@@ -151,6 +165,7 @@ def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=
                 return None
             graph = build_project_graph(discovery, reader.snapshot_pom)
             admission = admit_sources(graph, reader, management=management)
+            restrictions = admission._comparator_restrictions
     except MavenInputFailure as failure:
         if failure.issue == MavenInputIssue.NOT_DIRECTORY:
             return None
@@ -160,4 +175,4 @@ def scan_maven(root, *, ca_bundle=None, reader_factory=None, supervisor_factory=
         sources = measure_admission(admission, ca_bundle=ca_bundle,
                                     supervisor_factory=supervisor_factory)
     summaries = summarize_sources(sources, discovery_complete=discovery.complete)
-    return MavenScanReport(discovery, sources, summaries, positive_local_evidence)
+    return MavenScanReport(discovery, sources, summaries, positive_local_evidence, restrictions)

@@ -241,3 +241,14 @@ alias indexes, lexical opaque ordering, cycle direct/longer flags, exact spellin
 separation, retained private alias restrictions, used prerelease/unknown qualifiers,
 framing boundaries and snapshots. These results preserve raw reference paths before
 member collapse; no graph failure erases accepted population or grants transport.
+
+### T005 — Independent comparator permission
+
+Frozen t005-v1 receives fresh non-author COMPLETE/APPROVE, no material findings.
+Reviewer ran151 focused/affected tests and independent probes for missing-version
+unknown/input/budget vetoes, repeated-veto precedence and seven frozen baseline
+comparisons (public output, source/results, reads, metadata calls). Parent's focused
+policy plus Maven admission/scan/output suite:56 passed. Private restrictions retain
+safe GA and original source-policy reason before version filtering; they are never
+serialized, reconstructed from prose or inferred from metadata failures. No new
+POM/config reads, public fields, metric or sibling output changes were found.
