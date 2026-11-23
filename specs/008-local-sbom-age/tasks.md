@@ -171,7 +171,7 @@ no permission is inferred from cached metadata or a reason rendered as prose.
 
 ### T006 — Injected measurement and SBOM summaries
 
-- [ ] **T006** — requirements S5/S6/S8; AC04/09/10; plan P5/P6.
+- [x] **T006** — requirements S5/S6/S8; AC04/09/10; plan P5/P6.
 
 Deliver `sbom_measure.py` and separate age/final report types. Require an explicit
 supervisor factory at this seam for the first slice; do not add a default production

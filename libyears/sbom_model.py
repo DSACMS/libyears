@@ -81,3 +81,12 @@ class SbomMember:
     @property
     def id(self):
         return f'component-{self.index}'
+
+
+@dataclass(frozen=True)
+class SbomReport:
+    intake: SbomIntake
+    document: object | None = None
+    members: tuple[SbomMember, ...] = ()
+    graph: object | None = None
+    summary: object | None = None

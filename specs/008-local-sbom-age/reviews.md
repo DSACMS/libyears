@@ -252,3 +252,16 @@ policy plus Maven admission/scan/output suite:56 passed. Private restrictions re
 safe GA and original source-policy reason before version filtering; they are never
 serialized, reconstructed from prose or inferred from metadata failures. No new
 POM/config reads, public fields, metric or sibling output changes were found.
+
+### T006 — Injected metadata and independent summaries
+
+Fresh frozen t006-v1 review returned COMPLETE/APPROVE with69 offline regression
+tests and identity/time/cache/summary probes. Parent's subsequent T007 projection
+witness exposed uninitialized inherited fixed age fields in the non-slotted age
+subclass (AttributeError). Original approval missed that integration defect.
+Bounded correction uses a slotted SBOM age record and asserts fixed fields;
+t006-v2 fresh focused verification returns COMPLETE/APPROVE,51 offline tests plus
+record/date/arithmetic probes. All eleven age fields initialize, fixed SBOM basis
+remains separate, and UTC/finite/time validation is reused. No unresolved finding.
+The seam requires an explicit injected factory and creates only exact existing
+MavenCapability objects after independent admission; no production default exists.
