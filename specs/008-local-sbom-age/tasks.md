@@ -125,7 +125,7 @@ claim and no transport construction.
 
 ### T004 — Graph evidence before member collapse
 
-- [ ] **T004** — requirements S3/S6/S7; AC02/03/06/07/14; plan P4.
+- [x] **T004** — requirements S3/S6/S7; AC02/03/06/07/14; plan P4.
 
 Deliver `sbom_graph.py` and final inventory relationship attachment. Validate raw
 local reference nodes/edges; opaque purl-shaped refs are not fetch targets. Handle
