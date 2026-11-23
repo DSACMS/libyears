@@ -323,7 +323,7 @@ No push/tag/release unless separately and explicitly authorized.
 
 ### V001 — Real retained-corpus live age validation
 
-- [ ] **V001** — dependencies T010/C3 and a **new explicit human validation grant**.
+- [x] **V001** — dependencies T010/C3 and a **new explicit human validation grant**.
   Traceability S5/S6, AC02/04/09/10/11 and plan P7's later gate.
 
 The grant must identify exact retained artifact digest, permitted public Maven

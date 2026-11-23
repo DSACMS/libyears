@@ -491,3 +491,61 @@ simulation; prior1250 PASS/123 skips remains local simulation only. Actual hoste
 nine-job OS/Python execution remains pending. Documentation links/anchors,
 whitespace and configured current-content security PASS. The separately granted
 V001 is now dependency-ready in this same run, with no live yield claimed yet.
+
+### V001 actual production result and review commission
+
+The already granted dependency-ready one-batch validation completes with real
+metadata:104/200 measured,175.4693147134129 total,52% age coverage;96 individually
+unmeasurable members survive. Actual scope is the retained Dependency-Track4.13.4
+inventory, never a current checkout/POM/runtime population. See
+[live-validation.md](live-validation.md) for exact statistics, versions/dates,
+blockers, lifecycle, privacy and reproduction. No runtime defect or new authority
+decision was exposed. A local audit floating-point operation-order mismatch was
+corrected in the audit only; established runtime/results remain untouched.
+
+The existing private approved trust reference loads and is privately staged;
+hostname/certificate verification remains on, with no alternate trust discovery.
+Actual production CLI main/real mixed orchestration/default supervisor/isolated
+worker/transport uses one300-attempt batch,1,592,793 body bytes. An observation-only
+close wrapper retains validated protocol outcomes before unchanged cleanup. The
+worker closed/reaped/cleaned; no deferred worker remains. All three output views
+come from one result. No new acquisition, target execution or private/config access.
+
+Freeze `D/007-0052/live-result-freeze.json` binds twelve input/output/procedure
+artifacts. Fresh non-author evidence/privacy/usefulness review must verify the
+actual comparisons, reasons/statistics, production route and privacy/limits before
+V001 is marked complete. Current raw response bodies are not retained; no raw-body
+parser replay or underlying unavailable-row HTTP-cause attribution is claimed.
+
+### V001 independent approval and parent reconciliation
+
+Fresh non-author result/privacy/usefulness review completes **APPROVE**, no material
+findings. It verifies59 candidate/snapshot bindings and12 result bindings before/
+after; independently derives all200 canonical identities and graph relationships,
+all104 exact catalogue/date/age bindings and unrounded statistics,96 fixed reasons,
+and all300 fixed public metadata routes. It confirms production main/mixed/default
+supervisor/isolated transport with observation-only capture, no synthetic metadata,
+normal worker cleanup and no private trust details in safe outputs. No network or
+trust-file access is performed by the reviewer. Original report is retained as
+`D/007-0052/v001-approval.json`; it preserves provenance limitations rather than
+claiming raw HTTP-body verification or known underlying refusal causes.
+
+Parent reconciles actual output, metadata counters/lifecycle, arithmetic audit,
+review coverage and command replay. Ordinary/verbose/JSON replay is byte-identical
+to each retained production view; Bash/zsh clipboard-command syntax PASS. There is
+no runtime defect to correct or additional batch needed. **V001 COMPLETE/APPROVED**:
+104/200 measured,96 refused,175.4693147134129 total libyears; mean1.6872049491674321,
+median1.6892302646589095,max6.976594671331154,coverage0.52. Scope remains43direct/
+157transitive document members (17/87 measured), with no current-checkout association
+or complete-debt/runtime/public-acquisition/first-publication claim.
+
+T010/C3 and the separately granted V001 are complete. Local deterministic1250
+PASS/1 skip,17 worker checks PASS, documentation/link/anchor/sensitivity/security/
+whitespace and integrity/replay checks PASS. Final configured GitLeaks8.30.1
+committed-history result, exact two-commit/eight-file scope, clean final tree and
+ordered44-key current handoff are saved durably at closure. Original0051 remains
+once-only reconciled with runtime qualifications intact; current0052 is not appended.
+Actual hosted nine-job OS/Python matrix remains pending. Next consequential gate:
+**HUMAN PUBLICATION**, if desired, followed by actual hosted evidence. No push, tag,
+release, publication, remote query, new corpus/endpoint, target execution or
+package-manager/build execution occurred.

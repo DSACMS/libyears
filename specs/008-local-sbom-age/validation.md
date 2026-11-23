@@ -116,3 +116,11 @@ local capability simulation is not Windows execution. No hosted state was querie
 Live PyPI smoke, SBOM live V001, new acquisition and publication were not run or
 authorized. C2 local review cannot establish live yield or actual hosted-platform
 results. No push, tag, release or publication is part of this checkpoint.
+
+## Subsequent authorized real validation
+
+Run007-0052 separately obtained real production metadata after T010/C3 approval:
+104/200 members,175.4693147134129 conventional POM Last-Modified libyears,
+coverage52%,96 visible refusals. See [the live validation record](live-validation.md)
+for exact statistics, inventory limits, blockers, one-batch provenance and replay.
+This does not reclassify the synthetic evidence above or establish hosted results.
