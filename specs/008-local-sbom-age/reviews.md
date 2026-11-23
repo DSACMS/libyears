@@ -231,3 +231,13 @@ and require type-sensitive whole-object alias equality. Frozen t002-v2 received
 fresh focused COMPLETE/APPROVE:13 focused tests plus21 independent checks, including
 original reproducers, token boundaries and collateral assertion/alias behavior.
 No unresolved material findings in that scope; no later integration/live claim.
+
+### T003/T004 — Identity and reference graph
+
+Separate frozen t003-v1 and t004-v1 candidates received a fresh non-author review
+of each task: both COMPLETE/APPROVE, no material findings. Ten focused identity/
+graph tests pass,17 with adjacent document tests. Independent probes cover subject-
+alias indexes, lexical opaque ordering, cycle direct/longer flags, exact spelling
+separation, retained private alias restrictions, used prerelease/unknown qualifiers,
+framing boundaries and snapshots. These results preserve raw reference paths before
+member collapse; no graph failure erases accepted population or grants transport.

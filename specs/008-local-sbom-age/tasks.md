@@ -101,7 +101,7 @@ at its specified scope. Preserve failing input handling without echoing payloads
 
 ### T003 — Identities, canonical inventory and restrictions
 
-- [ ] **T003** — requirements S3/S4/S6/S8; AC02/03/06/08; plan P4.
+- [x] **T003** — requirements S3/S4/S6/S8; AC02/03/06/08; plan P4.
 
 Deliver `sbom_identity.py` and canonical member records. Enforce literal Maven
 purl/field agreement, exact/snapshot policy, jar/pom/war/classifier subset and

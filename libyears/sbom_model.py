@@ -55,3 +55,29 @@ class SbomIntake:
     selection: SbomSelection
     snapshot: SbomSnapshot | None = None
     reason: str | None = None
+
+
+@dataclass(frozen=True)
+class SbomIdentity:
+    group_id: str
+    artifact_id: str
+    version: str
+    type: str = 'jar'
+    classifier: str | None = None
+
+
+@dataclass(frozen=True)
+class SbomMember:
+    index: int
+    identity: SbomIdentity | None
+    version: str | None
+    records: tuple[tuple[int, dict], ...]
+    reason: str | None
+    relationship: str = 'unknown'
+    direct_path: bool | None = None
+    transitive_path: bool | None = None
+    age: object | None = None
+
+    @property
+    def id(self):
+        return f'component-{self.index}'
