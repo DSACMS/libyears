@@ -85,3 +85,26 @@ pipefail; Bash and zsh syntax checks never execute publication. Exact script/rev
 check bindings, restart note and current ordered44-field handoff survive privately
 under the helper-resolved run directory. Next gate: HUMAN PUBLICATION, then actual
 hosted verification. Push performed: NO.
+
+
+## Human publication and hosted follow-through — 007-0057
+
+The human reports successful publication; read-only actual github/main and cms/main
+both verify27b6667cf71ab84e905648a16c465aa87b2ca350. This supersedes the readiness-only
+publication state at the earlier checkpoint, not the original fact that the agent
+did not push. The supplied screenshot was partial: Ubuntu/Windows3.11–3.13 and
+LivePyPI passed while three macOS jobs awaited runners. A later one-time public
+[exact-candidate Python job inspection](https://github.com/DSACMS/libyears/actions/runs/45448605160)
+now observes all nine matrix jobs and LivePyPI completed/success, including worker,
+offline-test and whitespace steps. The five workflow summaries for this SHA also
+report success (Python, secrets, hygiene, Push on main, pages). No polling for queued
+jobs, raw hosted test-count extraction or scanner-version parity claim follows.
+
+Original0055 is already reconciled once and repeated supplied telemetry agrees.
+Original0056 is now appended once with its missing runtime/model/effort/ending-credit
+fields left blank. Current0057 cannot inherit205 across that unobserved boundary;
+its starting reading stays blank. No missing handoff or credit delta is reconstructed.
+The [chapter retrospective](../specs/007-maven-dependency-age/retrospective.md#published-mavensbom-chapter--007-0057)
+owns the concise results, actor/authority lessons and remaining-work disposition.
+Its local documentation commit is not claimed published or hosted-verified here.
+No push, tag, release, trust/target access or live metadata work occurred in closure.

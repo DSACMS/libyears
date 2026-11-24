@@ -74,7 +74,7 @@ An evidence-backed problem or learning opportunity is required.
 | [Ecosystem analyzer boundary](#8-ecosystem-analyzer-boundary) | EXPLORE | Architecture evidence | Bounded maintainability investigation |
 | [Dependency-metadata providers](#9-dependency-metadata-providers) | EXPLORE | Evidence sources | Provider landscape investigation |
 | [Human-centered agentic-development harness](#10-human-centered-agentic-development-harness) | EXPLORE | Methodology | Cross-project evidence and distribution study |
-| [Java ecosystem repodive](#11-java-ecosystem-repodive) | SELECTED (007 Maven plural views) | Java contract | Public Maven-first SDD |
+| [Java ecosystem repodive](#11-java-ecosystem-repodive) | SELECTED work completed (published007/008) | Java contract | Future extensions need separate selection |
 | [Plural dependency-age views across ecosystems](#23-plural-dependency-age-views-across-ecosystems) | EXPLORE | Evidence/output semantics | Separate future selection |
 
 ### 3. Project-root discovery/listing
@@ -377,6 +377,13 @@ missing despite durable normative authority. No new compaction, cross-project
 generality, quantified savings or generalized harness/SKILL is claimed. See the
 [retrospective](specs/007-maven-dependency-age/retrospective.md).
 
+**007-0057 chapter evidence:** Original Git-directory handoffs survived for closure,
+while lost007-0014 remains missing; smaller continuation prompts can refer to durable
+contracts but no matched prompt/resource or cross-project study proves savings.
+The [Maven/SBOM retrospective](specs/007-maven-dependency-age/retrospective.md#durable-recovery-and-resource-observations)
+adds evidence within this repository, not portable harness/SKILL implementation.
+State remains EXPLORE, with no extraction or distribution work authorized.
+
 **Why this state:** Reusable practice merits evaluation, not a selected tool,
 mandatory premium-model workflow or immediate skill implementation.
 
@@ -390,9 +397,13 @@ repository-specific authority, or relies on unobserved resource claims.
 
 ### 11. Java ecosystem repodive
 
-**State:** SELECTED; Feature007 COMPLETE through independently converged T014 at
-the reviewed pre-publication boundary. Earlier states below retain the selection
-and decision history; no release, push or private validation is implied.
+**State:** SELECTED work completed: Feature007, bounded external-management intake,
+Feature008 local SBOM age and its opt-in metadata-budget correction are implemented,
+independently converged and human-published through `27b6667cf71ab84e905648a16c465aa87b2ca350`.
+Run007-0057 directly observes all nine OS/Python matrix jobs and Live PyPI successful
+for that candidate. No new scope, release/tag or private validation is selected.
+The [chapter retrospective](specs/007-maven-dependency-age/retrospective.md#published-mavensbom-chapter--007-0057)
+is the current results account; older statuses below remain historical.
 
 **Area:** Java discovery
 
@@ -527,6 +538,15 @@ ordinary integration and offline corpus/sibling/platform verification, followed
 by final conformance. No unresolved product decisions or review findings remain.
 Implementation and real live validation remain separately gated; stop at
 implementation authorization.
+
+**007-0057 published chapter disposition:** The separate retained inventory now
+measures186/200 with no budget refusals. Its14 remaining eligibility/catalogue/date
+outcomes are not unfinished implementation acceptance. Current-checkout Observed
+remains unimplemented; broader model/population support, private validation and
+cross-ecosystem SBOM support remain separately scoped opportunities under this
+entry (plural-view context remains in23). No retry/research branch is selected.
+The single [remaining-work disposition](specs/007-maven-dependency-age/retrospective.md#remaining-work-disposition)
+classifies each item and its existing owner, avoiding a duplicate roadmap queue.
 
 #### External-management evidence intake — restricted route selected
 

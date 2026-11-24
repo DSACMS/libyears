@@ -1,5 +1,15 @@
 # Feature 007 sequential task graph
 
+## Current closure — 007-0057
+
+T001–T014 remain independently COMPLETE; bounded external-management and local-SBOM
+follow-ups have their own completed task graphs. Source is human-published through
+`27b6667cf71ab84e905648a16c465aa87b2ca350`; exact-candidate matrix/LivePyPI success
+is now directly observed. See the [current chapter account and remaining work](retrospective.md#published-mavensbom-chapter--007-0057).
+No unmet implementation AC was identified. Private validation, Observed ingestion
+and broader scope remain separately unauthorized future work. Earlier execution
+statuses below are historical and their requirements/evidence are preserved.
+
 ## Execution status — run007-0016 / T014
 
 **T001–T014 COMPLETE. FEATURE007 AT REVIEWED PRE-PUBLICATION CONVERGENCE.** Fresh

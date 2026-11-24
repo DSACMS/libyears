@@ -549,3 +549,18 @@ Actual hosted nine-job OS/Python matrix remains pending. Next consequential gate
 **HUMAN PUBLICATION**, if desired, followed by actual hosted evidence. No push, tag,
 release, publication, remote query, new corpus/endpoint, target execution or
 package-manager/build execution occurred.
+
+
+## Published chapter closure — 007-0057
+
+T001–T010/C1–C3 and separately granted V001 remain COMPLETE/APPROVED. The later
+[metadata-budget correction](../../maintenance/sbom-metadata-budget/reviews.md)
+completed its own T1/V1/C1, without changing the inventory or metric. The human
+published through27b6667cf71ab84e905648a16c465aa87b2ca350 to both remotes; current
+read-only checks agree. A single exact-candidate hosted read now finds all nine
+OS/Python jobs plus LivePyPI successful, superseding only the pending status at
+earlier observation times. No new hosted counts, positive native measurement or
+scanner-version parity are inferred. The [shared chapter retrospective](../007-maven-dependency-age/retrospective.md#published-mavensbom-chapter--007-0057)
+owns current results and explicit deferrals; the14 remaining member failures fit
+the approved partial-results contract, not an incomplete V001 or a new retry gate.
+No package/target/trust access, fresh metadata batch or new feature is authorized.

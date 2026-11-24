@@ -99,6 +99,10 @@ restricted missing Declared scopes using `--maven-management FILE`; see the
 [intake format and limits](maintenance/maven-external-intake/README.md). No models
 are acquired automatically, and scope evidence grants no public lookup permission.
 
+The [published Maven/SBOM results and retrospective](specs/007-maven-dependency-age/retrospective.md#published-mavensbom-chapter--007-0057)
+show the latest retained representative and separate inventory numbers, their
+population limits, hosted evidence and explicit remaining-work disposition.
+
 ## Local SBOM age
 
 An ordinary directory scan also discovers one existing local CycloneDX JSON 1.5
