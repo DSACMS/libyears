@@ -10,7 +10,7 @@
   lifecycle, all200 outcomes and all statistics versus0054. AC5. Independently
   review result fidelity/security/integrity, commit sanitized validation and prior
   observation bookkeeping; retain raw/trust details privately. No extra live batch.
-- [ ] C1 — dependency: V1. Final explicit scope/whitespace/current-content and
+- [x] C1 — dependency: V1. Final explicit scope/whitespace/current-content and
   committed-history security, local commits, helper handoff/restart note. Current
   run is not appended, no push/tag/release/hosted success claim. Stop at publication
   authority or an exact consequential decision outside the bounded grant.
