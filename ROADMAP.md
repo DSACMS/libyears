@@ -384,6 +384,57 @@ The [Maven/SBOM retrospective](specs/007-maven-dependency-age/retrospective.md#d
 adds evidence within this repository, not portable harness/SKILL implementation.
 State remains EXPLORE, with no extraction or distribution work authorized.
 
+#### One bounded portability loop to consider next
+
+**Recommendation only; opportunity10 remains EXPLORE.** For the human's remaining
+roughly four-hour window, the smallest plausible shipping slice is one reviewed,
+human-readable **harness starter note with a synthetic recovery case**, followed by
+one fresh-context recovery smoke. Neither the note/fixture nor the smoke is created
+or run by this retrospective amendment. No generalized portability claim precedes
+that test; four hours is a planning constraint, not a duration target or guarantee.
+
+**User and benefit:** a contributor resuming an interrupted small task should recover
+its grant, evidence, unresolved boundary and next safe action from files, without
+the human rebuilding the conversation. A later authorized loop could ship a short
+experimental Markdown note, source/provenance links and the witness report. Prefer
+an owner/reference map and repository adapter over copying these long policies
+into a second canonical workflow.
+
+| Layer | Existing sources to draw from | Boundary |
+| --- | --- | --- |
+| Portable questions/conventions | SDD lifecycle/authority, AGENT_ROUTING actors/review isolation, original-versus-derived evidence, restart requirements | Short references and questions; repository owners retain authority, no new framework |
+| Repository adapter | Local AGENTS entry points, task/evidence owners, allowed commands, check/commit/publication rules, actual Git-dir resolution | Filled afresh for the destination; libyears metric/ecosystem contracts, CI assumptions and44-column helper/ledger are not universal |
+| Private operational state | Durable original handoff and necessary local evidence under the repository's approved storage policy | Explain original-byte preservation and recovery limits; export none of the real state |
+
+**Minimal acceptance witness:** in a disposable local repository containing only
+synthetic files, an envelope authorizes one documentation correction/local check
+but no commit, push or network. A synthetic handoff says the edit is prepared, not
+verified; a review artifact is deliberately absent and an unrelated dirty sentinel
+must be preserved. A human/orchestrator starts a fresh agent with only the starter,
+repository adapter and fixture files, not the earlier conversation. The agent
+returns a read-only recovery report identifying the grant/prohibitions, actual
+candidate and evidence, absent review, preserved unrelated state and next safe
+action (verify the prepared change, then seek the specified review; do not infer
+approval or publication authority). An independent reader compares it to a small
+answer key and checks sentinel/diff integrity. A wrong or fabricated authorization
+fails the witness. This is a recovery witness, not proof of general implementation
+quality, all workflows or cross-project efficiency. Do not run it in this task.
+
+**Dependencies/decisions:** existing local Git/standard-library tools and a genuinely
+fresh context supplied by the capable orchestrator; human selection of the starter's
+experimental destination/owner and a separate fixture/smoke grant. No new product,
+telemetry schema or Skill decision is needed. Inspect the current helper's
+repository-specific header/path assumptions before considering any later code reuse;
+this slice recommends guidance, not a portable replacement helper.
+
+**Exclusions:** no real second repository, network, packages/builds, Skill, framework,
+agent-runtime implementation, automated publication or copying of ledgers, personal/
+target paths, trust inputs, certificates, credentials or private handoffs. Use only
+invented operational values and evidence. No edits to libyears canonical policy are
+implied by packaging a note. **Smaller fallback:** a reviewed one-page source/adapter/
+private-state boundary map and recovery checklist, with the smoke explicitly NOT RUN
+if a safe fixture/fresh-context witness cannot fit. Further extraction stays unselected.
+
 **Why this state:** Reusable practice merits evaluation, not a selected tool,
 mandatory premium-model workflow or immediate skill implementation.
 

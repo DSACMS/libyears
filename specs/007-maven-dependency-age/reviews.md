@@ -3331,3 +3331,36 @@ Parent reconciles coverage and records local chapter closure. Final committed-hi
 security, exact local commit/scope/clean status and original current helper handoff
 are retained privately in D/007-0057 at completion. No new authority or all-candidate
 hosted claim follows for the documentation commit itself.
+
+## Retrospective contribution amendment and publication preparation — 007-0058
+
+The human approves the supplied ChatGPT synthesis for reconciliation into the current
+chapter, not a new product gate. The amendment adds a plain-language opening,
+contract-versus-user-goal interpretation, population pluralism, classified bottleneck
+case study, provenance-qualified coordination friction, one lightweight prospective
+kickoff question and explicit conversational-contributor credit. Human authority,
+author/orchestrator and independent review remain distinct. The verbatim historical
+checkpoint section and closed contract/measurement status are preserved.
+
+ROADMAP opportunity10 assesses one bounded starter/recovery-witness loop under the
+remaining-session constraint, with portable/repository/private boundaries, exclusions,
+dependencies and a smaller fallback. This is a recommendation only: no starter,
+fixture, Skill, harness code or fresh-context witness is created/executed here.
+Original007-0057 is reconciled once from its durable handoff without inventing absent
+telemetry or skipping an unobserved account-credit boundary. Prior historical bytes
+and ledger prefix remain intact. The complete human publication set also includes
+the preceding unpublished closure commit, not only this amendment. Exact final
+HEAD/ref/destination/script and check bindings are retained privately for human
+execution only; no push or new hosted/target/registry/trust-input work follows.
+Fresh non-author review is commissioned for claim/history fidelity, attribution,
+closed-chapter preservation, observation provenance and avoiding duplicate rules/gates.
+
+Fresh non-author review COMPLETE/APPROVE, no material findings. Freeze SHA256
+6f02816508a1c0facf97fadcdbd95344128159a3382911da0fc3c526e71ea0b2
+binds four amendment/bookkeeping files and seven private evidence records. It
+verifies fair human-supplied conversational attribution, contract/user-goal and
+population limits, exact retained case-study values, unchanged historical text,
+original observation/credit gaps, and opportunity10's recommendation-only boundary.
+No new gates, implementation, portability proof or full-authorship credit is added.
+Final actual publication pins and guarded script receive focused verification after
+the local commit; prior substantive Maven/SBOM and chapter reviews remain reused.

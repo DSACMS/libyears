@@ -1,5 +1,13 @@
 # Maven and local-SBOM retrospective and handoff
 
+We began by trying to derive useful Maven ages from local declarations without
+running Maven. That produced defensible but limited results. Restricted management
+evidence improved the checkout slice, while an existing SBOM supplied a separate,
+more measurable inventory. A diagnosed request ceiling explained much of that
+inventory's shortfall. We closed with93% coverage of the asserted inventory using
+conventional POM-modification ages, without establishing its association to the
+representative checkouts, their current builds or complete repository technical debt.
+
 ## Published Maven/SBOM chapter — 007-0057
 
 **Close the implemented chapter.** Maven T001–T014, external-management T1–T6,
@@ -90,6 +98,18 @@ The failed first-publication/provider investigations stayed negative evidence; t
 human selected the narrower labeled POM-modification convention and conservative
 latest eligibility rather than making undocumented timestamps into publication.
 
+#### Contract completion versus user-goal completion
+
+Retrospective interpretation: our acceptance process initially established defensible
+evidence handling more successfully than useful real-world measurement yield.
+Correct refusal remained valuable behavior, but did not by itself fulfill the
+human's practical goal of an inspectable age number. The repeated requests for an
+actual number exposed a missing acceptance dimension: a useful real-input result,
+not merely more appetite for scope. Historical contracts were satisfied and remain
+converged; the broader product aspiration was not thereby demonstrated. This lesson
+does not retroactively classify approved work as defective or add a new Maven/SBOM
+gate after closure.
+
 Accepted external-management evidence supplied restricted missing scopes, then
 managed versions, with exact consumer/model/byte and winning-field associations.
 Seven added scopes and seven managed-version occurrences were bounded corrections,
@@ -110,7 +130,25 @@ Declared/Observed differences and rounded versus raw statistics rather than hidi
 positively found dependencies behind empty summaries. Discovery-only suppression
 can still obscure unknown repository scope;0054 records that remaining UX limit.
 
-The first SBOM batches measured104/200. Retained0052 worker evidence shows300 distinct
+The SBOM pivot was useful pluralism, not substitution. A number is useful because
+its population and meaning are inspectable, not because it is larger. A document
+inventory can answer a valuable separate question while current-checkout Observed
+selection and complete Declared population remain unavailable. Neither a larger
+SBOM total nor higher inventory coverage closes those gaps or permits combining totals.
+
+#### Compact case study: classify the shortfall before choosing a remedy
+
+Missing results can reflect missing evidence, admission-policy limits,
+implementation defects or execution/resource limits. They call for different
+remedies: obtain admissible evidence, revisit a consequential policy only with
+human authority, correct a demonstrated defect, or address the diagnosed execution
+constraint. Classification comes before choosing a mechanism; a larger allowance
+cannot repair absent identity, namespace or date evidence.
+
+The retained0054 standard-budget result measured104/200, totaling
+175.66183125459472 conventional Maven libyears. The0055 extended result measured
+186/200, totaling337.47960139554345, with all104 prior ages unchanged and82new ages.
+Retained0052 worker evidence shows300 distinct
 operations and clean termination well below its byte/time ceilings; existing GA/date
 caches already avoided duplicates.0054 has the same refusal frontier but no retained
 worker counters, so its exact request count is not reconstructed. The separately
@@ -164,6 +202,21 @@ workstation certificate search or permission to put trust details in public pros
 The later Git-directory helper made original0055/0056 batons available here, but
 Git metadata/worktree deletion can still remove them. Local durability is not backup.
 
+The retained roadmap's human-reported long-prompt examples, the routing record's
+human-versus-agent instruction confusion and the lost temporary baton support real
+coordination friction. Repeated narrow approvals could make the human an operational
+relay even after the next internal action was determined. The conversational account
+supplied by the human for this amendment also acknowledges that ChatGPT contributed
+to friction through overlong/repeated context, misrouted human/agent instructions and
+brittle or incorrect command construction. That attribution and those command
+incidents are human-supplied conversational evidence, not newly independently
+reconstructed repository history. No frequencies, costs or causal estimates follow.
+
+The prospective lesson is to make the normal continuation path recoverable without
+requiring the human to reconstruct operational context or repair orchestration text.
+Durable artifacts help carry that path; their existence has neither eliminated
+friction nor demonstrated efficiency gains.
+
 Repository contracts now let continuation prompts carry intent, deltas, exact new
 authority and telemetry rather than repeat all normative history. This supports
 smaller prompts as a design direction, not measured coordination savings or causal
@@ -174,6 +227,22 @@ runtime/confounding qualifications; account readings are not per-task billing.
 invented status. Its ending credits are unknown, so0057's starting reading stays
 blank rather than skipping that account boundary. Portable harness extraction stays
 opportunity10 EXPLORE; no new SKILL/tool/general framework is implemented.
+
+### Lightweight kickoff recommendation and attribution
+
+As a prospective complement to correctness, safety and independent review, ask:
+“Which real input will demonstrate a useful result, and what minimum evidence must
+exist for that demonstration?” Keep it a question in the ordinary task envelope,
+not a new approval ceremony, mandatory schema field or promise of positive yield.
+
+ChatGPT (OpenAI conversational assistant) contributed retrospective synthesis on
+contract versus user-goal completion, useful measurement yield, evidence-population
+pluralism, bottleneck classification, and coordination friction. These contributions
+were supplied through the human and reconciled against retained repository evidence.
+The conversational contributor is distinct from human authority, the coding
+agent/author-orchestrator and fresh independent reviewers. This credit does not
+attribute implementation, measurement verification, independent repository review
+or authorship of the entire retrospective to ChatGPT.
 
 ### Remaining-work disposition
 
