@@ -72,10 +72,20 @@ def read_message(path):
     return value
 
 
-def command(value):
+def execution_limits(sbom_extended=False):
+    """Closed opt-in SBOM profile; ordinary Maven retains its original limits."""
+    if type(sbom_extended) is not bool:
+        raise ValueError('Maven execution profile')
+    if sbom_extended:
+        return 600, 600.0
+    return MAX_ATTEMPTS, 300.0
+
+
+def command(value, *, sbom_extended=False):
+    max_attempts, _ = execution_limits(sbom_extended)
     if type(value) is not dict or set(value) != {'sequence', 'operation', 'group_id', 'artifact_id', 'version', 'deadline'}:
         raise ValueError('Maven protocol')
-    if type(value['sequence']) is not int or not 1 <= value['sequence'] <= MAX_ATTEMPTS:
+    if type(value['sequence']) is not int or not 1 <= value['sequence'] <= max_attempts:
         raise ValueError('Maven protocol')
     if not isinstance(value['operation'], str) or value['operation'] not in OPERATIONS:
         raise ValueError('Maven protocol')
@@ -101,7 +111,8 @@ def date_text(value):
     return value.astimezone(timezone.utc).isoformat().replace('+00:00', 'Z')
 
 
-def result(value, request):
+def result(value, request, *, sbom_extended=False):
+    max_attempts, _ = execution_limits(sbom_extended)
     fields = {'sequence', 'operation', 'group_id', 'artifact_id', 'version', 'selected_version',
               'last_modified', 'retrieved_at', 'reason', 'attempts', 'body_bytes',
               'ordering_basis', 'eligibility_policy', 'time_basis'}
@@ -110,7 +121,7 @@ def result(value, request):
     for key in ('sequence', 'operation', 'group_id', 'artifact_id', 'version'):
         if type(value[key]) is not type(request[key]) or value[key] != request[key]:
             raise ValueError('Maven protocol')
-    if (type(value['attempts']) is not int or not 0 <= value['attempts'] <= MAX_ATTEMPTS
+    if (type(value['attempts']) is not int or not 0 <= value['attempts'] <= max_attempts
             or type(value['body_bytes']) is not int or not 0 <= value['body_bytes'] <= MAX_BYTES):
         raise ValueError('Maven protocol')
     retrieved = timestamp(value['retrieved_at'])

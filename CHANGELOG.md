@@ -58,6 +58,9 @@ Notable changes to Libyears are documented here.
 
 ### Added
 
+- Add an explicit extended SBOM metadata budget for larger local inventories,
+  preserving finite execution limits, successful partial results and visible refusals.
+
 - Measure a separate local CycloneDX JSON 1.5 SBOM inventory using supported exact
   Maven versions and conventional Central POM modification dates. Directory scans
   discover one document; `--sbom` selects one and `--no-sbom` disables the source.

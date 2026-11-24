@@ -56,6 +56,32 @@ class SbomCLITests(unittest.TestCase):
             code = main([str(self.root), *args], scan=scan or self.scanner())
         return code, output.getvalue(), errors.getvalue()
 
+    def test_extended_routes_only_sbom_factory_and_preserves_output(self):
+        maven = Mock(return_value=None)
+        code, normal, errors = self.invoke('--json', scan=self.scanner(maven_scan=maven))
+        self.assertEqual((code, errors), (0, ''))
+        self.assertEqual(self.metadata.options, {'ca_bundle': None})
+        for options in (['--sbom-budget', 'standard'], ['--sbom-budget', 'extended'],
+                        ['--sbom', 'bom.json', '--sbom-budget', 'extended']):
+            maven.reset_mock()
+            code, text, errors = self.invoke('--json', *options, scan=self.scanner(maven_scan=maven))
+            self.assertEqual((code, errors), (0, ''))
+            # Explicit source selection adds selection provenance; profiles do not.
+            if '--sbom' not in options:
+                self.assertEqual(json.loads(text), json.loads(normal))
+            self.assertEqual(self.metadata.options.get('sbom_extended', False), 'extended' in options)
+            self.assertNotIn('sbom_extended', maven.call_args.kwargs)
+
+    def test_extended_never_admits_private_document_identity(self):
+        reader = DocumentReader({'bom.json': synthetic_document(components=[
+            maven_component(suffix='?repository_url=https:%2F%2Fprivate.invalid')])})
+        forbidden = Mock(side_effect=AssertionError('metadata factory'))
+        code, text, errors = self.invoke('--json', '--sbom-budget', 'extended',
+            scan=self.scanner(sbom_reader_factory=reader, sbom_supervisor_factory=forbidden))
+        self.assertEqual((code, errors), (0, ''))
+        self.assertEqual(json.loads(text)['sbom']['summary']['dependencies_measured'], 0)
+        forbidden.assert_not_called()
+
     def test_default_real_orchestrator_has_independent_section_and_both_tables(self):
         code, text, errors = self.invoke()
         self.assertEqual((code, errors), (0, ''))

@@ -15,10 +15,18 @@ from libyears.maven_protocol import command, date_text, read_message, result, wr
 from libyears.maven_registry import RegistryFailure
 
 
-def run_worker():
+def worker_profile(arguments):
+    if not arguments:
+        return False
+    if arguments == ['--sbom-extended-budget']:
+        return True
+    raise ValueError('Maven execution profile')
+
+
+def run_worker(*, sbom_extended=False):
     directory = Path.cwd()
     ca_file = str(directory / 'trust.pem') if (directory / 'trust.pem').exists() else None
-    client = MavenHTTPClient(ca_file)
+    client = MavenHTTPClient(ca_file, sbom_extended=sbom_extended)
     write_message(directory / 'ready.json', {'ready': 1})
     sequence = 0
     while True:
@@ -26,7 +34,7 @@ def run_worker():
         if not path.exists():
             time.sleep(0.01)
             continue
-        request = command(read_message(path))
+        request = command(read_message(path), sbom_extended=sbom_extended)
         if request['sequence'] != sequence + 1:
             raise ValueError('Maven protocol')
         sequence += 1
@@ -57,9 +65,9 @@ def run_worker():
                      ordering_basis='maven_comparable_version_3_9_11' if operation == 'select_target' else None,
                      eligibility_policy='maven_conservative_stable_v1' if operation == 'select_target' else None,
                      time_basis='maven_conventional_pom_last_modified' if operation == 'pom_date' else None)
-        result(value, request)
+        result(value, request, sbom_extended=sbom_extended)
         write_message(directory / f'result-{sequence}.json', value)
 
 
 if __name__ == '__main__':
-    run_worker()
+    run_worker(sbom_extended=worker_profile(sys.argv[1:]))

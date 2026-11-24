@@ -10,7 +10,7 @@ import ssl
 import time
 
 from .maven_model import MavenReason
-from .maven_protocol import MAX_ATTEMPTS, MAX_BYTES
+from .maven_protocol import MAX_BYTES, execution_limits
 from .maven_registry import (
     MAX_CATALOGUE_BYTES, MAX_POM_BYTES, MavenRepresentation, RegistryFailure,
     catalogue_path, pom_path, select_target, pom_date,
@@ -173,7 +173,8 @@ class MavenHTTPClient:
 
     def __init__(self, ca_file=None, *, clock=time.monotonic,
                  wall_clock=lambda: datetime.now(timezone.utc), connection_factory=_PublicConnection,
-                 context_factory=_tls_context):
+                 context_factory=_tls_context, sbom_extended=False):
+        self.max_attempts, self.scan_seconds = execution_limits(sbom_extended)
         self.clock = clock
         self.wall_clock = wall_clock
         self.connection_factory = connection_factory
@@ -191,8 +192,8 @@ class MavenHTTPClient:
         now = self.clock()
         ga = (group, artifact)
         self.ga_started.setdefault(ga, now)
-        cutoff = min(deadline, now + 10, self.started + 300, self.ga_started[ga] + 60)
-        if now >= cutoff or self.attempts >= MAX_ATTEMPTS or self.body_bytes >= MAX_BYTES:
+        cutoff = min(deadline, now + 10, self.started + self.scan_seconds, self.ga_started[ga] + 60)
+        if now >= cutoff or self.attempts >= self.max_attempts or self.body_bytes >= MAX_BYTES:
             raise RegistryFailure(MavenReason.METADATA_BUDGET_EXCEEDED)
         self.attempts += 1
         connection = None

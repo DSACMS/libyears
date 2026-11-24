@@ -700,6 +700,8 @@ def scan_mixed_repository(
 
         def sbom_metadata(capabilities):
             # Construct a fresh allowance only after all ordinary workers close.
+            if request.budget == 'extended':
+                return metadata_factory(capabilities, ca_bundle=ca_bundle, sbom_extended=True)
             return metadata_factory(capabilities, ca_bundle=ca_bundle)
 
         sbom = scan_sbom(root, request, supervisor_factory=sbom_metadata,

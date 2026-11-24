@@ -1265,7 +1265,7 @@ with no ages has 0% coverage and total 0 for an empty measured subset. Source re
 has unknown counts and all-null statistics. Zero is never a substitute for missing
 dates. Every supported or unsupported unmeasurable member remains inspectable.
 
-SBOM work follows ordinary sources with its own allowance: at most 300 metadata
+SBOM work follows ordinary sources with its own allowance: by default at most 300 metadata
 attempts, 64 MiB, 300 seconds per batch, 60 seconds per G/A and 10 seconds per
 command including reserved cleanup. Within-batch cached metadata is reused only
 after independent admission. Budget exhaustion, offline/provider failure and missing
@@ -1286,3 +1286,11 @@ state, acquisition/content and first-publication history remain unestablished.
 The [validation record](specs/008-local-sbom-age/validation.md) distinguishes retained
 real inventory acceptance, controlled synthetic dates, live evidence and pending
 hosted-platform checks. Committed contract examples remain explicitly synthetic.
+
+The directory-only `--sbom-budget extended` opts the independent SBOM worker into
+a fixed ceiling of 600 attempts and 600 batch seconds. Omission or `standard`
+keeps 300/300. This may cost up to ten minutes; it does not guarantee full coverage.
+All byte, per-G/A, command, readiness, termination, trust and admission limits stay
+unchanged. Repeated budget flags, direct-file use and `--no-sbom` conflicts refuse
+before scans. No persistent cache or retry is added. See the
+[bounded correction](maintenance/sbom-metadata-budget/spec.md).

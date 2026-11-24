@@ -20,8 +20,13 @@ class SbomFailure(ValueError):
 class SbomRequest:
     source_id: str | None = None
     disabled: bool = False
+    budget: str = 'standard'
 
     def __post_init__(self):
+        if not isinstance(self.budget, str) or self.budget not in ('standard', 'extended'):
+            raise SbomRequestError()
+        if self.disabled and self.budget != 'standard':
+            raise SbomRequestError()
         if type(self.disabled) is not bool or (self.disabled and self.source_id is not None):
             raise SbomRequestError()
         if self.source_id is not None:

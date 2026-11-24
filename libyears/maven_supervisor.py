@@ -13,7 +13,7 @@ import time
 from .maven import MavenCapability
 from .maven_model import MavenReason
 from .maven_protocol import (
-    MAX_ATTEMPTS, MAX_BYTES, available, command, read_message, result, timestamp, write_message,
+    MAX_BYTES, execution_limits, available, command, read_message, result, timestamp, write_message,
 )
 from .maven_registry import (
     MAX_CATALOGUE_BYTES, MAX_POM_BYTES, MavenPomDate, MavenTarget, pom_path,
@@ -21,7 +21,6 @@ from .maven_registry import (
 
 COMMAND_SECONDS = 10.0
 GA_SECONDS = 60.0
-SCAN_SECONDS = 300.0
 CLEANUP_SECONDS = 0.5
 READY_SECONDS = 10.0
 _DEFERRED = []
@@ -34,7 +33,9 @@ class MavenWorkerFailure(RuntimeError):
 
 class MavenSupervisor:
     def __init__(self, capabilities, *, ca_bundle=None, clock=time.monotonic,
-                 pause=time.sleep, process_factory=subprocess.Popen):
+                 pause=time.sleep, process_factory=subprocess.Popen, sbom_extended=False):
+        self.max_attempts, self.scan_seconds = execution_limits(sbom_extended)
+        self.sbom_extended = sbom_extended
         self.capabilities = frozenset(capabilities)
         for capability in self.capabilities:
             if type(capability) is not MavenCapability:
@@ -85,10 +86,11 @@ class MavenSupervisor:
             trust.chmod(0o600)
         entry = Path(__file__).with_name('maven_worker.py').resolve()
         self.process = self.process_factory(
-            [str(Path(sys.executable).resolve()), '-I', str(entry)], shell=False,
+            [str(Path(sys.executable).resolve()), '-I', str(entry)]
+            + (['--sbom-extended-budget'] if self.sbom_extended else []), shell=False,
             cwd=str(self.directory), env={}, close_fds=True,
             stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        cutoff = min(self.clock() + READY_SECONDS, self.started + SCAN_SECONDS)
+        cutoff = min(self.clock() + READY_SECONDS, self.started + self.scan_seconds)
         self._await(self.directory / 'ready.json', cutoff)
         ready = read_message(self.directory / 'ready.json')
         if set(ready) != {'ready'} or type(ready['ready']) is not int or ready['ready'] != 1:
@@ -134,15 +136,15 @@ class MavenSupervisor:
         now = self.clock()
         ga = (group, artifact)
         self.ga_started.setdefault(ga, now)
-        if (now >= self.started + SCAN_SECONDS or now >= self.ga_started[ga] + GA_SECONDS
-                or self.attempts >= MAX_ATTEMPTS or self.body_bytes >= MAX_BYTES):
+        if (now >= self.started + self.scan_seconds or now >= self.ga_started[ga] + GA_SECONDS
+                or self.attempts >= self.max_attempts or self.body_bytes >= MAX_BYTES):
             failed = self._failure(operation, group, artifact, version, MavenReason.METADATA_BUDGET_EXCEEDED)
             self.cache[key] = failed
             return failed
         try:
             if self.process is None:
                 self._start()
-            deadline = min(self.clock() + COMMAND_SECONDS, self.started + SCAN_SECONDS,
+            deadline = min(self.clock() + COMMAND_SECONDS, self.started + self.scan_seconds,
                            self.ga_started[ga] + GA_SECONDS)
             # Reserve cleanup within the command's wall deadline.
             cutoff = deadline - CLEANUP_SECONDS
@@ -150,12 +152,13 @@ class MavenSupervisor:
                 raise MavenWorkerFailure()
             self.sequence += 1
             request = command(dict(sequence=self.sequence, operation=operation, group_id=group,
-                                   artifact_id=artifact, version=version, deadline=cutoff))
+                                   artifact_id=artifact, version=version, deadline=cutoff),
+                              sbom_extended=self.sbom_extended)
             wall_started = datetime.now(timezone.utc)
             write_message(self.directory / f'command-{self.sequence}.json', request)
             path = self.directory / f'result-{self.sequence}.json'
             self._await(path, cutoff)
-            value = result(read_message(path), request)
+            value = result(read_message(path), request, sbom_extended=self.sbom_extended)
             if (self.clock() >= cutoff or value['attempts'] != self.attempts + 1
                     or value['body_bytes'] < self.body_bytes
                     or value['body_bytes'] - self.body_bytes > (

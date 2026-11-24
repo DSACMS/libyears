@@ -120,6 +120,11 @@ correspondence is assumed, and relevant private/conflicting/unknown policy refus
 lookup. Missing metadata leaves visible unmeasurable rows and preserves successful
 rows and independent source results.
 
+For a larger admitted inventory, `--sbom-budget extended` explicitly permits up to
+600 metadata requests and 600 batch seconds, instead of the default 300/300.
+The 64 MiB, per-request and per-coordinate limits remain unchanged; partial
+results and every unmeasurable member remain visible. This affects SBOM only.
+
 An SBOM is a supplier assertion: it does not establish a current-checkout inventory,
 installed/runtime state or complete repository technical debt. Its totals remain
 separate from Maven Declared/Observed and legacy direct-source totals. See the

@@ -28,7 +28,7 @@ class _ArgumentParser(argparse.ArgumentParser):
         # Exact options bypass this abbreviation hook. Keep ordinary option
         # abbreviations compatible while requiring exact scoped spellings.
         matches = super()._get_option_tuples(option_string)
-        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance", "--nuget-witness", "--maven-management", "--sbom", "--no-sbom")
+        if any(match[1] in ("--ruby-group", "--nuget-project", "--nuget-provenance", "--nuget-witness", "--maven-management", "--sbom", "--no-sbom", "--sbom-budget")
                for match in matches):
             return []
         return matches
@@ -64,6 +64,9 @@ def build_parser() -> argparse.ArgumentParser:
                         help="explicitly accept byte-bound external parent/BOM static scope evidence")
     parser.add_argument('--sbom', metavar='RELATIVE_FILE', action='append',
                         help='select one safe root-relative CycloneDX JSON 1.5 file (directory scans only)')
+    parser.add_argument('--sbom-budget', choices=('standard', 'extended'), action='append',
+                        help='SBOM metadata only: standard 300 requests/300 seconds (default); '
+                             'extended 600 requests/600 seconds; other limits unchanged')
     parser.add_argument('--no-sbom', action='store_true',
                         help='disable SBOM discovery, input and metadata work')
     parser.add_argument("--resolved", metavar="FILE", help="exact dependency snapshot")
@@ -83,14 +86,19 @@ def _sbom_arguments_present(arguments) -> bool:
 
 
 def _sbom_request(args, parser):
-    if args.sbom is None and not args.no_sbom:
+    if args.sbom is None and not args.no_sbom and args.sbom_budget is None:
         return None
     try:
+        budget = 'standard'
+        if args.sbom_budget is not None:
+            if len(args.sbom_budget) != 1 or args.no_sbom or not Path(args.path).is_dir():
+                raise SbomRequestError()
+            budget = args.sbom_budget[0]
         if args.sbom is not None:
             if len(args.sbom) != 1 or args.no_sbom or not Path(args.path).is_dir():
                 raise SbomRequestError()
-            return SbomRequest(args.sbom[0])
-        return SbomRequest(disabled=True)
+            return SbomRequest(args.sbom[0], budget=budget)
+        return SbomRequest(disabled=args.no_sbom, budget=budget)
     except (OSError, ValueError):
         parser.error('invalid SBOM selection')
 
