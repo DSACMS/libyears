@@ -5,7 +5,7 @@
   behavioral tests. AC1–4. Narrow tests first, then full/capability-disabled and
   real-worker gates. Update user docs/changelog at this correction checkpoint.
   Fresh non-author operational/security convergence before local task commit.
-- [ ] V1 — dependency: T1 approval. One configured accepted inventory invocation
+- [x] V1 — dependency: T1 approval. One configured accepted inventory invocation
   at600requests/600seconds; capture actual attempts, unique operations/reuse,
   lifecycle, all200 outcomes and all statistics versus0054. AC5. Independently
   review result fidelity/security/integrity, commit sanitized validation and prior

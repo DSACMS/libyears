@@ -33,3 +33,32 @@ actual worker gate18PASS. Parent reconciles default/sibling isolation, closed
 profile/counters, hard cancellation, cache/failure association, partial successes,
 CLI privacy, admission/TLS and whitespace. Current-content security passes.
 T1 complete; V1 is dependency-ready. No live yield or hosted success is implied.
+
+## V1 actual configured result and independent review
+
+Exactly one600-request/600-second configured production batch completes at543
+requests/244.3073433330028seconds/3,071,595bytes. All199GAs are attempted;
+186/200members measure, total337.47960139554345 conventional Maven libyears.
+All104previous ages remain unchanged;82new ages account for the improvement.
+Budget refusals88→0;14refusals remain:5eligibility/5catalogue/4date. See
+[live validation](live-validation.md) for raw statistics, request/reuse accounting,
+limits, input/lifecycle integrity, provenance qualifications and supported command.
+
+Fresh independent review COMPLETE/REVISE on original freeze SHA256
+e39ce08fedfa688e862e7cd72bc151e071a174f5993237b8af6c0efcf620b4e5:
+one documentation resource-fidelity finding. Wording conflated64MiB scan bytes
+with response limits. Corrected paragraph explicitly states64MiB cumulative scan,
+2MiB catalogue/1MiB POM responses. Fresh focused verification COMPLETE/APPROVE;
+corrected document SHA256
+fb463af7602e2c8cce6e00c51a6cf681d5697725316848f05d2fcd6d2cf7d27b.
+Reviewer hash reconstruction confirms only that paragraph changes. No unresolved
+material finding, implementation defect or additional live run follows.
+
+Independent reviewer validates17freeze bindings, every543command/result, all186
+version/date/age/aggregate bindings, all200member fields/graph/document/population
+and unchanged legacy fields,104unchanged+82new/14refused, exact scheduling/reuse,
+input integrity, production capture/cleanup, grouped command and security boundaries.
+It distinguishes0052counter evidence from unobserved0054counters, operational time
+from agent runtime and unknown underlying HTTP causes. No network/trust/target
+access by reviewer. Original/focused reports and freezes remain private under
+helper-resolved D/007-0055. Parent reconciles all evidence; V1 COMPLETE/APPROVED.
